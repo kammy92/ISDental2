@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/rlMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/app_background"
+    android:gravity="center_vertical">
+    <ImageView
+        android:id="@+id/ivCompanyLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_list"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginStart="@dimen/activity_margin"
+        android:layout_toEndOf="@id/ivCompanyLogo"
+        android:layout_toLeftOf="@+id/ivRight"
+        android:layout_toRightOf="@+id/ivCompanyLogo"
+        android:layout_toStartOf="@+id/ivRight"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvCompanyName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="EXHIBITOR L"
+            android:textColor="@color/app_text_color_dark"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"/>
+
+        <LinearLayout
+            android:id="@+id/llStallDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCompanyName"
+            android:orientation="horizontal"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/tvCompanyBrands"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCompanyName"
+            android:layout_marginLeft="@dimen/activity_margin_small"
+            android:layout_marginStart="@dimen/activity_margin_small"
+            android:layout_toEndOf="@+id/llStallDetails"
+            android:layout_toRightOf="@+id/llStallDetails"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="offer"
+            android:textColor="@color/app_text_color_dark"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/ivRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_right"
+        android:visibility="visible"/>
+</RelativeLayout>
