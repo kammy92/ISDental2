@@ -50,13 +50,10 @@ public class EventDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     TextView tvTitle;
     RelativeLayout rlBack;
-    ImageView ivEventLogo;
     TextView tvEventName;
-    TextView tvEventWebsite;
-    TextView tvEventDescription;
     TextView tvEventOrganiser;
-    TextView tvEventRegistration;
     ProgressDialog progressDialog;
+    ImageView ivWebsite;
     ImageView ivFacebook;
     ImageView ivLinkedin;
     ImageView ivTwitter;
@@ -109,13 +106,8 @@ public class EventDetailActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        tvEventName.setText (eventDetailsPref.getStringPref (EventDetailActivity.this, AppConfigTags.EVENT_NAME));
-                                        tvEventWebsite.setText ("Website");
-                                        tvEventOrganiser.setText ("Organiser");
-                                        tvEventRegistration.setText ("Registration");
-                                        tvEventDescription.setText ("About");
-    
-    
+                                        tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
+                                        
                                         if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), "FAQ");
                                         }
@@ -159,7 +151,6 @@ public class EventDetailActivity extends AppCompatActivity {
                                             ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_YOUTUBE));
                                         }
 //                                        llSocialButtons.setWeightSum (weight);
-    
     
     
                                         eventDetailsPref.putIntPref (EventDetailActivity.this, EventDetailsPref.EVENT_ID, jsonObj.getInt (AppConfigTags.EVENT_ID));
@@ -246,16 +237,13 @@ public class EventDetailActivity extends AppCompatActivity {
         tvTitle = (TextView) findViewById (R.id.tvTitle);
         tvEventName = (TextView) findViewById (R.id.tvEventName);
         llEventLinks = (LinearLayout) findViewById (R.id.llEventLinks);
-        tvEventWebsite = (TextView) findViewById (R.id.tvEventWebsite);
         tvEventOrganiser = (TextView) findViewById (R.id.tvEventOrganisers);
-        tvEventDescription = (TextView) findViewById (R.id.tvEventDescription);
-        tvEventRegistration = (TextView) findViewById (R.id.tvEventRegistration);
-        ivEventLogo = (ImageView) findViewById (R.id.ivEventLogo);
         
         tabLayout = (TabLayout) findViewById (R.id.tabs);
         viewPager = (ViewPager) findViewById (R.id.viewpager);
         
         llSocialButtons = (LinearLayout) findViewById (R.id.llSocialButtons);
+        ivWebsite = (ImageView) findViewById (R.id.ivWebsite);
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);

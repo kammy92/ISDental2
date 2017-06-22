@@ -26,11 +26,39 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             android:visibility="gone"/>
+
+
+        <RelativeLayout
+            android:id="@+id/rlTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvType"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/ivTime"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:padding="@dimen/activity_margin_extra_small"
+                android:src="@drawable/ic_time"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tvTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/ivTime"
+                android:layout_toRightOf="@+id/ivTime"
+                android:gravity="center"
+                android:text="nbbbnmm"
+                android:textColor="@color/app_text_color_dark"
+                android:textSize="@dimen/text_size_small"/>
+        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvType"
+            android:layout_below="@+id/rlTime"
             android:visibility="gone">
             <ImageView
                 android:id="@+id/ivTitle"
@@ -151,35 +179,12 @@
 
             </LinearLayout>
         </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/rlTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/rlPhone"
-            android:visibility="gone">
-            <ImageView
-                android:id="@+id/ivTime"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_centerVertical="true"
-                android:padding="@dimen/activity_margin_extra_small"
-                android:src="@drawable/ic_time"/>
-            <TextView
-                android:id="@+id/tvTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@+id/ivTime"
-                android:layout_toRightOf="@+id/ivTime"
-                android:text="nbbbnmm"
-                android:textColor="@color/app_text_color_dark"
-                android:textSize="@dimen/text_size_small"/>
-        </RelativeLayout>
+
         <RelativeLayout
             android:id="@+id/rlEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rlTime"
+            android:layout_below="@id/rlPhone"
             android:visibility="gone">
             <ImageView
                 android:id="@+id/ivEmail"

@@ -35,129 +35,103 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:background="@drawable/company_details_bg">
-                    <ImageView
-                        android:id="@+id/ivEventLogo"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_margin="@dimen/activity_margin_small"
-                        android:background="@drawable/company_logo_bg"
-                        android:src="@mipmap/ic_launcher"
-                        android:visibility="gone"/>
-                    <LinearLayout
-                        android:id="@+id/llEventDetails"
+                    <TextView
+                        android:id="@+id/tvEventName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/activity_margin_small"
-                        android:layout_toEndOf="@+id/ivEventLogo"
-                        android:layout_toRightOf="@+id/ivEventLogo"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvEventName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color_black"
-                            android:textSize="@dimen/text_size_company_name"
-                            android:textStyle="bold"
-                            android:visibility="visible"/>
-                        <LinearLayout
-                            android:id="@+id/llEventLinks"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/activity_margin_small"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
-                            <TextView
-                                android:id="@+id/tvEventDescription"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="About"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvEventWebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Website"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvEventOrganisers"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Organisers"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvEventRegistration"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Registration"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:layout_above="@+id/llSocialButtons"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_size_company_name"
+                        android:textStyle="bold"
+                        android:visibility="visible"/>
                     <LinearLayout
                         android:id="@+id/llSocialButtons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_below="@+id/llCompanyDetails"
+                        android:layout_above="@+id/tv1"
                         android:layout_centerHorizontal="true"
-                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/activity_margin_small"
+                        android:layout_marginTop="@dimen/activity_margin_small"
+                        android:gravity="bottom"
                         android:orientation="horizontal"
-                        android:weightSum="7">
+                        android:visibility="visible"
+                        android:weightSum="5">
                         <ImageView
-                            android:id="@+id/ivFacebook"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:id="@+id/ivWebsite"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_facebook"
+                            android:src="@drawable/ic_website_disabled"
+                            android:visibility="visible"/>
+                        <ImageView
+                            android:id="@+id/ivFacebook"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_fb_disabled"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/ivTwitter"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_twitter"
+                            android:src="@drawable/ic_twitter_disabled"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/ivLinkedIn"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_linkedin"
+                            android:src="@drawable/ic_linkedin_disabled"
                             android:visibility="gone"/>
                         <ImageView
                             android:id="@+id/ivYouTube"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_youtube"
+                            android:src="@drawable/ic_youtube_disabled"
                             android:visibility="gone"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_above="@+id/llEventLinks"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:background="@color/divider_color"
+                    />
+                    <LinearLayout
+                        android:id="@+id/llEventLinks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:visibility="visible"
+                        android:weightSum="1">
+                        <TextView
+                            android:id="@+id/tvEventOrganisers"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_margin_small"
+                            android:text="Organisers"
+                            android:textColor="@color/text_color_grey_dark2"
+                            android:textSize="@dimen/text_size_medium"
+                            android:visibility="visible"/>
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>
@@ -207,7 +181,7 @@
                             android:visibility="invisible"/>
                     </RelativeLayout>
                     <TextView
-                        android:id="@+id/tvTitle"
+                        android:id="@+id/tvType"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -233,6 +207,7 @@
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorPrimaryDark"/>
     </android.support.design.widget.AppBarLayout>
+
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"

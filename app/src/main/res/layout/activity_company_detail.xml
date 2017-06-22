@@ -35,129 +35,118 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:background="@drawable/company_details_bg">
-                    <ImageView
-                        android:id="@+id/ivCompanyLogo"
-                        android:layout_width="70dp"
-                        android:layout_height="70dp"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_alignParentTop="true"
-                        android:layout_margin="@dimen/activity_margin_small"
-                        android:background="@drawable/company_logo_bg"
-                        android:src="@mipmap/ic_launcher"
-                        android:visibility="gone"/>
-                    <LinearLayout
-                        android:id="@+id/llCompanyDetails"
+                    <TextView
+                        android:id="@+id/tvCompanyName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/activity_margin_small"
-                        android:layout_toEndOf="@+id/ivCompanyLogo"
-                        android:layout_toRightOf="@+id/ivCompanyLogo"
-                        android:orientation="vertical">
-                        <TextView
-                            android:id="@+id/tvCompanyName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_horizontal"
-                            android:textColor="@color/text_color_black"
-                            android:textSize="@dimen/text_size_company_name"
-                            android:textStyle="bold"
-                            android:visibility="visible"/>
-                        <LinearLayout
-                            android:id="@+id/llCompanyLinks"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/activity_margin_small"
-                            android:orientation="horizontal"
-                            android:weightSum="4">
-                            <TextView
-                                android:id="@+id/tvCompanyWebsite"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Website"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvCompanyAboutUs"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="About us"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvCompanyBrands"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Brands"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvCompanyCategories"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Categories"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:layout_above="@+id/llSocialButtons"
+                        android:layout_alignParentTop="true"
+                        android:gravity="center"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="@dimen/text_size_company_name"
+                        android:textStyle="bold"
+                        android:visibility="visible"/>
                     <LinearLayout
                         android:id="@+id/llSocialButtons"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_below="@+id/llCompanyDetails"
+                        android:layout_above="@+id/tv1"
                         android:layout_centerHorizontal="true"
-                        android:gravity="center_vertical"
+                        android:layout_marginBottom="@dimen/activity_margin_small"
+                        android:layout_marginTop="@dimen/activity_margin_small"
+                        android:gravity="bottom"
                         android:orientation="horizontal"
-                        android:weightSum="7">
+                        android:visibility="gone"
+                        android:weightSum="5">
+                        <ImageView
+                            android:id="@+id/ivWebsite"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:src="@drawable/ic_website_disabled"
+                            android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/ivFacebook"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_facebook"
-                            android:visibility="gone"/>
+                            android:src="@drawable/ic_fb_disabled"
+                            android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/ivTwitter"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_twitter"
-                            android:visibility="gone"/>
+                            android:src="@drawable/ic_twitter_disabled"
+                            android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/ivLinkedIn"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_linkedin"
-                            android:visibility="gone"/>
+                            android:src="@drawable/ic_linkedin_disabled"
+                            android:visibility="visible"/>
                         <ImageView
                             android:id="@+id/ivYouTube"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="@dimen/activity_margin_small"
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
-                            android:src="@drawable/ic_youtube"
-                            android:visibility="gone"/>
+                            android:src="@drawable/ic_youtube_disabled"
+                            android:visibility="visible"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_above="@+id/llCompanyLinks"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:background="@color/divider_color"
+                    />
+                    <LinearLayout
+                        android:id="@+id/llCompanyLinks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:weightSum="2">
+                        <TextView
+                            android:id="@+id/tvCompanyAboutUs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_margin_small"
+                            android:text="About us"
+                            android:textColor="@color/text_color_grey_dark2"
+                            android:textSize="@dimen/text_size_medium"
+                            android:visibility="visible"/>
+                        <TextView
+                            android:layout_width="1dp"
+                            android:layout_height="wrap_content"
+                            android:background="@color/divider_color"/>
+                        <TextView
+                            android:id="@+id/tvCompanyDealsIn"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_margin_small"
+                            android:text="Deals In"
+                            android:textColor="@color/text_color_grey_dark2"
+                            android:textSize="@dimen/text_size_medium"
+                            android:visibility="visible"/>
                     </LinearLayout>
                 </RelativeLayout>
             </RelativeLayout>

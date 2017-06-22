@@ -40,18 +40,15 @@ public class EventListActivity extends AppCompatActivity {
     CoordinatorLayout clMain;
     RelativeLayout rlBack;
     TabLayout tabLayout;
-    private ViewPager viewPager;
     ProgressDialog progressDialog;
-  
     ImageView ivFilter;
     ImageView ivSort;
     TextView tvTitle;
     SearchView searchView;
-    
     DatabaseHandler db;
-    private SliderLayout slider;
     AppBarLayout appBar;
-    
+    private ViewPager viewPager;
+    private SliderLayout slider;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -145,6 +142,7 @@ public class EventListActivity extends AppCompatActivity {
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+/*
         appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
             @Override
             public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
@@ -160,6 +158,7 @@ public class EventListActivity extends AppCompatActivity {
                 }
             }
         });
+*/
     }
     
     private void setupViewPager (ViewPager viewPager) {

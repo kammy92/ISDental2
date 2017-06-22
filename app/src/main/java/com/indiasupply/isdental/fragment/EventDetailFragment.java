@@ -1,11 +1,14 @@
 package com.indiasupply.isdental.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -70,10 +73,18 @@ public class EventDetailFragment extends Fragment {
         }
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + datahtml);
         webView.loadDataWithBaseURL ("www.google.com", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
+        webView.setInitialScale (getScale ());
         WebSettings webSettings = webView.getSettings ();
         webSettings.setStandardFontFamily (Constants.font_name);
     }
-
+    
+    private int getScale () {
+        Display display = ((WindowManager) getActivity ().getSystemService (Context.WINDOW_SERVICE)).getDefaultDisplay ();
+        int width = display.getWidth ();
+        Double val = new Double (width) / new Double (450);
+        val = val * 100d;
+        return val.intValue ();
+    }
     private void initListener() {
     }
 }

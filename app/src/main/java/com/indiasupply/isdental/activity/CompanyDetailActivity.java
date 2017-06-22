@@ -34,7 +34,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.CompanyContactAdapter;
 import com.indiasupply.isdental.model.CompanyContact;
@@ -69,13 +68,11 @@ public class CompanyDetailActivity extends AppCompatActivity {
     RelativeLayout rlBack;
     RecyclerView rvCompanyContactList;
     int company_id;
-    ImageView ivCompanyLogo;
     TextView tvCompanyName;
-    TextView tvCompanyWebsite;
     TextView tvCompanyAboutUs;
-    TextView tvCompanyBrands;
-    TextView tvCompanyCategories;
+    TextView tvCompanyDealsIn;
     ProgressDialog progressDialog;
+    ImageView ivWebsite;
     ImageView ivFacebook;
     ImageView ivLinkedin;
     ImageView ivTwitter;
@@ -91,7 +88,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     List<String> companyBrandList = new ArrayList<> ();
     List<String> companyCategoryList = new ArrayList<> ();
     
-    String companyWebsite;
+    String companyName;
     String companyAboutUs;
     
     @Override
@@ -119,15 +116,13 @@ public class CompanyDetailActivity extends AppCompatActivity {
         tvTitle = (TextView) findViewById (R.id.tvType);
         rvCompanyContactList = (RecyclerView) findViewById (R.id.rvBrandsContactList);
         tvCompanyName = (TextView) findViewById (R.id.tvCompanyName);
-        tvCompanyWebsite = (TextView) findViewById (R.id.tvCompanyWebsite);
         tvCompanyAboutUs = (TextView) findViewById (R.id.tvCompanyAboutUs);
-        tvCompanyBrands = (TextView) findViewById (R.id.tvCompanyBrands);
-        tvCompanyCategories = (TextView) findViewById (R.id.tvCompanyCategories);
-        ivCompanyLogo = (ImageView) findViewById (R.id.ivCompanyLogo);
+        tvCompanyDealsIn = (TextView) findViewById (R.id.tvCompanyDealsIn);
         
         llSocialButtons = (LinearLayout) findViewById (R.id.llSocialButtons);
         llCompanyLinks = (LinearLayout) findViewById (R.id.llCompanyLinks);
-        
+    
+        ivWebsite = (ImageView) findViewById (R.id.ivWebsite);
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);
@@ -161,7 +156,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
         appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
             @Override
             public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
-                
                 if (verticalOffset == 0) {
                     //expanded
                     tvTitle.setVisibility (View.GONE);
@@ -174,7 +168,20 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 }
             }
         });
-        
+    
+        ivWebsite.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Uri uri;
+                if (ivWebsite.getContentDescription ().toString ().contains ("http://") || ivFacebook.getContentDescription ().toString ().contains ("https://")) {
+                    uri = Uri.parse (ivWebsite.getContentDescription ().toString ());
+                } else {
+                    uri = Uri.parse ("http://" + ivWebsite.getContentDescription ().toString ());
+                }
+                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
+                startActivity (intent);
+            }
+        });
         ivFacebook.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -227,61 +234,34 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-        
-        tvCompanyWebsite.setOnClickListener (new View.OnClickListener () {
+    
+        tvCompanyDealsIn.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                Uri uri;
-                if (companyWebsite.contains ("http://") || companyWebsite.contains ("https://")) {
-                    uri = Uri.parse (companyWebsite);
-                } else {
-                    uri = Uri.parse ("http://" + companyWebsite);
-                }
-                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                startActivity (intent);
-            }
-        });
-        tvCompanyCategories.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                String categories = "";
+                String categories = "Categories :\n";
                 for (int i = 0; i < companyCategoryList.size (); i++) {
                     if (i == companyCategoryList.size () - 1) {
-                        categories = categories + companyCategoryList.get (i);
+                        categories = categories + "    " + companyCategoryList.get (i);
                     } else {
-                        categories = categories + companyCategoryList.get (i) + "\n";
+                        categories = categories + "    " + companyCategoryList.get (i) + "\n";
                     }
                 }
+    
+                if (companyBrandList.size () > 0) {
+                    categories = categories + "\n\nBrands :\n";
+                    for (int i = 0; i < companyBrandList.size (); i++) {
+                        if (i == companyBrandList.size () - 1) {
+                            categories = categories + "    " + companyBrandList.get (i);
+                        } else {
+                            categories = categories + "    " + companyBrandList.get (i) + "\n";
+                        }
+                    }
+                }
+    
                 MaterialDialog dialog = new MaterialDialog.Builder (CompanyDetailActivity.this)
-                        .title ("Categories")
+//                        .title ("Deals In")
 //                        .items (items)
                         .content (categories)
-                        .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
-                        .contentColor (getResources ().getColor (R.color.app_text_color_dark))
-                        .typeface (SetTypeFace.getTypeface (CompanyDetailActivity.this), SetTypeFace.getTypeface (CompanyDetailActivity.this))
-                        .canceledOnTouchOutside (false)
-                        .cancelable (false)
-                        .positiveText (R.string.dialog_action_ok)
-                        .build ();
-                dialog.show ();
-            }
-        });
-        tvCompanyBrands.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                String brands = "";
-                for (int i = 0; i < companyBrandList.size (); i++) {
-                    if (i == companyBrandList.size () - 1) {
-                        brands = brands + companyBrandList.get (i);
-                    } else {
-                        brands = brands + companyBrandList.get (i) + "\n";
-                    }
-                
-                }
-                MaterialDialog dialog = new MaterialDialog.Builder (CompanyDetailActivity.this)
-                        .title ("Brands")
-//                        .items (items)
-                        .content (brands)
                         .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
                         .contentColor (getResources ().getColor (R.color.app_text_color_dark))
                         .typeface (SetTypeFace.getTypeface (CompanyDetailActivity.this), SetTypeFace.getTypeface (CompanyDetailActivity.this))
@@ -296,7 +276,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View v) {
                 MaterialDialog dialog = new MaterialDialog.Builder (CompanyDetailActivity.this)
-                        .title ("About Us")
+                        .title (companyName)
 //                        .items (items)
                         .content (companyAboutUs)
                         .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
@@ -309,7 +289,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 dialog.show ();
             }
         });
-        
     }
     
     @Override
@@ -336,12 +315,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     
                                     if (! is_error) {
                                         tvTitle.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME).toUpperCase ());
+                                        companyName = jsonObj.getString (AppConfigTags.COMPANY_NAME).toUpperCase ();
                                         tvCompanyName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME).toUpperCase ());
-                                        tvCompanyWebsite.setText ("Website");//Html.fromHtml ("<u><font color='#0645AD'>" + "Website" + "</font></u"), TextView.BufferType.SPANNABLE);
-                                        tvCompanyAboutUs.setText ("About Us");//Html.fromHtml ("<u><font color='#0645AD'>" + "About Us" + "</font></u>"), TextView.BufferType.SPANNABLE);
-                                        tvCompanyBrands.setText ("Brands");//Html.fromHtml ("<u><font color='#0645AD'>" + "Brands" + "</font></u>"), TextView.BufferType.SPANNABLE);
-                                        tvCompanyCategories.setText ("Categories");//Html.fromHtml ("<u><font color='#0645AD'>" + "Categories" + "</font></u>"), TextView.BufferType.SPANNABLE);
-                                        Glide.with (CompanyDetailActivity.this).load (jsonObj.getString (AppConfigTags.COMPANY_IMAGE)).placeholder (R.mipmap.ic_launcher).into (ivCompanyLogo);
         
                                         if (jsonObj.getString (AppConfigTags.COMPANY_NAME).toUpperCase ().charAt (0) == 'A' ||
                                                 jsonObj.getString (AppConfigTags.COMPANY_NAME).toUpperCase ().charAt (0) == 'E' ||
@@ -364,30 +339,47 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             tvFooter.setText (ss);
                                             tvFooter.setMovementMethod (LinkMovementMethod.getInstance ());
                                         }
-    
-                                        int weight = 0;
-                                        int weight2 = 0;
+        
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).length () > 0)) {
+                                            ivWebsite.setImageResource (R.drawable.ic_web);
+                                            ivWebsite.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE));
+                                            ivWebsite.setEnabled (true);
+                                        } else {
+                                            ivWebsite.setImageResource (R.drawable.ic_website_disabled);
+                                            ivWebsite.setEnabled (false);
+                                        }
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK).length () > 0)) {
-                                            ivFacebook.setVisibility (View.VISIBLE);
-                                            weight++;
+                                            ivFacebook.setImageResource (R.drawable.ic_facebook);
                                             ivFacebook.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK));
+                                            ivFacebook.setEnabled (true);
+                                        } else {
+                                            ivFacebook.setImageResource (R.drawable.ic_fb_disabled);
+                                            ivFacebook.setEnabled (false);
                                         }
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_TWITTER).length () > 0)) {
-                                            ivTwitter.setVisibility (View.VISIBLE);
-                                            weight++;
                                             ivTwitter.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_TWITTER));
+                                            ivTwitter.setImageResource (R.drawable.ic_twitter);
+                                            ivTwitter.setEnabled (true);
+                                        } else {
+                                            ivTwitter.setImageResource (R.drawable.ic_twitter_disabled);
+                                            ivTwitter.setEnabled (false);
                                         }
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN).length () > 0)) {
-                                            weight++;
-                                            ivLinkedin.setVisibility (View.VISIBLE);
                                             ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN));
+                                            ivLinkedin.setImageResource (R.drawable.ic_linkedin);
+                                            ivLinkedin.setEnabled (true);
+                                        } else {
+                                            ivLinkedin.setImageResource (R.drawable.ic_linkedin_disabled);
+                                            ivLinkedin.setEnabled (false);
                                         }
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE).length () > 0)) {
-                                            weight++;
-                                            ivYoutube.setVisibility (View.VISIBLE);
+                                            ivYoutube.setImageResource (R.drawable.ic_youtube);
+                                            ivYoutube.setEnabled (true);
                                             ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE));
+                                        } else {
+                                            ivYoutube.setImageResource (R.drawable.ic_youtube_disabled);
+                                            ivYoutube.setEnabled (false);
                                         }
-                                        llSocialButtons.setWeightSum (weight);
         
         
                                         JSONArray jsonArrayBrands = jsonObj.getJSONArray (AppConfigTags.BRANDS);
@@ -396,10 +388,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             JSONObject jsonObjectBrand = jsonArrayBrands.getJSONObject (i);
                                             companyBrandList.add (i, jsonObjectBrand.getString (AppConfigTags.BRAND_NAME));
                                         }
-                                        if (jsonArrayBrands.length () > 0) {
-                                            weight2++;
-                                            tvCompanyBrands.setVisibility (View.VISIBLE);
-                                        }
+        
         
                                         JSONArray jsonArrayCategories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
                                         companyCategoryList.clear ();
@@ -407,21 +396,22 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             JSONObject jsonObjectBrand = jsonArrayCategories.getJSONObject (i);
                                             companyCategoryList.add (i, jsonObjectBrand.getString (AppConfigTags.CATEGORY_NAME));
                                         }
-                                        if (jsonArrayCategories.length () > 0) {
-                                            weight2++;
-                                            tvCompanyCategories.setVisibility (View.VISIBLE);
+                                        if (jsonArrayCategories.length () == 0 && jsonArrayBrands.length () == 0) {
+                                            tvCompanyDealsIn.setEnabled (false);
+                                        } else {
+                                            tvCompanyDealsIn.setTextColor (getResources ().getColor (R.color.colorPrimaryDark));
+                                            tvCompanyDealsIn.setEnabled (true);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).length () > 0) {
-                                            weight2++;
-                                            tvCompanyWebsite.setVisibility (View.VISIBLE);
-                                            companyWebsite = jsonObj.getString (AppConfigTags.COMPANY_WEBSITE);
-                                        }
+        
+        
                                         if (jsonObj.getString (AppConfigTags.COMPANY_DESCRIPTION).length () > 0) {
-                                            weight2++;
-                                            tvCompanyAboutUs.setVisibility (View.VISIBLE);
+                                            tvCompanyAboutUs.setTextColor (getResources ().getColor (R.color.colorPrimaryDark));
+                                            tvCompanyAboutUs.setEnabled (true);
                                             companyAboutUs = jsonObj.getString (AppConfigTags.COMPANY_DESCRIPTION);
+                                        } else {
+                                            tvCompanyAboutUs.setEnabled (false);
                                         }
-                                        llCompanyLinks.setWeightSum (weight2);
+        
         
                                         JSONArray jsonArrayContacts = jsonObj.getJSONArray (AppConfigTags.CONTACTS);
                                         companyContactList.clear ();
@@ -444,6 +434,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ));
                                         }
                                         companyContactAdapter.notifyDataSetChanged ();
+                                        llSocialButtons.setVisibility (View.VISIBLE);
+                                        llCompanyLinks.setVisibility (View.VISIBLE);
                                         progressDialog.dismiss ();
                                     } else {
                                         Utils.showSnackBar (CompanyDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
