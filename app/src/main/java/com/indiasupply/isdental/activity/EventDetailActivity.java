@@ -53,24 +53,22 @@ public class EventDetailActivity extends AppCompatActivity {
     ImageView ivEventLogo;
     TextView tvEventName;
     TextView tvEventWebsite;
+    TextView tvEventDescription;
     TextView tvEventOrganiser;
     TextView tvEventRegistration;
     ProgressDialog progressDialog;
     ImageView ivFacebook;
     ImageView ivLinkedin;
     ImageView ivTwitter;
-    ImageView ivPinterest;
-    ImageView ivInstagram;
     ImageView ivYoutube;
-    ImageView ivGooglePlus;
     LinearLayout llSocialButtons;
     LinearLayout llEventLinks;
     CoordinatorLayout clMain;
     EventDetailsPref eventDetailsPref;
+    int event_id;
+    List<String> event = new ArrayList<> ();
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    
-    int event_id;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -96,6 +94,7 @@ public class EventDetailActivity extends AppCompatActivity {
     }
     
     private void getEventDetailFromServer () {
+        final ViewPagerAdapter adapter = new ViewPagerAdapter (getSupportFragmentManager ());
         if (NetworkConnection.isNetworkAvailable (EventDetailActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
             Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_EVENT_DETAILS + "/" + event_id, true);
@@ -110,11 +109,58 @@ public class EventDetailActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-    
                                         tvEventName.setText (eventDetailsPref.getStringPref (EventDetailActivity.this, AppConfigTags.EVENT_NAME));
                                         tvEventWebsite.setText ("Website");
                                         tvEventOrganiser.setText ("Organiser");
                                         tvEventRegistration.setText ("Registration");
+                                        tvEventDescription.setText ("About");
+    
+    
+                                        if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "FAQ");
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_FEES).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "FEES");
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_INCLUSIONS).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "INCLUSIONS");
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_SCHEDULE).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "SCHEDULE");
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_CONTACT_DETAILS).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "CONTACT");
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_VENUE).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), "VENUE");
+                                        }
+    
+    
+                                        int weight = 0;
+                                        int weight2 = 0;
+                                        if ((jsonObj.getString (AppConfigTags.EVENT_FACEBOOK).length () > 0)) {
+                                            ivFacebook.setVisibility (View.VISIBLE);
+                                            weight++;
+                                            ivFacebook.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_FACEBOOK));
+                                        }
+                                        if ((jsonObj.getString (AppConfigTags.EVENT_TWITTER).length () > 0)) {
+                                            ivTwitter.setVisibility (View.VISIBLE);
+                                            weight++;
+                                            ivTwitter.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_TWITTER));
+                                        }
+                                        if ((jsonObj.getString (AppConfigTags.EVENT_LINKEDIN).length () > 0)) {
+                                            weight++;
+                                            ivLinkedin.setVisibility (View.VISIBLE);
+                                            ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_LINKEDIN));
+                                        }
+                                        if ((jsonObj.getString (AppConfigTags.EVENT_YOUTUBE).length () > 0)) {
+                                            weight++;
+                                            ivYoutube.setVisibility (View.VISIBLE);
+                                            ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_YOUTUBE));
+                                        }
+//                                        llSocialButtons.setWeightSum (weight);
+    
+    
     
                                         eventDetailsPref.putIntPref (EventDetailActivity.this, EventDetailsPref.EVENT_ID, jsonObj.getInt (AppConfigTags.EVENT_ID));
                                         eventDetailsPref.putStringPref (EventDetailActivity.this, EventDetailsPref.EVENT_NAME, jsonObj.getString (AppConfigTags.EVENT_NAME));
@@ -130,8 +176,9 @@ public class EventDetailActivity extends AppCompatActivity {
                                         eventDetailsPref.putStringPref (EventDetailActivity.this, EventDetailsPref.EVENT_LONGITUDE, jsonObj.getString (AppConfigTags.EVENT_LONGITUDE));
                                         eventDetailsPref.putStringPref (EventDetailActivity.this, EventDetailsPref.EVENT_INCLUSIONS, jsonObj.getString (AppConfigTags.EVENT_INCLUSIONS));
                                         eventDetailsPref.putStringPref (EventDetailActivity.this, EventDetailsPref.EVENT_CONTACT_DETAILS, jsonObj.getString (AppConfigTags.EVENT_CONTACT_DETAILS));
-    
-                                        setupViewPager (viewPager);
+
+//                                        setupViewPager (viewPager);
+                                        viewPager.setAdapter (adapter);
                                     }
                                     clMain.setVisibility (View.VISIBLE);
                                     progressDialog.dismiss ();
@@ -188,7 +235,6 @@ public class EventDetailActivity extends AppCompatActivity {
                 }
             });
         }
-        
     }
     
     private void initView () {
@@ -202,6 +248,7 @@ public class EventDetailActivity extends AppCompatActivity {
         llEventLinks = (LinearLayout) findViewById (R.id.llEventLinks);
         tvEventWebsite = (TextView) findViewById (R.id.tvEventWebsite);
         tvEventOrganiser = (TextView) findViewById (R.id.tvEventOrganisers);
+        tvEventDescription = (TextView) findViewById (R.id.tvEventDescription);
         tvEventRegistration = (TextView) findViewById (R.id.tvEventRegistration);
         ivEventLogo = (ImageView) findViewById (R.id.ivEventLogo);
         
@@ -212,34 +259,8 @@ public class EventDetailActivity extends AppCompatActivity {
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);
-        ivInstagram = (ImageView) findViewById (R.id.ivInstagram);
-        ivGooglePlus = (ImageView) findViewById (R.id.ivGooglePlus);
         ivYoutube = (ImageView) findViewById (R.id.ivYouTube);
-        ivPinterest = (ImageView) findViewById (R.id.ivPinterest);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
-    }
-    
-    private void setupViewPager (ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter (getSupportFragmentManager ());
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_FAQ).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "FAQ");
-        }
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_FEES).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "FEES");
-        }
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_SCHEDULE).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "SCHEDULE");
-        }
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_VENUE).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "VENUE");
-        }
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_INCLUSIONS).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "INCLUSIONS");
-        }
-        if (eventDetailsPref.getStringPref (EventDetailActivity.this, eventDetailsPref.EVENT_CONTACT_DETAILS).length () > 0) {
-            adapter.addFragment (new EventDetailFragment (), "CONTACT");
-        }
-        viewPager.setAdapter (adapter);
     }
     
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -252,7 +273,7 @@ public class EventDetailActivity extends AppCompatActivity {
         
         @Override
         public Fragment getItem (int position) {
-            return EventDetailFragment.newInstance (mFragmentTitleList.get (position));
+            return EventDetailFragment.newInstance (mFragmentTitleList.get (position), "");
         }
         
         @Override
@@ -267,38 +288,7 @@ public class EventDetailActivity extends AppCompatActivity {
         
         @Override
         public CharSequence getPageTitle (int position) {
-            
             return mFragmentTitleList.get (position);
         }
     }
-
-    /*class ViewPagerAdapter extends FragmentPagerAdapter {
-        public final List<String> mFragmentTitleList = new ArrayList<>();
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return EventDetailFragment.newInstance(String.valueOf(position));
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-
-
-    }*/
 }

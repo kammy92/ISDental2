@@ -45,7 +45,7 @@ public class AppConfigTags {
     public static final String COMPANY_PINTEREST = "company_pinterest";
     public static final String COMPANY_YOUTUBE = "company_youtube";
     public static final String COMPANY_INSTAGRAM = "company_instagram";
-    public static final String COMPANY_GOOGLEPLAS = "company_googleplus";
+    public static final String COMPANY_GOOGLEPLUS = "company_googleplus";
     
     public static final String CONTACTS = "contacts";
     public static final String CONTACT_ID = "contact_id";
@@ -89,6 +89,13 @@ public class AppConfigTags {
     public static final String EVENT_LONGITUDE = "event_longitude";
     public static final String EVENT_INCLUSIONS = "event_inclusions";
     public static final String EVENT_CONTACT_DETAILS = "event_contact_details";
+    public static final String EVENT_FACEBOOK = "event_facebook";
+    public static final String EVENT_TWITTER = "event_twitter";
+    public static final String EVENT_LINKEDIN = "event_linkedin";
+    public static final String EVENT_PINTEREST = "event_pinterest";
+    public static final String EVENT_INSTAGRAM = "event_instagram";
+    public static final String EVENT_GOOGLEPLUS = "event_googleplus";
+    public static final String EVENT_YOUTUBE = "event_youtube";
     
     public static final String NAME = "name";
     public static final String EMAIL = "email";

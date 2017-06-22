@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.CompanyListActivity;
+import com.indiasupply.isdental.activity.EventListActivity;
 import com.indiasupply.isdental.activity.InformationActivity;
 import com.indiasupply.isdental.activity.ShopOnlineActivity;
 import com.indiasupply.isdental.model.HomeService;
@@ -87,11 +88,11 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     activity.startActivity (intent2);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
-//                case 3:
-//                    Intent intent3 = new Intent (activity, EventListActivity.class);
-//                    activity.startActivity (intent3);
-//                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-//                    break;
+                case 3:
+                    Intent intent3 = new Intent (activity, EventListActivity.class);
+                    activity.startActivity (intent3);
+                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
                 case 6:
                     Intent intent6 = new Intent (activity, InformationActivity.class);
                     activity.startActivity (intent6);

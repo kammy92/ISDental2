@@ -18,11 +18,12 @@ public class EventDetailFragment extends Fragment {
     EventDetailsPref eventDetailsPref;
     String type;
     String datahtml;
-
-    public static EventDetailFragment newInstance(String type) {
+    
+    public static EventDetailFragment newInstance (String type, String html) {
         EventDetailFragment fragment = new EventDetailFragment();
         Bundle args = new Bundle();
-        args.putString("TYPE", type);
+        args.putString ("TYPE", type);
+        args.putString ("HTML", html);
         fragment.setArguments(args);
         return fragment;
     }

@@ -150,24 +150,6 @@
                             android:src="@drawable/ic_linkedin"
                             android:visibility="gone"/>
                         <ImageView
-                            android:id="@+id/ivInstagram"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_instagram"
-                            android:visibility="gone"/>
-                        <ImageView
-                            android:id="@+id/ivGooglePlus"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_gplus"
-                            android:visibility="gone"/>
-                        <ImageView
                             android:id="@+id/ivYouTube"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
@@ -175,15 +157,6 @@
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
                             android:src="@drawable/ic_youtube"
-                            android:visibility="gone"/>
-                        <ImageView
-                            android:id="@+id/ivPinterest"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_pinterest"
                             android:visibility="gone"/>
                     </LinearLayout>
                 </RelativeLayout>

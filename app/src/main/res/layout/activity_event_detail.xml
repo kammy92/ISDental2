@@ -71,6 +71,16 @@
                             android:orientation="horizontal"
                             android:weightSum="4">
                             <TextView
+                                android:id="@+id/tvEventDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:text="About"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textSize="@dimen/text_size_medium"
+                                android:visibility="gone"/>
+                            <TextView
                                 android:id="@+id/tvEventWebsite"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -96,17 +106,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:gravity="center"
-                                android:text="Regis"
-                                android:textColor="@color/colorPrimaryDark"
-                                android:textSize="@dimen/text_size_medium"
-                                android:visibility="gone"/>
-                            <TextView
-                                android:id="@+id/tvCompanyCategories"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:text="Categories"
+                                android:text="Registration"
                                 android:textColor="@color/colorPrimaryDark"
                                 android:textSize="@dimen/text_size_medium"
                                 android:visibility="gone"/>
@@ -150,24 +150,6 @@
                             android:src="@drawable/ic_linkedin"
                             android:visibility="gone"/>
                         <ImageView
-                            android:id="@+id/ivInstagram"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_instagram"
-                            android:visibility="gone"/>
-                        <ImageView
-                            android:id="@+id/ivGooglePlus"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_gplus"
-                            android:visibility="gone"/>
-                        <ImageView
                             android:id="@+id/ivYouTube"
                             android:layout_width="30dp"
                             android:layout_height="30dp"
@@ -175,15 +157,6 @@
                             android:layout_marginRight="@dimen/activity_margin_small"
                             android:layout_weight="1"
                             android:src="@drawable/ic_youtube"
-                            android:visibility="gone"/>
-                        <ImageView
-                            android:id="@+id/ivPinterest"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="@dimen/activity_margin_small"
-                            android:layout_marginRight="@dimen/activity_margin_small"
-                            android:layout_weight="1"
-                            android:src="@drawable/ic_pinterest"
                             android:visibility="gone"/>
                     </LinearLayout>
                 </RelativeLayout>
@@ -260,7 +233,6 @@
             app:tabMode="scrollable"
             app:tabSelectedTextColor="@color/colorPrimaryDark"/>
     </android.support.design.widget.AppBarLayout>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"

@@ -79,10 +79,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     ImageView ivFacebook;
     ImageView ivLinkedin;
     ImageView ivTwitter;
-    ImageView ivPinterest;
-    ImageView ivInstagram;
     ImageView ivYoutube;
-    ImageView ivGooglePlus;
     LinearLayout llSocialButtons;
     LinearLayout llCompanyLinks;
     CoordinatorLayout clMain;
@@ -134,10 +131,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);
-        ivInstagram = (ImageView) findViewById (R.id.ivInstagram);
-        ivGooglePlus = (ImageView) findViewById (R.id.ivGooglePlus);
         ivYoutube = (ImageView) findViewById (R.id.ivYouTube);
-        ivPinterest = (ImageView) findViewById (R.id.ivPinterest);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
     
         tvFooter = (TextView) findViewById (R.id.tvFooter);
@@ -220,19 +214,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-        ivGooglePlus.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                Uri uri;
-                if (ivGooglePlus.getContentDescription ().toString ().contains ("http://") || ivGooglePlus.getContentDescription ().toString ().contains ("https://")) {
-                    uri = Uri.parse (ivGooglePlus.getContentDescription ().toString ());
-                } else {
-                    uri = Uri.parse ("http://" + ivGooglePlus.getContentDescription ().toString ());
-                }
-                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                startActivity (intent);
-            }
-        });
         ivYoutube.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -241,32 +222,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     uri = Uri.parse (ivYoutube.getContentDescription ().toString ());
                 } else {
                     uri = Uri.parse ("http://" + ivYoutube.getContentDescription ().toString ());
-                }
-                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                startActivity (intent);
-            }
-        });
-        ivInstagram.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                Uri uri;
-                if (ivInstagram.getContentDescription ().toString ().contains ("http://") || ivInstagram.getContentDescription ().toString ().contains ("https://")) {
-                    uri = Uri.parse (ivInstagram.getContentDescription ().toString ());
-                } else {
-                    uri = Uri.parse ("http://" + ivInstagram.getContentDescription ().toString ());
-                }
-                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                startActivity (intent);
-            }
-        });
-        ivPinterest.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                Uri uri;
-                if (ivPinterest.getContentDescription ().toString ().contains ("http://") || ivPinterest.getContentDescription ().toString ().contains ("https://")) {
-                    uri = Uri.parse (ivPinterest.getContentDescription ().toString ());
-                } else {
-                    uri = Uri.parse ("http://" + ivPinterest.getContentDescription ().toString ());
                 }
                 Intent intent = new Intent (Intent.ACTION_VIEW, uri);
                 startActivity (intent);
@@ -427,27 +382,12 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ivLinkedin.setVisibility (View.VISIBLE);
                                             ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN));
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_PINTEREST).length () > 0)) {
-                                            weight++;
-                                            ivPinterest.setVisibility (View.VISIBLE);
-                                            ivPinterest.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_PINTEREST));
-                                        }
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE).length () > 0)) {
                                             weight++;
                                             ivYoutube.setVisibility (View.VISIBLE);
                                             ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE));
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_GOOGLEPLAS).length () > 0)) {
-                                            weight++;
-                                            ivGooglePlus.setVisibility (View.VISIBLE);
-                                            ivGooglePlus.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_GOOGLEPLAS));
-                                        }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_INSTAGRAM).length () > 0)) {
-                                            ivInstagram.setVisibility (View.VISIBLE);
-                                            ivInstagram.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_INSTAGRAM));
-                                            weight++;
-                                        }
-//                                        llSocialButtons.setWeightSum (weight);
+                                        llSocialButtons.setWeightSum (weight);
         
         
                                         JSONArray jsonArrayBrands = jsonObj.getJSONArray (AppConfigTags.BRANDS);
