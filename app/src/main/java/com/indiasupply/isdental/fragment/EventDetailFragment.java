@@ -14,18 +14,16 @@ import android.webkit.WebView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.Constants;
-import com.indiasupply.isdental.utils.EventDetailsPref;
 
 public class EventDetailFragment extends Fragment {
     WebView webView;
-    EventDetailsPref eventDetailsPref;
     String type;
-    String datahtml;
+    String htmlData;
     
     public static EventDetailFragment newInstance (String type, String html) {
         EventDetailFragment fragment = new EventDetailFragment();
         Bundle args = new Bundle();
-        args.putString ("TYPE", type);
+        args.putString ("TITLE", type);
         args.putString ("HTML", html);
         fragment.setArguments(args);
         return fragment;
@@ -46,32 +44,12 @@ public class EventDetailFragment extends Fragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        type = bundle.getString ("TYPE");
+        type = bundle.getString ("TITLE");
+        htmlData = bundle.getString ("HTML");
     }
     
     private void initData() {
-        eventDetailsPref = EventDetailsPref.getInstance();
-        switch (type){
-            case "FAQ":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_FAQ);
-                break;
-            case "FEES":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_FEES);
-                break;
-            case "SCHEDULE":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_SCHEDULE);
-                break;
-            case "VENUE":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_VENUE);
-                break;
-            case "INCLUSIONS":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_INCLUSIONS);
-                break;
-            case "CONTACT":
-                datahtml = eventDetailsPref.getStringPref(getActivity(), EventDetailsPref.EVENT_CONTACT_DETAILS);
-                break;
-        }
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + datahtml);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + htmlData);
         webView.loadDataWithBaseURL ("www.google.com", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
         webView.setInitialScale (getScale ());
         WebSettings webSettings = webView.getSettings ();

@@ -176,7 +176,7 @@ public class EventListFragment extends Fragment {
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_END_DATE),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_TYPE),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_CITY),
-                                                    jsonObjectEvent.getString (AppConfigTags.EVENT_ORGANISERS)
+                                                    jsonObjectEvent.getString (AppConfigTags.EVENT_ORGANISER_NAME)
 
                                             ));
                                         }

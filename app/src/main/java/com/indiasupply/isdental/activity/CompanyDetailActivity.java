@@ -339,8 +339,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             tvFooter.setText (ss);
                                             tvFooter.setMovementMethod (LinkMovementMethod.getInstance ());
                                         }
-        
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).length () > 0)) {
+    
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).equalsIgnoreCase ("null"))) {
                                             ivWebsite.setImageResource (R.drawable.ic_web);
                                             ivWebsite.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE));
                                             ivWebsite.setEnabled (true);
@@ -348,7 +348,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ivWebsite.setImageResource (R.drawable.ic_website_disabled);
                                             ivWebsite.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK).length () > 0)) {
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK).equalsIgnoreCase ("null"))) {
                                             ivFacebook.setImageResource (R.drawable.ic_facebook);
                                             ivFacebook.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_FACEBOOK));
                                             ivFacebook.setEnabled (true);
@@ -356,7 +356,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ivFacebook.setImageResource (R.drawable.ic_fb_disabled);
                                             ivFacebook.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_TWITTER).length () > 0)) {
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_TWITTER).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_TWITTER).equalsIgnoreCase ("null"))) {
                                             ivTwitter.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_TWITTER));
                                             ivTwitter.setImageResource (R.drawable.ic_twitter);
                                             ivTwitter.setEnabled (true);
@@ -364,7 +364,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ivTwitter.setImageResource (R.drawable.ic_twitter_disabled);
                                             ivTwitter.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN).length () > 0)) {
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN).equalsIgnoreCase ("null"))) {
                                             ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_LINKEDIN));
                                             ivLinkedin.setImageResource (R.drawable.ic_linkedin);
                                             ivLinkedin.setEnabled (true);
@@ -372,7 +372,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ivLinkedin.setImageResource (R.drawable.ic_linkedin_disabled);
                                             ivLinkedin.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE).length () > 0)) {
+                                        if ((jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE).equalsIgnoreCase ("null"))) {
                                             ivYoutube.setImageResource (R.drawable.ic_youtube);
                                             ivYoutube.setEnabled (true);
                                             ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_YOUTUBE));

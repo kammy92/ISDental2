@@ -710,7 +710,6 @@ public class LoginActivity extends AppCompatActivity {
             } else if (dialogAction == DialogAction.POSITIVE) {
                 if (dialog.getInputEditText ().getText ().length () > 0) {
                     if (Integer.parseInt (dialog.getInputEditText ().getText ().toString ()) == otp || Integer.parseInt (dialog.getInputEditText ().getText ().toString ()) == 123456) {
-
                         PackageInfo pInfo = null;
                         try {
                             pInfo = getPackageManager ().getPackageInfo (getPackageName (), 0);

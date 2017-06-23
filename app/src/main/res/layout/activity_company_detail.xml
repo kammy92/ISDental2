@@ -42,6 +42,7 @@
                         android:layout_above="@+id/llSocialButtons"
                         android:layout_alignParentTop="true"
                         android:gravity="center"
+                        android:padding="@dimen/activity_margin_extra_small"
                         android:textColor="@color/text_color_black"
                         android:textSize="@dimen/text_size_company_name"
                         android:textStyle="bold"

@@ -79,7 +79,9 @@ public class AppConfigTags {
     public static final String EVENT_END_DATE = "event_end_date";
     public static final String EVENT_TYPE = "event_type";
     public static final String EVENT_CITY = "event_city";
-    public static final String EVENT_ORGANISERS = "event_organisers";
+    public static final String EVENT_ORGANISER_NAME = "event_organiser_name";
+    public static final String EVENT_ORGANISER_ID = "event_organiser_id";
+    public static final String EVENT_WEBSITE = "event_website";
     public static final String EVENT_FAQ = "event_faq";
     public static final String EVENT_FEES = "event_fees";
     public static final String EVENT_SCHEDULE = "event_schedule";
@@ -92,9 +94,6 @@ public class AppConfigTags {
     public static final String EVENT_FACEBOOK = "event_facebook";
     public static final String EVENT_TWITTER = "event_twitter";
     public static final String EVENT_LINKEDIN = "event_linkedin";
-    public static final String EVENT_PINTEREST = "event_pinterest";
-    public static final String EVENT_INSTAGRAM = "event_instagram";
-    public static final String EVENT_GOOGLEPLUS = "event_googleplus";
     public static final String EVENT_YOUTUBE = "event_youtube";
     
     public static final String NAME = "name";
