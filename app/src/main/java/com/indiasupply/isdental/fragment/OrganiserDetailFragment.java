@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -40,10 +41,9 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class EventListFragment extends Fragment {
-    RecyclerView rvEventList;
+public class OrganiserDetailFragment extends Fragment {
+    RecyclerView rvList;
     List<Event> eventList = new ArrayList<> ();
-    List<Event> tempEventList = new ArrayList<> ();
     EventListAdapter eventListAdapter;
     //    CoordinatorLayout clMain;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -57,8 +57,8 @@ public class EventListFragment extends Fragment {
     TextView tvTitle;
     SearchView searchView;
     
-    public static EventListFragment newInstance (String event_type) {
-        EventListFragment fragment = new EventListFragment ();
+    public static OrganiserDetailFragment newInstance (String event_type) {
+        OrganiserDetailFragment fragment = new OrganiserDetailFragment ();
         Bundle args = new Bundle ();
         args.putString (AppConfigTags.EVENT_TYPE, event_type);
         fragment.setArguments (args);
@@ -67,7 +67,7 @@ public class EventListFragment extends Fragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate (R.layout.fragment_event_list, container, false);
+        View rootView = inflater.inflate (R.layout.fragment_organiser_detail, container, false);
         initView (rootView);
         initData ();
         initBundle ();
@@ -82,7 +82,7 @@ public class EventListFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvEventList = (RecyclerView) rootView.findViewById (R.id.rv1);
+        rvList = (RecyclerView) rootView.findViewById (R.id.rv1);
 //        clMain = (CoordinatorLayout) rootView.findViewById(R.id.clMain);
         swipeRefreshLayout = (SwipeRefreshLayout) rootView.findViewById (R.id.swipeRefreshLayout);
         tvNoResult = (TextView) rootView.findViewById (R.id.tvNoResult);
@@ -96,10 +96,10 @@ public class EventListFragment extends Fragment {
     private void initData () {
         swipeRefreshLayout.setRefreshing (true);
         eventListAdapter = new EventListAdapter (getActivity (), eventList);
-        rvEventList.setAdapter (eventListAdapter);
-        rvEventList.setHasFixedSize (true);
-        rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rvEventList.setItemAnimator (new DefaultItemAnimator ());
+        rvList.setAdapter (eventListAdapter);
+        rvList.setHasFixedSize (true);
+        rvList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvList.setItemAnimator (new DefaultItemAnimator ());
         Utils.setTypefaceToAllViews (getActivity (), tvNoResult);
     }
     
@@ -132,23 +132,7 @@ public class EventListFragment extends Fragment {
             
             @Override
             public boolean onQueryTextChange (String newText) {
-                
-                tempEventList.clear ();
-                for (Event event : eventList) {
-                    if (event.getName ().toUpperCase ().contains (newText.toUpperCase ()) ||
-                            event.getName ().toLowerCase ().contains (newText.toLowerCase ()) ||
-                            event.getCity ().toLowerCase ().contains (newText.toLowerCase ()) ||
-                            event.getCity ().toUpperCase ().contains (newText.toUpperCase ())) {
-                        tempEventList.add (event);
-                        
-                        Log.e ("karman", "event add " + event.getCity ());
-                    }
-                }
-                eventListAdapter = new EventListAdapter (getActivity (), tempEventList);
-                rvEventList.setAdapter (eventListAdapter);
-                rvEventList.setHasFixedSize (true);
-                rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-                rvEventList.setItemAnimator (new DefaultItemAnimator ());
+                Toast.makeText (getActivity (), "karman text" + newText, Toast.LENGTH_SHORT).show ();
                 return true;
             }
         });
@@ -164,6 +148,7 @@ public class EventListFragment extends Fragment {
                 return false;
             }
         });
+        
     }
     
     private void getEventList () {
@@ -192,8 +177,7 @@ public class EventListFragment extends Fragment {
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_END_DATE),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_TYPE),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_CITY),
-                                                    jsonObjectEvent.getString (AppConfigTags.EVENT_ORGANISER_NAME)
-
+                                                    ""
                                             ));
                                         }
                                         eventListAdapter.notifyDataSetChanged ();
@@ -232,7 +216,7 @@ public class EventListFragment extends Fragment {
                             tvNoResult.setVisibility (View.VISIBLE);
                         }
                     }) {
-    
+                
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
@@ -240,7 +224,7 @@ public class EventListFragment extends Fragment {
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-    
+                
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();

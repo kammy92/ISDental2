@@ -25,7 +25,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.fragment.EventListFragment;
+import com.indiasupply.isdental.fragment.OrganiserDetailFragment;
 import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.Banner;
 import com.indiasupply.isdental.utils.CustomImageSlider;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class EventListActivity extends AppCompatActivity {
+public class OrganiserDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     CoordinatorLayout clMain;
     RelativeLayout rlBack;
@@ -53,7 +53,7 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_event_list);
+        setContentView (R.layout.activity_organiser_detail);
         initView ();
         initData ();
         initSlider ();
@@ -142,7 +142,6 @@ public class EventListActivity extends AppCompatActivity {
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
-/*
         appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
             @Override
             public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
@@ -158,15 +157,12 @@ public class EventListActivity extends AppCompatActivity {
                 }
             }
         });
-*/
-    
     }
     
     private void setupViewPager (ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter (getSupportFragmentManager ());
-        adapter.addFragment (new EventListFragment (), "CONFERENCE");
-        adapter.addFragment (new EventListFragment(), "EXPO");
-        adapter.addFragment (new EventListFragment(), "WORKSHOP");
+        adapter.addFragment (new OrganiserDetailFragment (), "UPCOMING EVENTS");
+        adapter.addFragment (new OrganiserDetailFragment (), "PAST EVENTS");
         viewPager.setAdapter (adapter);
     }
     
@@ -175,6 +171,7 @@ public class EventListActivity extends AppCompatActivity {
         finish ();
         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
+    
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<> ();
         private final List<String> mFragmentTitleList = new ArrayList<> ();
@@ -185,7 +182,7 @@ public class EventListActivity extends AppCompatActivity {
         
         @Override
         public Fragment getItem (int position) {
-            return EventListFragment.newInstance (mFragmentTitleList.get (position));
+            return OrganiserDetailFragment.newInstance (mFragmentTitleList.get (position));
         }
         
         @Override

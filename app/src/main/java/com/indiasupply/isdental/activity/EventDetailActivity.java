@@ -311,7 +311,7 @@ public class EventDetailActivity extends AppCompatActivity {
         tvEventOrganiser.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                
+                Utils.showSnackBar (EventDetailActivity.this, clMain, "Coming Soon", Snackbar.LENGTH_SHORT, null, null);
             }
         });
     }

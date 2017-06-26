@@ -20,6 +20,7 @@
             app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
             app:titleEnabled="false">
+
             <com.daimajia.slider.library.SliderLayout
                 android:id="@+id/slider"
                 android:layout_width="match_parent"
@@ -27,13 +28,13 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="?attr/actionBarSize"
                 android:background="@color/text_color_white"
                 android:scaleType="centerCrop"
                 app:auto_cycle="true"
                 app:layout_collapseMode="parallax"
                 app:pager_animation="Accordion"
                 app:pager_animation_span="500"/>
+
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
@@ -79,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:gravity="center"
-                        android:text="@string/activity_event_list_title"
+                        android:text="@string/activity_brand_list_title"
                         android:textColor="@color/text_color_white"
                         android:textSize="@dimen/text_size_large"
                         android:textStyle="bold"/>
@@ -91,8 +92,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:gravity="end"
-                        android:searchIcon="@drawable/ic_search"
-                        android:visibility="gone"/>
+                        android:searchIcon="@drawable/ic_search"/>
                     <ImageView
                         android:id="@+id/ivFilter"
                         android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                         android:src="@drawable/ic_sort"
                         android:visibility="gone"/>
                 </RelativeLayout>
-                </android.support.v7.widget.Toolbar>
+            </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.design.widget.TabLayout
             android:id="@+id/tabs"

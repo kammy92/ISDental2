@@ -43,7 +43,6 @@
                         android:gravity="center"
                         android:padding="@dimen/activity_margin_extra_small"
                         android:text=""
-
                         android:textColor="@color/text_color_black"
                         android:textSize="@dimen/text_size_company_name"
                         android:textStyle="bold"
@@ -155,7 +154,7 @@
                             android:layout_weight="1"
                             android:gravity="center"
                             android:padding="@dimen/activity_margin_small"
-                            android:text="Organisers"
+                            android:text="Organiser"
                             android:textColor="@color/text_color_grey_dark2"
                             android:textSize="@dimen/text_size_medium"
                             android:visibility="visible"/>

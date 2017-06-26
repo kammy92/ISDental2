@@ -14,6 +14,7 @@ import com.indiasupply.isdental.activity.EventDetailActivity;
 import com.indiasupply.isdental.model.Event;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.SetTypeFace;
+import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +47,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvVenue.setTypeface (SetTypeFace.getTypeface (activity));
 
         holder.tvName.setText (event.getName ());
-        holder.tvStartDate.setText (event.getStart_date ());
-        holder.tvEndDate.setText (event.getEnd_date ());
+        holder.tvStartDate.setText (Utils.convertTimeFormat (event.getStart_date (), "yyyy-MM-dd", "dd/MM/yyyy"));
+        holder.tvEndDate.setText (Utils.convertTimeFormat (event.getEnd_date (), "yyyy-MM-dd", "dd/MM/yyyy"));
         holder.tvVenue.setText (event.getCity ());
     }
 
