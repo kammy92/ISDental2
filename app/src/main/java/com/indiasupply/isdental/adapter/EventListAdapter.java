@@ -84,10 +84,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @Override
         public void onClick (View v) {
             Event event = eventList.get (getLayoutPosition ());
-            Intent intent = new Intent (activity, EventDetailActivity.class);
-            intent.putExtra (AppConfigTags.EVENT_ID, event.getId ());
-            activity.startActivity (intent);
-            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+            if (! event.getOrganisers ().equalsIgnoreCase ("N/A")) {
+                Intent intent = new Intent (activity, EventDetailActivity.class);
+                intent.putExtra (AppConfigTags.EVENT_ID, event.getId ());
+                activity.startActivity (intent);
+                activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+            }
         }
     }
 }

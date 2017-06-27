@@ -18,4 +18,5 @@ public class AppConfigURL {
     public static String URL_EVENT_LIST = BASE_URL + "event";
     public static String URL_EVENT_DETAILS = BASE_URL + "event";
     
+    public static String URL_ORGANISER_DETAILS = BASE_URL + "organiser";
 }

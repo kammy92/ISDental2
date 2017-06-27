@@ -60,7 +60,6 @@ import java.util.Map;
  */
 
 public class CompanyDetailActivity extends AppCompatActivity {
-    ImageView ivBack;
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBar;
     Toolbar toolbar;
@@ -108,7 +107,6 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
     
     private void initView () {
-        ivBack = (ImageView) findViewById (R.id.ivBack);
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById (R.id.collapsing_toolbar);
         appBar = (AppBarLayout) findViewById (R.id.appbar);
@@ -130,7 +128,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
     
         tvFooter = (TextView) findViewById (R.id.tvFooter);
-        Utils.setTypefaceToAllViews (this, ivBack);
+        Utils.setTypefaceToAllViews (this, rlBack);
     }
     
     private void initData () {
@@ -146,7 +144,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
     }
     
     private void initListener () {
-        ivBack.setOnClickListener (new View.OnClickListener () {
+        rlBack.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 finish ();
@@ -173,7 +171,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View v) {
                 Uri uri;
-                if (ivWebsite.getContentDescription ().toString ().contains ("http://") || ivFacebook.getContentDescription ().toString ().contains ("https://")) {
+                if (ivWebsite.getContentDescription ().toString ().contains ("http://") || ivWebsite.getContentDescription ().toString ().contains ("https://")) {
                     uri = Uri.parse (ivWebsite.getContentDescription ().toString ());
                 } else {
                     uri = Uri.parse ("http://" + ivWebsite.getContentDescription ().toString ());

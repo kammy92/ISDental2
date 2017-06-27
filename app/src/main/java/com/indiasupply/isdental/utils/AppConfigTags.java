@@ -124,6 +124,16 @@ public class AppConfigTags {
     public static final String DEVICE_DETAILS = "device_details";
     
     
-    
+    public static final String ORGANISER_ID = "organiser_id";
+    public static final String ORGANISER_NAME = "organiser_name";
+    public static final String ORGANISER_WEBSITE = "organiser_website";
+    public static final String ORGANISER_DESCRIPTION = "organiser_description";
+    public static final String ORGANISER_TRUSTED = "organiser_trusted";
+    public static final String ORGANISER_FACEBOOK = "organiser_facebook";
+    public static final String ORGANISER_LINKEDIN = "organiser_linkedin";
+    public static final String ORGANISER_TWITTER = "organiser_twitter";
+    public static final String ORGANISER_YOUTUBE = "organiser_youtube";
+    public static final String PAST_EVENT = "past_events";
+    public static final String UPCOMING_EVENT = "upcoming_events";
     
 }

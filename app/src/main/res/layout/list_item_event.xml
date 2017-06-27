@@ -4,7 +4,9 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_margin_small"
+    android:layout_marginLeft="@dimen/activity_margin"
+    android:layout_marginRight="@dimen/activity_margin"
+    android:layout_marginTop="@dimen/activity_margin"
     card_view:cardCornerRadius="@dimen/cardview_default_radius"
     card_view:cardElevation="@dimen/cardview_elevation">
     <RelativeLayout
@@ -78,11 +80,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/activity_margin_small"
+                android:layout_marginRight="@dimen/activity_margin_small"
                 android:layout_toEndOf="@+id/tvStartDate"
                 android:layout_toRightOf="@+id/tvStartDate"
                 android:text="-"
-                android:layout_marginLeft="@dimen/activity_margin_small"
-                android:layout_marginRight="@dimen/activity_margin_small"
                 android:textColor="@color/app_text_color_dark"
                 android:textSize="@dimen/text_size_small"/>
 
@@ -101,8 +103,8 @@
             android:id="@+id/rlTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_below="@+id/rlDate">
+            android:layout_below="@+id/rlDate"
+            android:visibility="gone">
             <ImageView
                 android:id="@+id/ivTime"
                 android:layout_width="25dp"

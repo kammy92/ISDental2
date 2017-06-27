@@ -45,7 +45,6 @@ import java.util.List;
 import java.util.Map;
 
 public class EventDetailActivity extends AppCompatActivity {
-    ImageView ivBack;
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBar;
     Toolbar toolbar;
@@ -126,6 +125,7 @@ public class EventDetailActivity extends AppCompatActivity {
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
                                         tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
+                                        tvTitle.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
                                         
                                         if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_FAQ);
@@ -211,6 +211,7 @@ public class EventDetailActivity extends AppCompatActivity {
                                         viewPager.setAdapter (adapter);
                                     }
                                     clMain.setVisibility (View.VISIBLE);
+                                    llEventLinks.setVisibility (View.VISIBLE);
                                     progressDialog.dismiss ();
                                 } catch (Exception e) {
                                     progressDialog.dismiss ();
@@ -269,7 +270,6 @@ public class EventDetailActivity extends AppCompatActivity {
     }
     
     private void initView () {
-        ivBack = (ImageView) findViewById (R.id.ivBack);
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById (R.id.collapsing_toolbar);
         appBar = (AppBarLayout) findViewById (R.id.appbar);
@@ -295,6 +295,38 @@ public class EventDetailActivity extends AppCompatActivity {
     }
     
     private void initListener () {
+        tvEventOrganiser.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+// Utils.showSnackBar (EventDetailActivity.this, clMain, "Coming Soon", Snackbar.LENGTH_SHORT, null, null);
+                Intent intent = new Intent (EventDetailActivity.this, OrganiserDetailActivity.class);
+                intent.putExtra (AppConfigTags.ORGANISER_ID, organiser_id);
+                startActivity (intent);
+            }
+        });
+        appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
+            @Override
+            public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == 0) {
+                    //expanded
+                    tvTitle.setVisibility (View.GONE);
+                } else if (Math.abs (verticalOffset) >= appBarLayout.getTotalScrollRange ()) {
+                    //collapsed
+                    tvTitle.setVisibility (View.VISIBLE);
+                } else {
+                    //idle
+                    tvTitle.setVisibility (View.GONE);
+                }
+            }
+        });
+    
+        rlBack.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                finish ();
+                overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
         tvEventWebsite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -308,12 +340,12 @@ public class EventDetailActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-        tvEventOrganiser.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                Utils.showSnackBar (EventDetailActivity.this, clMain, "Coming Soon", Snackbar.LENGTH_SHORT, null, null);
-            }
-        });
+    }
+    
+    @Override
+    public void onBackPressed () {
+        finish ();
+        overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
     
     class ViewPagerAdapter extends FragmentPagerAdapter {

@@ -8,7 +8,7 @@ import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.Utils;
@@ -20,7 +20,7 @@ import com.indiasupply.isdental.utils.Utils;
 
 public class ShopOnlineActivity extends AppCompatActivity {
     WebView htmlWebView;
-    ImageView ivBack;
+    RelativeLayout rlBack;
     ProgressDialog progressDialog;
     
     @Override
@@ -34,7 +34,7 @@ public class ShopOnlineActivity extends AppCompatActivity {
     
     private void initView () {
         htmlWebView = (WebView) findViewById (R.id.webView);
-        ivBack = (ImageView) findViewById (R.id.ivBack);
+        rlBack = (RelativeLayout) findViewById (R.id.rlBack);
     }
     
     private void initData () {
@@ -48,11 +48,11 @@ public class ShopOnlineActivity extends AppCompatActivity {
             }
         }, 5000);
         getWebView ();
-        Utils.setTypefaceToAllViews (this, ivBack);
+        Utils.setTypefaceToAllViews (this, rlBack);
     }
     
     private void initListener () {
-        ivBack.setOnClickListener (new View.OnClickListener () {
+        rlBack.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 finish ();

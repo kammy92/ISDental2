@@ -127,10 +127,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:background="@color/colorPrimary"
-            app:tabIndicatorColor="@color/text_color_white"
+            android:background="@color/app_background"
+            android:theme="@style/MyMaterialTheme"
+            app:layout_collapseMode="pin"
+            app:tabIndicatorColor="@color/colorPrimaryDark"
             app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/text_color_white"/>
+            app:tabSelectedTextColor="@color/colorPrimaryDark"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
