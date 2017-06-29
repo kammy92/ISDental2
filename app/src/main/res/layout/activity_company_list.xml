@@ -33,6 +33,7 @@
                 android:background="@color/text_color_white"
                 android:scaleType="centerCrop"
                 app:auto_cycle="true"
+                app:indicator_visibility="invisible"
                 app:layout_collapseMode="parallax"
                 app:pager_animation="Accordion"
                 app:pager_animation_span="500"/>

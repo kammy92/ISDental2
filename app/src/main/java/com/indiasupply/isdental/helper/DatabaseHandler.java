@@ -101,7 +101,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Banner> getAllHomeBanners () {
         ArrayList<Banner> bannerList = new ArrayList<Banner> ();
         SQLiteDatabase db = this.getReadableDatabase ();
-        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_HOME + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_HOME + "' ORDER BY RANDOM()";
         Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get banner where banner type = " + BNNR_TYPE_HOME, LOG_FLAG);
         Cursor c = db.rawQuery (selectQuery, null);
         if (c.moveToFirst ()) {
@@ -122,7 +122,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Banner> getAllBrandsBanners () {
         ArrayList<Banner> bannerList = new ArrayList<Banner> ();
         SQLiteDatabase db = this.getReadableDatabase ();
-        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_BRANDS + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_BRANDS + "' ORDER BY RANDOM()";
         Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get banner where banner type = " + BNNR_TYPE_BRANDS, LOG_FLAG);
         Cursor c = db.rawQuery (selectQuery, null);
         if (c.moveToFirst ()) {
@@ -143,7 +143,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<Banner> getAllEventsBanners () {
         ArrayList<Banner> bannerList = new ArrayList<Banner> ();
         SQLiteDatabase db = this.getReadableDatabase ();
-        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_EVENTS + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_BANNERS + " WHERE " + BNNR_TYPE + " = '" + BNNR_TYPE_EVENTS + "' ORDER BY RANDOM()";
         Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get banner where banner type = " + BNNR_TYPE_EVENTS, LOG_FLAG);
         Cursor c = db.rawQuery (selectQuery, null);
         if (c.moveToFirst ()) {

@@ -19,6 +19,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -169,10 +170,11 @@ public class MainActivity extends AppCompatActivity {
 //            holder.slider.addSlider (defaultSliderView);
             slider.addSlider (slider2);
         }
+        slider.setPresetIndicator (SliderLayout.PresetIndicators.Center_Bottom);
         slider.getPagerIndicator ().setVisibility (View.GONE);
         slider.setPresetTransformer (SliderLayout.Transformer.Fade);
         slider.setCustomAnimation (new DescriptionAnimation ());
-        slider.setDuration (5000);
+        slider.setDuration (600000);
         slider.addOnPageChangeListener (new ViewPagerEx.OnPageChangeListener () {
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
@@ -192,6 +194,13 @@ public class MainActivity extends AppCompatActivity {
                     case 2:
                         break;
                 }
+            }
+        });
+    
+        slider.setOnTouchListener (new View.OnTouchListener () {
+            @Override
+            public boolean onTouch (View v, MotionEvent event) {
+                return false;
             }
         });
         slider.setPresetIndicator (SliderLayout.PresetIndicators.Center_Bottom);

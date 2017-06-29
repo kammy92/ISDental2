@@ -193,7 +193,6 @@ public class EventListFragment extends Fragment {
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_TYPE),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_CITY),
                                                     jsonObjectEvent.getString (AppConfigTags.EVENT_ORGANISER_NAME)
-
                                             ));
                                         }
                                         eventListAdapter.notifyDataSetChanged ();
