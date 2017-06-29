@@ -71,6 +71,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
     String organiserWebsite;
     int organiser_id;
     
+    RelativeLayout rlMain;
     Button btShowMore;
     boolean show = true;
     
@@ -225,6 +226,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                                     }
                                     llSocialButtons.setVisibility (View.VISIBLE);
                                     clMain.setVisibility (View.VISIBLE);
+                                    rlMain.setVisibility (View.VISIBLE);
                                     progressDialog.dismiss ();
                                 } catch (Exception e) {
                                     progressDialog.dismiss ();
@@ -300,7 +302,8 @@ public class OrganiserDetailActivity extends AppCompatActivity {
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);
         ivYoutube = (ImageView) findViewById (R.id.ivYouTube);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
-        
+    
+        rlMain = (RelativeLayout) findViewById (R.id.rlMain);
         rvUpcoming = (RecyclerView) findViewById (R.id.rvUpcoming);
         rvPast = (RecyclerView) findViewById (R.id.rvPast);
         tvUpcomingNoResultFound = (TextView) findViewById (R.id.tvUpcomingNoResultFound);

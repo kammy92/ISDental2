@@ -126,18 +126,25 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:animateLayoutChanges="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvCategory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/tv1" android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/rvCategory"
+            android:background="@color/text_color_black"
+        />
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/rvCategory">
+            android:layout_below="@+id/tv1">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvBrandList"
                 android:layout_width="match_parent"

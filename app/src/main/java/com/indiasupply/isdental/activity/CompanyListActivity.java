@@ -86,6 +86,7 @@ public class CompanyListActivity extends AppCompatActivity {
 
 //    Dialog dialog;
 DatabaseHandler db;
+    String category_name = "";
     private SliderLayout slider;
     
     @Override
@@ -95,7 +96,7 @@ DatabaseHandler db;
         initView ();
         initData ();
         initListener ();
-        getCompanyList ();
+//        getCompanyList ();
         getCategoryList ();
         initSlider ();
     }
@@ -138,7 +139,6 @@ DatabaseHandler db;
         rvCategoryList.setAdapter (categoryListAdapter);
         rvCategoryList.setHasFixedSize (true);
         rvCategoryList.setLayoutManager (new LinearLayoutManager (CompanyListActivity.this, LinearLayoutManager.HORIZONTAL, false));
-        rvCategoryList.addItemDecoration (new SimpleDividerItemDecoration (CompanyListActivity.this));
         rvCategoryList.setItemAnimator (new DefaultItemAnimator ());
     }
     
@@ -216,7 +216,7 @@ DatabaseHandler db;
             @Override
             public void onRefresh () {
                 swipeRefreshLayout.setRefreshing (true);
-                getCompanyList ();
+                getCompanyList (category_name);
             }
         });
         rlBack.setOnClickListener (new View.OnClickListener () {
@@ -393,15 +393,17 @@ DatabaseHandler db;
         });
     }
     
-    private void getCompanyList () {
+    private void getCompanyList (final String category_name) {
         if (NetworkConnection.isNetworkAvailable (this)) {
+            swipeRefreshLayout.setRefreshing (true);
+            companyList.clear ();
+            companyListAdapter.notifyDataSetChanged ();
             tvNoResult.setVisibility (View.GONE);
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_COMPANY_LIST, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_COMPANY_LIST,
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_COMPANY_LIST,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
-                            companyList.clear ();
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
                             if (response != null) {
                                 try {
@@ -461,6 +463,7 @@ DatabaseHandler db;
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
+                    params.put (AppConfigTags.CATEGORY_NAME, category_name);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
@@ -514,11 +517,14 @@ DatabaseHandler db;
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
                                             );
+                                            if (i == 0) {
+                                                category_name = jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME);
+                                                category.setSelected (true);
+                                            }
                                             categoryList.add (i, category);
+                                            getCompanyList (category_name);
                                         }
                                         categoryListAdapter.notifyDataSetChanged ();
-                                        if (jsonArrayCategory.length () == 0) {
-                                        }
                                     } else {
                                         Utils.showSnackBar (CompanyListActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -688,6 +694,12 @@ DatabaseHandler db;
             final Category category = categoryList.get (position);
             holder.tvCategoryName.setTypeface (SetTypeFace.getTypeface (activity));
             holder.tvCategoryName.setText (category.getName ());
+            if (category.isSelected ()) {
+                holder.rlItem.setBackgroundResource (R.drawable.category_selected_bg);
+            } else {
+                holder.rlItem.setBackgroundResource (R.drawable.category_unselected_bg);
+            }
+            
             Glide.with (activity).load (category.getLogo ()).into (holder.ivCategoryLogo);
         }
         
@@ -699,23 +711,27 @@ DatabaseHandler db;
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView tvCategoryName;
             ImageView ivCategoryLogo;
-            
+            RelativeLayout rlItem;
             
             public ViewHolder (View view) {
                 super (view);
                 tvCategoryName = (TextView) view.findViewById (R.id.tvName);
                 ivCategoryLogo = (ImageView) view.findViewById (R.id.ivCategoryLogo);
-                
+                rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);
                 view.setOnClickListener (this);
             }
             
             @Override
             public void onClick (View v) {
                 Category category = categoryList.get (getLayoutPosition ());
-          /*  Intent intent = new Intent (activity, CompanyDetailActivity.class);
-            intent.putExtra (AppConfigTags.COMPANY_ID, category.getId ());
-            activity.startActivity (intent);
-            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);*/
+                category_name = category.getName ();
+                for (int i = 0; i < categoryList.size (); i++) {
+                    Category categoryTemp = categoryList.get (i);
+                    categoryTemp.setSelected (false);
+                }
+                category.setSelected (true);
+                getCompanyList (category_name);
+                categoryListAdapter.notifyDataSetChanged ();
             }
         }
     }

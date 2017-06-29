@@ -2,6 +2,7 @@ package com.indiasupply.isdental.model;
 
 
 public class Category {
+    boolean selected;
     int id;
     String logo, name;
     
@@ -13,6 +14,14 @@ public class Category {
     }
     
     public Category () {
+    }
+    
+    public boolean isSelected () {
+        return selected;
+    }
+    
+    public void setSelected (boolean selected) {
+        this.selected = selected;
     }
     
     public int getId () {
