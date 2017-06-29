@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Html;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -33,12 +37,14 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.CompanyListAdapter;
 import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.Banner;
+import com.indiasupply.isdental.model.Category;
 import com.indiasupply.isdental.model.Company;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.CustomImageSlider;
 import com.indiasupply.isdental.utils.NetworkConnection;
+import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.SimpleDividerItemDecoration;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
@@ -70,6 +76,10 @@ public class CompanyListActivity extends AppCompatActivity {
     CoordinatorLayout clMain;
     TextView tvNoResult;
     
+    RecyclerView rvCategoryList;
+    List<Category> categoryList = new ArrayList<> ();
+    CategoryListAdapter categoryListAdapter;
+    
     
     String filterCategory = "";
     String filterSubCategory = "";
@@ -86,6 +96,7 @@ DatabaseHandler db;
         initData ();
         initListener ();
         getCompanyList ();
+        getCategoryList ();
         initSlider ();
     }
     
@@ -101,7 +112,9 @@ DatabaseHandler db;
         searchView = (SearchView) findViewById (R.id.searchView);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById (R.id.swipeRefreshLayout);
         Utils.setTypefaceToAllViews (this, tvTitle);
-        
+    
+        rvCategoryList = (RecyclerView) findViewById (R.id.rvCategory);
+    
         slider = (SliderLayout) findViewById (R.id.slider);
     }
     
@@ -119,6 +132,14 @@ DatabaseHandler db;
         rvBrandList.setLayoutManager (new LinearLayoutManager (CompanyListActivity.this, LinearLayoutManager.VERTICAL, false));
         rvBrandList.addItemDecoration (new SimpleDividerItemDecoration (CompanyListActivity.this));
         rvBrandList.setItemAnimator (new DefaultItemAnimator ());
+    
+    
+        categoryListAdapter = new CategoryListAdapter (CompanyListActivity.this, categoryList);
+        rvCategoryList.setAdapter (categoryListAdapter);
+        rvCategoryList.setHasFixedSize (true);
+        rvCategoryList.setLayoutManager (new LinearLayoutManager (CompanyListActivity.this, LinearLayoutManager.HORIZONTAL, false));
+        rvCategoryList.addItemDecoration (new SimpleDividerItemDecoration (CompanyListActivity.this));
+        rvCategoryList.setItemAnimator (new DefaultItemAnimator ());
     }
     
     private void initSlider () {
@@ -468,8 +489,101 @@ DatabaseHandler db;
             });
         }
     }
+    
+    private void getCategoryList () {
+        if (NetworkConnection.isNetworkAvailable (this)) {
+            //tvNoResult.setVisibility(View.GONE);
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_CATEGORY_LIST, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_CATEGORY_LIST,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            categoryList.clear ();
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        JSONArray jsonArrayCategory = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
+                                        for (int i = 0; i < jsonArrayCategory.length (); i++) {
+                                            JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (i);
+                                            Category category = new Category (
+                                                    jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID),
+                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
+                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
+                                            );
+                                            categoryList.add (i, category);
+                                        }
+                                        categoryListAdapter.notifyDataSetChanged ();
+                                        if (jsonArrayCategory.length () == 0) {
+                                        }
+                                    } else {
+                                        Utils.showSnackBar (CompanyListActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                    }
+                                    
+                                } catch (Exception e) {
+                                    // swipeRefreshLayout.setRefreshing(false);
+                                    e.printStackTrace ();
+                                    Utils.showSnackBar (CompanyListActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    //.setVisibility(View.VISIBLE);
+                                }
+                            } else {
+                                // tvNoResult.setVisibility(View.VISIBLE);
+                                Utils.showSnackBar (CompanyListActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                            //  swipeRefreshLayout.setRefreshing(false);
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                            Utils.showSnackBar (CompanyListActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                            // swipeRefreshLayout.setRefreshing(false);
+                            // tvNoResult.setVisibility(View.VISIBLE);
+                        }
+                    }) {
+                
+                @Override
+                protected Map<String, String> getParams () throws AuthFailureError {
+                    Map<String, String> params = new Hashtable<String, String> ();
+                    Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
+                    return params;
+                }
+                
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (CompanyListActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 5);
+        } else {
+            //tvNoResult.setVisibility(View.VISIBLE);
+            //swipeRefreshLayout.setRefreshing(false);
+            Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity (dialogIntent);
+                }
+            });
+        }
+    }
 
-
+    
 /*
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
@@ -552,5 +666,58 @@ DatabaseHandler db;
         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
     
+    
+    public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
+        private Activity activity;
+        private List<Category> categoryList = new ArrayList<> ();
+        
+        public CategoryListAdapter (Activity activity, List<Category> category) {
+            this.activity = activity;
+            this.categoryList = category;
+        }
+        
+        @Override
+        public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+            final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
+            final View sView = mInflater.inflate (R.layout.list_item_category, parent, false);
+            return new ViewHolder (sView);
+        }
+        
+        @Override
+        public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+            final Category category = categoryList.get (position);
+            holder.tvCategoryName.setTypeface (SetTypeFace.getTypeface (activity));
+            holder.tvCategoryName.setText (category.getName ());
+            Glide.with (activity).load (category.getLogo ()).into (holder.ivCategoryLogo);
+        }
+        
+        @Override
+        public int getItemCount () {
+            return categoryList.size ();
+        }
+        
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView tvCategoryName;
+            ImageView ivCategoryLogo;
+            
+            
+            public ViewHolder (View view) {
+                super (view);
+                tvCategoryName = (TextView) view.findViewById (R.id.tvName);
+                ivCategoryLogo = (ImageView) view.findViewById (R.id.ivCategoryLogo);
+                
+                view.setOnClickListener (this);
+            }
+            
+            @Override
+            public void onClick (View v) {
+                Category category = categoryList.get (getLayoutPosition ());
+          /*  Intent intent = new Intent (activity, CompanyDetailActivity.class);
+            intent.putExtra (AppConfigTags.COMPANY_ID, category.getId ());
+            activity.startActivity (intent);
+            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);*/
+            }
+        }
+    }
     
 }

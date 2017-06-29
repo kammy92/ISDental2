@@ -69,12 +69,14 @@ public class AppConfigTags {
     
     public static final String CATEGORIES = "categories";
     public static final String CATEGORY_ID = "category_id";
+    public static final String CATEGORY_ICON = "category_icon";
     public static final String CATEGORY_NAME = "category_name";
     
     
     public static final String EVENTS = "events";
     public static final String EVENT_ID = "event_id";
     public static final String EVENT_NAME = "event_name";
+    public static final String EVENT_DESCRIPTION = "event_description";
     public static final String EVENT_START_DATE = "event_start_date";
     public static final String EVENT_END_DATE = "event_end_date";
     public static final String EVENT_TYPE = "event_type";

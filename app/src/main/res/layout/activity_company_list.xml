@@ -13,8 +13,6 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
@@ -32,6 +30,7 @@
                 android:layout_marginTop="?attr/actionBarSize"
                 android:background="@color/text_color_white"
                 android:scaleType="centerCrop"
+                android:visibility="gone"
                 app:auto_cycle="true"
                 app:indicator_visibility="invisible"
                 app:layout_collapseMode="parallax"
@@ -124,20 +123,33 @@
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipeRefreshLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvBrandList"
+            android:id="@+id/rvCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:fillViewport="true"
-            android:overScrollMode="never"
-            android:scrollbarStyle="insideOverlay"/>
-    </android.support.v4.widget.SwipeRefreshLayout>
+            android:layout_below="@+id/rvCategory">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvBrandList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:scrollbarStyle="insideOverlay"/>
+        </android.support.v4.widget.SwipeRefreshLayout>
+
+
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

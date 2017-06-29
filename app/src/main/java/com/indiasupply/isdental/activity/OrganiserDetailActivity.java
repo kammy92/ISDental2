@@ -10,12 +10,19 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Transformation;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -64,6 +71,10 @@ public class OrganiserDetailActivity extends AppCompatActivity {
     String organiserWebsite;
     int organiser_id;
     
+    Button btShowMore;
+    boolean show = true;
+    
+    
     RecyclerView rvUpcoming;
     RecyclerView rvPast;
     
@@ -72,7 +83,11 @@ public class OrganiserDetailActivity extends AppCompatActivity {
     EventListAdapter eventListAdapter;
     TextView tvUpcomingNoResultFound;
     TextView tvPastNoResultFound;
-
+    TextView tvDescription;
+    CardView cardView1;
+    
+    WebView webViewDescription;
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -112,6 +127,12 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                                     if (! error) {
                                         tvOrganiserName.setText (jsonObj.getString (AppConfigTags.ORGANISER_NAME));
                                         tvTitle.setText (jsonObj.getString (AppConfigTags.ORGANISER_NAME));
+    
+                                        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + jsonObj.getString (AppConfigTags.ORGANISER_DESCRIPTION));
+                                        webViewDescription.loadDataWithBaseURL ("www.google.com", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
+                                        WebSettings webSettings = webViewDescription.getSettings ();
+                                        webSettings.setStandardFontFamily (Constants.font_name);
+                             
                                         JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.PAST_EVENT);
                                         if (jsonArray.length () > 0) {
                                             for (int i = 0; i < jsonArray.length (); i++) {
@@ -268,6 +289,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
         appBar = (AppBarLayout) findViewById (R.id.appbar);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         tvTitle = (TextView) findViewById (R.id.tvTitle);
+        tvDescription = (TextView) findViewById (R.id.tvDescription);
         tvOrganiserName = (TextView) findViewById (R.id.tvOrganiserName);
         llOrganiserLinks = (LinearLayout) findViewById (R.id.llOrganiserLinks);
         
@@ -283,6 +305,9 @@ public class OrganiserDetailActivity extends AppCompatActivity {
         rvPast = (RecyclerView) findViewById (R.id.rvPast);
         tvUpcomingNoResultFound = (TextView) findViewById (R.id.tvUpcomingNoResultFound);
         tvPastNoResultFound = (TextView) findViewById (R.id.tvPastNoResultFound);
+        webViewDescription = (WebView) findViewById (R.id.webViewDescription);
+        cardView1 = (CardView) findViewById (R.id.cardView1);
+        btShowMore = (Button) findViewById (R.id.btShowMore);
     }
     
     private void initListener () {
@@ -375,6 +400,61 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+    
+        btShowMore.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                if (show) {
+//                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//                    params.addRule (RelativeLayout.BELOW, R.id.tv5);
+//                    params.setMargins ((int) (Utils.pxFromDp (getActivity (), 8.0f)), 0, (int) (Utils.pxFromDp (getActivity (), 8.0f)), (int) (Utils.pxFromDp (getActivity (), 8.0f)));
+//                    cardView3.setLayoutParams (params);
+                    btShowMore.setText ("SHOW LESS");
+                    show = false;
+                
+                    Animation a = new Animation () {
+                        @Override
+                        protected void applyTransformation (float interpolatedTime, Transformation t) {
+//                            Log.e ("karman", "wrap contant height", + cardView3.get);
+                            RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+                            params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                            params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                            cardView1.setLayoutParams (params);
+                        }
+                    };
+                    a.setDuration (2000); // in ms
+                    cardView1.startAnimation (a);
+                } else {
+//                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (Utils.pxFromDp (getActivity (), 200.0f)));
+//                    params.addRule (RelativeLayout.BELOW, R.id.tv5);
+//                    params.setMargins ((int) (Utils.pxFromDp (getActivity (), 8.0f)), 0, (int) (Utils.pxFromDp (getActivity (), 8.0f)), (int) (Utils.pxFromDp (getActivity (), 8.0f)));
+//                    cardView3.setLayoutParams (params);
+                    btShowMore.setText ("SHOW MORE");
+                    show = true;
+                    Animation a = new Animation () {
+                        @Override
+                        protected void applyTransformation (float interpolatedTime, Transformation t) {
+                            if ((1.0f - interpolatedTime) < 1.0f) {
+                                if ((cardView1.getHeight () * (1.0f - interpolatedTime)) <= Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)) {
+                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)));
+                                    params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                                    cardView1.setLayoutParams (params);
+                                } else {
+                                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (cardView1.getHeight () * (1.0f - interpolatedTime)));
+                                    params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                                    cardView1.setLayoutParams (params);
+                                }
+                            }
+                        }
+                    };
+                    a.setDuration (2000); // in ms
+                    cardView1.startAnimation (a);
+                }
+            }
+        });
+    
     }
     
     

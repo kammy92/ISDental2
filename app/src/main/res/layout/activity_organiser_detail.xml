@@ -227,10 +227,63 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_small"
+                android:text="DESCRIPTION"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/text_size_large"
+                android:textStyle="bold"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/cardView1"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@+id/tvDescription"
+                android:layout_margin="@dimen/activity_margin_small"
+                card_view:cardCornerRadius="@dimen/cardview_default_radius"
+                card_view:cardElevation="@dimen/cardview_elevation">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
+
+
+                    <WebView
+                        android:id="@+id/webViewDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_margin_extra_small"></WebView>
+
+                    <Button
+                        android:id="@+id/btShowMore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@color/text_color_white"
+                        android:gravity="center"
+                        android:text="SHOW MORE"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold"/>
+
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
             <TextView
                 android:id="@+id/tvUpcoming"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/cardView1"
                 android:gravity="center"
                 android:padding="@dimen/activity_margin_small"
                 android:text="UPCOMING EVENT"

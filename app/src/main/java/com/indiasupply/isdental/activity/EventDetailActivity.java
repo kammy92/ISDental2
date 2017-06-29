@@ -69,6 +69,7 @@ public class EventDetailActivity extends AppCompatActivity {
     List<String> event = new ArrayList<> ();
     Map<String, String> htmlMap = new HashMap<> ();
     ArrayList<String> tabNames = new ArrayList<> ();
+    String TAB_DESCRIPTION = "DESCRIPTION";
     String TAB_SCHEDULE = "SCHEDULE";
     String TAB_INCLUSION = "INCLUSION";
     String TAB_FEES = "FEES";
@@ -126,9 +127,9 @@ public class EventDetailActivity extends AppCompatActivity {
                                     if (! error) {
                                         tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
                                         tvTitle.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
-                                        
-                                        if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
-                                            adapter.addFragment (new EventDetailFragment (), TAB_FAQ);
+    
+                                        if (jsonObj.getString (AppConfigTags.EVENT_DESCRIPTION).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), TAB_DESCRIPTION);
                                         }
                                         if (jsonObj.getString (AppConfigTags.EVENT_FEES).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_FEES);
@@ -144,6 +145,9 @@ public class EventDetailActivity extends AppCompatActivity {
                                         }
                                         if (jsonObj.getString (AppConfigTags.EVENT_VENUE).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_VENUE);
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), TAB_FAQ);
                                         }
     
     
@@ -201,13 +205,14 @@ public class EventDetailActivity extends AppCompatActivity {
     
                                         tvEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_START_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + ", " + jsonObj.getString (AppConfigTags.EVENT_CITY));
     
-                                        htmlMap.put (TAB_FAQ, jsonObj.getString (AppConfigTags.EVENT_FAQ));
+                                        htmlMap.put (TAB_DESCRIPTION, jsonObj.getString (AppConfigTags.EVENT_DESCRIPTION));
                                         htmlMap.put (TAB_INCLUSION, jsonObj.getString (AppConfigTags.EVENT_INCLUSIONS));
                                         htmlMap.put (TAB_CONTACT, jsonObj.getString (AppConfigTags.EVENT_CONTACT_DETAILS));
                                         htmlMap.put (TAB_FEES, jsonObj.getString (AppConfigTags.EVENT_FEES));
                                         htmlMap.put (TAB_SCHEDULE, jsonObj.getString (AppConfigTags.EVENT_SCHEDULE));
                                         htmlMap.put (TAB_VENUE, jsonObj.getString (AppConfigTags.EVENT_VENUE));
-                                        
+                                        htmlMap.put (TAB_FAQ, jsonObj.getString (AppConfigTags.EVENT_FAQ));
+    
                                         viewPager.setAdapter (adapter);
                                     }
                                     clMain.setVisibility (View.VISIBLE);
@@ -358,6 +363,9 @@ public class EventDetailActivity extends AppCompatActivity {
         
         @Override
         public Fragment getItem (int position) {
+            if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_DESCRIPTION)) {
+                return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_DESCRIPTION));
+            }
             if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_FEES)) {
                 return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_FEES));
             }
