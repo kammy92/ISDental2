@@ -28,4 +28,15 @@
         android:textColor="@color/text_color_black"
         android:textSize="@dimen/text_size_extra_small"/>
 
+    <TextView
+        android:id="@+id/tvFooterLine"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/tvName"
+        android:layout_marginLeft="@dimen/activity_margin_small"
+        android:layout_marginRight="@dimen/activity_margin_small"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"
+    />
+
 </RelativeLayout>

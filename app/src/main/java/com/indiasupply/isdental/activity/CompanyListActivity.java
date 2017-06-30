@@ -186,7 +186,7 @@ DatabaseHandler db;
         slider.getPagerIndicator ().setVisibility (View.GONE);
         slider.setPresetTransformer (SliderLayout.Transformer.Fade);
         slider.setCustomAnimation (new DescriptionAnimation ());
-        slider.setDuration (5000);
+        slider.setDuration (600000);
         slider.addOnPageChangeListener (new ViewPagerEx.OnPageChangeListener () {
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
@@ -671,8 +671,6 @@ DatabaseHandler db;
         finish ();
         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
-    
-    
     public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
         private Activity activity;
         private List<Category> categoryList = new ArrayList<> ();
@@ -695,9 +693,11 @@ DatabaseHandler db;
             holder.tvCategoryName.setTypeface (SetTypeFace.getTypeface (activity));
             holder.tvCategoryName.setText (category.getName ());
             if (category.isSelected ()) {
-                holder.rlItem.setBackgroundResource (R.drawable.category_selected_bg);
+                holder.tvFooterLine.setBackgroundResource (R.color.colorPrimaryDark);
+//                holder.rlItem.setBackgroundResource (R.drawable.category_selected_bg);
             } else {
-                holder.rlItem.setBackgroundResource (R.drawable.category_unselected_bg);
+                holder.tvFooterLine.setBackgroundResource (android.R.color.transparent);
+//                holder.rlItem.setBackgroundResource (R.drawable.category_unselected_bg);
             }
             
             Glide.with (activity).load (category.getLogo ()).into (holder.ivCategoryLogo);
@@ -711,11 +711,13 @@ DatabaseHandler db;
         public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             TextView tvCategoryName;
             ImageView ivCategoryLogo;
+            TextView tvFooterLine;
             RelativeLayout rlItem;
             
             public ViewHolder (View view) {
                 super (view);
                 tvCategoryName = (TextView) view.findViewById (R.id.tvName);
+                tvFooterLine = (TextView) view.findViewById (R.id.tvFooterLine);
                 ivCategoryLogo = (ImageView) view.findViewById (R.id.ivCategoryLogo);
                 rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);
                 view.setOnClickListener (this);
@@ -735,5 +737,4 @@ DatabaseHandler db;
             }
         }
     }
-    
 }

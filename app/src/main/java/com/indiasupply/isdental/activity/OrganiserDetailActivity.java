@@ -129,7 +129,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                                         tvOrganiserName.setText (jsonObj.getString (AppConfigTags.ORGANISER_NAME));
                                         tvTitle.setText (jsonObj.getString (AppConfigTags.ORGANISER_NAME));
     
-                                        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + jsonObj.getString (AppConfigTags.ORGANISER_DESCRIPTION));
+                                        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont;src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + jsonObj.getString (AppConfigTags.ORGANISER_DESCRIPTION) + "\n\n\n\n\n\n");
                                         webViewDescription.loadDataWithBaseURL ("www.google.com", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
                                         WebSettings webSettings = webViewDescription.getSettings ();
                                         webSettings.setStandardFontFamily (Constants.font_name);
@@ -421,8 +421,12 @@ public class OrganiserDetailActivity extends AppCompatActivity {
 //                            Log.e ("karman", "wrap contant height", + cardView3.get);
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                             params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
-                            params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                            params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                             cardView1.setLayoutParams (params);
+
+//                            RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+//                            params2.addRule (RelativeLayout.ABOVE, R.id.btShowMore);
+//                            webViewDescription.setLayoutParams (params2);
                         }
                     };
                     a.setDuration (2000); // in ms
@@ -441,12 +445,12 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                                 if ((cardView1.getHeight () * (1.0f - interpolatedTime)) <= Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)) {
                                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)));
                                     params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
-                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                                     cardView1.setLayoutParams (params);
                                 } else {
                                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (cardView1.getHeight () * (1.0f - interpolatedTime)));
                                     params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
-                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), 0, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 8.0f)));
+                                    params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                                     cardView1.setLayoutParams (params);
                                 }
                             }

@@ -109,7 +109,7 @@ public class EventListActivity extends AppCompatActivity {
         slider.getPagerIndicator ().setVisibility (View.GONE);
         slider.setPresetTransformer (SliderLayout.Transformer.Fade);
         slider.setCustomAnimation (new DescriptionAnimation ());
-        slider.setDuration (5000);
+        slider.setDuration (600000);
         slider.addOnPageChangeListener (new ViewPagerEx.OnPageChangeListener () {
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {

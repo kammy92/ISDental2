@@ -2,7 +2,6 @@ package com.indiasupply.isdental.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -40,13 +39,6 @@ public class ShopOnlineActivity extends AppCompatActivity {
     private void initData () {
         progressDialog = new ProgressDialog (ShopOnlineActivity.this);
         Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-        final Handler handler = new Handler ();
-        handler.postDelayed (new Runnable () {
-            @Override
-            public void run () {
-                progressDialog.dismiss ();
-            }
-        }, 5000);
         getWebView ();
         Utils.setTypefaceToAllViews (this, rlBack);
     }
@@ -67,6 +59,11 @@ public class ShopOnlineActivity extends AppCompatActivity {
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
         htmlWebView.loadUrl ("https://www.indiasupply.com/");
+        htmlWebView.setWebViewClient (new WebViewClient () {
+            public void onPageFinished (WebView view, String url) {
+                progressDialog.dismiss ();
+            }
+        });
     }
     
     @Override
