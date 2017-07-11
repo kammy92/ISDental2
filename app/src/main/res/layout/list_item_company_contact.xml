@@ -26,8 +26,6 @@
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             android:visibility="gone"/>
-
-
         <RelativeLayout
             android:id="@+id/rlTime"
             android:layout_width="match_parent"
@@ -148,24 +146,68 @@
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/ivPhone"
                 android:layout_toRightOf="@+id/ivPhone">
-                <TextView
-                    android:id="@+id/tvPhone1"
-                    android:layout_width="wrap_content"
+
+                <RelativeLayout
+                    android:id="@+id/rlPhone1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="nbbbnmm"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_size_small"
-                    android:visibility="gone"/>
-                <TextView
-                    android:id="@+id/tvPhone2"
-                    android:layout_width="wrap_content"
+                    android:paddingBottom="@dimen/activity_margin_extra_small"
+                    android:paddingTop="@dimen/activity_margin_extra_small"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tvPhone1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="nbbbnmm"
+                        android:textColor="@color/app_text_color_dark"
+                        android:textSize="@dimen/text_size_small"
+                        android:visibility="visible"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_margin_small"
+                        android:layout_marginRight="@dimen/activity_margin_small"
+                        android:text="Call"
+                        android:textColor="@color/mb_green_dark"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold"
+                    />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/rlPhone2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvPhone1"
-                    android:layout_marginTop="@dimen/activity_margin_extra_small"
-                    android:text="nbbbnmm"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/text_size_small"
-                    android:visibility="gone"/>
+                    android:layout_below="@+id/rlPhone1"
+                    android:paddingBottom="@dimen/activity_margin_extra_small"
+                    android:paddingTop="@dimen/activity_margin_extra_small"
+                    android:visibility="gone">
+                    <TextView
+                        android:id="@+id/tvPhone2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginTop="@dimen/activity_margin_extra_small"
+                        android:text="nbbbnmm"
+                        android:textColor="@color/app_text_color_dark"
+                        android:textSize="@dimen/text_size_small"
+                        android:visibility="visible"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_margin_small"
+                        android:layout_marginRight="@dimen/activity_margin_small"
+                        android:text="Call"
+                        android:textColor="@color/mb_green_dark"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
             </RelativeLayout>
             <LinearLayout
                 android:id="@+id/llPhone"
@@ -176,10 +218,8 @@
                 android:layout_toRightOf="@+id/ivPhone"
                 android:orientation="vertical"
                 android:visibility="gone">
-
             </LinearLayout>
         </RelativeLayout>
-
         <RelativeLayout
             android:id="@+id/rlEmail"
             android:layout_width="match_parent"
@@ -202,8 +242,20 @@
                 android:layout_toRightOf="@+id/ivEmail"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/app_text_color_dark"
                 android:textSize="@dimen/text_size_small"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_margin_small"
+                android:layout_marginRight="@dimen/activity_margin_small"
+                android:text="Email"
+                android:textColor="@color/mb_green_dark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlWebsite"
@@ -227,8 +279,20 @@
                 android:layout_toRightOf="@+id/ivWebsite"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/app_text_color_dark"
                 android:textSize="@dimen/text_size_small"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_margin_small"
+                android:layout_marginRight="@dimen/activity_margin_small"
+                android:text="Website"
+                android:textColor="@color/mb_green_dark"
+                android:textSize="@dimen/text_size_small"
+                android:textStyle="bold"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlAddress"

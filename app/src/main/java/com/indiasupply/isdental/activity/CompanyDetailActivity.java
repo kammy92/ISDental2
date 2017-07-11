@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
@@ -81,15 +82,20 @@ public class CompanyDetailActivity extends AppCompatActivity {
     CoordinatorLayout clMain;
     TextView tvFooter;
     
+    TextView tvAboutUs;
+    TextView tvCategory;
+    TextView tvDealer;
+    TextView tvDeal;
+
     CompanyContactAdapter companyContactAdapter;
-    
+
     List<CompanyContact> companyContactList = new ArrayList<> ();
     List<String> companyBrandList = new ArrayList<> ();
     List<String> companyCategoryList = new ArrayList<> ();
-    
+
     String companyName;
     String companyAboutUs;
-    
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -100,12 +106,12 @@ public class CompanyDetailActivity extends AppCompatActivity {
         initListener ();
         getCompanyDetails ();
     }
-    
+
     private void getExtras () {
         Intent intent = getIntent ();
         company_id = intent.getIntExtra (AppConfigTags.COMPANY_ID, 0);
     }
-    
+
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById (R.id.collapsing_toolbar);
@@ -116,10 +122,10 @@ public class CompanyDetailActivity extends AppCompatActivity {
         tvCompanyName = (TextView) findViewById (R.id.tvCompanyName);
         tvCompanyAboutUs = (TextView) findViewById (R.id.tvCompanyAboutUs);
         tvCompanyDealsIn = (TextView) findViewById (R.id.tvCompanyDealsIn);
-        
+
         llSocialButtons = (LinearLayout) findViewById (R.id.llSocialButtons);
         llCompanyLinks = (LinearLayout) findViewById (R.id.llCompanyLinks);
-    
+
         ivWebsite = (ImageView) findViewById (R.id.ivWebsite);
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
@@ -127,22 +133,30 @@ public class CompanyDetailActivity extends AppCompatActivity {
         ivYoutube = (ImageView) findViewById (R.id.ivYouTube);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
     
+        tvAboutUs = (TextView) findViewById (R.id.tvAboutUs);
+        tvCategory = (TextView) findViewById (R.id.tvCategory);
+        tvDealer = (TextView) findViewById (R.id.tvDealers);
+        tvDeal = (TextView) findViewById (R.id.tvCompanyDeal);
+
+
         tvFooter = (TextView) findViewById (R.id.tvFooter);
         Utils.setTypefaceToAllViews (this, rlBack);
     }
-    
+
     private void initData () {
         collapsingToolbarLayout.setTitleEnabled (false);
         appBar.setExpanded (true);
         progressDialog = new ProgressDialog (CompanyDetailActivity.this);
-        
+
         companyContactAdapter = new CompanyContactAdapter (CompanyDetailActivity.this, companyContactList);
         rvCompanyContactList.setAdapter (companyContactAdapter);
         rvCompanyContactList.setHasFixedSize (true);
         rvCompanyContactList.setLayoutManager (new LinearLayoutManager (CompanyDetailActivity.this, LinearLayoutManager.VERTICAL, false));
         rvCompanyContactList.setItemAnimator (new DefaultItemAnimator ());
-    }
     
+    
+    }
+
     private void initListener () {
         rlBack.setOnClickListener (new View.OnClickListener () {
             @Override
@@ -167,7 +181,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             }
         });
     
-        ivWebsite.setOnClickListener (new View.OnClickListener () {
+        tvAboutUs.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 Uri uri;
@@ -180,7 +194,14 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-        ivFacebook.setOnClickListener (new View.OnClickListener () {
+    
+        tvCategory.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Toast.makeText (CompanyDetailActivity.this, "No Category to display", Toast.LENGTH_LONG).show ();
+            }
+        });
+      /*  ivFacebook.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 Uri uri;
@@ -231,17 +252,17 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 Intent intent = new Intent (Intent.ACTION_VIEW, uri);
                 startActivity (intent);
             }
-        });
+        });*/
     
-        tvCompanyDealsIn.setOnClickListener (new View.OnClickListener () {
+    /*    tvCompanyDealsIn.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                String categories = "Categories :\n";
+                String categories="";
                 for (int i = 0; i < companyCategoryList.size (); i++) {
                     if (i == companyCategoryList.size () - 1) {
-                        categories = categories + "    " + companyCategoryList.get (i);
+                        categories = categories + "" + companyCategoryList.get (i);
                     } else {
-                        categories = categories + "    " + companyCategoryList.get (i) + "\n";
+                        categories = categories + ", " + companyCategoryList.get (i);
                     }
                 }
     
@@ -269,7 +290,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                         .build ();
                 dialog.show ();
             }
-        });
+        });*/
         tvCompanyAboutUs.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -337,7 +358,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             tvFooter.setText (ss);
                                             tvFooter.setMovementMethod (LinkMovementMethod.getInstance ());
                                         }
-    
+        
                                         if ((jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).length () > 0) && ! (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE).equalsIgnoreCase ("null"))) {
                                             ivWebsite.setImageResource (R.drawable.ic_web);
                                             ivWebsite.setContentDescription (jsonObj.getString (AppConfigTags.COMPANY_WEBSITE));
@@ -432,8 +453,20 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             ));
                                         }
                                         companyContactAdapter.notifyDataSetChanged ();
-                                        llSocialButtons.setVisibility (View.VISIBLE);
-                                        llCompanyLinks.setVisibility (View.VISIBLE);
+                                        llSocialButtons.setVisibility (View.GONE);
+                                        llCompanyLinks.setVisibility (View.GONE);
+        
+                                        String categories = "";
+                                        for (int i = 0; i < companyCategoryList.size (); i++) {
+                                            if (i < companyCategoryList.size () - 1) {
+                                                categories = categories + companyCategoryList.get (i) + ", ";
+                                            } else {
+                                                categories = categories + companyCategoryList.get (i);
+                                            }
+                                        }
+                                        Log.e ("karman", "ffd " + categories);
+                                        tvDeal.setText ("Deals In : " + categories);
+                                        
                                         progressDialog.dismiss ();
                                     } else {
                                         Utils.showSnackBar (CompanyDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);

@@ -3,7 +3,9 @@ package com.indiasupply.isdental.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.CompanyContact;
 import com.indiasupply.isdental.utils.SetTypeFace;
@@ -42,20 +46,21 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
     }
     
     @Override
-    public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+    public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
         final CompanyContact contactDetails = brandsContactDetails.get (position);
-        
-        holder.tvContactPerson.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvEmail.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvWebsite.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvFullAddress.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvPhone1.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvPhone2.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvTime.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvTitle.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvType.setTypeface (SetTypeFace.getTypeface (activity));
-        holder.tvDesignation.setTypeface (SetTypeFace.getTypeface (activity));
+
+//        holder.tvContactPerson.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvEmail.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvWebsite.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvFullAddress.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvPhone1.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvPhone2.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvTime.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvTitle.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvType.setTypeface (SetTypeFace.getTypeface (activity));
+//        holder.tvDesignation.setTypeface (SetTypeFace.getTypeface (activity));
     
+        Utils.setTypefaceToAllViews (activity, holder.tvTime);
     
         if (contactDetails.getType ().length () > 0) {
             holder.tvType.setVisibility (View.VISIBLE);
@@ -72,10 +77,11 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
         if ((contactDetails.getPhone1 ().length () > 0) || (contactDetails.getPhone2 ().length () > 0)) {
             holder.rlPhone.setVisibility (View.VISIBLE);
             if (contactDetails.getPhone1 ().length () > 0) {
-                holder.tvPhone1.setVisibility (View.VISIBLE);
+                holder.rlPhone1.setVisibility (View.VISIBLE);
+                
             }
             if (contactDetails.getPhone2 ().length () > 0) {
-                holder.tvPhone2.setVisibility (View.VISIBLE);
+                holder.rlPhone2.setVisibility (View.VISIBLE);
             }
         }
         if (contactDetails.getEmail ().length () > 0) {
@@ -106,7 +112,9 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
         holder.tvEmail.setText (contactDetails.getEmail ());//Html.fromHtml ("<u><font color='#01579b'>" + contactDetails.getEmail () + "</font></u>"), TextView.BufferType.SPANNABLE);
         holder.tvWebsite.setText (contactDetails.getWebsite ());//Html.fromHtml ("<u><font color='#01579b'>" + contactDetails.getWebsite () + "</font></u>"), TextView.BufferType.SPANNABLE);
         holder.tvFullAddress.setText (contactDetails.getAddress ());
-        
+    
+        int open_status = 0;
+    
         try {
             Calendar c = Calendar.getInstance ();
             String string1 = contactDetails.getOpen_time ();
@@ -136,20 +144,24 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
     
     
             if (currentTime.after (calendar1.getTime ()) && currentTime.before (calendar2.getTime ())) {
+                open_status = 2;
                 holder.tvTime.setText ("Open till " + Utils.convertTimeFormat (contactDetails.getClose_time (), "HH:mm:ss", "HH:mm"));
             } else {
+                open_status = 3;
                 holder.tvTime.setText ("Closed Now");
             }
     
     
             if (contactDetails.getOpen_time ().equalsIgnoreCase ("00:00:00") || contactDetails.getClose_time ().equalsIgnoreCase ("00:00:00")) {
                 holder.tvTime.setVisibility (View.GONE);
+                open_status = 1;
             }
     
     
             for (int i = 0; i < day.length; i++) {
                 if (dayFormat.format (calendar.getTime ()).equalsIgnoreCase (day[i])) {
                     holder.tvTime.setText ("Closed Today");
+                    open_status = 3;
                 }
             }
             /*
@@ -171,27 +183,71 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
         } catch (java.text.ParseException e) {
             e.printStackTrace ();
         }
-        
-        
-        holder.tvPhone1.setOnClickListener (new View.OnClickListener () {
+    
+    
+        final int finalOpen_status = open_status;
+        holder.rlPhone1.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone1 ()));
-                sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity (sIntent);
+                if (finalOpen_status != 3) {
+                    Utils.showLog (Log.ERROR, "karman", "in if flag false", true);
+                    Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone1 ()));
+                    sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity (sIntent);
+                } else {
+                    Utils.showLog (Log.ERROR, "karman", "in if flag true", true);
+                    MaterialDialog dialog = new MaterialDialog.Builder (activity)
+                            .content ("The Office may be closed now, Do you still want to continue?")
+                            .positiveText ("YES")
+                            .negativeText ("NO")
+                            .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
+                            .canceledOnTouchOutside (false)
+                            .cancelable (false)
+                            .onPositive (new MaterialDialog.SingleButtonCallback () {
+                                @Override
+                                public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone1 ()));
+                                    sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    activity.startActivity (sIntent);
+                                }
+                            })
+                            .build ();
+                    dialog.show ();
+                }
             }
         });
-        
-        holder.tvPhone2.setOnClickListener (new View.OnClickListener () {
+    
+        holder.rlPhone2.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone2 ()));
-                sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                activity.startActivity (sIntent);
+                if (finalOpen_status != 3) {
+                    Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone2 ()));
+                    sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    activity.startActivity (sIntent);
+                } else {
+                    Utils.showLog (Log.ERROR, "karman", "in if flag true", true);
+                    MaterialDialog dialog = new MaterialDialog.Builder (activity)
+                            .content ("The Office may be closed now, Do you still want to continue?")
+                            .positiveText ("YES")
+                            .negativeText ("NO")
+                            .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
+                            .canceledOnTouchOutside (false)
+                            .cancelable (false)
+                            .onPositive (new MaterialDialog.SingleButtonCallback () {
+                                @Override
+                                public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                    Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactDetails.getPhone2 ()));
+                                    sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    activity.startActivity (sIntent);
+                                }
+                            })
+                            .build ();
+                    dialog.show ();
+                }
             }
         });
-        
-        holder.tvEmail.setOnClickListener (new View.OnClickListener () {
+    
+        holder.rlEmail.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 Intent email = new Intent (Intent.ACTION_SEND);
@@ -202,8 +258,8 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
                 activity.startActivity (Intent.createChooser (email, "Choose an Email client :"));
             }
         });
-        
-        holder.tvWebsite.setOnClickListener (new View.OnClickListener () {
+    
+        holder.rlWebsite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
                 Uri uri;
@@ -249,6 +305,8 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
         RelativeLayout rlContactPerson;
         RelativeLayout rlDesignation;
         RelativeLayout rlPhone;
+        RelativeLayout rlPhone1;
+        RelativeLayout rlPhone2;
         RelativeLayout rlTime;
         RelativeLayout rlEmail;
         RelativeLayout rlWebsite;
@@ -272,6 +330,8 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
             rlContactPerson = (RelativeLayout) view.findViewById (R.id.rlContactPerson);
             rlDesignation = (RelativeLayout) view.findViewById (R.id.rlDesignation);
             rlPhone = (RelativeLayout) view.findViewById (R.id.rlPhone);
+            rlPhone1 = (RelativeLayout) view.findViewById (R.id.rlPhone1);
+            rlPhone2 = (RelativeLayout) view.findViewById (R.id.rlPhone2);
             rlTime = (RelativeLayout) view.findViewById (R.id.rlTime);
             rlEmail = (RelativeLayout) view.findViewById (R.id.rlEmail);
             rlWebsite = (RelativeLayout) view.findViewById (R.id.rlWebsite);
