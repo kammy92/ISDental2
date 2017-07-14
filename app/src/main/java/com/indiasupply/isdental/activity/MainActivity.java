@@ -2,6 +2,7 @@ package com.indiasupply.isdental.activity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,9 +20,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -32,6 +37,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bugsnag.android.Bugsnag;
+import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -40,6 +46,7 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.HomeServiceAdapter;
 import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.Banner;
+import com.indiasupply.isdental.model.Category;
 import com.indiasupply.isdental.model.HomeService;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -68,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
     CoordinatorLayout clMain;
     ImageView ivIndiaSupplyLogo;
     
+    RecyclerView rvCategoryList;
+    CategoryListAdapter categoryListAdapter;
+    List<Category> categoryList = new ArrayList<> ();
+    
     ProgressDialog progressDialog;
     
     RecyclerView rvHomeServiceList;
@@ -92,6 +103,8 @@ public class MainActivity extends AppCompatActivity {
         rvHomeServiceList = (RecyclerView) findViewById (R.id.rvHomeServiceList);
         ivIndiaSupplyLogo = (ImageView) findViewById (R.id.ivIndiaSupplyLogo);
         slider = (SliderLayout) findViewById (R.id.slider);
+        rvCategoryList = (RecyclerView) findViewById (R.id.rvCategory);
+    
     }
     
     private void initData () {
@@ -113,7 +126,13 @@ public class MainActivity extends AppCompatActivity {
         rvHomeServiceList.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
         rvHomeServiceList.addItemDecoration (new SimpleDividerItemDecoration (this));
         rvHomeServiceList.setItemAnimator (new DefaultItemAnimator ());
-        
+    
+        categoryListAdapter = new CategoryListAdapter (this, categoryList);
+        rvCategoryList.setAdapter (categoryListAdapter);
+        rvCategoryList.setHasFixedSize (true);
+        rvCategoryList.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.HORIZONTAL, false));
+        rvCategoryList.setItemAnimator (new DefaultItemAnimator ());
+    
         Utils.setTypefaceToAllViews (this, clMain);
     }
     
@@ -240,6 +259,21 @@ public class MainActivity extends AppCompatActivity {
                                     
                                     if (! error) {
                                         db.deleteAllBanners ();
+    
+                                        JSONArray jsonArrayCategory = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
+                                        for (int i = 0; i < jsonArrayCategory.length (); i++) {
+                                            JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (i);
+                                            Category category = new Category (
+                                                    jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID),
+                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
+                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
+                                            );
+        
+                                            categoryList.add (i, category);
+        
+                                        }
+                                        categoryListAdapter.notifyDataSetChanged ();
+    
                                         JSONArray jsonArrayBanner = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                                         ArrayList<Banner> bannerArrayList = new ArrayList<> ();
                                         for (int i = 0; i < jsonArrayBanner.length (); i++) {
@@ -385,7 +419,7 @@ public class MainActivity extends AppCompatActivity {
                     checkSelfPermission (Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED ||
 //                    checkSelfPermission (Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                     checkSelfPermission (Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-        
+    
                 requestPermissions (new String[] {
                                 Manifest.permission.RECEIVE_SMS,
                                 Manifest.permission.VIBRATE,
@@ -462,6 +496,70 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            }
+        }
+    }
+    
+    
+    public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
+        private Activity activity;
+        private List<Category> categoryList = new ArrayList<> ();
+        
+        public CategoryListAdapter (Activity activity, List<Category> category) {
+            this.activity = activity;
+            this.categoryList = category;
+        }
+        
+        @Override
+        public CategoryListAdapter.ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+            final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
+            final View sView = mInflater.inflate (R.layout.list_item_category, parent, false);
+            return new MainActivity.CategoryListAdapter.ViewHolder (sView);
+        }
+        
+        @Override
+        public void onBindViewHolder (CategoryListAdapter.ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+            final Category category = categoryList.get (position);
+            holder.tvCategoryName.setTypeface (SetTypeFace.getTypeface (activity));
+            holder.tvCategoryName.setText (category.getName ());
+            if (category.isSelected ()) {
+                holder.tvFooterLine.setBackgroundResource (R.color.colorPrimaryDark);
+//                holder.rlItem.setBackgroundResource (R.drawable.category_selected_bg);
+            } else {
+                holder.tvFooterLine.setBackgroundResource (android.R.color.transparent);
+//                holder.rlItem.setBackgroundResource (R.drawable.category_unselected_bg);
+            }
+            
+            Glide.with (activity).load (category.getLogo ()).into (holder.ivCategoryLogo);
+        }
+        
+        @Override
+        public int getItemCount () {
+            return categoryList.size ();
+        }
+        
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView tvCategoryName;
+            ImageView ivCategoryLogo;
+            TextView tvFooterLine;
+            RelativeLayout rlItem;
+            
+            public ViewHolder (View view) {
+                super (view);
+                tvCategoryName = (TextView) view.findViewById (R.id.tvName);
+                tvFooterLine = (TextView) view.findViewById (R.id.tvFooterLine);
+                ivCategoryLogo = (ImageView) view.findViewById (R.id.ivCategoryLogo);
+                rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);
+                view.setOnClickListener (this);
+            }
+            
+            @Override
+            public void onClick (View v) {
+                Category category = categoryList.get (getLayoutPosition ());
+                Intent intent = new Intent (activity, CompanyListActivity.class);
+                intent.putExtra (AppConfigTags.CATEGORY_ID, category.getId ());
+                startActivity (intent);
+                activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
             }
         }
     }

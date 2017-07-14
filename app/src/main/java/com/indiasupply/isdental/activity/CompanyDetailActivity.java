@@ -81,14 +81,18 @@ public class CompanyDetailActivity extends AppCompatActivity {
     LinearLayout llCompanyLinks;
     CoordinatorLayout clMain;
     TextView tvFooter;
-    
+
     TextView tvAboutUs;
-    TextView tvCategory;
+    TextView tvCatalogue;
     TextView tvDealer;
     TextView tvDeal;
+    TextView tvCategory;
+    TextView tvCategory1;
+    TextView tvBrands;
+    TextView tvBrands1;
 
     CompanyContactAdapter companyContactAdapter;
-
+    
     List<CompanyContact> companyContactList = new ArrayList<> ();
     List<String> companyBrandList = new ArrayList<> ();
     List<String> companyCategoryList = new ArrayList<> ();
@@ -106,12 +110,12 @@ public class CompanyDetailActivity extends AppCompatActivity {
         initListener ();
         getCompanyDetails ();
     }
-
+    
     private void getExtras () {
         Intent intent = getIntent ();
         company_id = intent.getIntExtra (AppConfigTags.COMPANY_ID, 0);
     }
-
+    
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById (R.id.collapsing_toolbar);
@@ -122,41 +126,48 @@ public class CompanyDetailActivity extends AppCompatActivity {
         tvCompanyName = (TextView) findViewById (R.id.tvCompanyName);
         tvCompanyAboutUs = (TextView) findViewById (R.id.tvCompanyAboutUs);
         tvCompanyDealsIn = (TextView) findViewById (R.id.tvCompanyDealsIn);
-
+        
         llSocialButtons = (LinearLayout) findViewById (R.id.llSocialButtons);
         llCompanyLinks = (LinearLayout) findViewById (R.id.llCompanyLinks);
-
+        
         ivWebsite = (ImageView) findViewById (R.id.ivWebsite);
         ivFacebook = (ImageView) findViewById (R.id.ivFacebook);
         ivTwitter = (ImageView) findViewById (R.id.ivTwitter);
         ivLinkedin = (ImageView) findViewById (R.id.ivLinkedIn);
         ivYoutube = (ImageView) findViewById (R.id.ivYouTube);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
-    
+        
         tvAboutUs = (TextView) findViewById (R.id.tvAboutUs);
-        tvCategory = (TextView) findViewById (R.id.tvCategory);
+        tvCatalogue = (TextView) findViewById (R.id.tvCatalogue);
         tvDealer = (TextView) findViewById (R.id.tvDealers);
         tvDeal = (TextView) findViewById (R.id.tvCompanyDeal);
-
-
+        tvCategory = (TextView) findViewById (R.id.tvCategory);
+        tvCategory1 = (TextView) findViewById (R.id.tvCategory1);
+        tvBrands = (TextView) findViewById (R.id.tvBrands);
+        tvBrands1 = (TextView) findViewById (R.id.tvBrands1);
+        
+        
         tvFooter = (TextView) findViewById (R.id.tvFooter);
         Utils.setTypefaceToAllViews (this, rlBack);
     }
-
+    
     private void initData () {
+        
+        
         collapsingToolbarLayout.setTitleEnabled (false);
-        appBar.setExpanded (true);
+        appBar.setExpanded (false);
+        rvCompanyContactList.setNestedScrollingEnabled (false);
         progressDialog = new ProgressDialog (CompanyDetailActivity.this);
-
+        
         companyContactAdapter = new CompanyContactAdapter (CompanyDetailActivity.this, companyContactList);
         rvCompanyContactList.setAdapter (companyContactAdapter);
         rvCompanyContactList.setHasFixedSize (true);
         rvCompanyContactList.setLayoutManager (new LinearLayoutManager (CompanyDetailActivity.this, LinearLayoutManager.VERTICAL, false));
         rvCompanyContactList.setItemAnimator (new DefaultItemAnimator ());
-    
-    
-    }
 
+
+    }
+    
     private void initListener () {
         rlBack.setOnClickListener (new View.OnClickListener () {
             @Override
@@ -165,7 +176,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
-        appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
+       /* appBar.addOnOffsetChangedListener (new AppBarLayout.OnOffsetChangedListener () {
             @Override
             public void onOffsetChanged (AppBarLayout appBarLayout, int verticalOffset) {
                 if (verticalOffset == 0) {
@@ -179,8 +190,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
                     tvTitle.setVisibility (View.GONE);
                 }
             }
-        });
-    
+        });*/
+        
         tvAboutUs.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -194,11 +205,17 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-    
-        tvCategory.setOnClickListener (new View.OnClickListener () {
+        
+        tvCatalogue.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                Toast.makeText (CompanyDetailActivity.this, "No Category to display", Toast.LENGTH_LONG).show ();
+                Toast.makeText (CompanyDetailActivity.this, "No Catalogue to display", Toast.LENGTH_LONG).show ();
+            }
+        });
+        tvDealer.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Toast.makeText (CompanyDetailActivity.this, "No Dealer to display", Toast.LENGTH_LONG).show ();
             }
         });
       /*  ivFacebook.setOnClickListener (new View.OnClickListener () {
@@ -309,7 +326,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             }
         });
     }
-    
+
     @Override
     public void onBackPressed () {
         finish ();
@@ -456,6 +473,25 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                         llSocialButtons.setVisibility (View.GONE);
                                         llCompanyLinks.setVisibility (View.GONE);
         
+        
+                                        if (companyBrandList.size () == 0) {
+                                            tvBrands.setVisibility (View.GONE);
+                                            tvBrands1.setVisibility (View.GONE);
+                                        } else {
+                                            tvBrands.setVisibility (View.VISIBLE);
+                                            tvBrands1.setVisibility (View.VISIBLE);
+                                        }
+        
+        
+                                        if (companyCategoryList.size () == 0) {
+                                            tvCategory.setVisibility (View.GONE);
+                                            tvCategory1.setVisibility (View.GONE);
+            
+                                        } else {
+                                            tvCategory.setVisibility (View.VISIBLE);
+                                            tvCategory1.setVisibility (View.VISIBLE);
+                                        }
+
                                         String categories = "";
                                         for (int i = 0; i < companyCategoryList.size (); i++) {
                                             if (i < companyCategoryList.size () - 1) {
@@ -465,8 +501,17 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             }
                                         }
                                         Log.e ("karman", "ffd " + categories);
-                                        tvDeal.setText ("Deals In : " + categories);
-                                        
+                                        tvCategory.setText (categories);
+        
+                                        String brands = "";
+                                        for (int i = 0; i < companyBrandList.size (); i++) {
+                                            if (i < companyBrandList.size () - 1) {
+                                                brands = brands + companyBrandList.get (i) + ", ";
+                                            } else {
+                                                brands = brands + companyBrandList.get (i);
+                                            }
+                                        }
+                                        tvBrands.setText (brands);
                                         progressDialog.dismiss ();
                                     } else {
                                         Utils.showSnackBar (CompanyDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
@@ -492,18 +537,18 @@ public class CompanyDetailActivity extends AppCompatActivity {
                             NetworkResponse response = error.networkResponse;
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
-    
+
                             }
                         }
                     }) {
-    
+
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-    
+
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();

@@ -55,6 +55,12 @@
                 android:background="@color/divider_color">
             </View>
             <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/view"/>
+
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvHomeServiceList"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
@@ -62,7 +68,8 @@
                 android:layout_below="@+id/view"
                 android:fillViewport="true"
                 android:overScrollMode="never"
-                android:scrollbarStyle="insideOverlay"/>
+                android:scrollbarStyle="insideOverlay"
+                android:visibility="gone"/>
 
             <View
                 android:id="@+id/view2"
