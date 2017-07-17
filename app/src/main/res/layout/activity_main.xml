@@ -43,7 +43,6 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 app:auto_cycle="true"
-
                 app:indicator_visibility="invisible"
                 app:pager_animation="Accordion"
                 app:pager_animation_span="500"/>
@@ -54,22 +53,72 @@
                 android:layout_below="@+id/slider"
                 android:background="@color/divider_color">
             </View>
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view"/>
 
+
+            <View
+                android:id="@+id/view4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/rvCategory"
+                android:background="@color/divider_color">
+            </View>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rvCategory"
+                android:layout_marginTop="10dp"
+                android:animateLayoutChanges="true"
+                android:visibility="gone">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/divider_color">
+                </View>
+
+
+                <com.daimajia.slider.library.SliderLayout
+                    android:id="@+id/slider1"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_below="@+id/view3"
+                    app:auto_cycle="true"
+                    app:indicator_visibility="invisible"
+                    app:pager_animation="Accordion"
+                    app:pager_animation_span="500"/>
+                <View
+                    android:id="@+id/view1"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/slider1"
+                    android:background="@color/divider_color">
+                </View>
+
+            </RelativeLayout>
+
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvHomeServiceList"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_above="@+id/view2"
-                android:layout_below="@+id/view"
+                android:layout_below="@+id/view4"
                 android:fillViewport="true"
                 android:overScrollMode="never"
                 android:scrollbarStyle="insideOverlay"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <View
                 android:id="@+id/view2"
@@ -83,6 +132,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/indiasupply_logo_height"
                 android:layout_alignParentBottom="true">
+                <TextView
+                    android:id="@+id/tvAboutUs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:drawableLeft="@drawable/ic_information"
+                    android:drawablePadding="10dp"
+                    android:gravity="center"
+                    android:paddingLeft="10dp"
+                    android:text="About Us"
+                    android:textColor="@color/text_color_black"/>
+
+
                 <ImageView
                     android:id="@+id/ivIndiaSupplyLogo"
                     android:layout_width="@dimen/indiasupply_logo_width"

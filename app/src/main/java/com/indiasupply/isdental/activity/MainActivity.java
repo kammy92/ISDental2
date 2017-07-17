@@ -85,7 +85,9 @@ public class MainActivity extends AppCompatActivity {
     List<HomeService> homeServices = new ArrayList<> ();
     HomeServiceAdapter homeServiceAdapter;
     SliderLayout slider;
+    SliderLayout slider1;
     DatabaseHandler db;
+    TextView tvAboutUs;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -103,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
         rvHomeServiceList = (RecyclerView) findViewById (R.id.rvHomeServiceList);
         ivIndiaSupplyLogo = (ImageView) findViewById (R.id.ivIndiaSupplyLogo);
         slider = (SliderLayout) findViewById (R.id.slider);
+        slider1 = (SliderLayout) findViewById (R.id.slider1);
         rvCategoryList = (RecyclerView) findViewById (R.id.rvCategory);
+        tvAboutUs = (TextView) findViewById (R.id.tvAboutUs);
     
     }
     
@@ -112,13 +116,13 @@ public class MainActivity extends AppCompatActivity {
         db = new DatabaseHandler (getApplicationContext ());
         userDetailsPref = UserDetailsPref.getInstance ();
         progressDialog = new ProgressDialog (this);
-        
-        homeServices.add (new HomeService (1, R.drawable.ic_list, "", "BRANDS"));
+    
+        // homeServices.add (new HomeService (1, R.drawable.ic_list, "", "BRANDS"));
 //        homeServices.add (new HomeService (2, R.drawable.ic_program, "", "SHOP ONLINE"));
         homeServices.add (new HomeService (3, R.drawable.ic_program, "", "EVENTS"));
 //        homeServices.add (new HomeService (4, R.drawable.ic_hall_plan, "", "IS SPECIAL"));
 //        homeServices.add (new HomeService (5, R.drawable.ic_favourite, "", "OFFERS"));
-        homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
+        //  homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
         
         homeServiceAdapter = new HomeServiceAdapter (this, homeServices);
         rvHomeServiceList.setAdapter (homeServiceAdapter);
@@ -137,6 +141,15 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void initListener () {
+        tvAboutUs.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent intent = new Intent (MainActivity.this, InformationActivity.class);
+                startActivity (intent);
+            }
+        });
+
+
         ivIndiaSupplyLogo.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -511,14 +524,14 @@ public class MainActivity extends AppCompatActivity {
         }
         
         @Override
-        public CategoryListAdapter.ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+        public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
             final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
             final View sView = mInflater.inflate (R.layout.list_item_category, parent, false);
-            return new MainActivity.CategoryListAdapter.ViewHolder (sView);
+            return new ViewHolder (sView);
         }
         
         @Override
-        public void onBindViewHolder (CategoryListAdapter.ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+        public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
             final Category category = categoryList.get (position);
             holder.tvCategoryName.setTypeface (SetTypeFace.getTypeface (activity));
             holder.tvCategoryName.setText (category.getName ());
@@ -558,6 +571,7 @@ public class MainActivity extends AppCompatActivity {
                 Category category = categoryList.get (getLayoutPosition ());
                 Intent intent = new Intent (activity, CompanyListActivity.class);
                 intent.putExtra (AppConfigTags.CATEGORY_ID, category.getId ());
+                intent.putExtra (AppConfigTags.CATEGORY_NAME, category.getName ());
                 startActivity (intent);
                 activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
             }

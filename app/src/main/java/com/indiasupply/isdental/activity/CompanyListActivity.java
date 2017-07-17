@@ -72,10 +72,10 @@ public class CompanyListActivity extends AppCompatActivity {
     ImageView ivSort;
     TextView tvTitle;
     SearchView searchView;
-    
+
     CoordinatorLayout clMain;
     TextView tvNoResult;
-    
+
     RecyclerView rvCategoryList;
     List<Category> categoryList = new ArrayList<> ();
     CategoryListAdapter categoryListAdapter;
@@ -83,16 +83,18 @@ public class CompanyListActivity extends AppCompatActivity {
     
     String filterCategory = "";
     String filterSubCategory = "";
-
-//    Dialog dialog;
-DatabaseHandler db;
-    String category_name = "";
-    private SliderLayout slider;
     
+    //    Dialog dialog;
+    DatabaseHandler db;
+    String category_name = "";
+    int category_id;
+    private SliderLayout slider;
+
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_company_list);
+        getExtras ();
         initView ();
         initData ();
         initListener ();
@@ -100,6 +102,15 @@ DatabaseHandler db;
         getCategoryList ();
         initSlider ();
     }
+    
+    
+    private void getExtras () {
+        Intent intent = getIntent ();
+        //company_id = intent.getIntExtra (AppConfigTags.COMPANY_ID, 0);
+        category_id = intent.getIntExtra (AppConfigTags.CATEGORY_ID, 0);
+        // category_name = intent.getStringExtra(AppConfigTags.CATEGORY_NAME);
+    }
+    
     
     private void initView () {
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
@@ -113,9 +124,9 @@ DatabaseHandler db;
         searchView = (SearchView) findViewById (R.id.searchView);
         swipeRefreshLayout = (SwipeRefreshLayout) findViewById (R.id.swipeRefreshLayout);
         Utils.setTypefaceToAllViews (this, tvTitle);
-    
+        
         rvCategoryList = (RecyclerView) findViewById (R.id.rvCategory);
-    
+        
         slider = (SliderLayout) findViewById (R.id.slider);
     }
     
@@ -133,8 +144,8 @@ DatabaseHandler db;
         rvBrandList.setLayoutManager (new LinearLayoutManager (CompanyListActivity.this, LinearLayoutManager.VERTICAL, false));
         rvBrandList.addItemDecoration (new SimpleDividerItemDecoration (CompanyListActivity.this));
         rvBrandList.setItemAnimator (new DefaultItemAnimator ());
-    
-    
+        
+        
         categoryListAdapter = new CategoryListAdapter (CompanyListActivity.this, categoryList);
         rvCategoryList.setAdapter (categoryListAdapter);
         rvCategoryList.setHasFixedSize (true);
@@ -191,11 +202,11 @@ DatabaseHandler db;
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
             }
-            
+
             @Override
             public void onPageSelected (int position) {
             }
-            
+
             @Override
             public void onPageScrollStateChanged (int state) {
                 switch (state) {
@@ -341,7 +352,7 @@ DatabaseHandler db;
                 */
          /*   }
         });*/
-    
+        
         searchView.setOnSearchClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -352,13 +363,13 @@ DatabaseHandler db;
                 tvTitle.setVisibility (View.GONE);
             }
         });
-    
+        
         searchView.setOnQueryTextListener (new SearchView.OnQueryTextListener () {
             @Override
             public boolean onQueryTextSubmit (String query) {
                 return true;
             }
-        
+
             @Override
             public boolean onQueryTextChange (String newText) {
                 tempCompanyList.clear ();
@@ -379,7 +390,7 @@ DatabaseHandler db;
                 return true;
             }
         });
-    
+        
         searchView.setOnCloseListener (new SearchView.OnCloseListener () {
             @Override
             public boolean onClose () {
@@ -421,7 +432,7 @@ DatabaseHandler db;
                                                     jsonObjectBrand.getString (AppConfigTags.COMPANY_BRANDS)
                                             );
                                             companyList.add (i, company);
-    
+
                                         }
                                         companyListAdapter.notifyDataSetChanged ();
                                         if (jsonArrayBrand.length () == 0) {
@@ -459,7 +470,7 @@ DatabaseHandler db;
                             tvNoResult.setVisibility (View.VISIBLE);
                         }
                     }) {
-    
+
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
@@ -467,7 +478,7 @@ DatabaseHandler db;
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-    
+
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -517,23 +528,31 @@ DatabaseHandler db;
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
                                             );
-                                            if (i == 0) {
+                                            if (category_id == category.getId ()) {
                                                 category_name = jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME);
+                                                getCompanyList (category_name);
                                                 category.setSelected (true);
                                             }
                                             categoryList.add (i, category);
-                                            getCompanyList (category_name);
+
                                         }
+                                        for (int j = 0; j < categoryList.size (); j++) {
+                                            if (category_id == categoryList.get (j).getId ()) {
+                                                rvCategoryList.scrollToPosition (j);
+                                            }
+            
+                                        }
+        
                                         categoryListAdapter.notifyDataSetChanged ();
                                     } else {
                                         Utils.showSnackBar (CompanyListActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
-                                    
+
                                 } catch (Exception e) {
                                     // swipeRefreshLayout.setRefreshing(false);
                                     e.printStackTrace ();
                                     Utils.showSnackBar (CompanyListActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                                    //.setVisibility(View.VISIBLE);
+                                    // tvNoResult.setVisibility(View.VISIBLE);
                                 }
                             } else {
                                 // tvNoResult.setVisibility(View.VISIBLE);
@@ -556,14 +575,14 @@ DatabaseHandler db;
                             // tvNoResult.setVisibility(View.VISIBLE);
                         }
                     }) {
-                
+
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-                
+
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -671,6 +690,7 @@ DatabaseHandler db;
         finish ();
         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
+    
     public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
         private Activity activity;
         private List<Category> categoryList = new ArrayList<> ();
