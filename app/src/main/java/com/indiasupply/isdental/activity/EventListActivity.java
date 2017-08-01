@@ -89,7 +89,6 @@ public class EventListActivity extends AppCompatActivity {
             final Banner banner = db.getAllEventsBanners ().get (i);
             CustomImageSlider slider2 = new CustomImageSlider (this);
             slider2
-                    .image (banner.getImage ())
                     .setScaleType (BaseSliderView.ScaleType.CenterCrop)
                     .setOnSliderClickListener (new BaseSliderView.OnSliderClickListener () {
                         @Override
@@ -104,6 +103,11 @@ public class EventListActivity extends AppCompatActivity {
                             startActivity (intent);
                         }
                     });
+            if (banner.getImage ().length () == 0) {
+                slider2.image (R.drawable.default_banner);
+            } else {
+                slider2.image (banner.getImage ());
+            }
             slider.addSlider (slider2);
         }
         slider.getPagerIndicator ().setVisibility (View.GONE);

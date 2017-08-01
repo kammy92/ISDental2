@@ -53,7 +53,6 @@ import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.CustomImageSlider;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
-import com.indiasupply.isdental.utils.SimpleDividerItemDecoration;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -118,24 +117,30 @@ public class MainActivity extends AppCompatActivity {
     
         // homeServices.add (new HomeService (1, R.drawable.ic_list, "", "BRANDS"));
 //        homeServices.add (new HomeService (2, R.drawable.ic_program, "", "SHOP ONLINE"));
-        homeServices.add (new HomeService (3, R.drawable.ic_program, "", "EVENTS"));
+//        homeServices.add (new HomeService (3, R.drawable.ic_program, "", "EVENTS"));
 //        homeServices.add (new HomeService (4, R.drawable.ic_hall_plan, "", "IS SPECIAL"));
 //        homeServices.add (new HomeService (5, R.drawable.ic_favourite, "", "OFFERS"));
         //  homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
+    
+    
+        homeServices.add (new HomeService (1, R.drawable.our_brands));
+        homeServices.add (new HomeService (2, R.drawable.upcoming_events));
+        homeServices.add (new HomeService (3, R.drawable.shop_by_category));
+        
         
         homeServiceAdapter = new HomeServiceAdapter (this, homeServices);
         rvHomeServiceList.setAdapter (homeServiceAdapter);
         rvHomeServiceList.setHasFixedSize (true);
         rvHomeServiceList.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
-        rvHomeServiceList.addItemDecoration (new SimpleDividerItemDecoration (this));
+        //rvHomeServiceList.addItemDecoration (new SimpleDividerItemDecoration (this));
         rvHomeServiceList.setItemAnimator (new DefaultItemAnimator ());
-    
-        categoryListAdapter = new CategoryListAdapter (this, categoryList);
-        rvCategoryList.setAdapter (categoryListAdapter);
-        rvCategoryList.setHasFixedSize (true);
-        rvCategoryList.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.HORIZONTAL, false));
-        rvCategoryList.setItemAnimator (new DefaultItemAnimator ());
-    
+
+//        categoryListAdapter = new CategoryListAdapter (this, categoryList);
+//        rvCategoryList.setAdapter (categoryListAdapter);
+//        rvCategoryList.setHasFixedSize (true);
+//        rvCategoryList.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.HORIZONTAL, false));
+//        rvCategoryList.setItemAnimator (new DefaultItemAnimator ());
+        
         Utils.setTypefaceToAllViews (this, clMain);
     }
     
@@ -147,8 +152,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity (intent);
             }
         });
-
-
+    
+    
         ivIndiaSupplyLogo.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -166,7 +171,6 @@ public class MainActivity extends AppCompatActivity {
             final Banner banner = db.getAllHomeBanners ().get (i);
             CustomImageSlider slider2 = new CustomImageSlider (this);
             slider2
-                    .image (banner.getImage ())
                     .setScaleType (BaseSliderView.ScaleType.CenterCrop)
                     .setOnSliderClickListener (new BaseSliderView.OnSliderClickListener () {
                         @Override
@@ -181,6 +185,12 @@ public class MainActivity extends AppCompatActivity {
                             startActivity (intent);
                         }
                     });
+    
+            if (banner.getImage ().length () == 0) {
+                slider2.image (R.drawable.default_banner);
+            } else {
+                slider2.image (banner.getImage ());
+            }
 
 //            DefaultSliderView defaultSliderView = new DefaultSliderView (activity);
 //            defaultSliderView
@@ -271,33 +281,35 @@ public class MainActivity extends AppCompatActivity {
                                     
                                     if (! error) {
                                         db.deleteAllBanners ();
-    
-                                        JSONArray jsonArrayCategory = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
-                                        for (int i = 0; i < jsonArrayCategory.length (); i++) {
-                                            JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (i);
-                                            Category category = new Category (
-                                                    jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID),
-                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
-                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
-                                            );
-        
-                                            categoryList.add (i, category);
-        
-                                        }
-                                        categoryListAdapter.notifyDataSetChanged ();
-    
+
+//                                        JSONArray jsonArrayCategory = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
+//                                        for (int i = 0; i < jsonArrayCategory.length (); i++) {
+//                                            JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (i);
+//                                            Category category = new Category (
+//                                                    jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID),
+//                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
+//                                                    jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
+//                                            );
+//
+//                                            categoryList.add (i, category);
+//
+//                                        }
+//                                        categoryListAdapter.notifyDataSetChanged ();
+                                        
                                         JSONArray jsonArrayBanner = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                                         ArrayList<Banner> bannerArrayList = new ArrayList<> ();
+                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "HOME"));
+                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "BRANDS"));
+                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "EVENTS"));
                                         for (int i = 0; i < jsonArrayBanner.length (); i++) {
                                             JSONObject jsonObjectBanner = jsonArrayBanner.getJSONObject (i);
-                                            Banner banner = new Banner (
+                                            bannerArrayList.add (new Banner (
                                                     jsonObjectBanner.getInt (AppConfigTags.BANNER_ID),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_TITLE),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_IMAGE),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_URL),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_TYPE)
-                                            );
-                                            bannerArrayList.add (banner);
+                                            ));
                                         }
                                         db.insertAllBanners (bannerArrayList);
                                         initSlider ();
@@ -332,10 +344,12 @@ public class MainActivity extends AppCompatActivity {
                                         }
                                     }
                                 } catch (Exception e) {
+                                    initDefaultBanner ();
                                     progressDialog.dismiss ();
                                     e.printStackTrace ();
                                 }
                             } else {
+                                initDefaultBanner ();
                                 progressDialog.dismiss ();
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
@@ -344,6 +358,7 @@ public class MainActivity extends AppCompatActivity {
                     new Response.ErrorListener () {
                         @Override
                         public void onErrorResponse (VolleyError error) {
+                            initDefaultBanner ();
                             progressDialog.dismiss ();
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
                         }
@@ -369,9 +384,20 @@ public class MainActivity extends AppCompatActivity {
             strRequest.setRetryPolicy (new DefaultRetryPolicy (DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             Utils.sendRequest (strRequest, 30);
         } else {
+            initDefaultBanner ();
             progressDialog.dismiss ();
 //            initApplication ();
         }
+    }
+    
+    private void initDefaultBanner () {
+        db.deleteAllBanners ();
+        ArrayList<Banner> bannerArrayList = new ArrayList<> ();
+        bannerArrayList.add (new Banner (0, "IndiaSupply", "", "www.indiasupply.com", "HOME"));
+        bannerArrayList.add (new Banner (0, "IndiaSupply", "", "www.indiasupply.com", "BRANDS"));
+        bannerArrayList.add (new Banner (0, "IndiaSupply", "", "www.indiasupply.com", "EVENTS"));
+        db.insertAllBanners (bannerArrayList);
+        initSlider ();
     }
     
     @Override

@@ -51,14 +51,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@+id/slider"
-                android:background="@color/divider_color">
+                android:background="@color/divider_color"
+                android:visibility="gone">
             </View>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvCategory"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/view"/>
+                android:layout_below="@+id/view"
+                android:visibility="gone"/>
 
 
             <View
@@ -125,7 +127,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_above="@+id/rlFooter"
-                android:background="@color/divider_color">
+                android:background="@color/divider_color"
+                android:visibility="invisible">
             </View>
             <RelativeLayout
                 android:id="@+id/rlFooter"
@@ -142,7 +145,8 @@
                     android:gravity="center"
                     android:paddingLeft="10dp"
                     android:text="About Us"
-                    android:textColor="@color/text_color_black"/>
+                    android:textColor="@color/text_color_black"
+                    android:visibility="gone"/>
 
 
                 <ImageView
@@ -172,7 +176,5 @@
             </RelativeLayout>
 
         </RelativeLayout>
-
-
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

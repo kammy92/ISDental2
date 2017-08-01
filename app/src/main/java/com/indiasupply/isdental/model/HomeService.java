@@ -8,7 +8,12 @@ public class HomeService {
 
     int id,icon;
     String image, service_name;
-
+    
+    public HomeService (int id, int icon) {
+        this.id = id;
+        this.icon = icon;
+    }
+    
     public HomeService (int id, int icon, String image, String service_name) {
         this.id = id;
         this.icon = icon;

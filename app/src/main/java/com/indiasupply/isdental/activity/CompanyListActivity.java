@@ -72,10 +72,10 @@ public class CompanyListActivity extends AppCompatActivity {
     ImageView ivSort;
     TextView tvTitle;
     SearchView searchView;
-
+    
     CoordinatorLayout clMain;
     TextView tvNoResult;
-
+    
     RecyclerView rvCategoryList;
     List<Category> categoryList = new ArrayList<> ();
     CategoryListAdapter categoryListAdapter;
@@ -89,7 +89,7 @@ public class CompanyListActivity extends AppCompatActivity {
     String category_name = "";
     int category_id;
     private SliderLayout slider;
-
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -100,14 +100,14 @@ public class CompanyListActivity extends AppCompatActivity {
         initListener ();
 //        getCompanyList ();
         getCategoryList ();
-        initSlider ();
+//        initSlider ();
     }
     
     
     private void getExtras () {
-        Intent intent = getIntent ();
+//        Intent intent = getIntent ();
         //company_id = intent.getIntExtra (AppConfigTags.COMPANY_ID, 0);
-        category_id = intent.getIntExtra (AppConfigTags.CATEGORY_ID, 0);
+//        category_id = intent.getIntExtra (AppConfigTags.CATEGORY_ID, 0);
         // category_name = intent.getStringExtra(AppConfigTags.CATEGORY_NAME);
     }
     
@@ -159,7 +159,6 @@ public class CompanyListActivity extends AppCompatActivity {
             final Banner banner = db.getAllBrandsBanners ().get (i);
             CustomImageSlider slider2 = new CustomImageSlider (this);
             slider2
-                    .image (banner.getImage ())
                     .setScaleType (BaseSliderView.ScaleType.CenterCrop)
                     .setOnSliderClickListener (new BaseSliderView.OnSliderClickListener () {
                         @Override
@@ -174,6 +173,12 @@ public class CompanyListActivity extends AppCompatActivity {
                             startActivity (intent);
                         }
                     });
+            if (banner.getImage ().length () == 0) {
+                slider2.image (R.drawable.default_banner);
+            } else {
+                slider2.image (banner.getImage ());
+            }
+
 
 //            DefaultSliderView defaultSliderView = new DefaultSliderView (activity);
 //            defaultSliderView
@@ -202,11 +207,11 @@ public class CompanyListActivity extends AppCompatActivity {
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
             }
-
+    
             @Override
             public void onPageSelected (int position) {
             }
-
+    
             @Override
             public void onPageScrollStateChanged (int state) {
                 switch (state) {
@@ -369,7 +374,7 @@ public class CompanyListActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit (String query) {
                 return true;
             }
-
+    
             @Override
             public boolean onQueryTextChange (String newText) {
                 tempCompanyList.clear ();
@@ -432,7 +437,7 @@ public class CompanyListActivity extends AppCompatActivity {
                                                     jsonObjectBrand.getString (AppConfigTags.COMPANY_BRANDS)
                                             );
                                             companyList.add (i, company);
-
+    
                                         }
                                         companyListAdapter.notifyDataSetChanged ();
                                         if (jsonArrayBrand.length () == 0) {
@@ -470,7 +475,7 @@ public class CompanyListActivity extends AppCompatActivity {
                             tvNoResult.setVisibility (View.VISIBLE);
                         }
                     }) {
-
+    
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
@@ -478,7 +483,7 @@ public class CompanyListActivity extends AppCompatActivity {
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -528,26 +533,30 @@ public class CompanyListActivity extends AppCompatActivity {
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_ICON),
                                                     jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
                                             );
-                                            if (category_id == category.getId ()) {
+//                                            if (category_id == category.getId ()) {
+//                                                category_name = jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME);
+//                                                getCompanyList (category_name);
+//                                                category.setSelected (true);
+//                                            }
+                                            if (i == 0) {
                                                 category_name = jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME);
                                                 getCompanyList (category_name);
                                                 category.setSelected (true);
                                             }
                                             categoryList.add (i, category);
-
                                         }
                                         for (int j = 0; j < categoryList.size (); j++) {
                                             if (category_id == categoryList.get (j).getId ()) {
                                                 rvCategoryList.scrollToPosition (j);
                                             }
-            
+    
                                         }
-        
+    
                                         categoryListAdapter.notifyDataSetChanged ();
                                     } else {
                                         Utils.showSnackBar (CompanyListActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
-
+    
                                 } catch (Exception e) {
                                     // swipeRefreshLayout.setRefreshing(false);
                                     e.printStackTrace ();
@@ -575,14 +584,14 @@ public class CompanyListActivity extends AppCompatActivity {
                             // tvNoResult.setVisibility(View.VISIBLE);
                         }
                     }) {
-
+    
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();

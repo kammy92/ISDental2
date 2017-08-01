@@ -58,7 +58,7 @@ public class ShopOnlineActivity extends AppCompatActivity {
         WebSettings webSetting = htmlWebView.getSettings ();
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
-        htmlWebView.loadUrl ("https://www.indiasupply.com/");
+        htmlWebView.loadUrl ("https://www.indiasupply.com/shopbycategory/");
         htmlWebView.setWebViewClient (new WebViewClient () {
             public void onPageFinished (WebView view, String url) {
                 progressDialog.dismiss ();
