@@ -36,7 +36,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bugsnag.android.Bugsnag;
 import com.bumptech.glide.Glide;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
     
     private void initData () {
-        Bugsnag.init (this);
+//        Bugsnag.init (this);
         db = new DatabaseHandler (getApplicationContext ());
         userDetailsPref = UserDetailsPref.getInstance ();
         progressDialog = new ProgressDialog (this);

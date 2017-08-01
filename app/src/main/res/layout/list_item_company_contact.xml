@@ -4,9 +4,10 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/activity_margin_small"
     android:layout_marginLeft="@dimen/activity_margin"
     android:layout_marginRight="@dimen/activity_margin"
-    android:layout_marginTop="@dimen/activity_margin"
+    android:layout_marginTop="@dimen/activity_margin_small"
     card_view:cardCornerRadius="@dimen/cardview_default_radius"
     card_view:cardElevation="@dimen/cardview_elevation">
     <RelativeLayout
@@ -49,7 +50,7 @@
                 android:layout_toRightOf="@+id/ivTime"
                 android:gravity="center"
                 android:text="nbbbnmm"
-                android:textColor="@color/app_text_color_dark"
+                android:textColor="@color/text_color_grey_dark"
                 android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
         <RelativeLayout
@@ -74,7 +75,7 @@
                 android:layout_toRightOf="@+id/ivTitle"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
+                android:textColor="@color/text_color_grey_dark"
                 android:textSize="@dimen/text_size_medium"/>
         </RelativeLayout>
         <RelativeLayout
@@ -99,7 +100,7 @@
                 android:layout_toRightOf="@+id/ivContactPerson"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
+                android:textColor="@color/text_color_grey_dark"
                 android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
         <RelativeLayout
@@ -124,7 +125,7 @@
                 android:layout_toRightOf="@+id/ivDesignation"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
+                android:textColor="@color/text_color_grey_dark"
                 android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
         <RelativeLayout
@@ -160,8 +161,8 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:text="nbbbnmm"
-                        android:textColor="@color/app_text_color_dark"
-                        android:textSize="@dimen/text_size_medium"
+                        android:textColor="@color/text_color_grey_dark"
+                        android:textSize="@dimen/text_size_small"
                         android:visibility="visible"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -191,8 +192,8 @@
                         android:layout_centerVertical="true"
                         android:layout_marginTop="@dimen/activity_margin_extra_small"
                         android:text="nbbbnmm"
-                        android:textColor="@color/app_text_color_dark"
-                        android:textSize="@dimen/text_size_medium"
+                        android:textColor="@color/text_color_grey_dark"
+                        android:textSize="@dimen/text_size_small"
                         android:visibility="visible"/>
                     <TextView
                         android:layout_width="wrap_content"
@@ -241,8 +242,8 @@
                 android:layout_toRightOf="@+id/ivEmail"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
-                android:textSize="@dimen/text_size_medium"/>
+                android:textColor="@color/text_color_grey_dark"
+                android:textSize="@dimen/text_size_small"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -278,8 +279,8 @@
                 android:layout_toRightOf="@+id/ivWebsite"
                 android:gravity="center_vertical"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
-                android:textSize="@dimen/text_size_medium"/>
+                android:textColor="@color/text_color_grey_dark"
+                android:textSize="@dimen/text_size_small"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -314,11 +315,9 @@
                 android:layout_toEndOf="@+id/ivLocation"
                 android:layout_toRightOf="@+id/ivLocation"
                 android:text="Coming soon..."
-                android:textColor="@color/app_text_color_dark"
-                android:textSize="@dimen/text_size_medium"
+                android:textColor="@color/text_color_grey_dark"
+                android:textSize="@dimen/text_size_small"
                 android:visibility="visible"/>
         </RelativeLayout>
     </RelativeLayout>
-
-
 </android.support.v7.widget.CardView>
