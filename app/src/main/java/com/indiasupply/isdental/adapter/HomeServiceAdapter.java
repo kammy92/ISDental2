@@ -87,6 +87,10 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     activity.startActivity (intent2);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
+    
+                case 4:
+        
+                    break;
                 
                 case 6:
                     Intent intent6 = new Intent (activity, InformationActivity.class);
