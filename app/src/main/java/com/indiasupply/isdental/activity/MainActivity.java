@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     
     
         homeServices.add (new HomeService (1, R.drawable.our_brands));
-        homeServices.add (new HomeService (4, R.drawable.upcoming_events));
+        homeServices.add (new HomeService (4, R.drawable.expodent_chandigarh));
         homeServices.add (new HomeService (2, R.drawable.upcoming_events));
         homeServices.add (new HomeService (3, R.drawable.shop_by_category));
         
