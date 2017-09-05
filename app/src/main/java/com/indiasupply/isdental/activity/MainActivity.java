@@ -214,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }
         slider.setPresetIndicator (SliderLayout.PresetIndicators.Center_Bottom);
         slider.getPagerIndicator ().setVisibility (View.GONE);
-        slider.setPresetTransformer (SliderLayout.Transformer.Fade);
+        slider.setPresetTransformer (SliderLayout.Transformer.Stack);
         slider.setCustomAnimation (new DescriptionAnimation ());
         slider.setDuration (600000);
         slider.addOnPageChangeListener (new ViewPagerEx.OnPageChangeListener () {
@@ -299,9 +299,9 @@ public class MainActivity extends AppCompatActivity {
                                         
                                         JSONArray jsonArrayBanner = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                                         ArrayList<Banner> bannerArrayList = new ArrayList<> ();
-                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "HOME"));
-                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "BRANDS"));
-                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "EVENTS"));
+//                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "HOME"));
+//                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "BRANDS"));
+//                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "EVENTS"));
                                         for (int i = 0; i < jsonArrayBanner.length (); i++) {
                                             JSONObject jsonObjectBanner = jsonArrayBanner.getJSONObject (i);
                                             bannerArrayList.add (new Banner (

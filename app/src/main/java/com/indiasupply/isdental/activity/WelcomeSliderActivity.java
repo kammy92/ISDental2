@@ -79,10 +79,9 @@ public class WelcomeSliderActivity extends AppCompatActivity {
         
         Utils.setTypefaceToAllViews (this, btNext);
         sliders = new int[] {
-                R.drawable.our_brands,
-                R.drawable.expodent_chandigarh,
-                R.drawable.upcoming_events,
-                R.drawable.shop_by_category
+                R.drawable.welcome_slider_1,
+                R.drawable.welcome_slider_2,
+                R.drawable.welcome_slider_3
         };
         
         changeStatusBarColor ();
