@@ -1,12 +1,16 @@
 package com.indiasupply.isdental.activity;
 
-import android.app.ProgressDialog;
+import android.content.res.ColorStateList;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.indiasupply.isdental.R;
@@ -20,7 +24,9 @@ import com.indiasupply.isdental.utils.Utils;
 public class ShopOnlineActivity extends AppCompatActivity {
     WebView htmlWebView;
     RelativeLayout rlBack;
-    ProgressDialog progressDialog;
+    // ProgressDialog progressDialog;
+    ProgressBar progressBar;
+    FrameLayout fl1;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -34,11 +40,13 @@ public class ShopOnlineActivity extends AppCompatActivity {
     private void initView () {
         htmlWebView = (WebView) findViewById (R.id.webView);
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
+        progressBar = (ProgressBar) findViewById (R.id.progressBar);
+        fl1 = (FrameLayout) findViewById (R.id.fl1);
     }
     
     private void initData () {
-        progressDialog = new ProgressDialog (ShopOnlineActivity.this);
-        Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
+        // progressDialog = new ProgressDialog (ShopOnlineActivity.this);
+        //  Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
         getWebView ();
         Utils.setTypefaceToAllViews (this, rlBack);
     }
@@ -61,7 +69,36 @@ public class ShopOnlineActivity extends AppCompatActivity {
         htmlWebView.loadUrl ("https://www.indiasupply.com/shopbycategory/");
         htmlWebView.setWebViewClient (new WebViewClient () {
             public void onPageFinished (WebView view, String url) {
-                progressDialog.dismiss ();
+                // progressDialog.dismiss ();
+            }
+        });
+    
+        if (Build.VERSION.SDK_INT >= 21) {
+            progressBar.setProgressTintList (ColorStateList.valueOf (getResources ().getColor (R.color.primary)));
+            progressBar.setIndeterminateTintList (ColorStateList.valueOf (getResources ().getColor (R.color.primary)));
+        } else {
+            progressBar.getProgressDrawable ().setColorFilter (
+                    getResources ().getColor (R.color.primary), android.graphics.PorterDuff.Mode.SRC_IN);
+            progressBar.getIndeterminateDrawable ().setColorFilter (
+                    getResources ().getColor (R.color.primary), android.graphics.PorterDuff.Mode.SRC_IN);
+        }
+    
+    
+        htmlWebView.setWebViewClient (new WebViewClient () {
+            public void onPageFinished (WebView view, String url) {
+                //  progressDialog.dismiss ();
+                fl1.setVisibility (View.GONE);
+            }
+        });
+    
+        htmlWebView.setWebChromeClient (new WebChromeClient () {
+            public void onProgressChanged (WebView view, int progress) {
+                if (progress > 70) {
+                    progressBar.setIndeterminate (true);
+                } else {
+                    progressBar.setIndeterminate (false);
+                    progressBar.setProgress (progress + 10);
+                }
             }
         });
     }

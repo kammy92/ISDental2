@@ -105,8 +105,8 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                                                     .positiveColor (activity.getResources ().getColor (R.color.app_text_color_dark))
                                                     .contentColor (activity.getResources ().getColor (R.color.app_text_color_dark))
                                                     .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
-                                                    .canceledOnTouchOutside (false)
-                                                    .cancelable (false)
+                                                    .canceledOnTouchOutside (true)
+                                                    .cancelable (true)
                                                     .positiveText ("Yes, I'm in")
                                                     .onPositive (new MaterialDialog.SingleButtonCallback () {
                                                         @Override

@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
     
     private void isLogin () {
         if (userDetailsPref.getStringPref (MainActivity.this, UserDetailsPref.USER_LOGIN_KEY) == "") {
-            Intent myIntent = new Intent (this, LoginActivity.class);
+            Intent myIntent = new Intent (this, WelcomeSliderActivity.class);
             startActivity (myIntent);
             finish ();
         } else {

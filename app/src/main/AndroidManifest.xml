@@ -38,6 +38,9 @@
         <activity android:name="com.indiasupply.isdental.activity.LoginActivity"
                   android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.indiasupply.isdental.activity.WelcomeSliderActivity"
+                  android:screenOrientation="portrait">
+        </activity>
         <activity android:name="com.indiasupply.isdental.activity.InformationActivity"
                   android:screenOrientation="portrait">
         </activity>
