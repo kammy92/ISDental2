@@ -7,17 +7,21 @@ package com.indiasupply.isdental.model;
 public class HomeService {
 
     int id,icon;
-    String image, service_name;
+    String service_name, image_url;
     
     public HomeService (int id, int icon) {
         this.id = id;
         this.icon = icon;
     }
     
-    public HomeService (int id, int icon, String image, String service_name) {
+    public HomeService (int id, String image_url) {
+        this.id = id;
+        this.image_url = image_url;
+    }
+    
+    public HomeService (int id, int icon, String service_name) {
         this.id = id;
         this.icon = icon;
-        this.image = image;
         this.service_name = service_name;
     }
 
@@ -36,15 +40,15 @@ public class HomeService {
     public void setIcon (int icon) {
         this.icon = icon;
     }
-
-    public String getImage () {
-        return image;
+    
+    public String getImage_url () {
+        return image_url;
     }
-
-    public void setImage (String image) {
-        this.image = image;
+    
+    public void setImage_url (String image_url) {
+        this.image_url = image_url;
     }
-
+    
     public String getService_name () {
         return service_name;
     }

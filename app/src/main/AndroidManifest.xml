@@ -65,7 +65,7 @@
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.indiasupply.isdental.activity.ExpodentDetailActivity"
+        <activity android:name="com.indiasupply.isdental.activity.SpecialEventDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 

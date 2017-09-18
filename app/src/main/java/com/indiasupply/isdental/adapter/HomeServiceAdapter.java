@@ -23,9 +23,9 @@ import com.bumptech.glide.Glide;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.CompanyListActivity;
 import com.indiasupply.isdental.activity.EventListActivity;
-import com.indiasupply.isdental.activity.ExpodentDetailActivity;
 import com.indiasupply.isdental.activity.InformationActivity;
 import com.indiasupply.isdental.activity.ShopOnlineActivity;
+import com.indiasupply.isdental.activity.SpecialEventDetailActivity;
 import com.indiasupply.isdental.model.HomeService;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -77,11 +77,11 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
         this.mItemClickListener = mItemClickListener;
     }
     
-    private void isUserRegisterToEvent (final String event_name) {
+    private void isUserRegisterToEvent (final int event_id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
             Utils.showProgressDialog (progressDialog, "Please wait ...", true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_REGISTER_EVENT + "/" + event_name, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.GET, AppConfigURL.URL_REGISTER_EVENT + "/" + event_name,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_REGISTER_EVENT + "/" + event_id, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.GET, AppConfigURL.URL_REGISTER_EVENT + "/" + event_id,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -94,11 +94,10 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
                                         if (jsonObj.getBoolean ("registered")) {
-                                            Intent intent = new Intent (activity, ExpodentDetailActivity.class);
-                                            intent.putExtra (AppConfigTags.EVENT_NAME, event_name);
+                                            Intent intent = new Intent (activity, SpecialEventDetailActivity.class);
+                                            intent.putExtra (AppConfigTags.EVENT_ID, event_id);
                                             activity.startActivity (intent);
                                             activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-                                            
                                         } else {
                                             MaterialDialog dialog = new MaterialDialog.Builder (activity)
                                                     .content ("Do you wish to register for the event")
@@ -111,7 +110,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                                                     .onPositive (new MaterialDialog.SingleButtonCallback () {
                                                         @Override
                                                         public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            registerUserToEvent (event_name);
+                                                            registerUserToEvent (event_id);
                                                         }
                                                     }).build ();
                                             dialog.show ();
@@ -154,11 +153,10 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
             };
             Utils.sendRequest (strRequest1, 60);
         } else {
-            
         }
     }
     
-    private void registerUserToEvent (final String event_name) {
+    private void registerUserToEvent (final int event_id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
             Utils.showProgressDialog (progressDialog, "Please wait ...", true);
             Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_REGISTER_EVENT, true);
@@ -174,8 +172,8 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        Intent intent = new Intent (activity, ExpodentDetailActivity.class);
-                                        intent.putExtra (AppConfigTags.EVENT_NAME, event_name);
+                                        Intent intent = new Intent (activity, SpecialEventDetailActivity.class);
+                                        intent.putExtra (AppConfigTags.EVENT_ID, event_id);
                                         activity.startActivity (intent);
                                         activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                                     }
@@ -195,14 +193,13 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                         public void onErrorResponse (VolleyError error) {
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
                             progressDialog.dismiss ();
-                            
                         }
                     }) {
                 
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.EVENT_NAME, event_name);
+                    params.put (AppConfigTags.EVENT_ID, String.valueOf (event_id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
@@ -256,11 +253,9 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     activity.startActivity (intent2);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
-    
                 case 4:
-                    isUserRegisterToEvent ("EXPODENT");
+                    isUserRegisterToEvent (2);
                     break;
-                
                 case 6:
                     Intent intent6 = new Intent (activity, InformationActivity.class);
                     activity.startActivity (intent6);
@@ -269,7 +264,6 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                 default:
                     Utils.showSnackBar (activity, (CoordinatorLayout) activity.findViewById (R.id.clMain), "Coming Soon", Snackbar.LENGTH_LONG, null, null);
                     break;
-                
             }
         }
     }

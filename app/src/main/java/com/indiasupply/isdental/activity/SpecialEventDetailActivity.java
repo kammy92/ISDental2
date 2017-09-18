@@ -44,7 +44,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class ExpodentDetailActivity extends AppCompatActivity {
+public class SpecialEventDetailActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     AppBarLayout appBar;
     Toolbar toolbar;
@@ -63,6 +63,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
     LinearLayout llSocialButtons;
     LinearLayout llEventLinks;
     CoordinatorLayout clMain;
+    int event_id;
     String event_name;
     String eventWebsite;
     int organiser_id;
@@ -72,7 +73,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
     String TAB_DESCRIPTION = "DESCRIPTION";
     String TAB_SCHEDULE = "SCHEDULE";
     String TAB_INCLUSION = "INCLUSION";
-    String TAB_FEES = "EXHIBITORS";
+    String TAB_EXHIBITORS = "EXHIBITORS";
     String TAB_CONTACT = "CONTACT";
     String TAB_VENUE = "VENUE";
     String TAB_FAQ = "FAQ";
@@ -87,7 +88,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
         getExtras ();
         initData ();
         initListener ();
-        getEventDetailFromServer (event_name);
+        getEventDetailFromServer (event_id);
     }
     
     private void initData () {
@@ -98,7 +99,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
         
         tabNames.add (0, TAB_SCHEDULE);
         tabNames.add (1, TAB_INCLUSION);
-        tabNames.add (2, TAB_FEES);
+        tabNames.add (2, TAB_EXHIBITORS);
         tabNames.add (3, TAB_CONTACT);
         tabNames.add (4, TAB_VENUE);
         tabNames.add (5, TAB_FAQ);
@@ -106,15 +107,15 @@ public class ExpodentDetailActivity extends AppCompatActivity {
     
     private void getExtras () {
         Intent intent = getIntent ();
-        event_name = intent.getStringExtra (AppConfigTags.EVENT_NAME);
+        event_id = intent.getIntExtra (AppConfigTags.EVENT_ID, 0);
     }
     
-    private void getEventDetailFromServer (String event_name) {
+    private void getEventDetailFromServer (int event_id) {
         final ViewPagerAdapter adapter = new ViewPagerAdapter (getSupportFragmentManager ());
-        if (NetworkConnection.isNetworkAvailable (ExpodentDetailActivity.this)) {
+        if (NetworkConnection.isNetworkAvailable (SpecialEventDetailActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_CUSTOM_EVENT_DETAILS + "/" + event_name, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.GET, AppConfigURL.URL_CUSTOM_EVENT_DETAILS + "/" + event_name,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SPECIAL_EVENT_DETAILS + "/" + event_id, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.GET, AppConfigURL.URL_SPECIAL_EVENT_DETAILS + "/" + event_id,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -125,43 +126,43 @@ public class ExpodentDetailActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
-                                        tvTitle.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
-                                        
-                                        if (jsonObj.getString (AppConfigTags.EVENT_DESCRIPTION).length () > 0) {
+                                        tvEventName.setText (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_NAME));
+                                        tvTitle.setText (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_NAME));
+    
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_DESCRIPTION).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_DESCRIPTION);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_FEES).length () > 0) {
-                                            adapter.addFragment (new EventDetailFragment (), TAB_FEES);
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_EXHIBITORS).length () > 0) {
+                                            adapter.addFragment (new EventDetailFragment (), TAB_EXHIBITORS);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_INCLUSIONS).length () > 0) {
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_INCLUSIONS).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_INCLUSION);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_SCHEDULE).length () > 0) {
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_SCHEDULE).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_SCHEDULE);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_CONTACT_DETAILS).length () > 0) {
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_CONTACT_DETAILS).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_CONTACT);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_VENUE).length () > 0) {
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_VENUE).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_VENUE);
                                         }
-                                        if (jsonObj.getString (AppConfigTags.EVENT_FAQ).length () > 0) {
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_FAQ).length () > 0) {
                                             adapter.addFragment (new EventDetailFragment (), TAB_FAQ);
                                         }
-                                        
-                                        if (jsonObj.getString (AppConfigTags.EVENT_ORGANISER_NAME).length () > 0 && ! (jsonObj.getString (AppConfigTags.EVENT_ORGANISER_NAME).equalsIgnoreCase ("null"))) {
+    
+                                        if (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_ORGANISER_NAME).length () > 0 && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_ORGANISER_NAME).equalsIgnoreCase ("null"))) {
                                             tvEventOrganiser.setTextColor (getResources ().getColor (R.color.colorPrimaryDark));
                                             tvEventOrganiser.setEnabled (true);
-                                            organiser_id = jsonObj.getInt (AppConfigTags.EVENT_ORGANISER_ID);
+                                            organiser_id = jsonObj.getInt (AppConfigTags.SPECIAL_EVENT_ORGANISER_ID);
                                         } else {
                                             tvEventOrganiser.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.EVENT_WEBSITE).length () > 0) && ! (jsonObj.getString (AppConfigTags.EVENT_WEBSITE).equalsIgnoreCase ("null"))) {
+                                        if ((jsonObj.getString (AppConfigTags.SPECIAL_EVENT_WEBSITE).length () > 0) && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_WEBSITE).equalsIgnoreCase ("null"))) {
                                             ivWebsite.setImageResource (R.drawable.ic_web);
-                                            ivWebsite.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_WEBSITE));
+                                            ivWebsite.setContentDescription (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_WEBSITE));
                                             ivWebsite.setEnabled (true);
-                                            eventWebsite = jsonObj.getString (AppConfigTags.EVENT_WEBSITE);
+                                            eventWebsite = jsonObj.getString (AppConfigTags.SPECIAL_EVENT_WEBSITE);
                                             tvEventWebsite.setEnabled (true);
                                             tvEventWebsite.setTextColor (getResources ().getColor (R.color.colorPrimaryDark));
                                         } else {
@@ -169,48 +170,48 @@ public class ExpodentDetailActivity extends AppCompatActivity {
                                             ivWebsite.setImageResource (R.drawable.ic_website_disabled);
                                             ivWebsite.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.EVENT_FACEBOOK).length () > 0) && ! (jsonObj.getString (AppConfigTags.EVENT_FACEBOOK).equalsIgnoreCase ("null"))) {
+                                        if ((jsonObj.getString (AppConfigTags.SPECIAL_EVENT_FACEBOOK).length () > 0) && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_FACEBOOK).equalsIgnoreCase ("null"))) {
                                             ivFacebook.setImageResource (R.drawable.ic_facebook);
-                                            ivFacebook.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_FACEBOOK));
+                                            ivFacebook.setContentDescription (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_FACEBOOK));
                                             ivFacebook.setEnabled (true);
                                         } else {
                                             ivFacebook.setImageResource (R.drawable.ic_fb_disabled);
                                             ivFacebook.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.EVENT_TWITTER).length () > 0) && ! (jsonObj.getString (AppConfigTags.EVENT_TWITTER).equalsIgnoreCase ("null"))) {
-                                            ivTwitter.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_TWITTER));
+                                        if ((jsonObj.getString (AppConfigTags.SPECIAL_EVENT_TWITTER).length () > 0) && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_TWITTER).equalsIgnoreCase ("null"))) {
+                                            ivTwitter.setContentDescription (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_TWITTER));
                                             ivTwitter.setImageResource (R.drawable.ic_twitter);
                                             ivTwitter.setEnabled (true);
                                         } else {
                                             ivTwitter.setImageResource (R.drawable.ic_twitter_disabled);
                                             ivTwitter.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.EVENT_LINKEDIN).length () > 0) && ! (jsonObj.getString (AppConfigTags.EVENT_LINKEDIN).equalsIgnoreCase ("null"))) {
-                                            ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_LINKEDIN));
+                                        if ((jsonObj.getString (AppConfigTags.SPECIAL_EVENT_LINKEDIN).length () > 0) && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_LINKEDIN).equalsIgnoreCase ("null"))) {
+                                            ivLinkedin.setContentDescription (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_LINKEDIN));
                                             ivLinkedin.setImageResource (R.drawable.ic_linkedin);
                                             ivLinkedin.setEnabled (true);
                                         } else {
                                             ivLinkedin.setImageResource (R.drawable.ic_linkedin_disabled);
                                             ivLinkedin.setEnabled (false);
                                         }
-                                        if ((jsonObj.getString (AppConfigTags.EVENT_YOUTUBE).length () > 0) && ! (jsonObj.getString (AppConfigTags.EVENT_YOUTUBE).equalsIgnoreCase ("null"))) {
+                                        if ((jsonObj.getString (AppConfigTags.SPECIAL_EVENT_YOUTUBE).length () > 0) && ! (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_YOUTUBE).equalsIgnoreCase ("null"))) {
                                             ivYoutube.setImageResource (R.drawable.ic_youtube);
                                             ivYoutube.setEnabled (true);
-                                            ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.EVENT_YOUTUBE));
+                                            ivYoutube.setContentDescription (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_YOUTUBE));
                                         } else {
                                             ivYoutube.setImageResource (R.drawable.ic_youtube_disabled);
                                             ivYoutube.setEnabled (false);
                                         }
-                                        
-                                        tvEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_START_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + ", " + jsonObj.getString (AppConfigTags.EVENT_CITY));
-                                        
-                                        htmlMap.put (TAB_DESCRIPTION, jsonObj.getString (AppConfigTags.EVENT_DESCRIPTION));
-                                        htmlMap.put (TAB_INCLUSION, jsonObj.getString (AppConfigTags.EVENT_INCLUSIONS));
-                                        htmlMap.put (TAB_CONTACT, jsonObj.getString (AppConfigTags.EVENT_CONTACT_DETAILS));
-                                        htmlMap.put (TAB_FEES, jsonObj.getString (AppConfigTags.EVENT_FEES));
-                                        htmlMap.put (TAB_SCHEDULE, jsonObj.getString (AppConfigTags.EVENT_SCHEDULE));
-                                        htmlMap.put (TAB_VENUE, jsonObj.getString (AppConfigTags.EVENT_VENUE));
-                                        htmlMap.put (TAB_FAQ, jsonObj.getString (AppConfigTags.EVENT_FAQ));
+    
+                                        tvEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_START_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SPECIAL_EVENT_END_DATE), "yyyy-MM-dd", "dd/MM/yyyy") + ", " + jsonObj.getString (AppConfigTags.SPECIAL_EVENT_CITY));
+    
+                                        htmlMap.put (TAB_DESCRIPTION, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_DESCRIPTION));
+                                        htmlMap.put (TAB_INCLUSION, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_INCLUSIONS));
+                                        htmlMap.put (TAB_CONTACT, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_CONTACT_DETAILS));
+                                        htmlMap.put (TAB_EXHIBITORS, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_EXHIBITORS));
+                                        htmlMap.put (TAB_SCHEDULE, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_SCHEDULE));
+                                        htmlMap.put (TAB_VENUE, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_VENUE));
+                                        htmlMap.put (TAB_FAQ, jsonObj.getString (AppConfigTags.SPECIAL_EVENT_FAQ));
                                         
                                         viewPager.setAdapter (adapter);
                                     }
@@ -220,12 +221,12 @@ public class ExpodentDetailActivity extends AppCompatActivity {
                                 } catch (Exception e) {
                                     progressDialog.dismiss ();
                                     clMain.setVisibility (View.VISIBLE);
-                                    Utils.showSnackBar (ExpodentDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (SpecialEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     e.printStackTrace ();
                                 }
                             } else {
                                 clMain.setVisibility (View.VISIBLE);
-                                Utils.showSnackBar (ExpodentDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showSnackBar (SpecialEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                             clMain.setVisibility (View.VISIBLE);
@@ -238,7 +239,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
                             progressDialog.dismiss ();
                             clMain.setVisibility (View.VISIBLE);
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
-                            Utils.showSnackBar (ExpodentDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                            Utils.showSnackBar (SpecialEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                     }) {
                 
@@ -254,7 +255,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<> ();
                     UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
                     params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
-                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (ExpodentDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (SpecialEventDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }
@@ -303,7 +304,7 @@ public class ExpodentDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View v) {
 // Utils.showSnackBar (EventDetailActivity.this, clMain, "Coming Soon", Snackbar.LENGTH_SHORT, null, null);
-                Intent intent = new Intent (ExpodentDetailActivity.this, OrganiserDetailActivity.class);
+                Intent intent = new Intent (SpecialEventDetailActivity.this, OrganiserDetailActivity.class);
                 intent.putExtra (AppConfigTags.ORGANISER_ID, organiser_id);
                 startActivity (intent);
             }
@@ -365,8 +366,8 @@ public class ExpodentDetailActivity extends AppCompatActivity {
             if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_DESCRIPTION)) {
                 return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_DESCRIPTION));
             }
-            if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_FEES)) {
-                return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_FEES));
+            if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_EXHIBITORS)) {
+                return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_EXHIBITORS));
             }
             if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_INCLUSION)) {
                 return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_INCLUSION));
@@ -383,8 +384,8 @@ public class ExpodentDetailActivity extends AppCompatActivity {
             if (mFragmentTitleList.get (position).equalsIgnoreCase (TAB_VENUE)) {
                 return EventDetailFragment.newInstance (mFragmentTitleList.get (position), htmlMap.get (TAB_VENUE));
             }
-            
-            return EventDetailFragment.newInstance (mFragmentTitleList.get (position), TAB_FEES);
+    
+            return EventDetailFragment.newInstance (mFragmentTitleList.get (position), TAB_EXHIBITORS);
         }
         
         @Override

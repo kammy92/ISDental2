@@ -123,10 +123,10 @@ public class MainActivity extends AppCompatActivity {
         //  homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
     
     
+        homeServices.add (new HomeService (3, R.drawable.online_trade_fair));
         homeServices.add (new HomeService (1, R.drawable.our_brands));
-        homeServices.add (new HomeService (4, R.drawable.expodent_chandigarh));
+        homeServices.add (new HomeService (4, R.drawable.expodent_mumbai));
         homeServices.add (new HomeService (2, R.drawable.upcoming_events));
-        homeServices.add (new HomeService (3, R.drawable.shop_by_category));
         
         
         homeServiceAdapter = new HomeServiceAdapter (this, homeServices);
@@ -168,55 +168,40 @@ public class MainActivity extends AppCompatActivity {
     
     private void initSlider () {
         slider.removeAllSliders ();
-        for (int i = 0; i < db.getAllHomeBanners ().size (); i++) {
-            final Banner banner = db.getAllHomeBanners ().get (i);
+        ArrayList<Banner> bannerArrayList = db.getAllHomeBanners ();
+        for (int i = 0; i < bannerArrayList.size (); i++) {
+            final Banner banner = bannerArrayList.get (i);
             CustomImageSlider slider2 = new CustomImageSlider (this);
             slider2
                     .setScaleType (BaseSliderView.ScaleType.CenterCrop)
                     .setOnSliderClickListener (new BaseSliderView.OnSliderClickListener () {
                         @Override
                         public void onSliderClick (BaseSliderView slider) {
-                            Uri uri;
-                            if (banner.getUrl ().contains ("http://") || banner.getUrl ().contains ("https://")) {
-                                uri = Uri.parse (banner.getUrl ());
-                            } else {
-                                uri = Uri.parse ("http://" + banner.getUrl ());
+                            if (banner.getUrl ().length () > 0) {
+                                Uri uri;
+                                if (banner.getUrl ().contains ("http://") || banner.getUrl ().contains ("https://")) {
+                                    uri = Uri.parse (banner.getUrl ());
+                                } else {
+                                    uri = Uri.parse ("http://" + banner.getUrl ());
+                                }
+                                Intent intent = new Intent (Intent.ACTION_VIEW, uri);
+                                startActivity (intent);
                             }
-                            Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                            startActivity (intent);
                         }
                     });
-    
+        
             if (banner.getImage ().length () == 0) {
                 slider2.image (R.drawable.default_banner);
             } else {
                 slider2.image (banner.getImage ());
             }
-
-//            DefaultSliderView defaultSliderView = new DefaultSliderView (activity);
-//            defaultSliderView
-//                    .image (image)
-//                    .setScaleType (BaseSliderView.ScaleType.Fit)
-//                    .setOnSliderClickListener (new BaseSliderView.OnSliderClickListener () {
-//                        @Override
-//                        public void onSliderClick (BaseSliderView slider) {
-//                            Intent intent = new Intent (activity, PropertyDetailActivity.class);
-//                            intent.putExtra (AppConfigTags.PROPERTY_ID, property.getId ());
-//                            activity.startActivity (intent);
-//                            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-//                        }
-//                    });
-//
-//            defaultSliderView.bundle (new Bundle ());
-            // defaultSliderView.getBundle ().putString ("extra", String.valueOf (s));
-//            holder.slider.addSlider (defaultSliderView);
             slider.addSlider (slider2);
         }
         slider.setPresetIndicator (SliderLayout.PresetIndicators.Center_Bottom);
-        slider.getPagerIndicator ().setVisibility (View.GONE);
+        slider.getPagerIndicator ().setVisibility (View.VISIBLE);
         slider.setPresetTransformer (SliderLayout.Transformer.Stack);
         slider.setCustomAnimation (new DescriptionAnimation ());
-        slider.setDuration (600000);
+        slider.setDuration (10000);
         slider.addOnPageChangeListener (new ViewPagerEx.OnPageChangeListener () {
             @Override
             public void onPageScrolled (int position, float positionOffset, int positionOffsetPixels) {
@@ -304,15 +289,21 @@ public class MainActivity extends AppCompatActivity {
 //                                        bannerArrayList.add (new Banner (0, "", "", "www.indiasupply.com", "EVENTS"));
                                         for (int i = 0; i < jsonArrayBanner.length (); i++) {
                                             JSONObject jsonObjectBanner = jsonArrayBanner.getJSONObject (i);
-                                            bannerArrayList.add (new Banner (
+//                                            bannerArrayList.add (new Banner (
+//                                                    jsonObjectBanner.getInt (AppConfigTags.BANNER_ID),
+//                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_TITLE),
+//                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_IMAGE),
+//                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_URL),
+//                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_TYPE)
+//                                            ));
+                                            db.createBanner (new Banner (
                                                     jsonObjectBanner.getInt (AppConfigTags.BANNER_ID),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_TITLE),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_IMAGE),
                                                     jsonObjectBanner.getString (AppConfigTags.BANNER_URL),
-                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_TYPE)
-                                            ));
+                                                    jsonObjectBanner.getString (AppConfigTags.BANNER_TYPE)));
                                         }
-                                        db.insertAllBanners (bannerArrayList);
+//                                        db.insertAllBanners (bannerArrayList);
                                         initSlider ();
                                         if (jsonObj.getBoolean (AppConfigTags.VERSION_UPDATE)) {
                                             new MaterialDialog.Builder (MainActivity.this)

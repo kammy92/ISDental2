@@ -98,6 +98,31 @@ public class AppConfigTags {
     public static final String EVENT_LINKEDIN = "event_linkedin";
     public static final String EVENT_YOUTUBE = "event_youtube";
     
+    
+    public static final String SPECIAL_EVENT_ID = "special_event_id";
+    public static final String SPECIAL_EVENT_NAME = "special_event_name";
+    public static final String SPECIAL_EVENT_DESCRIPTION = "special_event_description";
+    public static final String SPECIAL_EVENT_START_DATE = "special_event_start_date";
+    public static final String SPECIAL_EVENT_END_DATE = "special_event_end_date";
+    public static final String SPECIAL_EVENT_TYPE = "special_event_type";
+    public static final String SPECIAL_EVENT_CITY = "special_event_city";
+    public static final String SPECIAL_EVENT_ORGANISER_NAME = "special_event_organiser_name";
+    public static final String SPECIAL_EVENT_ORGANISER_ID = "special_event_organiser_id";
+    public static final String SPECIAL_EVENT_WEBSITE = "special_event_website";
+    public static final String SPECIAL_EVENT_FAQ = "special_event_faq";
+    public static final String SPECIAL_EVENT_EXHIBITORS = "special_event_exhibitors";
+    public static final String SPECIAL_EVENT_SCHEDULE = "special_event_schedule";
+    public static final String SPECIAL_EVENT_VENUE = "special_event_venue";
+    public static final String SPECIAL_EVENT_LATITUDE = "special_event_latitude";
+    public static final String SPECIAL_EVENT_LONGITUDE = "special_event_longitude";
+    public static final String SPECIAL_EVENT_INCLUSIONS = "special_event_inclusions";
+    public static final String SPECIAL_EVENT_CONTACT_DETAILS = "special_event_contact_details";
+    public static final String SPECIAL_EVENT_FACEBOOK = "special_event_facebook";
+    public static final String SPECIAL_EVENT_TWITTER = "special_event_twitter";
+    public static final String SPECIAL_EVENT_LINKEDIN = "special_event_linkedin";
+    public static final String SPECIAL_EVENT_YOUTUBE = "special_event_youtube";
+    
+    
     public static final String NAME = "name";
     public static final String EMAIL = "email";
     public static final String MOBILE = "mobile";

@@ -43,7 +43,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 app:auto_cycle="true"
-                app:indicator_visibility="invisible"
+                app:indicator_visibility="visible"
                 app:pager_animation="Accordion"
                 app:pager_animation_span="500"/>
             <View
@@ -61,8 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/view"
                 android:visibility="gone"/>
-
-
             <View
                 android:id="@+id/view4"
                 android:layout_width="match_parent"
@@ -70,8 +68,6 @@
                 android:layout_below="@+id/rvCategory"
                 android:background="@color/divider_color">
             </View>
-
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -79,15 +75,12 @@
                 android:layout_marginTop="10dp"
                 android:animateLayoutChanges="true"
                 android:visibility="gone">
-
                 <View
                     android:id="@+id/view3"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/divider_color">
                 </View>
-
-
                 <com.daimajia.slider.library.SliderLayout
                     android:id="@+id/slider1"
                     android:layout_width="match_parent"
@@ -97,7 +90,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_below="@+id/view3"
                     app:auto_cycle="true"
-                    app:indicator_visibility="invisible"
+                    app:indicator_visibility="visible"
                     app:pager_animation="Accordion"
                     app:pager_animation_span="500"/>
                 <View
@@ -107,10 +100,7 @@
                     android:layout_below="@+id/slider1"
                     android:background="@color/divider_color">
                 </View>
-
             </RelativeLayout>
-
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvHomeServiceList"
                 android:layout_width="fill_parent"
@@ -121,7 +111,6 @@
                 android:overScrollMode="never"
                 android:scrollbarStyle="insideOverlay"
                 android:visibility="visible"/>
-
             <View
                 android:id="@+id/view2"
                 android:layout_width="match_parent"
@@ -174,7 +163,6 @@
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="italic"/>
             </RelativeLayout>
-
         </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
