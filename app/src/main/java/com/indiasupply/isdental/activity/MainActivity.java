@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
         //  homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
     
     
+        homeServices.add (new HomeService (5, R.drawable.our_brands));
         homeServices.add (new HomeService (3, R.drawable.online_trade_fair));
         homeServices.add (new HomeService (1, R.drawable.our_brands));
         homeServices.add (new HomeService (4, R.drawable.expodent_mumbai));

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/activity_margin_small"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/ivProductImage"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/famdent_logo"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tvProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/rl1"
+        android:layout_alignLeft="@+id/rl1"
+        android:layout_alignRight="@+id/rl1"
+        android:layout_alignStart="@+id/rl1"
+        android:layout_below="@+id/rl1"
+        android:layout_marginTop="@dimen/activity_margin_small"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="Name1"
+        android:textColor="@color/primary_text2"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"/>
+    <TextView
+        android:id="@+id/tvProductCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/rl1"
+        android:layout_alignLeft="@+id/rl1"
+        android:layout_alignRight="@+id/rl1"
+        android:layout_alignStart="@+id/rl1"
+        android:layout_below="@+id/tvProductName"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Name1asd kksad "
+        android:textColor="@color/secondary_text2"
+        android:textSize="@dimen/text_size_extra_small"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/rl1"
+        android:layout_alignLeft="@+id/rl1"
+        android:layout_alignRight="@+id/rl1"
+        android:layout_alignStart="@+id/rl1"
+        android:layout_below="@+id/tvProductCategory"
+        android:layout_marginTop="@dimen/activity_margin_small"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text="Rs 14,599/-"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_small"/>
+
+        <TextView
+            android:id="@+id/tvAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/button_background"
+            android:paddingBottom="@dimen/activity_margin_extra_small"
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:paddingRight="@dimen/activity_margin_small"
+            android:paddingTop="@dimen/activity_margin_extra_small"
+            android:text="INQUIRE"
+            android:textColor="@color/mb_green_dark"
+            android:textSize="@dimen/text_size_small"/>
+    </RelativeLayout>
+</RelativeLayout>

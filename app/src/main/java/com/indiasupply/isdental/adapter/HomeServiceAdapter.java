@@ -26,6 +26,7 @@ import com.indiasupply.isdental.activity.EventListActivity;
 import com.indiasupply.isdental.activity.InformationActivity;
 import com.indiasupply.isdental.activity.ShopOnlineActivity;
 import com.indiasupply.isdental.activity.SpecialEventDetailActivity;
+import com.indiasupply.isdental.activity.SwiggyMainActivity;
 import com.indiasupply.isdental.model.HomeService;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -241,6 +242,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     Intent intent1 = new Intent (activity, CompanyListActivity.class);
                     activity.startActivity (intent1);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+    
                     break;
                 
                 case 2:
@@ -260,6 +262,15 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     Intent intent6 = new Intent (activity, InformationActivity.class);
                     activity.startActivity (intent6);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case 5:
+                    Intent intent5 = new Intent (activity, SwiggyMainActivity.class);
+                    activity.startActivity (intent5);
+                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+//                    Intent intent5 = new Intent (activity, SwiggyBrandDetailActivity.class);
+//                    activity.startActivity (intent5);
+//                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+    
                     break;
                 default:
                     Utils.showSnackBar (activity, (CoordinatorLayout) activity.findViewById (R.id.clMain), "Coming Soon", Snackbar.LENGTH_LONG, null, null);

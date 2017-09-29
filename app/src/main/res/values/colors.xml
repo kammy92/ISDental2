@@ -7,6 +7,18 @@
 
     <color name="primary">#2889c9</color>
 
+
+    <color name="primary2">#009688</color>
+    <color name="primary_dark2">#00796B</color>
+    <color name="primary_light2">#B2DFDB</color>
+    <color name="accent2">#009688</color>
+    <color name="primary_text2">#272b3d</color>
+    <color name="secondary_text2">#8a8c96</color>
+    <color name="icons">#FFFFFF</color>
+    <color name="divider">#BDBDBD</color>
+    <color name="app_background2">#ffffff</color>
+
+
     <color name="accent">#cccccc</color>
     <color name="primary_text">#fff</color>
     <color name="secondary_text">#fff</color>
@@ -25,7 +37,7 @@
     <color name="text_color_blue">#311b92</color>
     <color name="pressed_color">#bebebe</color>
     <color name="default_color">#eeeeee</color>
-    <color name="text_color_orange">#f57f17</color>
+    <color name="text_color_orange">#8a584c</color>
     <color name="text_color_red">#d70d17</color>
     <color name="text_color_yellow">#ffc107</color>
     <color name="progress_dialog_background">#f0bfbfbf</color>
