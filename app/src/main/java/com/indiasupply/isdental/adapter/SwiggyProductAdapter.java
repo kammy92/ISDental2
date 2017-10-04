@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.Product;
+import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -18,23 +18,23 @@ import java.util.List;
 public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<Product> productList = new ArrayList<> ();
+    private List<SwiggyProduct> swiggyProductList = new ArrayList<> ();
     
-    public SwiggyProductAdapter (Activity activity, List<Product> productList) {
+    public SwiggyProductAdapter (Activity activity, List<SwiggyProduct> swiggyProductList) {
         this.activity = activity;
-        this.productList = productList;
+        this.swiggyProductList = swiggyProductList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_products, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_product_normal, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
     public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final Product product = productList.get (position);
+        final SwiggyProduct swiggyProduct = swiggyProductList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
 
@@ -43,31 +43,31 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
 //        holder.tvProductDescription.setTypeface (SetTypeFace.getTypeface (activity));
 //        holder.tvProductPrice.setTypeface (SetTypeFace.getTypeface (activity));
 //        holder.tvAdd.setTypeface (SetTypeFace.getTypeface (activity));
-        
-        if (product.getName ().length () > 0) {
+    
+        if (swiggyProduct.getName ().length () > 0) {
             holder.tvProductName.setVisibility (View.VISIBLE);
-            holder.tvProductName.setText (product.getName ());
+            holder.tvProductName.setText (swiggyProduct.getName ());
         } else {
             holder.tvProductName.setVisibility (View.GONE);
         }
-        if (product.getDescription ().length () > 0) {
+        if (swiggyProduct.getDescription ().length () > 0) {
             holder.tvProductDescription.setVisibility (View.VISIBLE);
-            holder.tvProductDescription.setText (product.getDescription ());
-            if (product.getDescription ().length () > 70) {
+            holder.tvProductDescription.setText (swiggyProduct.getDescription ());
+            if (swiggyProduct.getDescription ().length () > 70) {
                 Utils.makeTextViewResizable (holder.tvProductDescription, 2, "... more", true);
             }
         } else {
             holder.tvProductDescription.setVisibility (View.GONE);
         }
-        if (product.getCategory ().length () > 0) {
+        if (swiggyProduct.getCategory ().length () > 0) {
             holder.tvProductCategory.setVisibility (View.VISIBLE);
-            holder.tvProductCategory.setText (product.getCategory ());
+            holder.tvProductCategory.setText (swiggyProduct.getCategory ());
         } else {
             holder.tvProductCategory.setVisibility (View.GONE);
         }
-        if (product.getPrice ().length () > 0) {
+        if (swiggyProduct.getPrice ().length () > 0) {
             holder.tvProductPrice.setVisibility (View.VISIBLE);
-            holder.tvProductPrice.setText (product.getPrice ());
+            holder.tvProductPrice.setText (swiggyProduct.getPrice ());
         } else {
             holder.tvProductPrice.setVisibility (View.GONE);
         }
@@ -75,7 +75,7 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
     
     @Override
     public int getItemCount () {
-        return productList.size ();
+        return swiggyProductList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {

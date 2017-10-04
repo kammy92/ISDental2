@@ -19,16 +19,17 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyRecommendedProductAdapter2;
-import com.indiasupply.isdental.model.Product;
+import com.indiasupply.isdental.model.SwiggyProduct;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class SwiggyProductDialogFragment extends DialogFragment {
+public class SwiggyProductDetailDialogFragment extends DialogFragment {
     RecyclerView rv3;
-    List<Product> productList = new ArrayList<> ();
+    List<SwiggyProduct> swiggyProductList = new ArrayList<> ();
     SwiggyRecommendedProductAdapter2 swiggyAdapter;
     LinearLayoutManager linearLayoutManager;
     
@@ -66,7 +67,7 @@ public class SwiggyProductDialogFragment extends DialogFragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_product, container, false);
+        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_product_recommended, container, false);
         initView (root);
         initBundle ();
         initData ();
@@ -87,20 +88,26 @@ public class SwiggyProductDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
-                
-        productList.add (new Product (true, 1, "Name 1", "Description 1", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 12,000/-", "Recommended"));
-        productList.add (new Product (true, 2, "Name 2", "Description 2 aksjd kjlaskd laks dllk sadlk asldk asdldk sadlk asdlka sdlk asldk asd ask jasdkj asd kj sadk kj asdk kj asdkn kaj sdk aakj sdk aksj dkj kj kjas aksj dkasjdka skdjnaksd kajs dk askdj aksd ka kajs dka sdk asdaksdajsdk asj dkja sdk kj askjd akjsd kajs dkja sdkja sdkj asdkasj ddkjasd kasdkjaslkdmalks dlkasd kasdlkmls dlk sadlk askjnhgldk", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg", "Rs 8,000/-", "Recommended"));
-        productList.add (new Product (true, 3, "Name 3", "Description 3", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg", "Rs 3,000/-", "Recommended"));
-        productList.add (new Product (true, 4, "Name 4", "Description 4", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg", "Rs 10,000/-", "Recommended"));
-        productList.add (new Product (true, 5, "Name 5", "Description 5", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 2,000/-", "Recommended"));
-        
-        swiggyAdapter = new SwiggyRecommendedProductAdapter2 (getActivity (), productList);
+    
+        swiggyProductList.add (new SwiggyProduct (true, 1, "Name 1", "Description 1", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 12,000/-", "Recommended"));
+        swiggyProductList.add (new SwiggyProduct (true, 2, "Name 2", "Description 2 aksjd kjlaskd laks dllk sadlk asldk asdldk sadlk asdlka sdlk asldk asd ask jasdkj asd kj sadk kj asdk kj asdkn kaj sdk aakj sdk aksj dkj kj kjas aksj dkasjdka skdjnaksd kajs dk askdj aksd ka kajs dka sdk asdaksdajsdk asj dkja sdk kj askjd akjsd kajs dkja sdkja sdkj asdkasj ddkjasd kasdkjaslkdmalks dlkasd kasdlkmls dlk sadlk askjnhgldk", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg", "Rs 8,000/-", "Recommended"));
+        swiggyProductList.add (new SwiggyProduct (true, 3, "Name 3", "Description 3", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg", "Rs 3,000/-", "Recommended"));
+        swiggyProductList.add (new SwiggyProduct (true, 4, "Name 4", "Description 4", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg", "Rs 10,000/-", "Recommended"));
+        swiggyProductList.add (new SwiggyProduct (true, 5, "Name 5", "Description 5", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 2,000/-", "Recommended"));
+    
+        swiggyAdapter = new SwiggyRecommendedProductAdapter2 (getActivity (), swiggyProductList);
         rv3.setAdapter (swiggyAdapter);
         rv3.setHasFixedSize (true);
         rv3.setLayoutManager (linearLayoutManager);
         rv3.setItemAnimator (new DefaultItemAnimator ());
+        rv3.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         LinearLayoutManager layoutManager = ((LinearLayoutManager) rv3.getLayoutManager ());
-        tvTitle.setText ("Recommended 1/" + productList.size ());
+        tvTitle.setText ("Recommended 1/" + swiggyProductList.size ());
     }
     
     private void initListener () {
@@ -109,13 +116,13 @@ public class SwiggyProductDialogFragment extends DialogFragment {
 //            public void onScrollStateChanged (RecyclerView recyclerView, int newState) {
 //                switch (newState){
 //                    case SCROLL_STATE_SETTLING:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
 //                        break;
 //                    case SCROLL_STATE_DRAGGING:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
 //                        break;
 //                    case SCROLL_STATE_IDLE:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
 //                        break;
 //                }
 //
@@ -128,9 +135,9 @@ public class SwiggyProductDialogFragment extends DialogFragment {
             public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
                 Log.e ("karman", " " + linearLayoutManager.findFirstCompletelyVisibleItemPosition ());
                 if (linearLayoutManager.findFirstCompletelyVisibleItemPosition () < 0) {
-//                    tvTitle.setText ("Recommended 1/" + productList.size ());
+//                    tvTitle.setText ("Recommended 1/" + swiggyProductList.size ());
                 } else {
-                    tvTitle.setText ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + productList.size ());
+                    tvTitle.setText ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + swiggyProductList.size ());
                 }
                 super.onScrolled (recyclerView, dx, dy);
             }

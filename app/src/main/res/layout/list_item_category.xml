@@ -15,7 +15,7 @@
         android:layout_margin="@dimen/activity_margin_small"
         android:src="@drawable/famdent_logo"/>
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvContactName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ivCategoryLogo"
@@ -32,7 +32,7 @@
         android:id="@+id/tvFooterLine"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@+id/tvName"
+        android:layout_below="@+id/tvContactName"
         android:layout_marginLeft="@dimen/activity_margin_small"
         android:layout_marginRight="@dimen/activity_margin_small"
         android:background="@color/colorPrimaryDark"

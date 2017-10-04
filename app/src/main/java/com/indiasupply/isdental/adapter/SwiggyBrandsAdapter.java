@@ -48,22 +48,13 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
         final SwiggyBrand brand = swiggyBrandList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvBrandName);
-
-//        holder.tvBrandName.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvBrandCategory.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvDescription.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvOffer.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvRating.setTypeface (SetTypeFace.getTypeface (activity));
         
         holder.tvBrandName.setText (brand.getTitle ());
         holder.tvBrandCategory.setText (brand.getCategory ());
         holder.tvDescription.setText (brand.getDescription ());
-        if (brand.is_offer ()) {
-            holder.tvOffer.setVisibility (View.VISIBLE);
-            holder.tvOffer.setText (brand.getOffers ());
-        } else {
-            holder.tvOffer.setVisibility (View.GONE);
-        }
+        holder.tvOffer.setVisibility (View.VISIBLE);
+        holder.tvOffer.setText (brand.getOffers ());
+        
         if (brand.is_isassured ()) {
             holder.ivISAssured.setVisibility (View.VISIBLE);
         } else {

@@ -34,7 +34,7 @@
     <dimen name="text_size_title">20sp</dimen>
 
     <dimen name="button_elevation">2dp</dimen>
-    <dimen name="cardview_elevation">2dp</dimen>
+    <dimen name="cardview_elevation">8dp</dimen>
 
     <dimen name="home_slider_height">200dp</dimen>
 

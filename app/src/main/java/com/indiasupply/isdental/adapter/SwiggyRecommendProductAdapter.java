@@ -15,8 +15,8 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.fragment.SwiggyProductDialogFragment;
-import com.indiasupply.isdental.model.Product;
+import com.indiasupply.isdental.fragment.SwiggyProductDetailDialogFragment;
+import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -26,9 +26,9 @@ import java.util.List;
 public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRecommendProductAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<Product> recommendList = new ArrayList<> ();
+    private List<SwiggyProduct> recommendList = new ArrayList<> ();
     
-    public SwiggyRecommendProductAdapter (Activity activity, List<Product> recommendList) {
+    public SwiggyRecommendProductAdapter (Activity activity, List<SwiggyProduct> recommendList) {
         this.activity = activity;
         this.recommendList = recommendList;
     }
@@ -36,13 +36,13 @@ public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRe
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_recommended, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_product_recommended_small, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final Product recommended = recommendList.get (position);
+        final SwiggyProduct recommended = recommendList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
 
@@ -108,7 +108,7 @@ public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRe
         @Override
         public void onClick (View v) {
             FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
-            SwiggyProductDialogFragment frag = new SwiggyProductDialogFragment ();
+            SwiggyProductDetailDialogFragment frag = new SwiggyProductDetailDialogFragment ();
             frag.show (ft, "rahul");
         }
     }

@@ -577,7 +577,7 @@ public class MainActivity extends AppCompatActivity {
             
             public ViewHolder (View view) {
                 super (view);
-                tvCategoryName = (TextView) view.findViewById (R.id.tvName);
+                tvCategoryName = (TextView) view.findViewById (R.id.tvContactName);
                 tvFooterLine = (TextView) view.findViewById (R.id.tvFooterLine);
                 ivCategoryLogo = (ImageView) view.findViewById (R.id.ivCategoryLogo);
                 rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);

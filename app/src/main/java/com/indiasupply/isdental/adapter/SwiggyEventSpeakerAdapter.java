@@ -14,97 +14,90 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.SwiggyBanner;
+import com.indiasupply.isdental.model.SwiggySpeaker;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by l on 26/09/2017.
- */
 
-public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapter.ViewHolder> {
-    SwiggyBannerAdapter.OnItemClickListener mItemClickListener;
+public class SwiggyEventSpeakerAdapter extends RecyclerView.Adapter<SwiggyEventSpeakerAdapter.ViewHolder> {
+    final String dialogTag = "dialog";
+    OnItemClickListener mItemClickListener;
+    ProgressBar progressBar;
+    private TextView fullName;
     private Activity activity;
-    private List<SwiggyBanner> swiggyBannerList = new ArrayList<> ();
+    // dialogFragment.setOnDiscardFromExtraActionListener(this);
+    private List<SwiggySpeaker> swiggySpeakerList = new ArrayList<> ();
     
-    public SwiggyBannerAdapter (Activity activity, List<SwiggyBanner> swiggyBannerList) {
+    public SwiggyEventSpeakerAdapter (Activity activity, List<SwiggySpeaker> swiggySpeakerList) {
         this.activity = activity;
-        this.swiggyBannerList = swiggyBannerList;
+        this.swiggySpeakerList = swiggySpeakerList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+        progressBar = new ProgressBar (activity);
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_banner, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_speaker, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyBanner product = swiggyBannerList.get (position);
-    
-        Utils.setTypefaceToAllViews (activity, holder.tvProductType);
-//        holder.tvProductType.setTypeface (SetTypeFace.getTypeface (activity));
-    
-        holder.tvProductType.setText (product.getTitle ());
+        final SwiggySpeaker swiggySpeaker = swiggySpeakerList.get (position);
+        Utils.setTypefaceToAllViews (activity, holder.tvSpeakerName);
         
         Glide.with (activity)
-                .load (product.getImage_url ())
+                .load (swiggySpeaker.getImage ())
                 .listener (new RequestListener<String, GlideDrawable> () {
                     @Override
                     public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
+                        //holder.progressBar.setVisibility (View.VISIBLE);
                         return false;
                     }
                     
                     @Override
                     public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
+                        //holder.progressBar.setVisibility (View.GONE);
                         return false;
                     }
                 })
-                .into (holder.ivProductLogo);
-        
-        
+                .into (holder.ivSpeaker);
+        holder.tvSpeakerName.setText (swiggySpeaker.getName ());
+        holder.tvSpeakerQualification.setText (swiggySpeaker.getQualification ());
     }
     
     @Override
     public int getItemCount () {
-        return swiggyBannerList.size ();
+        return swiggySpeakerList.size ();
     }
     
-    public void SetOnItemClickListener (final SwiggyBannerAdapter.OnItemClickListener mItemClickListener) {
+    public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
+    
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvProductType;
-        ImageView ivProductLogo;
-        ProgressBar progressBar;
-        
+        ImageView ivSpeaker;
+        TextView tvSpeakerName;
+        TextView tvSpeakerQualification;
         
         public ViewHolder (View view) {
             super (view);
-            tvProductType = (TextView) view.findViewById (R.id.tvBannerTitle);
-            ivProductLogo = (ImageView) view.findViewById (R.id.ivProduct);
-            progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
+            ivSpeaker = (ImageView) view.findViewById (R.id.ivSpeaker);
+            tvSpeakerName = (TextView) view.findViewById (R.id.tvSpeakerName);
+            tvSpeakerQualification = (TextView) view.findViewById (R.id.tvSpeakerQualification);
             
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
-           /* Company company = companyList.get (getLayoutPosition ());
-            Intent intent = new Intent (activity, CompanyDetailActivity.class);
-            intent.putExtra (AppConfigTags.COMPANY_ID, company.getId ());
-            activity.startActivity (intent);
-            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);*/
         }
     }
 }

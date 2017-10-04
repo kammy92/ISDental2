@@ -20,7 +20,9 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.fragment.SwiggyHomeFragment1;
+import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
+import com.indiasupply.isdental.fragment.SwiggyEventFragment;
+import com.indiasupply.isdental.fragment.SwiggyExhibitorsFragment;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -87,16 +89,16 @@ public class SwiggyMainActivity extends AppCompatActivity {
                         Fragment selectedFragment = null;
                         switch (item.getItemId ()) {
                             case R.id.action_item1:
-                                selectedFragment = SwiggyHomeFragment1.newInstance ();
+                                selectedFragment = SwiggyExhibitorsFragment.newInstance ();
                                 break;
                             case R.id.action_item2:
-                                selectedFragment = SwiggyHomeFragment1.newInstance ();
+                                selectedFragment = SwiggyEventFragment.newInstance ();
                                 break;
                             case R.id.action_item3:
-                                selectedFragment = SwiggyHomeFragment1.newInstance ();
+                                selectedFragment = SwiggyContactsFragment.newInstance ();
                                 break;
                             case R.id.action_item4:
-                                selectedFragment = SwiggyHomeFragment1.newInstance ();
+                                selectedFragment = SwiggyExhibitorsFragment.newInstance ();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
@@ -105,12 +107,11 @@ public class SwiggyMainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        
         disableShiftMode (bottomNavigationView);
         
         //Manually displaying the first fragment - one time only
         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
-        transaction.replace (R.id.frame_layout, SwiggyHomeFragment1.newInstance ());
+        transaction.replace (R.id.frame_layout, SwiggyExhibitorsFragment.newInstance ());
         transaction.commit ();
 
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams ();

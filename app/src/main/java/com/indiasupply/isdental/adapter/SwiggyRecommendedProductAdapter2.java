@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.Product;
+import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -29,23 +29,23 @@ import static com.indiasupply.isdental.utils.Utils.makeTextViewResizable;
 public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<SwiggyRecommendedProductAdapter2.ViewHolder> {
     CompanyListAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<Product> productList = new ArrayList<> ();
+    private List<SwiggyProduct> swiggyProductList = new ArrayList<> ();
     
-    public SwiggyRecommendedProductAdapter2 (Activity activity, List<Product> productList) {
+    public SwiggyRecommendedProductAdapter2 (Activity activity, List<SwiggyProduct> swiggyProductList) {
         this.activity = activity;
-        this.productList = productList;
+        this.swiggyProductList = swiggyProductList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_recommended2, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_product_recommended_large, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final Product product = productList.get (position);
+        final SwiggyProduct swiggyProduct = swiggyProductList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
 
@@ -53,16 +53,16 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
 //        holder.tvProductPrice.setTypeface (SetTypeFace.getTypeface (activity));
 //        holder.tvProductDescription.setTypeface (SetTypeFace.getTypeface (activity));
 //        holder.tvAdd.setTypeface (SetTypeFace.getTypeface (activity));
-        
-        holder.tvProductName.setText (product.getName ());
-        holder.tvProductPrice.setText (product.getPrice ());
-        holder.tvProductDescription.setText (product.getDescription ());
+    
+        holder.tvProductName.setText (swiggyProduct.getName ());
+        holder.tvProductPrice.setText (swiggyProduct.getPrice ());
+        holder.tvProductDescription.setText (swiggyProduct.getDescription ());
         if (holder.tvProductDescription.getText ().toString ().trim ().length () > 70) {
             makeTextViewResizable (holder.tvProductDescription, 2, "...more", true);
         }
         
         Glide.with (activity)
-                .load (product.getImage ())
+                .load (swiggyProduct.getImage ())
                 .listener (new RequestListener<String, GlideDrawable> () {
                     @Override
                     public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -81,7 +81,7 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
     
     @Override
     public int getItemCount () {
-        return productList.size ();
+        return swiggyProductList.size ();
     }
     
     public void SetOnItemClickListener (final CompanyListAdapter.OnItemClickListener mItemClickListener) {

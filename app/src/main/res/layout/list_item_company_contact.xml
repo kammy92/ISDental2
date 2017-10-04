@@ -221,7 +221,7 @@
             </LinearLayout>
         </RelativeLayout>
         <RelativeLayout
-            android:id="@+id/rlEmail"
+            android:id="@+id/rlButtons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rlPhone"
@@ -261,7 +261,7 @@
             android:id="@+id/rlWebsite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rlEmail"
+            android:layout_below="@id/rlButtons"
             android:visibility="gone">
             <ImageView
                 android:id="@+id/ivWebsite"

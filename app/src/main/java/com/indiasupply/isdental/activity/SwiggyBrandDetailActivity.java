@@ -20,7 +20,8 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyProductAdapter;
 import com.indiasupply.isdental.adapter.SwiggyRecommendProductAdapter;
-import com.indiasupply.isdental.model.Product;
+import com.indiasupply.isdental.model.SwiggyProduct;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -30,8 +31,8 @@ import java.util.ArrayList;
  */
 
 public class SwiggyBrandDetailActivity extends AppCompatActivity {
-    ArrayList<Product> recommendedlist = new ArrayList<> ();
-    ArrayList<Product> productlist = new ArrayList<> ();
+    ArrayList<SwiggyProduct> recommendedlist = new ArrayList<> ();
+    ArrayList<SwiggyProduct> productlist = new ArrayList<> ();
     RecyclerView rvRecommended;
     RecyclerView rvProducts;
     NestedScrollView nestedScrollView;
@@ -127,32 +128,43 @@ public class SwiggyBrandDetailActivity extends AppCompatActivity {
         
         
         Utils.setTypefaceToAllViews (SwiggyBrandDetailActivity.this, rvProducts);
-        recommendedlist.add (new Product (true, 1, "Name 1", "Description 1", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 12,000/-", "Recommended"));
-        recommendedlist.add (new Product (true, 2, "Name 2", "Description 2", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg", "Rs 8,000/-", "Recommended"));
-        recommendedlist.add (new Product (true, 3, "Name 3", "Description 3", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg", "Rs 3,000/-", "Recommended"));
-        recommendedlist.add (new Product (true, 4, "Name 4", "Description 4", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg", "Rs 10,000/-", "Recommended"));
-        recommendedlist.add (new Product (true, 5, "Name 5", "Description 5", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 2,000/-", "Recommended"));
-        
-        productlist.add (new Product (false, 6, "Name 6", "Description 6", "", "", "Rs 15,599/-", "Offers"));
-        productlist.add (new Product (false, 7, "Name 7", "", "Dental Equipments", "", "Rs 18,399/-", "Offers"));
-        productlist.add (new Product (false, 8, "Name 8", "Description 8 askj kas  kja sdkj asdkj asdkj asdkj asdkja sdkja sdkj asdkj askdj askddj ask dakj sjd aks dkja sdk asd lk sadksadkj asdk as", "", "", "Rs 12,230/-", "Offers"));
-        productlist.add (new Product (false, 9, "Name 9", "", "Dental Equipments", "", "Rs 499/-", "Offers"));
-        productlist.add (new Product (false, 10, "Name 10", "Description 10", "", "", "Rs 1,499/-", "Offers"));
+        recommendedlist.add (new SwiggyProduct (true, 1, "Name 1", "Description 1", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 12,000/-", "Recommended"));
+        recommendedlist.add (new SwiggyProduct (true, 2, "Name 2", "Description 2", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg", "Rs 8,000/-", "Recommended"));
+        recommendedlist.add (new SwiggyProduct (true, 3, "Name 3", "Description 3", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg", "Rs 3,000/-", "Recommended"));
+        recommendedlist.add (new SwiggyProduct (true, 4, "Name 4", "Description 4", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg", "Rs 10,000/-", "Recommended"));
+        recommendedlist.add (new SwiggyProduct (true, 5, "Name 5", "Description 5", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 2,000/-", "Recommended"));
+    
+        productlist.add (new SwiggyProduct (false, 6, "Name 6", "Description 6", "", "", "Rs 15,599/-", "Offers"));
+        productlist.add (new SwiggyProduct (false, 7, "Name 7", "", "Dental Equipments", "", "Rs 18,399/-", "Offers"));
+        productlist.add (new SwiggyProduct (false, 8, "Name 8", "Description 8 askj kas  kja sdkj asdkj asdkj asdkj asdkja sdkja sdkj asdkj askdj askddj ask dakj sjd aks dkja sdk asd lk sadksadkj asdk as", "", "", "Rs 12,230/-", "Offers"));
+        productlist.add (new SwiggyProduct (false, 9, "Name 9", "", "Dental Equipments", "", "Rs 499/-", "Offers"));
+        productlist.add (new SwiggyProduct (false, 10, "Name 10", "Description 10", "", "", "Rs 1,499/-", "Offers"));
         
         swiggyProductAdapter = new SwiggyProductAdapter (SwiggyBrandDetailActivity.this, productlist);
         rvProducts.setAdapter (swiggyProductAdapter);
         rvProducts.setHasFixedSize (true);
         rvProducts.setLayoutManager (new LinearLayoutManager (SwiggyBrandDetailActivity.this, LinearLayoutManager.VERTICAL, false));
         rvProducts.setItemAnimator (new DefaultItemAnimator ());
-        
+        rvProducts.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         
         swiggyRecommendProductAdapter = new SwiggyRecommendProductAdapter (SwiggyBrandDetailActivity.this, recommendedlist);
         rvRecommended.setAdapter (swiggyRecommendProductAdapter);
         rvRecommended.setHasFixedSize (true);
         rvRecommended.setLayoutManager (new GridLayoutManager (SwiggyBrandDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
         rvRecommended.setItemAnimator (new DefaultItemAnimator ());
-        
-        
+        rvRecommended.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                (int) Utils.pxFromDp (this, 16),
+                2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+    
         CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams ();
         AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior ();
         if (behavior != null) {

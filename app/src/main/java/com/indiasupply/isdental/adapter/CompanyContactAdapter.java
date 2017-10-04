@@ -333,7 +333,7 @@ public class CompanyContactAdapter extends RecyclerView.Adapter<CompanyContactAd
             rlPhone1 = (RelativeLayout) view.findViewById (R.id.rlPhone1);
             rlPhone2 = (RelativeLayout) view.findViewById (R.id.rlPhone2);
             rlTime = (RelativeLayout) view.findViewById (R.id.rlTime);
-            rlEmail = (RelativeLayout) view.findViewById (R.id.rlEmail);
+            rlEmail = (RelativeLayout) view.findViewById (R.id.rlButtons);
             rlWebsite = (RelativeLayout) view.findViewById (R.id.rlWebsite);
             rlAddress = (RelativeLayout) view.findViewById (R.id.rlAddress);
             view.setOnClickListener (this);

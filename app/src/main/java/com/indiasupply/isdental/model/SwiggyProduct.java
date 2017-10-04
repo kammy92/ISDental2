@@ -4,12 +4,12 @@ package com.indiasupply.isdental.model;
  * Created by sud on 27/9/17.
  */
 
-public class Product {
+public class SwiggyProduct {
     boolean recommended;
     int id;
     String name, description, category, image, price, type;
     
-    public Product (boolean recommended, int id, String name, String description, String category, String image, String price, String type) {
+    public SwiggyProduct (boolean recommended, int id, String name, String description, String category, String image, String price, String type) {
         this.recommended = recommended;
         this.id = id;
         this.name = name;

@@ -1,6 +1,7 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,9 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.SwiggyBanner;
+import com.indiasupply.isdental.activity.SwiggyEventDetailActivity;
+import com.indiasupply.isdental.model.SwiggyEvent;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -24,34 +27,33 @@ import java.util.List;
  * Created by l on 26/09/2017.
  */
 
-public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapter.ViewHolder> {
-    SwiggyBannerAdapter.OnItemClickListener mItemClickListener;
+public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.ViewHolder> {
+    SwiggyEventAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyBanner> swiggyBannerList = new ArrayList<> ();
+    private List<SwiggyEvent> swiggyEventList = new ArrayList<> ();
     
-    public SwiggyBannerAdapter (Activity activity, List<SwiggyBanner> swiggyBannerList) {
+    public SwiggyEventAdapter (Activity activity, List<SwiggyEvent> swiggyEventList) {
         this.activity = activity;
-        this.swiggyBannerList = swiggyBannerList;
+        this.swiggyEventList = swiggyEventList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_banner, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_event, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
-    public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyBanner product = swiggyBannerList.get (position);
-    
-        Utils.setTypefaceToAllViews (activity, holder.tvProductType);
-//        holder.tvProductType.setTypeface (SetTypeFace.getTypeface (activity));
-    
-        holder.tvProductType.setText (product.getTitle ());
+    public void onBindViewHolder (final ViewHolder holder, int position) {
+        final SwiggyEvent event = swiggyEventList.get (position);
+        Utils.setTypefaceToAllViews (activity, holder.tvEventName);
+        
+        holder.tvEventName.setText (event.getName ());
+        holder.tvEventDetails.setText (event.getDate () + ", " + event.getLocation ());
         
         Glide.with (activity)
-                .load (product.getImage_url ())
+                .load (event.getImage_url ())
                 .listener (new RequestListener<String, GlideDrawable> () {
                     @Override
                     public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -65,17 +67,15 @@ public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapte
                         return false;
                     }
                 })
-                .into (holder.ivProductLogo);
-        
-        
+                .into (holder.ivEventImage);
     }
     
     @Override
     public int getItemCount () {
-        return swiggyBannerList.size ();
+        return swiggyEventList.size ();
     }
     
-    public void SetOnItemClickListener (final SwiggyBannerAdapter.OnItemClickListener mItemClickListener) {
+    public void SetOnItemClickListener (final SwiggyEventAdapter.OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
     
@@ -84,27 +84,27 @@ public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapte
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvProductType;
-        ImageView ivProductLogo;
+        TextView tvEventName;
+        TextView tvEventDetails;
+        ImageView ivEventImage;
         ProgressBar progressBar;
-        
         
         public ViewHolder (View view) {
             super (view);
-            tvProductType = (TextView) view.findViewById (R.id.tvBannerTitle);
-            ivProductLogo = (ImageView) view.findViewById (R.id.ivProduct);
+            tvEventDetails = (TextView) view.findViewById (R.id.tvEventDetails);
+            tvEventName = (TextView) view.findViewById (R.id.tvEventName);
+            ivEventImage = (ImageView) view.findViewById (R.id.ivEventImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
-            
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
-           /* Company company = companyList.get (getLayoutPosition ());
-            Intent intent = new Intent (activity, CompanyDetailActivity.class);
-            intent.putExtra (AppConfigTags.COMPANY_ID, company.getId ());
+            SwiggyEvent event = swiggyEventList.get (getLayoutPosition ());
+            Intent intent = new Intent (activity, SwiggyEventDetailActivity.class);
+            intent.putExtra (AppConfigTags.EVENT_ID, event.getId ());
             activity.startActivity (intent);
-            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);*/
+            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 }
