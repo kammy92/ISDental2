@@ -19,7 +19,7 @@
         android:layout_alignTop="@+id/ivCancel"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Exhibitors"
+        android:text="Floor Plan"
         android:textColor="@color/primary_text2"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
@@ -57,7 +57,7 @@
         android:layout_below="@+id/rlSearch"
         android:background="@color/text_color_grey_light2"/>
 
-    <it.sephiroth.android.library.imagezoom.ImageViewTouch
+    <com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView
         android:id="@+id/ivFloorPlan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

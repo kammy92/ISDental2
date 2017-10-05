@@ -24,8 +24,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.adapter.SwiggyEventSpeakerAdapter;
-import com.indiasupply.isdental.model.SwiggyEventSpeaker;
+import com.indiasupply.isdental.adapter.SwiggyEventExhibitorAdapter;
+import com.indiasupply.isdental.model.SwiggyEventExhibitor;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -34,9 +34,9 @@ import java.util.List;
 
 public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     RecyclerView rvExhibitor;
-    List<SwiggyEventSpeaker> exhibitorList = new ArrayList<> ();
+    List<SwiggyEventExhibitor> exhibitorList = new ArrayList<> ();
     LinearLayoutManager linearLayoutManager;
-    SwiggyEventSpeakerAdapter speakerAdapter;
+    SwiggyEventExhibitorAdapter exhibitorAdapter;
     
     ImageView ivCancel;
     ImageView ivSearch;
@@ -140,13 +140,13 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
-        
-        exhibitorList.add (new SwiggyEventSpeaker (1, "3M ESPE", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-31"));
-        exhibitorList.add (new SwiggyEventSpeaker (2, "DEURR DENTAL", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "H-Island"));
-        exhibitorList.add (new SwiggyEventSpeaker (3, "CHESA", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "B-3, B-4"));
-        exhibitorList.add (new SwiggyEventSpeaker (4, "WOODPECKER", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-20"));
-        speakerAdapter = new SwiggyEventSpeakerAdapter (getActivity (), exhibitorList);
-        rvExhibitor.setAdapter (speakerAdapter);
+    
+        exhibitorList.add (new SwiggyEventExhibitor (1, "3M ESPE", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-31"));
+        exhibitorList.add (new SwiggyEventExhibitor (2, "DEURR DENTAL", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "H-Island"));
+        exhibitorList.add (new SwiggyEventExhibitor (3, "CHESA", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "B-3, B-4"));
+        exhibitorList.add (new SwiggyEventExhibitor (4, "WOODPECKER", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-20"));
+        exhibitorAdapter = new SwiggyEventExhibitorAdapter (getActivity (), exhibitorList);
+        rvExhibitor.setAdapter (exhibitorAdapter);
         rvExhibitor.setHasFixedSize (true);
         rvExhibitor.setLayoutManager (linearLayoutManager);
         rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
@@ -170,7 +170,7 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
                             ivSearch.setVisibility (View.VISIBLE);
                             etSearch.setText ("");
                         }
-                    }, 300);
+                    }, 600);
                     final Handler handler2 = new Handler ();
                     handler2.postDelayed (new Runnable () {
                         @Override
@@ -178,7 +178,7 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
                             final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
                         }
-                    }, 600);
+                    }, 300);
                     rlSearch.setVisibility (View.GONE);
                 } else {
                     getDialog ().dismiss ();
