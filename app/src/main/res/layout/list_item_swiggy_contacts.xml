@@ -25,6 +25,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="@dimen/activity_margin">
         <TextView
             android:id="@+id/tvCompanyName"
@@ -51,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/tvCompanyCategory"
-            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_marginTop="@dimen/activity_margin_small"
             android:background="#f5f5f5"/>
 
 

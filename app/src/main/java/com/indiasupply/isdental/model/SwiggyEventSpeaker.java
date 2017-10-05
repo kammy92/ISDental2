@@ -4,11 +4,11 @@ package com.indiasupply.isdental.model;
  * Created by sud on 3/10/17.
  */
 
-public class SwiggySpeaker {
+public class SwiggyEventSpeaker {
     int id;
     String name, image, qualification;
     
-    public SwiggySpeaker (int id, String name, String image, String qualification) {
+    public SwiggyEventSpeaker (int id, String name, String image, String qualification) {
         this.id = id;
         this.name = name;
         this.image = image;

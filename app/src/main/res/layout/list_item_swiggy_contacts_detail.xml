@@ -60,6 +60,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             app:sparkbutton_activeImage="@drawable/ic_star3"
+            app:sparkbutton_animationSpeed="0.7"
             app:sparkbutton_iconSize="20dp"
             app:sparkbutton_inActiveImage="@drawable/ic_star2"
             app:sparkbutton_primaryColor="@color/primary"

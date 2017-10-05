@@ -1,0 +1,212 @@
+package com.indiasupply.isdental.fragment;
+
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.adapter.SwiggyEventSpeakerAdapter;
+import com.indiasupply.isdental.model.SwiggyEventSpeaker;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
+    RecyclerView rvExhibitor;
+    List<SwiggyEventSpeaker> exhibitorList = new ArrayList<> ();
+    LinearLayoutManager linearLayoutManager;
+    SwiggyEventSpeakerAdapter speakerAdapter;
+    
+    ImageView ivCancel;
+    ImageView ivSearch;
+    TextView tvTitle;
+    RelativeLayout rlSearch;
+    EditText etSearch;
+    
+    @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate (savedInstanceState);
+        setStyle (DialogFragment.STYLE_NORMAL, R.style.AppTheme);
+    }
+    
+    @Override
+    public void onActivityCreated (Bundle arg0) {
+        super.onActivityCreated (arg0);
+        Window window = getDialog ().getWindow ();
+        window.getAttributes ().windowAnimations = R.style.DialogAnimation;
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor (ContextCompat.getColor (getActivity (), R.color.text_color_white));
+        }
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        getDialog ().setOnKeyListener (new DialogInterface.OnKeyListener () {
+            @Override
+            public boolean onKey (android.content.DialogInterface dialog, int keyCode, android.view.KeyEvent event) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+                    //This is the filter
+                    if (event.getAction () != KeyEvent.ACTION_UP)
+                        return true;
+                    else {
+                        if (rlSearch.getVisibility () == View.VISIBLE) {
+                            final Handler handler = new Handler ();
+                            handler.postDelayed (new Runnable () {
+                                @Override
+                                public void run () {
+                                    ivSearch.setVisibility (View.VISIBLE);
+                                    etSearch.setText ("");
+                                }
+                            }, 300);
+                            final Handler handler2 = new Handler ();
+                            handler2.postDelayed (new Runnable () {
+                                @Override
+                                public void run () {
+                                    final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
+                                }
+                            }, 600);
+                            rlSearch.setVisibility (View.GONE);
+                        } else {
+                            getDialog ().dismiss ();
+                        }
+                        //Hide your keyboard here!!!!!!
+                        return true; // pretend we've processed it
+                    }
+                } else
+                    return false; // pass on to be processed as normal
+            }
+        });
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        Dialog d = getDialog ();
+        if (d != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            d.getWindow ().setLayout (width, height);
+        }
+    }
+    
+    @Override
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_exhibitors, container, false);
+        initView (root);
+        initBundle ();
+        initData ();
+        initListener ();
+        return root;
+    }
+    
+    private void initView (View root) {
+        tvTitle = (TextView) root.findViewById (R.id.tvTitle);
+        rvExhibitor = (RecyclerView) root.findViewById (R.id.rvExhibitors);
+        ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
+        ivSearch = (ImageView) root.findViewById (R.id.ivSearch);
+        etSearch = (EditText) root.findViewById (R.id.etSearch);
+        rlSearch = (RelativeLayout) root.findViewById (R.id.rlSearch);
+        
+    }
+    
+    private void initBundle () {
+    }
+    
+    private void initData () {
+        Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+        linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
+        
+        exhibitorList.add (new SwiggyEventSpeaker (1, "3M ESPE", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-31"));
+        exhibitorList.add (new SwiggyEventSpeaker (2, "DEURR DENTAL", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "H-Island"));
+        exhibitorList.add (new SwiggyEventSpeaker (3, "CHESA", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "B-3, B-4"));
+        exhibitorList.add (new SwiggyEventSpeaker (4, "WOODPECKER", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-20"));
+        speakerAdapter = new SwiggyEventSpeakerAdapter (getActivity (), exhibitorList);
+        rvExhibitor.setAdapter (speakerAdapter);
+        rvExhibitor.setHasFixedSize (true);
+        rvExhibitor.setLayoutManager (linearLayoutManager);
+        rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
+        rvExhibitor.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    }
+    
+    private void initListener () {
+        ivCancel.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (rlSearch.getVisibility () == View.VISIBLE) {
+                    final Handler handler = new Handler ();
+                    handler.postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivSearch.setVisibility (View.VISIBLE);
+                            etSearch.setText ("");
+                        }
+                    }, 300);
+                    final Handler handler2 = new Handler ();
+                    handler2.postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
+                        }
+                    }, 600);
+                    rlSearch.setVisibility (View.GONE);
+                } else {
+                    getDialog ().dismiss ();
+                }
+            }
+        });
+        ivSearch.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                final Handler handler = new Handler ();
+                handler.postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        ivSearch.setVisibility (View.GONE);
+                        etSearch.requestFocus ();
+                    }
+                }, 300);
+                final Handler handler2 = new Handler ();
+                handler2.postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    }
+                }, 600);
+                rlSearch.setVisibility (View.VISIBLE);
+            }
+        });
+    }
+    
+}

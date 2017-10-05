@@ -18,7 +18,8 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventSpeakerAdapter;
-import com.indiasupply.isdental.model.SwiggySpeaker;
+import com.indiasupply.isdental.model.SwiggyEventSpeaker;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     RecyclerView rvSpeakerList;
-    List<SwiggySpeaker> speakerList = new ArrayList<> ();
+    List<SwiggyEventSpeaker> speakerList = new ArrayList<> ();
     LinearLayoutManager linearLayoutManager;
     SwiggyEventSpeakerAdapter speakerAdapter;
     
@@ -64,7 +65,7 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_speakers, container, false);
+        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_speakers, container, false);
         initView (root);
         initBundle ();
         initData ();
@@ -84,18 +85,22 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
-        
-        speakerList.add (new SwiggySpeaker (1, "Dr.Zakir Khan", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg", "9 Fail"));
-        speakerList.add (new SwiggySpeaker (2, "Dr.Zakir Nayak", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "10 Fail"));
-        speakerList.add (new SwiggySpeaker (3, "Dr.Salman khursheed", "http://famdent.indiasupply.com/isdental/api/images/brands/brand3.jpg", "11 Fail"));
-        speakerList.add (new SwiggySpeaker (4, "Dr.Usama", "http://famdent.indiasupply.com/isdental/api/images/brands/brand3.jpg", "12 Fail"));
+    
+        speakerList.add (new SwiggyEventSpeaker (1, "Dr. Mohammad Atta", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "9 Fail"));
+        speakerList.add (new SwiggyEventSpeaker (2, "Dr. Zakir Nayak", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "10 Fail"));
+        speakerList.add (new SwiggyEventSpeaker (3, "Dr. Abu Baghdadi", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "11 Fail"));
+        speakerList.add (new SwiggyEventSpeaker (4, "Dr. Osama Bin Laden", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "12 Fail"));
         speakerAdapter = new SwiggyEventSpeakerAdapter (getActivity (), speakerList);
         rvSpeakerList.setAdapter (speakerAdapter);
         rvSpeakerList.setHasFixedSize (true);
         rvSpeakerList.setLayoutManager (linearLayoutManager);
         rvSpeakerList.setItemAnimator (new DefaultItemAnimator ());
-        LinearLayoutManager layoutManager = ((LinearLayoutManager) rvSpeakerList.getLayoutManager ());
-//            tvTitle.setText ("Recommended 1/" + speakerList.size ());
+        rvSpeakerList.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {

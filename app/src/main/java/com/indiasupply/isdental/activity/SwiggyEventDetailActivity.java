@@ -16,6 +16,10 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventItemAdapter;
+import com.indiasupply.isdental.fragment.SwiggyEventExhibitorDialogFragment;
+import com.indiasupply.isdental.fragment.SwiggyEventFloorPlanDialogFragment;
+import com.indiasupply.isdental.fragment.SwiggyEventInformationDialogFragment;
+import com.indiasupply.isdental.fragment.SwiggyEventRegistrationsDialogFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventSpeakerDialogFragment;
 import com.indiasupply.isdental.model.SwiggyEventItem;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
@@ -61,24 +65,30 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick (View view, int position) {
                 SwiggyEventItem eventItem = swiggyEventItemList.get (position);
+                FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 switch (eventItem.getId ()) {
                     case 1:
                         Utils.showToast (SwiggyEventDetailActivity.this, "ID 1", false);
                         break;
                     case 2:
-                        FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-                        SwiggyEventSpeakerDialogFragment frag = new SwiggyEventSpeakerDialogFragment ();
-                        frag.show (ft, "2");
-                        Utils.showToast (SwiggyEventDetailActivity.this, "ID 2", false);
+                        SwiggyEventSpeakerDialogFragment frag2 = new SwiggyEventSpeakerDialogFragment ();
+                        frag2.show (ft, "2");
                         break;
                     case 3:
-                        Utils.showToast (SwiggyEventDetailActivity.this, "ID 3", false);
+                        SwiggyEventExhibitorDialogFragment frag3 = new SwiggyEventExhibitorDialogFragment ();
+                        frag3.show (ft, "2");
                         break;
                     case 4:
-                        Utils.showToast (SwiggyEventDetailActivity.this, "ID 4", false);
+                        SwiggyEventFloorPlanDialogFragment frag4 = new SwiggyEventFloorPlanDialogFragment ();
+                        frag4.show (ft, "2");
                         break;
                     case 5:
-                        Utils.showToast (SwiggyEventDetailActivity.this, "ID 5", false);
+                        SwiggyEventInformationDialogFragment frag5 = new SwiggyEventInformationDialogFragment ();
+                        frag5.show (ft, "2");
+                        break;
+                    case 6:
+                        SwiggyEventRegistrationsDialogFragment frag6 = new SwiggyEventRegistrationsDialogFragment ();
+                        frag6.show (ft, "2");
                         break;
                 }
             }
@@ -94,18 +104,18 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
         
-        
         swiggyEventItemList.add (new SwiggyEventItem (1, R.drawable.ic_information, "EVENT SCHEDULE"));
         swiggyEventItemList.add (new SwiggyEventItem (2, R.drawable.ic_information, "SPEAKERS"));
         swiggyEventItemList.add (new SwiggyEventItem (3, R.drawable.ic_information, "EXHIBITORS"));
         swiggyEventItemList.add (new SwiggyEventItem (4, R.drawable.ic_information, "FLOOR PLAN"));
         swiggyEventItemList.add (new SwiggyEventItem (5, R.drawable.ic_information, "GENERAL INFORMATION"));
-        
+        swiggyEventItemList.add (new SwiggyEventItem (6, R.drawable.ic_information, "REGISTRATIONS"));
+    
         swiggyEventItemAdapter = new SwiggyEventItemAdapter (SwiggyEventDetailActivity.this, swiggyEventItemList);
         rvEventItems.setAdapter (swiggyEventItemAdapter);
         rvEventItems.setHasFixedSize (true);
         GridLayoutManager lm = new GridLayoutManager (SwiggyEventDetailActivity.this, 2, GridLayoutManager.VERTICAL, false);
-        lm.setSpanSizeLookup (new MySizeLookup ());
+//        lm.setSpanSizeLookup (new MySizeLookup ());
         rvEventItems.setLayoutManager (lm);
         rvEventItems.setItemAnimator (new DefaultItemAnimator ());
         rvEventItems.addItemDecoration (new RecyclerViewMargin (
