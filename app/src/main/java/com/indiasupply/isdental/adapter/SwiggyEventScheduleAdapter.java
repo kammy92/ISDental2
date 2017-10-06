@@ -5,9 +5,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.SwiggyEventSchedule;
 import com.indiasupply.isdental.utils.Utils;
@@ -38,13 +43,39 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyEventSchedule swiggyEventSchedule = swiggyEventList.get (position);
-        
-        Utils.setTypefaceToAllViews (activity, holder.tvDateTime);
-        
-        holder.tvDateTime.setText (swiggyEventSchedule.getStart_time () + "-" + swiggyEventSchedule.getEnd_time ());
-        holder.tvEventName.setText (swiggyEventSchedule.getDescription ());
-        holder.tvEventLocation.setText (swiggyEventSchedule.getLocation ());
+        final SwiggyEventSchedule eventSchedule = swiggyEventList.get (position);
+    
+        Utils.setTypefaceToAllViews (activity, holder.tvEventTiming);
+    
+        holder.tvEventTiming.setText (eventSchedule.getStart_time () + " - " + eventSchedule.getEnd_time ());
+        holder.tvEventName.setText (eventSchedule.getDescription ());
+        holder.tvEventLocation.setText (eventSchedule.getLocation ());
+    
+    
+        if (eventSchedule.getImage ().length () == 0) {
+            holder.ivEventImage.setImageResource (eventSchedule.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+//                holder.progressBar.setVisibility (View.VISIBLE);
+            Glide.with (activity)
+                    .load (eventSchedule.getImage ())
+//                    .placeholder (eventSchedule.getIcon ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (eventSchedule.getIcon ())
+                    .into (holder.ivEventImage);
+        }
     }
     
     @Override
@@ -61,18 +92,19 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvDateTime;
+        TextView tvEventTiming;
         TextView tvEventName;
         TextView tvEventLocation;
-        
+        ImageView ivEventImage;
+    
         ProgressBar progressBar;
         
         public ViewHolder (View view) {
             super (view);
-            tvDateTime = (TextView) view.findViewById (R.id.tvDateTime);
+            tvEventTiming = (TextView) view.findViewById (R.id.tvEventTiming);
             tvEventName = (TextView) view.findViewById (R.id.tvEventName);
             tvEventLocation = (TextView) view.findViewById (R.id.tvEventLocation);
-            
+            ivEventImage = (ImageView) view.findViewById (R.id.ivEventSchedule);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }

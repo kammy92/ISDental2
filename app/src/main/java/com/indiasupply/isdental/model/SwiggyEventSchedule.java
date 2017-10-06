@@ -5,16 +5,42 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyEventSchedule {
-    int id;
-    String start_time, end_time, description, location;
+    int id, icon;
+    String start_time, end_time, description, location, image, date;
     
-    
-    public SwiggyEventSchedule (int id, String start_time, String end_time, String description, String location) {
+    public SwiggyEventSchedule (int id, int icon, String date, String start_time, String end_time, String description, String location, String image) {
         this.id = id;
+        this.icon = icon;
         this.start_time = start_time;
         this.end_time = end_time;
         this.description = description;
         this.location = location;
+        this.image = image;
+        this.date = date;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
+    }
+    
+    public String getImage () {
+        return image;
+    }
+    
+    public void setImage (String image) {
+        this.image = image;
+    }
+    
+    public String getDate () {
+        return date;
+    }
+    
+    public void setDate (String date) {
+        this.date = date;
     }
     
     public int getId () {

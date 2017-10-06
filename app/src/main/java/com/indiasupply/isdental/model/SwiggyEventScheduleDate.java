@@ -3,23 +3,32 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyEventScheduleDate {
     boolean selected;
-    int id;
-    String logo, date;
+    int id, icon;
+    String logo, date, title;
     
-    public SwiggyEventScheduleDate (int id, String logo, String date) {
+    public SwiggyEventScheduleDate (boolean selected, int id, int icon, String date, String title, String logo) {
+        this.selected = selected;
         this.id = id;
+        this.icon = icon;
         this.logo = logo;
-        this.date = date;
-        
-    }
-    
-    public SwiggyEventScheduleDate (int id, String date) {
-        
-        this.id = id;
+        this.title = title;
         this.date = date;
     }
     
-    public SwiggyEventScheduleDate () {
+    public String getTitle () {
+        return title;
+    }
+    
+    public void setTitle (String title) {
+        this.title = title;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public String getDate () {
@@ -53,6 +62,4 @@ public class SwiggyEventScheduleDate {
     public void setLogo (String logo) {
         this.logo = logo;
     }
-    
-    
 }

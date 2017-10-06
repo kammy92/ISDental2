@@ -4,21 +4,38 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="100dp"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_margin_small"
     android:orientation="vertical">
-    <ImageView
-        android:id="@+id/ivDate"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/activity_margin_small"
-        android:src="@drawable/famdent_logo"/>
+
+    <RelativeLayout
+        android:id="@+id/rl1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/ivDate"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/activity_margin_small"
+            android:src="@drawable/famdent_logo"/>
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivDate"
+        android:layout_below="@+id/rl1"
         android:ellipsize="end"
         android:gravity="center"
         android:lines="1"

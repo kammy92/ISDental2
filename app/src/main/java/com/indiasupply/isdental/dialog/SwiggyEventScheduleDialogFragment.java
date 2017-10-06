@@ -16,13 +16,19 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventScheduleAdapter;
 import com.indiasupply.isdental.model.SwiggyEventSchedule;
 import com.indiasupply.isdental.model.SwiggyEventScheduleDate;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -38,6 +44,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     
     List<SwiggyEventScheduleDate> swiggyEventScheduleDateList = new ArrayList<> ();
     List<SwiggyEventSchedule> swiggyEventSchedules = new ArrayList<> ();
+    List<SwiggyEventSchedule> swiggyEventScheduleTemp = new ArrayList<> ();
     
     //    String contact_name;
 //    int contact_id;
@@ -113,11 +120,12 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     }
     
     private void initData () {
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (1, "05/10/2017"));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (2, "06/10/2017"));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (3, "07/10/2017"));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (4, "08/10/2017"));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (5, "09/10/2017"));
+        Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (true, 1, R.drawable.ic_date, "2017-10-05", "05/10/2017", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 2, R.drawable.ic_date, "2017-10-06", "06/10/2017", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 3, R.drawable.ic_date, "2017-10-07", "07/10/2017", ""));
+        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 4, R.drawable.ic_date, "2017-10-08", "08/10/2017", "http://famdent.indiasupply.com/isdental/api/images/con"));
+        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 5, R.drawable.ic_date, "2017-10-09", "09/10/2017", ""));
         
         
         eventDayAdapter = new EventDayAdapter (getActivity (), swiggyEventScheduleDateList);
@@ -125,22 +133,25 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         rvDayList.setHasFixedSize (true);
         rvDayList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
         rvDayList.setItemAnimator (new DefaultItemAnimator ());
-        
-        
-        swiggyEventSchedules.add (new SwiggyEventSchedule (1, "16:40", "17:40", "Event Name1", "Actiknow business"));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (2, "06:40", "07:40", "Event Name2", "Actiknow business"));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (3, "07:40", "08:40", "Event Name3", "Actiknow business"));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (4, "05:40", "07:40", "Event Name4", "Actiknow business"));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (5, "16:40", "17:40", "Event Name5", "Actiknow business"));
-        
-        
-        swiggyEventScheduleAdapter = new SwiggyEventScheduleAdapter (getActivity (), swiggyEventSchedules);
-        rvEventList.setAdapter (swiggyEventScheduleAdapter);
-        rvEventList.setHasFixedSize (true);
-        rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rvEventList.setItemAnimator (new DefaultItemAnimator ());
-        
-        
+        rvDayList.addItemDecoration (new RecyclerViewMargin (
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                (int) Utils.pxFromDp (getActivity (), 16),
+                0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
+    
+    
+        swiggyEventSchedules.add (new SwiggyEventSchedule (1, R.drawable.ic_date, "2017-10-05", "16:40", "17:40", "Event Name1", "New Delhi", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (2, R.drawable.ic_date, "2017-10-05", "06:40", "07:40", "Event Name2", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-05", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-08", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
     }
     
     private void initListener () {
@@ -152,7 +163,9 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         });
     }
     
+    
     public class EventDayAdapter extends RecyclerView.Adapter<EventDayAdapter.ViewHolder> {
+        boolean exception = false;
         private Activity activity;
         private List<SwiggyEventScheduleDate> dayList = new ArrayList<> ();
         
@@ -169,17 +182,57 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         }
         
         @Override
-        public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+        public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
             final SwiggyEventScheduleDate eventDay = dayList.get (position);
             Utils.setTypefaceToAllViews (activity, holder.tvDate);
             holder.tvDate.setText (eventDay.getDate ());
+    
+            if (eventDay.isSelected ()) {
+                swiggyEventScheduleTemp.clear ();
+            }
+    
+            for (int i = 0; i < swiggyEventSchedules.size (); i++) {
+                SwiggyEventSchedule eventSchedule = swiggyEventSchedules.get (i);
+                if (eventDay.getDate ().equalsIgnoreCase (eventSchedule.getDate ()) && eventDay.isSelected ()) {
+                    swiggyEventScheduleTemp.add (eventSchedule);
+                }
+            }
+            
             if (eventDay.isSelected ()) {
                 holder.tvFooterLine.setBackgroundResource (R.color.primary_text2);
+                swiggyEventScheduleAdapter = new SwiggyEventScheduleAdapter (getActivity (), swiggyEventScheduleTemp);
+                rvEventList.setAdapter (swiggyEventScheduleAdapter);
+                rvEventList.setHasFixedSize (true);
+                rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+                rvEventList.setItemAnimator (new DefaultItemAnimator ());
             } else {
                 holder.tvFooterLine.setBackgroundResource (android.R.color.transparent);
             }
-
-//            Glide.with(activity).load(eventDay.getLogo()).into(holder.ivDate);
+    
+            if (eventDay.getLogo ().length () == 0) {
+                holder.ivDate.setImageResource (eventDay.getIcon ());
+                holder.progressBar.setVisibility (View.GONE);
+            } else {
+//                holder.progressBar.setVisibility (View.VISIBLE);
+                Glide.with (activity)
+                        .load (eventDay.getLogo ())
+                        .placeholder (eventDay.getIcon ())
+                        .listener (new RequestListener<String, GlideDrawable> () {
+                            @Override
+                            public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                                holder.progressBar.setVisibility (View.GONE);
+                                return false;
+                            }
+                    
+                            @Override
+                            public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                                holder.progressBar.setVisibility (View.GONE);
+                                return false;
+                            }
+                        })
+                        .error (eventDay.getIcon ())
+                        .into (holder.ivDate);
+            }
         }
         
         @Override
@@ -192,6 +245,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
             ImageView ivDate;
             TextView tvFooterLine;
             RelativeLayout rlItem;
+            ProgressBar progressBar;
             
             public ViewHolder (View view) {
                 super (view);
@@ -199,6 +253,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
                 tvFooterLine = (TextView) view.findViewById (R.id.tvFooterLine);
                 ivDate = (ImageView) view.findViewById (R.id.ivDate);
                 rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);
+                progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
                 view.setOnClickListener (this);
             }
             
@@ -215,5 +270,4 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
             }
         }
     }
-    
 }
