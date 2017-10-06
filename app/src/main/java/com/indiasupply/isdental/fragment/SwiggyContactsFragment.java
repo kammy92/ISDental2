@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyContactAdapter;
+import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyContacts;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;

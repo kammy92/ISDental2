@@ -5,11 +5,12 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyMyAccountItem {
-    int id;
+    int id, icon;
     String title, image, description;
     
-    public SwiggyMyAccountItem (int id, String title, String image, String description) {
+    public SwiggyMyAccountItem (int id, int icon, String title, String description, String image) {
         this.id = id;
+        this.icon = icon;
         this.title = title;
         this.image = image;
         this.description = description;
@@ -21,6 +22,14 @@ public class SwiggyMyAccountItem {
     
     public void setId (int id) {
         this.id = id;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public String getTitle () {

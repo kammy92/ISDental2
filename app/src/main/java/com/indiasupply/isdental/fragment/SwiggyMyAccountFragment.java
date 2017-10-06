@@ -17,12 +17,10 @@ import com.indiasupply.isdental.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class SwiggyMyAccountFragment extends Fragment {
-    RecyclerView rv1;
+    RecyclerView rvMyAccount;
     List<SwiggyMyAccountItem> myAccountItemList = new ArrayList<> ();
     SwiggyMyAccountItemAdapter myAccountItemAdapter;
-    
     
     public static SwiggyMyAccountFragment newInstance () {
         SwiggyMyAccountFragment fragment = new SwiggyMyAccountFragment ();
@@ -44,23 +42,23 @@ public class SwiggyMyAccountFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rv1 = (RecyclerView) rootView.findViewById (R.id.rvEvents);
+        rvMyAccount = (RecyclerView) rootView.findViewById (R.id.rvMyAccount);
     }
     
     private void initData () {
-        Utils.setTypefaceToAllViews (getActivity (), rv1);
-        rv1.setNestedScrollingEnabled (false);
-        
-        myAccountItemList.add (new SwiggyMyAccountItem (1, "", "http://famdent.indiasupply.com/isdental/ai.jpg", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (1, "", "http://famdent.indiasupply.com/isdental/ai.jpg", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (1, "", "http://famdent.indiasupply.com/isdental/ai.jpg", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (1, "", "http://famdent.indiasupply.com/isdental/ai.jpg", ""));
+        Utils.setTypefaceToAllViews (getActivity (), rvMyAccount);
+        rvMyAccount.setNestedScrollingEnabled (false);
+    
+        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_favourite, "My Favourites", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_favourite, "Offers", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_favourite, "Terms of Use", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (4, R.drawable.ic_favourite, "Privacy Policy", "", ""));
         
         myAccountItemAdapter = new SwiggyMyAccountItemAdapter (getActivity (), myAccountItemList);
-        rv1.setAdapter (myAccountItemAdapter);
-        rv1.setHasFixedSize (true);
-        rv1.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rv1.addItemDecoration (new RecyclerViewMargin (
+        rvMyAccount.setAdapter (myAccountItemAdapter);
+        rvMyAccount.setHasFixedSize (true);
+        rvMyAccount.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvMyAccount.addItemDecoration (new RecyclerViewMargin (
                 (int) Utils.pxFromDp (getActivity (), 16),
                 (int) Utils.pxFromDp (getActivity (), 16),
                 (int) Utils.pxFromDp (getActivity (), 16),

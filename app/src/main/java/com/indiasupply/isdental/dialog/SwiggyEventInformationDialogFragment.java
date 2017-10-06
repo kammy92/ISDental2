@@ -1,4 +1,4 @@
-package com.indiasupply.isdental.fragment;
+package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,7 +23,7 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.Utils;
 
 
-public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
+public class SwiggyEventInformationDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     WebView webView;
@@ -62,7 +62,7 @@ public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_registration, container, false);
+        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_information, container, false);
         
         initView (root);
         initBundle ();

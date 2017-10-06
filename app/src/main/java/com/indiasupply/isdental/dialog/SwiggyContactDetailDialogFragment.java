@@ -1,4 +1,4 @@
-package com.indiasupply.isdental.fragment;
+package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;

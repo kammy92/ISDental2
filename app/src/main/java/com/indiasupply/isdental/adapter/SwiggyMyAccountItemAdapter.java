@@ -44,23 +44,33 @@ public class SwiggyMyAccountItemAdapter extends RecyclerView.Adapter<SwiggyMyAcc
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final SwiggyMyAccountItem swiggyMyAccountItem = serviceItemList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvServiceTitle);
-        
-        Glide.with (activity)
-                .load (swiggyMyAccountItem.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (swiggyMyAccountItem.getDescription ().length () > 0) {
+            holder.tvServiceDescription.setVisibility (View.VISIBLE);
+        }
+    
+        if (swiggyMyAccountItem.getImage ().length () == 0) {
+            holder.ivServiceIcon.setImageResource (swiggyMyAccountItem.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (swiggyMyAccountItem.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.ivServiceIcon.setImageResource (swiggyMyAccountItem.getIcon ());
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivServiceIcon);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .into (holder.ivServiceIcon);
+        }
         holder.tvServiceTitle.setText (swiggyMyAccountItem.getTitle ());
         holder.tvServiceDescription.setText (swiggyMyAccountItem.getDescription ());
     }
@@ -73,7 +83,6 @@ public class SwiggyMyAccountItemAdapter extends RecyclerView.Adapter<SwiggyMyAcc
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
-    
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);

@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:theme="@style/AppTheme.AppBarOverlay"
-        android:visibility="visible"
+        android:visibility="gone"
         app:elevation="0dp"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
         <android.support.v7.widget.Toolbar
@@ -62,11 +62,90 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/appBar">
-            <
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvServiceHome"
+
+            <RelativeLayout
+                android:id="@+id/rlHeader"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/activity_margin">
+
+                <TextView
+                    android:id="@+id/tvUserName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="KARMAN SINGH"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_extra_large"
+                    android:textStyle="bold"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvUserName"
+                    android:layout_marginTop="@dimen/activity_margin_small">
+                    <TextView
+                        android:id="@+id/tvUserMobile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:text="9873684678"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_extra_small"/>
+
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="1dp"
+                        android:layout_height="1dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/activity_margin_small"
+                        android:layout_marginRight="@dimen/activity_margin_small"
+                        android:layout_toRightOf="@+id/tvUserMobile"
+                        android:background="@color/secondary_text2"/>
+
+                    <TextView
+                        android:id="@+id/tvUserEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/tv1"
+                        android:layout_toRightOf="@+id/tv1"
+                        android:text="karman.singh@actiknowbi.com"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_extra_small"/>
+
+
+                </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/button_background"
+                    android:paddingBottom="@dimen/activity_margin_extra_small"
+                    android:paddingLeft="@dimen/activity_margin_small"
+                    android:paddingRight="@dimen/activity_margin_small"
+                    android:paddingTop="@dimen/activity_margin_extra_small"
+                    android:text="EDIT"
+                    android:textColor="@color/primary_text2"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+            <View
+                android:id="@+id/v1"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_below="@+id/rlHeader"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:background="@color/primary_text2"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvMyAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v1"
+
                 android:clipToPadding="false"
                 android:fillViewport="true"
                 android:overScrollMode="never"

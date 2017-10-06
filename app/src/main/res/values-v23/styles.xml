@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style parent="Theme.AppCompat.Light.NoActionBar" title="AppTheme">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item title="android:actionMenuTextColor">@color/text_color_grey_dark</item>
-        <item title="colorPrimary">@color/colorPrimary</item>
-        <item title="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item title="android:windowLightStatusBar">true</item>
-        <item title="colorAccent">@color/colorAccent</item>
+        <item name="android:actionMenuTextColor">@color/text_color_grey_dark</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

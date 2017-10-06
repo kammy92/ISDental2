@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.fragment.SwiggyProductDetailDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyProductDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 

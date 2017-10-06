@@ -23,6 +23,7 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventFragment;
 import com.indiasupply.isdental.fragment.SwiggyExhibitorsFragment;
+import com.indiasupply.isdental.fragment.SwiggyMyAccountFragment;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -98,7 +99,10 @@ public class SwiggyMainActivity extends AppCompatActivity {
                                 selectedFragment = SwiggyContactsFragment.newInstance ();
                                 break;
                             case R.id.action_item4:
-                                selectedFragment = SwiggyExhibitorsFragment.newInstance ();
+                                selectedFragment = SwiggyMyAccountFragment.newInstance ();
+                                break;
+                            case R.id.action_item5:
+                                selectedFragment = SwiggyMyAccountFragment.newInstance ();
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();

@@ -16,11 +16,12 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventItemAdapter;
-import com.indiasupply.isdental.fragment.SwiggyEventExhibitorDialogFragment;
-import com.indiasupply.isdental.fragment.SwiggyEventFloorPlanDialogFragment;
-import com.indiasupply.isdental.fragment.SwiggyEventInformationDialogFragment;
-import com.indiasupply.isdental.fragment.SwiggyEventRegistrationsDialogFragment;
-import com.indiasupply.isdental.fragment.SwiggyEventSpeakerDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventExhibitorDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventFloorPlanDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventInformationDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventRegistrationsDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventScheduleDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyEventSpeakerDialogFragment;
 import com.indiasupply.isdental.model.SwiggyEventItem;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
@@ -68,7 +69,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 switch (eventItem.getId ()) {
                     case 1:
-                        Utils.showToast (SwiggyEventDetailActivity.this, "ID 1", false);
+                        SwiggyEventScheduleDialogFragment frag1 = new SwiggyEventScheduleDialogFragment ();
+                        frag1.show (ft, "2");
                         break;
                     case 2:
                         SwiggyEventSpeakerDialogFragment frag2 = new SwiggyEventSpeakerDialogFragment ();
