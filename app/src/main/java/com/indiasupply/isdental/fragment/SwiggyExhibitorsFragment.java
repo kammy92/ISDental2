@@ -26,18 +26,17 @@ import java.util.List;
  */
 
 public class SwiggyExhibitorsFragment extends Fragment {
-    RecyclerView rv1;
-    RecyclerView rv2;
-    List<SwiggyBanner> swiggyBannerList = new ArrayList<> ();
-    List<SwiggyBrand> swiggyBrandList = new ArrayList<> ();
-    SwiggyBannerAdapter swiggyBannerAdapter;
-    SwiggyBrandsAdapter swiggyBrandsAdapter;
+    RecyclerView rvBanners;
+    RecyclerView rvBrands;
+    List<SwiggyBanner> bannerList = new ArrayList<> ();
+    List<SwiggyBrand> brandList = new ArrayList<> ();
+    SwiggyBannerAdapter bannerAdapter;
+    SwiggyBrandsAdapter brandsAdapter;
     Button btFilter;
     
     
     public static SwiggyExhibitorsFragment newInstance () {
-        SwiggyExhibitorsFragment fragment = new SwiggyExhibitorsFragment ();
-        return fragment;
+        return new SwiggyExhibitorsFragment ();
     }
     
     @Override
@@ -51,68 +50,35 @@ public class SwiggyExhibitorsFragment extends Fragment {
         initView (rootView);
         initData ();
         initListener ();
+        setData ();
         return rootView;
     }
     
     private void initView (View rootView) {
-        rv1 = (RecyclerView) rootView.findViewById (R.id.rvBannerList);
-        rv2 = (RecyclerView) rootView.findViewById (R.id.rvBrandsList);
+        rvBanners = (RecyclerView) rootView.findViewById (R.id.rvBanners);
+        rvBrands = (RecyclerView) rootView.findViewById (R.id.rvBrands);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
     }
     
     private void initData () {
-        Utils.setTypefaceToAllViews (getActivity (), rv1);
-        
-        rv1.setNestedScrollingEnabled (false);
-        rv2.setNestedScrollingEnabled (false);
-        
-        swiggyBannerList.add (new SwiggyBanner (1, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner1.jpg", "E X P L O R E"));
-        swiggyBannerList.add (new SwiggyBanner (2, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner2.jpg", "O F F E R"));
-        swiggyBannerList.add (new SwiggyBanner (3, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner3.jpg", "D I S C O V E R"));
-        swiggyBannerList.add (new SwiggyBanner (4, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner4.jpg", "I N T R O D U C I N G"));
-        swiggyBannerList.add (new SwiggyBanner (5, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner2.jpg", "O F F E R S"));
-        swiggyBannerList.add (new SwiggyBanner (6, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner1.jpg", "D I S C O V E R"));
-        
-        swiggyBannerAdapter = new SwiggyBannerAdapter (getActivity (), swiggyBannerList);
-        rv1.setAdapter (swiggyBannerAdapter);
-        rv1.setHasFixedSize (true);
-        rv1.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
-        rv1.setItemAnimator (new DefaultItemAnimator ());
-        rv1.addItemDecoration (new RecyclerViewMargin (
-                0,
-                0,
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
-        
-        
-        swiggyBrandList.add (new SwiggyBrand (true, true, 1, "Chesa", "12 CONTACTS", "4.3", "13 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (false, false, 2, "Duerr", "10 CONTACTS", "3.3", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (true, false, 3, "Woodpecker", "8 CONTACTS", "2.7", "10 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (false, true, 4, "Satelec", "20 CONTACTS", "4.9", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (false, true, 5, "MicroNX", "10 CONTACTS", "3.9", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (true, true, 6, "Doctor Smile", "5 CONTACTS", "3.5", "5 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand3.jpg"));
-        swiggyBrandList.add (new SwiggyBrand (false, false, 7, "Vatech", "8 CONTACTS", "4.3", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        
-        
-        swiggyBrandsAdapter = new SwiggyBrandsAdapter (getActivity (), swiggyBrandList);
-        rv2.setAdapter (swiggyBrandsAdapter);
-        rv2.setHasFixedSize (true);
-        rv2.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rv2.setItemAnimator (new DefaultItemAnimator ());
-        rv2.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
-        swiggyBrandsAdapter.SetOnItemClickListener (new SwiggyBrandsAdapter.OnItemClickListener () {
-            @Override
-            public void onItemClick (View view, int position) {
-                Utils.showToast (getActivity (), "position " + position, false);
-            }
-        });
+        Utils.setTypefaceToAllViews (getActivity (), btFilter);
+        rvBanners.setNestedScrollingEnabled (false);
+        rvBrands.setNestedScrollingEnabled (false);
+    
+        bannerAdapter = new SwiggyBannerAdapter (getActivity (), bannerList);
+        brandsAdapter = new SwiggyBrandsAdapter (getActivity (), brandList);
+    
+        rvBanners.setAdapter (bannerAdapter);
+        rvBanners.setHasFixedSize (true);
+        rvBanners.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
+        rvBanners.setItemAnimator (new DefaultItemAnimator ());
+        rvBanners.addItemDecoration (new RecyclerViewMargin (0, 0, (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
+    
+        rvBrands.setAdapter (brandsAdapter);
+        rvBrands.setHasFixedSize (true);
+        rvBrands.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvBrands.setItemAnimator (new DefaultItemAnimator ());
+        rvBrands.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -121,5 +87,24 @@ public class SwiggyExhibitorsFragment extends Fragment {
             public void onClick (View v) {
             }
         });
+    }
+    
+    private void setData () {
+        bannerList.add (new SwiggyBanner (1, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner1.jpg", "E X P L O R E"));
+        bannerList.add (new SwiggyBanner (2, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner2.jpg", "O F F E R"));
+        bannerList.add (new SwiggyBanner (3, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner3.jpg", "D I S C O V E R"));
+        bannerList.add (new SwiggyBanner (4, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner4.jpg", "I N T R O D U C I N G"));
+        bannerList.add (new SwiggyBanner (5, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner2.jpg", "O F F E R S"));
+        bannerList.add (new SwiggyBanner (6, R.drawable.default_banner, "http://famdent.indiasupply.com/isdental/api/images/banners/new/banner1.jpg", "D I S C O V E R"));
+        bannerAdapter.notifyDataSetChanged ();
+        
+        brandList.add (new SwiggyBrand (true, true, 1, R.drawable.ic_person, "Chesa", "12 CONTACTS", "4.3", "13 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg"));
+        brandList.add (new SwiggyBrand (false, false, 2, R.drawable.ic_person, "Duerr", "10 CONTACTS", "3.3", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        brandList.add (new SwiggyBrand (true, false, 3, R.drawable.ic_person, "Woodpecker", "8 CONTACTS", "2.7", "10 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        brandList.add (new SwiggyBrand (false, true, 4, R.drawable.ic_person, "Satelec", "20 CONTACTS", "4.9", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        brandList.add (new SwiggyBrand (false, true, 5, R.drawable.ic_person, "MicroNX", "10 CONTACTS", "3.9", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        brandList.add (new SwiggyBrand (true, true, 6, R.drawable.ic_person, "Doctor Smile", "5 CONTACTS", "3.5", "5 OFFERS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand3.jpg"));
+        brandList.add (new SwiggyBrand (false, false, 7, R.drawable.ic_person, "Vatech", "8 CONTACTS", "4.3", "", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        brandsAdapter.notifyDataSetChanged ();
     }
 }

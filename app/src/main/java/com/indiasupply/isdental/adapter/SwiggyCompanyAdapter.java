@@ -16,50 +16,45 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.SwiggyContacts;
+import com.indiasupply.isdental.model.SwiggyCompany;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by l on 26/09/2017.
- */
-
-public class SwiggyContactAdapter extends RecyclerView.Adapter<SwiggyContactAdapter.ViewHolder> {
+public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyContacts> swiggyContactList = new ArrayList<> ();
+    private List<SwiggyCompany> companyList = new ArrayList<> ();
     
-    public SwiggyContactAdapter (Activity activity, List<SwiggyContacts> swiggyContactList) {
+    public SwiggyCompanyAdapter (Activity activity, List<SwiggyCompany> companyList) {
         this.activity = activity;
-        this.swiggyContactList = swiggyContactList;
+        this.companyList = companyList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_contacts, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_company, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyContacts contacts = swiggyContactList.get (position);
+        final SwiggyCompany company = companyList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvCompanyName);
-        
-        holder.tvCompanyName.setText (contacts.getTitle ());
-        holder.tvCompanyCategory.setText (contacts.getCategory ());
-        holder.tvCompanyContacts.setText (contacts.getContacts ());
-        
+    
+        holder.tvCompanyName.setText (company.getTitle ());
+        holder.tvCompanyCategory.setText (company.getCategory ());
+        holder.tvCompanyContacts.setText (company.getContacts ());
         
         holder.ivCompanyEmail.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                if (contacts.getEmail ().length () > 0) {
+                if (company.getEmail ().length () > 0) {
                     Intent email = new Intent (Intent.ACTION_SEND);
-                    email.putExtra (Intent.EXTRA_EMAIL, new String[] {contacts.getEmail ()});
+                    email.putExtra (Intent.EXTRA_EMAIL, new String[] {company.getEmail ()});
                     email.putExtra (Intent.EXTRA_SUBJECT, "Enquiry");
                     email.putExtra (Intent.EXTRA_TEXT, "");
                     email.setType ("message/rfc822");
@@ -67,19 +62,18 @@ public class SwiggyContactAdapter extends RecyclerView.Adapter<SwiggyContactAdap
                 } else {
                     Utils.showToast (activity, "No email specified", false);
                 }
-                
             }
         });
         
         holder.ivCompanyWebSite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                if (contacts.getWebsite ().length () > 0) {
+                if (company.getWebsite ().length () > 0) {
                     Uri uri;
-                    if (contacts.getWebsite ().contains ("http://") || contacts.getWebsite ().contains ("https://")) {
-                        uri = Uri.parse (contacts.getWebsite ());
+                    if (company.getWebsite ().contains ("http://") || company.getWebsite ().contains ("https://")) {
+                        uri = Uri.parse (company.getWebsite ());
                     } else {
-                        uri = Uri.parse ("http://" + contacts.getWebsite ());
+                        uri = Uri.parse ("http://" + company.getWebsite ());
                     }
                     Intent intent = new Intent (Intent.ACTION_VIEW, uri);
                     activity.startActivity (intent);
@@ -88,29 +82,34 @@ public class SwiggyContactAdapter extends RecyclerView.Adapter<SwiggyContactAdap
                 }
             }
         });
-        
-        
-        Glide.with (activity)
-                .load (contacts.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (company.getImage ().length () == 0) {
+            holder.ivCompanyImage.setImageResource (company.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (company.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivCompanyImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (company.getIcon ())
+                    .into (holder.ivCompanyImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyContactList.size ();
+        return companyList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {

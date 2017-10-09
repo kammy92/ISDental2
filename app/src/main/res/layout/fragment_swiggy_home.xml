@@ -87,7 +87,7 @@
                 android:textSize="@dimen/text_size_extra_small"
                 android:textStyle="bold"/>
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvBannerList"
+                android:id="@+id/rvBanners"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv1"
@@ -100,7 +100,7 @@
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rvBannerList"
+                android:layout_below="@+id/rvBanners"
                 android:layout_marginTop="@dimen/activity_margin"
                 android:padding="@dimen/activity_margin"
                 android:text="FEATURED BRANDS "
@@ -109,7 +109,7 @@
                 android:textStyle="bold"/>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvBrandsList"
+                android:id="@+id/rvBrands"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv2"

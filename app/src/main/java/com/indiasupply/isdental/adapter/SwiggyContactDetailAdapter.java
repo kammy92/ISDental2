@@ -16,7 +16,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.SwiggyContactsDetail;
+import com.indiasupply.isdental.model.SwiggyContactDetail;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import java.util.List;
 
 public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyContactDetailAdapter.ViewHolder> {
     private Activity activity;
-    private List<SwiggyContactsDetail> swiggyContactList2 = new ArrayList<> ();
+    private List<SwiggyContactDetail> contactDetailList = new ArrayList<> ();
     
-    public SwiggyContactDetailAdapter (Activity activity, List<SwiggyContactsDetail> swiggyContactList2) {
+    public SwiggyContactDetailAdapter (Activity activity, List<SwiggyContactDetail> contactDetailList) {
         this.activity = activity;
-        this.swiggyContactList2 = swiggyContactList2;
+        this.contactDetailList = contactDetailList;
     }
     
     @Override
@@ -40,7 +40,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyContactsDetail contactsDetail = swiggyContactList2.get (position);
+        final SwiggyContactDetail contactsDetail = contactDetailList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvContactName);
         
@@ -84,29 +84,34 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                 }
             }
         });
-        
-        
-        Glide.with (activity)
-                .load (contactsDetail.getImage_url ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (contactsDetail.getImage ().length () == 0) {
+            holder.ivContactImage.setImageResource (contactsDetail.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (contactsDetail.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivContactImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (contactsDetail.getIcon ())
+                    .into (holder.ivContactImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyContactList2.size ();
+        return contactDetailList.size ();
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

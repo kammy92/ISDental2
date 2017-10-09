@@ -5,15 +5,24 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyEvent {
-    int id;
-    String image_url, name, date, location;
+    int id, icon;
+    String image, name, date, location;
     
-    public SwiggyEvent (int id, String image_url, String name, String date, String location) {
+    public SwiggyEvent (int id, int icon, String name, String date, String location, String image) {
         this.id = id;
-        this.image_url = image_url;
+        this.icon = icon;
+        this.image = image;
         this.name = name;
         this.date = date;
         this.location = location;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public int getId () {
@@ -48,11 +57,11 @@ public class SwiggyEvent {
         this.location = location;
     }
     
-    public String getImage_url () {
-        return image_url;
+    public String getImage () {
+        return image;
     }
     
-    public void setImage_url (String image_url) {
-        this.image_url = image_url;
+    public void setImage (String image) {
+        this.image = image;
     }
 }

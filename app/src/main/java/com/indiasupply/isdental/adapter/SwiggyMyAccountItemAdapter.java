@@ -36,7 +36,7 @@ public class SwiggyMyAccountItemAdapter extends RecyclerView.Adapter<SwiggyMyAcc
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         progressBar = new ProgressBar (activity);
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_service_item, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_my_account_item, parent, false);
         return new ViewHolder (sView);
     }
     

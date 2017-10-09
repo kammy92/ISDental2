@@ -1,5 +1,4 @@
 package com.indiasupply.isdental.adapter;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -22,18 +21,14 @@ import com.indiasupply.isdental.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by l on 26/09/2017.
- */
-
 public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapter.ViewHolder> {
-    SwiggyBrandsAdapter.OnItemClickListener mItemClickListener;
+    OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyBrand> swiggyBrandList = new ArrayList<> ();
+    private List<SwiggyBrand> brandList = new ArrayList<> ();
     
-    public SwiggyBrandsAdapter (Activity activity, List<SwiggyBrand> swiggyBrandList) {
+    public SwiggyBrandsAdapter (Activity activity, List<SwiggyBrand> brandList) {
         this.activity = activity;
-        this.swiggyBrandList = swiggyBrandList;
+        this.brandList = brandList;
     }
     
     @Override
@@ -45,14 +40,13 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyBrand brand = swiggyBrandList.get (position);
+        final SwiggyBrand brand = brandList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvBrandName);
         
         holder.tvBrandName.setText (brand.getTitle ());
         holder.tvBrandCategory.setText (brand.getCategory ());
-        holder.tvDescription.setText (brand.getDescription ());
-        holder.tvOffer.setVisibility (View.VISIBLE);
+        holder.tvContacts.setText (brand.getDescription ());
         holder.tvOffer.setText (brand.getOffers ());
         
         if (brand.is_isassured ()) {
@@ -61,29 +55,35 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
             holder.ivISAssured.setVisibility (View.GONE);
         }
         holder.tvRating.setText (brand.getRating ());
-        
-        
-        Glide.with (activity)
-                .load (brand.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (brand.getImage ().length () == 0) {
+            holder.ivBrandImage.setImageResource (brand.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (brand.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivBrandImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (brand.getIcon ())
+                    .into (holder.ivBrandImage);
+        }
+     
     }
     
     @Override
     public int getItemCount () {
-        return swiggyBrandList.size ();
+        return brandList.size ();
     }
     
     public void SetOnItemClickListener (final SwiggyBrandsAdapter.OnItemClickListener mItemClickListener) {
@@ -100,11 +100,9 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
         TextView tvOffer;
         ImageView ivISAssured;
         TextView tvRating;
-        TextView tvDescription;
-        
+        TextView tvContacts;
         ImageView ivBrandImage;
         ProgressBar progressBar;
-        
         
         public ViewHolder (View view) {
             super (view);
@@ -112,7 +110,7 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
             tvBrandCategory = (TextView) view.findViewById (R.id.tvBrandCategory);
             tvOffer = (TextView) view.findViewById (R.id.tvOffer);
             tvRating = (TextView) view.findViewById (R.id.tvRating);
-            tvDescription = (TextView) view.findViewById (R.id.tvDescription);
+            tvContacts = (TextView) view.findViewById (R.id.tvContacts);
             ivISAssured = (ImageView) view.findViewById (R.id.ivISAssured);
             ivBrandImage = (ImageView) view.findViewById (R.id.ivBrand);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
@@ -121,14 +119,10 @@ public class SwiggyBrandsAdapter extends RecyclerView.Adapter<SwiggyBrandsAdapte
         
         @Override
         public void onClick (View v) {
-            SwiggyBrand brand = swiggyBrandList.get (getLayoutPosition ());
+            SwiggyBrand brand = brandList.get (getLayoutPosition ());
             Intent intent5 = new Intent (activity, SwiggyBrandDetailActivity.class);
             activity.startActivity (intent5);
             activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-
-//                    Intent intent5 = new Intent (activity, SwiggyBrandDetailActivity.class);
-//                    activity.startActivity (intent5);
-//                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 }

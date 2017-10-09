@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/text_color_white">
-
     <ImageView
         android:id="@+id/ivCancel"
         android:layout_width="wrap_content"
@@ -19,19 +19,41 @@
         android:layout_alignTop="@+id/ivCancel"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Event Schedule"
+        android:text="Schedule"
         android:textColor="@color/primary_text2"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
+    <ImageView
+        android:id="@+id/ivDate"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_date"/>
+    <RelativeLayout
+        android:id="@+id/rlDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivCancel"
+        android:visibility="visible">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvDayList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbarStyle="insideOverlay"/>
+    </RelativeLayout>
     <View
         android:id="@+id/v1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/ivCancel"
+        android:layout_below="@+id/rlDate"
         android:background="@color/text_color_grey_light2"/>
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvDayList"
+        android:id="@+id/rvEventList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/v1"
@@ -39,23 +61,4 @@
         android:fillViewport="true"
         android:overScrollMode="never"
         android:scrollbarStyle="insideOverlay"/>
-
-
-    <View
-        android:id="@+id/v2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/rvDayList"
-        android:background="@color/text_color_grey_light2"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvEventList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/v2"
-        android:clipToPadding="false"
-        android:fillViewport="true"
-        android:overScrollMode="never"
-        android:scrollbarStyle="insideOverlay"/>
-
 </RelativeLayout>

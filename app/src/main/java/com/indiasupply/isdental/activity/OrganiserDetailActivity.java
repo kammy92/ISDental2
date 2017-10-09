@@ -291,7 +291,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
         appBar = (AppBarLayout) findViewById (R.id.appbar);
         toolbar = (Toolbar) findViewById (R.id.toolbar);
         tvTitle = (TextView) findViewById (R.id.tvTitle);
-        tvDescription = (TextView) findViewById (R.id.tvDescription);
+        tvDescription = (TextView) findViewById (R.id.tvContacts);
         tvOrganiserName = (TextView) findViewById (R.id.tvOrganiserName);
         llOrganiserLinks = (LinearLayout) findViewById (R.id.llOrganiserLinks);
         
@@ -420,7 +420,7 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                         protected void applyTransformation (float interpolatedTime, Transformation t) {
 //                            Log.e ("karman", "wrap contant height", + cardView3.get);
                             RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                            params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                            params.addRule (RelativeLayout.BELOW, R.id.tvContacts);
                             params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                             cardView1.setLayoutParams (params);
 
@@ -444,12 +444,12 @@ public class OrganiserDetailActivity extends AppCompatActivity {
                             if ((1.0f - interpolatedTime) < 1.0f) {
                                 if ((cardView1.getHeight () * (1.0f - interpolatedTime)) <= Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)) {
                                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 200.0f)));
-                                    params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                                    params.addRule (RelativeLayout.BELOW, R.id.tvContacts);
                                     params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                                     cardView1.setLayoutParams (params);
                                 } else {
                                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams (RelativeLayout.LayoutParams.MATCH_PARENT, (int) (cardView1.getHeight () * (1.0f - interpolatedTime)));
-                                    params.addRule (RelativeLayout.BELOW, R.id.tvDescription);
+                                    params.addRule (RelativeLayout.BELOW, R.id.tvContacts);
                                     params.setMargins ((int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)), (int) (Utils.pxFromDp (OrganiserDetailActivity.this, 16.0f)));
                                     cardView1.setLayoutParams (params);
                                 }

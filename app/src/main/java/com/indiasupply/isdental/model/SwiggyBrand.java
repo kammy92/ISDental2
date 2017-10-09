@@ -7,19 +7,28 @@ package com.indiasupply.isdental.model;
 public class SwiggyBrand {
     boolean is_offer;
     boolean is_isassured;
-    int id;
+    int id, icon;
     String title, description, rating, offers, category, image;
     
-    public SwiggyBrand (boolean is_offer, boolean is_isassured, int id, String title, String description, String rating, String offers, String category, String image) {
+    public SwiggyBrand (boolean is_offer, boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image) {
         this.is_offer = is_offer;
         this.is_isassured = is_isassured;
         this.id = id;
+        this.icon = icon;
         this.title = title;
         this.description = description;
         this.rating = rating;
         this.offers = offers;
         this.category = category;
         this.image = image;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public boolean is_offer () {

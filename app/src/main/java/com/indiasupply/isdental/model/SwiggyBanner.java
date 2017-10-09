@@ -5,13 +5,22 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyBanner {
-    int id;
-    String image_url, title;
+    int id, icon;
+    String image, title;
     
-    public SwiggyBanner (int id, String image_url, String title) {
+    public SwiggyBanner (int id, int icon, String image, String title) {
         this.id = id;
-        this.image_url = image_url;
+        this.icon = icon;
+        this.image = image;
         this.title = title;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public int getId () {
@@ -22,12 +31,12 @@ public class SwiggyBanner {
         this.id = id;
     }
     
-    public String getImage_url () {
-        return image_url;
+    public String getImage () {
+        return image;
     }
     
-    public void setImage_url (String image_url) {
-        this.image_url = image_url;
+    public void setImage (String image) {
+        this.image = image;
     }
     
     public String getTitle () {

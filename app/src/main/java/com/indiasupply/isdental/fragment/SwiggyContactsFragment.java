@@ -11,30 +11,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.adapter.SwiggyContactAdapter;
+import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
-import com.indiasupply.isdental.model.SwiggyContacts;
+import com.indiasupply.isdental.model.SwiggyCompany;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by l on 27/09/2017.
- */
-
 public class SwiggyContactsFragment extends Fragment {
-    
-    RecyclerView rvCompanyContactList;
-    List<SwiggyContacts> swiggyContactsList = new ArrayList<> ();
-    SwiggyContactAdapter swiggyContactAdapter;
+    RecyclerView rvContacts;
+    List<SwiggyCompany> contactsList = new ArrayList<> ();
+    SwiggyCompanyAdapter contactAdapter;
     Button btFilter;
     
-    
     public static SwiggyContactsFragment newInstance () {
-        SwiggyContactsFragment fragment = new SwiggyContactsFragment ();
-        return fragment;
+        return new SwiggyContactsFragment ();
     }
     
     @Override
@@ -48,37 +41,24 @@ public class SwiggyContactsFragment extends Fragment {
         initView (rootView);
         initData ();
         initListener ();
+        setData ();
         return rootView;
     }
     
     private void initView (View rootView) {
-        rvCompanyContactList = (RecyclerView) rootView.findViewById (R.id.rvCompanyContactList);
+        rvContacts = (RecyclerView) rootView.findViewById (R.id.rvContacts);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
     }
     
     private void initData () {
-        Utils.setTypefaceToAllViews (getActivity (), rvCompanyContactList);
-        
-        swiggyContactsList.add (new SwiggyContacts (1, "Chesa", "12 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg", "karman.singh@actiknowbi.com", "www.indiasupply.com"));
-        swiggyContactsList.add (new SwiggyContacts (2, "Duerr", "10 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "", ""));
-        swiggyContactsList.add (new SwiggyContacts (3, "Woodpecker", "5 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "", ""));
-        swiggyContactsList.add (new SwiggyContacts (4, "Satelec", "3 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "karman.singh@actiknowbi.com", "www.indiasupply.com"));
-        swiggyContactsList.add (new SwiggyContacts (5, "MicroNX", "12 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "karman.singh@actiknowbi.com", "www.indiasupply.com"));
-        swiggyContactsList.add (new SwiggyContacts (6, "Doctor Smile", "16 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand3.jpg", "", ""));
-        swiggyContactsList.add (new SwiggyContacts (7, "Vatech", "8 CONTACTS", "Dental Implants", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg", "karman.singh@actiknowbi.com", "www.indiasupply.com"));
-        
-        swiggyContactAdapter = new SwiggyContactAdapter (getActivity (), swiggyContactsList);
-        rvCompanyContactList.setAdapter (swiggyContactAdapter);
-        rvCompanyContactList.setHasFixedSize (true);
-        rvCompanyContactList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rvCompanyContactList.setItemAnimator (new DefaultItemAnimator ());
-        rvCompanyContactList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
+        Utils.setTypefaceToAllViews (getActivity (), rvContacts);
+    
+        contactAdapter = new SwiggyCompanyAdapter (getActivity (), contactsList);
+        rvContacts.setAdapter (contactAdapter);
+        rvContacts.setHasFixedSize (true);
+        rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvContacts.setItemAnimator (new DefaultItemAnimator ());
+        rvContacts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -87,14 +67,24 @@ public class SwiggyContactsFragment extends Fragment {
             public void onClick (View v) {
             }
         });
-        swiggyContactAdapter.SetOnItemClickListener (new SwiggyContactAdapter.OnItemClickListener () {
+        contactAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
-                SwiggyContacts swiggyContacts = swiggyContactsList.get (position);
+                SwiggyCompany contact = contactsList.get (position);
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                SwiggyContactDetailDialogFragment frag = new SwiggyContactDetailDialogFragment ().newInstance (swiggyContacts.getId (), swiggyContacts.getTitle ());
-                frag.show (ft, "Dialog");
+                new SwiggyContactDetailDialogFragment ().newInstance (contact.getId (), contact.getTitle ()).show (ft, "Contacts");
             }
         });
+    }
+    
+    private void setData () {
+        contactsList.add (new SwiggyCompany (1, R.drawable.ic_person, "Chesa", "12 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg"));
+        contactsList.add (new SwiggyCompany (2, R.drawable.ic_person, "Duerr", "10 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactsList.add (new SwiggyCompany (3, R.drawable.ic_person, "Woodpecker", "5 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactsList.add (new SwiggyCompany (4, R.drawable.ic_person, "Satelec", "3 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactsList.add (new SwiggyCompany (5, R.drawable.ic_person, "MicroNX", "12 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactsList.add (new SwiggyCompany (6, R.drawable.ic_person, "Doctor Smile", "16 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactsList.add (new SwiggyCompany (7, R.drawable.ic_person, "Vatech", "8 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
+        contactAdapter.notifyDataSetChanged ();
     }
 }

@@ -48,7 +48,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
         Utils.setTypefaceToAllViews (activity, holder.tvEventTiming);
     
         holder.tvEventTiming.setText (eventSchedule.getStart_time () + " - " + eventSchedule.getEnd_time ());
-        holder.tvEventName.setText (eventSchedule.getDescription ());
+        holder.tvEventDescription.setText (eventSchedule.getDescription ());
         holder.tvEventLocation.setText (eventSchedule.getLocation ());
     
     
@@ -56,7 +56,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
             holder.ivEventImage.setImageResource (eventSchedule.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
         } else {
-//                holder.progressBar.setVisibility (View.VISIBLE);
+            holder.progressBar.setVisibility (View.VISIBLE);
             Glide.with (activity)
                     .load (eventSchedule.getImage ())
 //                    .placeholder (eventSchedule.getIcon ())
@@ -66,7 +66,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
                             holder.progressBar.setVisibility (View.GONE);
                             return false;
                         }
-                    
+    
                         @Override
                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             holder.progressBar.setVisibility (View.GONE);
@@ -93,7 +93,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvEventTiming;
-        TextView tvEventName;
+        TextView tvEventDescription;
         TextView tvEventLocation;
         ImageView ivEventImage;
     
@@ -102,7 +102,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
         public ViewHolder (View view) {
             super (view);
             tvEventTiming = (TextView) view.findViewById (R.id.tvEventTiming);
-            tvEventName = (TextView) view.findViewById (R.id.tvEventName);
+            tvEventDescription = (TextView) view.findViewById (R.id.tvEventDescription);
             tvEventLocation = (TextView) view.findViewById (R.id.tvEventLocation);
             ivEventImage = (ImageView) view.findViewById (R.id.ivEventSchedule);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);

@@ -1,17 +1,17 @@
 package com.indiasupply.isdental.model;
 
-public class SwiggyContactsDetail {
-    int id, type;
+public class SwiggyContactDetail {
+    int id, type, icon;
     boolean is_favourite;
-    String name, location, image_url, contact_number;
+    String name, location, image, contact_number;
     
-    public SwiggyContactsDetail (int id, int type, boolean is_favourite, String name, String location, String image_url, String contact_number) {
+    public SwiggyContactDetail (int id, int type, int icon, boolean is_favourite, String name, String location, String contact_number, String image) {
         this.id = id;
         this.type = type;
         this.is_favourite = is_favourite;
         this.name = name;
         this.location = location;
-        this.image_url = image_url;
+        this.image = image;
         this.contact_number = contact_number;
     }
     
@@ -21,6 +21,14 @@ public class SwiggyContactsDetail {
     
     public void setId (int id) {
         this.id = id;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public int getType () {
@@ -55,12 +63,12 @@ public class SwiggyContactsDetail {
         this.location = location;
     }
     
-    public String getImage_url () {
-        return image_url;
+    public String getImage () {
+        return image;
     }
     
-    public void setImage_url (String image_url) {
-        this.image_url = image_url;
+    public void setImage (String image) {
+        this.image = image;
     }
     
     public String getContact_number () {

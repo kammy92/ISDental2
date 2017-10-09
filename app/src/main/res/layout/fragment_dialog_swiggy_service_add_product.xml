@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/text_color_white">
+
+    <ImageView
+        android:id="@+id/ivCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_close"/>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivCancel"
+        android:layout_alignTop="@+id/ivCancel"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="Add Product"
+        android:textColor="@color/primary_text2"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"/>
+
+    <View
+        android:id="@+id/v1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/ivCancel"
+        android:background="@color/text_color_grey_light2"/>
+
+    <RelativeLayout
+        android:id="@+id/rlAddProduct"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/v1"
+        android:padding="@dimen/activity_margin">
+
+
+        <TextView
+            android:id="@+id/tvProductCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Product category"
+            android:textColor="@color/primary_text2"/>
+
+        <EditText
+            android:id="@+id/etProductCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProductCategory"
+            android:focusable="false"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_medium"/>
+
+
+        <TextView
+            android:id="@+id/tvModelNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etProductCategory"
+            android:paddingTop="5dp"
+            android:text="Model No."
+            android:textColor="@color/primary_text2"/>
+
+        <EditText
+            android:id="@+id/etModelNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvModelNo"
+            android:textSize="@dimen/text_size_medium"/>
+
+
+        <TextView
+            android:id="@+id/tvSerialNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etModelNo"
+            android:paddingTop="5dp"
+            android:text="Serial No."
+            android:textColor="@color/primary_text2"/>
+
+        <EditText
+            android:id="@+id/etSerialNo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSerialNo"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_medium"/>
+
+
+        <TextView
+            android:id="@+id/tvPurchaseDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etSerialNo"
+            android:paddingTop="5dp"
+            android:text="Purchase Date"
+            android:textColor="@color/primary_text2"/>
+
+        <EditText
+            android:id="@+id/etPurchaseDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvPurchaseDate"
+            android:focusable="false"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_medium"/>
+
+
+        <TextView
+            android:id="@+id/tvSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etPurchaseDate"
+            android:layout_marginTop="10dp"
+            android:background="@color/primary_text2"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Submit"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/activity_margin"
+            android:textStyle="bold"
+        />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

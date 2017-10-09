@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.dialog;
 
+
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Build;
@@ -18,7 +19,7 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyContactDetailAdapter;
-import com.indiasupply.isdental.model.SwiggyContactsDetail;
+import com.indiasupply.isdental.model.SwiggyContactDetail;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -27,7 +28,7 @@ import java.util.List;
 
 public class SwiggyContactDetailDialogFragment extends DialogFragment {
     RecyclerView rvContactList;
-    List<SwiggyContactsDetail> contactDetailList = new ArrayList<> ();
+    List<SwiggyContactDetail> contactDetailList = new ArrayList<> ();
     SwiggyContactDetailAdapter swiggyAdapter2;
     
     ImageView ivCancel;
@@ -36,9 +37,8 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
     String contact_name;
     int contact_id;
     
-    public static SwiggyContactDetailDialogFragment newInstance (int contact_id, String contact_name) {
+    public SwiggyContactDetailDialogFragment newInstance (int contact_id, String contact_name) {
         SwiggyContactDetailDialogFragment f = new SwiggyContactDetailDialogFragment ();
-        // Supply num input as an argument.
         Bundle args = new Bundle ();
         args.putInt ("contact_id", contact_id);
         args.putString ("contact_name", contact_name);
@@ -100,15 +100,15 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         tvTitle.setText (contact_name.toUpperCase ());
-        contactDetailList.add (new SwiggyContactsDetail (1, 1, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", "+919873684678"));
-        contactDetailList.add (new SwiggyContactsDetail (2, 2, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", ""));
-        contactDetailList.add (new SwiggyContactsDetail (3, 4, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", "+919873684678"));
-        contactDetailList.add (new SwiggyContactsDetail (4, 3, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", ""));
-        contactDetailList.add (new SwiggyContactsDetail (5, 3, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", ""));
-        contactDetailList.add (new SwiggyContactsDetail (6, 1, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", ""));
-        contactDetailList.add (new SwiggyContactsDetail (7, 3, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", ""));
-        contactDetailList.add (new SwiggyContactsDetail (8, 2, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png", "+919873684678"));
-        
+        contactDetailList.add (new SwiggyContactDetail (1, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (2, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (3, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (4, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (5, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (6, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (7, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (8, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+    
         swiggyAdapter2 = new SwiggyContactDetailAdapter (getActivity (), contactDetailList);
         rvContactList.setAdapter (swiggyAdapter2);
         rvContactList.setHasFixedSize (true);

@@ -30,11 +30,11 @@ import java.util.List;
 public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.ViewHolder> {
     SwiggyEventAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyEvent> swiggyEventList = new ArrayList<> ();
+    private List<SwiggyEvent> eventList = new ArrayList<> ();
     
-    public SwiggyEventAdapter (Activity activity, List<SwiggyEvent> swiggyEventList) {
+    public SwiggyEventAdapter (Activity activity, List<SwiggyEvent> eventList) {
         this.activity = activity;
-        this.swiggyEventList = swiggyEventList;
+        this.eventList = eventList;
     }
     
     @Override
@@ -46,33 +46,40 @@ public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyEvent event = swiggyEventList.get (position);
+        final SwiggyEvent event = eventList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvEventName);
         
         holder.tvEventName.setText (event.getName ());
         holder.tvEventDetails.setText (event.getDate () + ", " + event.getLocation ());
-        
-        Glide.with (activity)
-                .load (event.getImage_url ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (event.getImage ().length () == 0) {
+            holder.ivEventImage.setImageResource (event.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            holder.progressBar.setVisibility (View.VISIBLE);
+            Glide.with (activity)
+                    .load (event.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivEventImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (event.getIcon ())
+                    .into (holder.ivEventImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyEventList.size ();
+        return eventList.size ();
     }
     
     public void SetOnItemClickListener (final SwiggyEventAdapter.OnItemClickListener mItemClickListener) {
@@ -100,7 +107,7 @@ public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.
         
         @Override
         public void onClick (View v) {
-            SwiggyEvent event = swiggyEventList.get (getLayoutPosition ());
+            SwiggyEvent event = eventList.get (getLayoutPosition ());
             Intent intent = new Intent (activity, SwiggyEventDetailActivity.class);
             intent.putExtra (AppConfigTags.EVENT_ID, event.getId ());
             activity.startActivity (intent);

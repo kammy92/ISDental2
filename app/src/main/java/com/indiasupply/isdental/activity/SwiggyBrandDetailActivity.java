@@ -76,7 +76,7 @@ public class SwiggyBrandDetailActivity extends AppCompatActivity {
                 
                 if (scrollY == 0) {
 //                    Log.i (TAG, "TOP SCROLL");
-                    v1.setVisibility (View.GONE);
+                    v1.setVisibility (View.INVISIBLE);
                 }
                 
                 if (scrollY > 0) {
