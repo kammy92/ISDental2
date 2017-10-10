@@ -5,14 +5,23 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyEventSpeaker {
-    int id;
+    int id, icon;
     String name, image, qualification;
     
-    public SwiggyEventSpeaker (int id, String name, String image, String qualification) {
+    public SwiggyEventSpeaker (int id, int icon, String name, String qualification, String image) {
         this.id = id;
+        this.icon = icon;
         this.name = name;
         this.image = image;
         this.qualification = qualification;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public int getId () {

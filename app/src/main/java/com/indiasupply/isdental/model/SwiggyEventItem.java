@@ -6,12 +6,13 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyEventItem {
     int id, icon;
-    String name;
+    String name, image;
     
-    public SwiggyEventItem (int id, int icon, String name) {
+    public SwiggyEventItem (int id, int icon, String name, String image) {
         this.id = id;
         this.icon = icon;
         this.name = name;
+        this.image = image;
     }
     
     public int getIcon () {
@@ -36,5 +37,13 @@ public class SwiggyEventItem {
     
     public void setName (String name) {
         this.name = name;
+    }
+    
+    public String getImage () {
+        return image;
+    }
+    
+    public void setImage (String image) {
+        this.image = image;
     }
 }

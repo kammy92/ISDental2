@@ -27,11 +27,11 @@ import java.util.List;
 public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEventScheduleAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyEventSchedule> swiggyEventList = new ArrayList<> ();
+    private List<SwiggyEventSchedule> eventScheduleList = new ArrayList<> ();
     
-    public SwiggyEventScheduleAdapter (Activity activity, List<SwiggyEventSchedule> swiggyEventList) {
+    public SwiggyEventScheduleAdapter (Activity activity, List<SwiggyEventSchedule> eventScheduleList) {
         this.activity = activity;
-        this.swiggyEventList = swiggyEventList;
+        this.eventScheduleList = eventScheduleList;
     }
     
     @Override
@@ -43,14 +43,12 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyEventSchedule eventSchedule = swiggyEventList.get (position);
-    
+        final SwiggyEventSchedule eventSchedule = eventScheduleList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvEventTiming);
     
         holder.tvEventTiming.setText (eventSchedule.getStart_time () + " - " + eventSchedule.getEnd_time ());
         holder.tvEventDescription.setText (eventSchedule.getDescription ());
         holder.tvEventLocation.setText (eventSchedule.getLocation ());
-    
     
         if (eventSchedule.getImage ().length () == 0) {
             holder.ivEventImage.setImageResource (eventSchedule.getIcon ());
@@ -59,7 +57,6 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
             holder.progressBar.setVisibility (View.VISIBLE);
             Glide.with (activity)
                     .load (eventSchedule.getImage ())
-//                    .placeholder (eventSchedule.getIcon ())
                     .listener (new RequestListener<String, GlideDrawable> () {
                         @Override
                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -80,7 +77,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
     
     @Override
     public int getItemCount () {
-        return swiggyEventList.size ();
+        return eventScheduleList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {

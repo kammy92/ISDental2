@@ -22,22 +22,17 @@ import java.util.List;
 
 
 public class SwiggyEventSpeakerAdapter extends RecyclerView.Adapter<SwiggyEventSpeakerAdapter.ViewHolder> {
-    final String dialogTag = "dialog";
     OnItemClickListener mItemClickListener;
-    ProgressBar progressBar;
-    private TextView fullName;
     private Activity activity;
-    // dialogFragment.setOnDiscardFromExtraActionListener(this);
-    private List<SwiggyEventSpeaker> swiggyEventSpeakerList = new ArrayList<> ();
+    private List<SwiggyEventSpeaker> eventSpeakerList = new ArrayList<> ();
     
-    public SwiggyEventSpeakerAdapter (Activity activity, List<SwiggyEventSpeaker> swiggyEventSpeakerList) {
+    public SwiggyEventSpeakerAdapter (Activity activity, List<SwiggyEventSpeaker> eventSpeakerList) {
         this.activity = activity;
-        this.swiggyEventSpeakerList = swiggyEventSpeakerList;
+        this.eventSpeakerList = eventSpeakerList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
-        progressBar = new ProgressBar (activity);
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
         final View sView = mInflater.inflate (R.layout.list_item_swiggy_event_speaker, parent, false);
         return new ViewHolder (sView);
@@ -45,38 +40,44 @@ public class SwiggyEventSpeakerAdapter extends RecyclerView.Adapter<SwiggyEventS
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyEventSpeaker swiggyEventSpeaker = swiggyEventSpeakerList.get (position);
+        final SwiggyEventSpeaker eventSpeaker = eventSpeakerList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvSpeakerName);
-        
-        Glide.with (activity)
-                .load (swiggyEventSpeaker.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (eventSpeaker.getImage ().length () == 0) {
+            holder.ivSpeaker.setImageResource (eventSpeaker.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (eventSpeaker.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivSpeaker);
-        holder.tvSpeakerName.setText (swiggyEventSpeaker.getName ());
-        holder.tvSpeakerQualification.setText (swiggyEventSpeaker.getQualification ());
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (eventSpeaker.getIcon ())
+                    .into (holder.ivSpeaker);
+        }
+    
+        holder.tvSpeakerName.setText (eventSpeaker.getName ());
+        holder.tvSpeakerQualification.setText (eventSpeaker.getQualification ());
     }
     
     @Override
     public int getItemCount () {
-        return swiggyEventSpeakerList.size ();
+        return eventSpeakerList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
-    
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);

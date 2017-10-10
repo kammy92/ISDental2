@@ -27,9 +27,8 @@ import java.util.List;
 
 public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     RecyclerView rvSpeakerList;
-    List<SwiggyEventSpeaker> speakerList = new ArrayList<> ();
-    LinearLayoutManager linearLayoutManager;
-    SwiggyEventSpeakerAdapter speakerAdapter;
+    List<SwiggyEventSpeaker> eventSpeakerList = new ArrayList<> ();
+    SwiggyEventSpeakerAdapter eventSpeakerAdapter;
     
     ImageView ivCancel;
     TextView tvTitle;
@@ -70,6 +69,7 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
@@ -84,23 +84,13 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-        linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
     
-        speakerList.add (new SwiggyEventSpeaker (1, "Dr. Mohammad Atta", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "9 Fail"));
-        speakerList.add (new SwiggyEventSpeaker (2, "Dr. Zakir Nayak", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "10 Fail"));
-        speakerList.add (new SwiggyEventSpeaker (3, "Dr. Abu Baghdadi", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "11 Fail"));
-        speakerList.add (new SwiggyEventSpeaker (4, "Dr. Osama Bin Laden", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "12 Fail"));
-        speakerAdapter = new SwiggyEventSpeakerAdapter (getActivity (), speakerList);
-        rvSpeakerList.setAdapter (speakerAdapter);
+        eventSpeakerAdapter = new SwiggyEventSpeakerAdapter (getActivity (), eventSpeakerList);
+        rvSpeakerList.setAdapter (eventSpeakerAdapter);
         rvSpeakerList.setHasFixedSize (true);
-        rvSpeakerList.setLayoutManager (linearLayoutManager);
+        rvSpeakerList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvSpeakerList.setItemAnimator (new DefaultItemAnimator ());
-        rvSpeakerList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvSpeakerList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -110,5 +100,13 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+    }
+    
+    private void setData () {
+        eventSpeakerList.add (new SwiggyEventSpeaker (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        eventSpeakerList.add (new SwiggyEventSpeaker (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        eventSpeakerList.add (new SwiggyEventSpeaker (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        eventSpeakerList.add (new SwiggyEventSpeaker (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        eventSpeakerAdapter.notifyDataSetChanged ();
     }
 }

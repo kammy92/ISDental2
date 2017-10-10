@@ -6,9 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.SwiggyEventItem;
 import com.indiasupply.isdental.utils.Utils;
@@ -23,11 +27,11 @@ import java.util.List;
 public class SwiggyEventItemAdapter extends RecyclerView.Adapter<SwiggyEventItemAdapter.ViewHolder> {
     SwiggyEventItemAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyEventItem> swiggyEventItemList = new ArrayList<> ();
+    private List<SwiggyEventItem> eventItemList = new ArrayList<> ();
     
-    public SwiggyEventItemAdapter (Activity activity, List<SwiggyEventItem> swiggyEventItemList) {
+    public SwiggyEventItemAdapter (Activity activity, List<SwiggyEventItem> eventItemList) {
         this.activity = activity;
-        this.swiggyEventItemList = swiggyEventItemList;
+        this.eventItemList = eventItemList;
     }
     
     @Override
@@ -39,17 +43,37 @@ public class SwiggyEventItemAdapter extends RecyclerView.Adapter<SwiggyEventItem
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyEventItem eventItem = swiggyEventItemList.get (position);
+        final SwiggyEventItem eventItem = eventItemList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvItemName);
         holder.tvItemName.setText (eventItem.getName ());
-        Glide.with (activity)
-                .load (eventItem.getIcon ())
-                .into (holder.ivItemIcon);
+    
+        if (eventItem.getImage ().length () == 0) {
+            holder.ivItemImage.setImageResource (eventItem.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (eventItem.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (eventItem.getIcon ())
+                    .into (holder.ivItemImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyEventItemList.size ();
+        return eventItemList.size ();
     }
     
     public void SetOnItemClickListener (final SwiggyEventItemAdapter.OnItemClickListener mItemClickListener) {
@@ -62,12 +86,14 @@ public class SwiggyEventItemAdapter extends RecyclerView.Adapter<SwiggyEventItem
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvItemName;
-        ImageView ivItemIcon;
+        ImageView ivItemImage;
+        ProgressBar progressBar;
         
         public ViewHolder (View view) {
             super (view);
             tvItemName = (TextView) view.findViewById (R.id.tvItemName);
-            ivItemIcon = (ImageView) view.findViewById (R.id.ivItemIcon);
+            ivItemImage = (ImageView) view.findViewById (R.id.ivItemImage);
+            progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
         

@@ -8,6 +8,7 @@ public class SwiggyContactDetail {
     public SwiggyContactDetail (int id, int type, int icon, boolean is_favourite, String name, String location, String contact_number, String image) {
         this.id = id;
         this.type = type;
+        this.icon = icon;
         this.is_favourite = is_favourite;
         this.name = name;
         this.location = location;

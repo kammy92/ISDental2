@@ -121,6 +121,7 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
@@ -131,7 +132,6 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
         ivSearch = (ImageView) root.findViewById (R.id.ivSearch);
         etSearch = (EditText) root.findViewById (R.id.etSearch);
         rlSearch = (RelativeLayout) root.findViewById (R.id.rlSearch);
-        
     }
     
     private void initBundle () {
@@ -141,21 +141,12 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
     
-        exhibitorList.add (new SwiggyEventExhibitor (1, "3M ESPE", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-31"));
-        exhibitorList.add (new SwiggyEventExhibitor (2, "DEURR DENTAL", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "H-Island"));
-        exhibitorList.add (new SwiggyEventExhibitor (3, "CHESA", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "B-3, B-4"));
-        exhibitorList.add (new SwiggyEventExhibitor (4, "WOODPECKER", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png", "A-20"));
         exhibitorAdapter = new SwiggyEventExhibitorAdapter (getActivity (), exhibitorList);
         rvExhibitor.setAdapter (exhibitorAdapter);
         rvExhibitor.setHasFixedSize (true);
         rvExhibitor.setLayoutManager (linearLayoutManager);
         rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
-        rvExhibitor.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvExhibitor.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -209,4 +200,11 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
         });
     }
     
+    private void setData () {
+        exhibitorList.add (new SwiggyEventExhibitor (1, R.drawable.ic_program, "3M ESPE", "A-31", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        exhibitorList.add (new SwiggyEventExhibitor (2, R.drawable.ic_program, "DEURR DENTAL", "H-Island", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        exhibitorList.add (new SwiggyEventExhibitor (3, R.drawable.ic_program, "CHESA", "B-3, B-4", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        exhibitorList.add (new SwiggyEventExhibitor (4, R.drawable.ic_program, "WOODPECKER", "A-20", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        exhibitorAdapter.notifyDataSetChanged ();
+    }
 }

@@ -22,22 +22,17 @@ import java.util.List;
 
 
 public class SwiggyEventExhibitorAdapter extends RecyclerView.Adapter<SwiggyEventExhibitorAdapter.ViewHolder> {
-    final String dialogTag = "dialog";
     OnItemClickListener mItemClickListener;
-    ProgressBar progressBar;
-    private TextView fullName;
     private Activity activity;
-    // dialogFragment.setOnDiscardFromExtraActionListener(this);
-    private List<SwiggyEventExhibitor> swiggyEventExhibitorList = new ArrayList<> ();
+    private List<SwiggyEventExhibitor> eventExhibitorList = new ArrayList<> ();
     
-    public SwiggyEventExhibitorAdapter (Activity activity, List<SwiggyEventExhibitor> swiggyEventExhibitorList) {
+    public SwiggyEventExhibitorAdapter (Activity activity, List<SwiggyEventExhibitor> eventExhibitorList) {
         this.activity = activity;
-        this.swiggyEventExhibitorList = swiggyEventExhibitorList;
+        this.eventExhibitorList = eventExhibitorList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
-        progressBar = new ProgressBar (activity);
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
         final View sView = mInflater.inflate (R.layout.list_item_swiggy_event_exhibitor, parent, false);
         return new ViewHolder (sView);
@@ -45,32 +40,39 @@ public class SwiggyEventExhibitorAdapter extends RecyclerView.Adapter<SwiggyEven
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyEventExhibitor swiggyEventExhibitor = swiggyEventExhibitorList.get (position);
+        final SwiggyEventExhibitor eventExhibitor = eventExhibitorList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvExhibitorName);
-        
-        Glide.with (activity)
-                .load (swiggyEventExhibitor.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        holder.tvExhibitorName.setText (eventExhibitor.getName ());
+        holder.tvExhibitorStall.setText (eventExhibitor.getStall ());
+    
+        if (eventExhibitor.getImage ().length () == 0) {
+            holder.ivExhibitor.setImageResource (eventExhibitor.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (eventExhibitor.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivExhibitor);
-        holder.tvExhibitorName.setText (swiggyEventExhibitor.getName ());
-        holder.tvExhibitorStall.setText (swiggyEventExhibitor.getStall ());
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (eventExhibitor.getIcon ())
+                    .into (holder.ivExhibitor);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyEventExhibitorList.size ();
+        return eventExhibitorList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {

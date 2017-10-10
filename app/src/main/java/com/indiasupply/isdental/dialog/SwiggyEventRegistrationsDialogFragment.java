@@ -24,7 +24,6 @@ import com.indiasupply.isdental.utils.Utils;
 
 
 public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
-    
     ImageView ivCancel;
     WebView webView;
     ProgressBar progressBar;
@@ -63,7 +62,6 @@ public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_registration, container, false);
-        
         initView (root);
         initBundle ();
         initData ();
@@ -77,7 +75,7 @@ public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         progressBar = (ProgressBar) root.findViewById (R.id.progressBar);
         fl1 = (FrameLayout) root.findViewById (R.id.fl1);
-        v1 = (View) root.findViewById (R.id.v1);
+        v1 = root.findViewById (R.id.v1);
     }
     
     private void initBundle () {
@@ -102,7 +100,7 @@ public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
         WebSettings webSetting = webView.getSettings ();
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
-        webView.loadUrl ("https://www.indiasupply.com/");
+        webView.loadUrl ("https://www.google.com/");
         webView.setWebViewClient (new WebViewClient () {
             public void onPageFinished (WebView view, String url) {
                 // progressDialog.dismiss ();

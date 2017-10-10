@@ -17,6 +17,7 @@ import com.indiasupply.isdental.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class SwiggyEventFragment extends Fragment {
     RecyclerView rvEvents;
     List<SwiggyEvent> eventList = new ArrayList<> ();

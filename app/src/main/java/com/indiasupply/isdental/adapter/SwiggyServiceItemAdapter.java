@@ -72,7 +72,7 @@ public class SwiggyServiceItemAdapter extends RecyclerView.Adapter<SwiggyService
         public ViewHolder (View view) {
             super (view);
             tvItemName = (TextView) view.findViewById (R.id.tvItemName);
-            ivItemIcon = (ImageView) view.findViewById (R.id.ivItemIcon);
+            ivItemIcon = (ImageView) view.findViewById (R.id.ivItemImage);
             view.setOnClickListener (this);
         }
         

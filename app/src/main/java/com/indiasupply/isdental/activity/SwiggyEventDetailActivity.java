@@ -37,8 +37,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     RelativeLayout rlBack;
     RecyclerView rvEventItems;
     
-    List<SwiggyEventItem> swiggyEventItemList = new ArrayList<> ();
-    SwiggyEventItemAdapter swiggyEventItemAdapter;
+    List<SwiggyEventItem> eventItemList = new ArrayList<> ();
+    SwiggyEventItemAdapter eventItemAdapter;
     
     TextView tvTitleEventName;
     TextView tvTitleEventDetail;
@@ -50,8 +50,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
         initView ();
         initData ();
         initListener ();
+        setData ();
     }
-    
     
     private void initListener () {
         rlBack.setOnClickListener (new View.OnClickListener () {
@@ -62,10 +62,10 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 
             }
         });
-        swiggyEventItemAdapter.SetOnItemClickListener (new SwiggyEventItemAdapter.OnItemClickListener () {
+        eventItemAdapter.SetOnItemClickListener (new SwiggyEventItemAdapter.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
-                SwiggyEventItem eventItem = swiggyEventItemList.get (position);
+                SwiggyEventItem eventItem = eventItemList.get (position);
                 FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 switch (eventItem.getId ()) {
                     case 1:
@@ -105,27 +105,13 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
-        
-        swiggyEventItemList.add (new SwiggyEventItem (1, R.drawable.ic_information, "EVENT SCHEDULE"));
-        swiggyEventItemList.add (new SwiggyEventItem (2, R.drawable.ic_information, "SPEAKERS"));
-        swiggyEventItemList.add (new SwiggyEventItem (3, R.drawable.ic_information, "EXHIBITORS"));
-        swiggyEventItemList.add (new SwiggyEventItem (4, R.drawable.ic_information, "FLOOR PLAN"));
-        swiggyEventItemList.add (new SwiggyEventItem (5, R.drawable.ic_information, "GENERAL INFORMATION"));
-        swiggyEventItemList.add (new SwiggyEventItem (6, R.drawable.ic_information, "REGISTRATIONS"));
     
-        swiggyEventItemAdapter = new SwiggyEventItemAdapter (SwiggyEventDetailActivity.this, swiggyEventItemList);
-        rvEventItems.setAdapter (swiggyEventItemAdapter);
+        eventItemAdapter = new SwiggyEventItemAdapter (SwiggyEventDetailActivity.this, eventItemList);
+        rvEventItems.setAdapter (eventItemAdapter);
         rvEventItems.setHasFixedSize (true);
-        GridLayoutManager lm = new GridLayoutManager (SwiggyEventDetailActivity.this, 2, GridLayoutManager.VERTICAL, false);
-//        lm.setSpanSizeLookup (new MySizeLookup ());
-        rvEventItems.setLayoutManager (lm);
+        rvEventItems.setLayoutManager (new GridLayoutManager (SwiggyEventDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
         rvEventItems.setItemAnimator (new DefaultItemAnimator ());
-        rvEventItems.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (this, 16),
-                (int) Utils.pxFromDp (this, 16),
-                (int) Utils.pxFromDp (this, 16),
-                (int) Utils.pxFromDp (this, 16),
-                2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvEventItems.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initView () {
@@ -141,19 +127,13 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
     }
     
-    public class MySizeLookup extends GridLayoutManager.SpanSizeLookup {
-        public int getSpanSize (int position) {
-            int span;
-            span = swiggyEventItemList.size () % 2;
-            if (swiggyEventItemList.size () < 2) {
-                return 1;
-            } else if (span == 0 || (position <= ((swiggyEventItemList.size () - 1) - span))) {
-                return 1;
-            } else if (span == 1) {
-                return 2;
-            } else {
-                return 1;
-            }
-        }
+    private void setData () {
+        eventItemList.add (new SwiggyEventItem (1, R.drawable.ic_information, "EVENT SCHEDULE", ""));
+        eventItemList.add (new SwiggyEventItem (2, R.drawable.ic_information, "SPEAKERS", ""));
+        eventItemList.add (new SwiggyEventItem (3, R.drawable.ic_information, "EXHIBITORS", ""));
+        eventItemList.add (new SwiggyEventItem (4, R.drawable.ic_information, "FLOOR PLAN", ""));
+        eventItemList.add (new SwiggyEventItem (5, R.drawable.ic_information, "GENERAL INFORMATION", ""));
+        eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_information, "REGISTRATIONS", ""));
+        eventItemAdapter.notifyDataSetChanged ();
     }
 }

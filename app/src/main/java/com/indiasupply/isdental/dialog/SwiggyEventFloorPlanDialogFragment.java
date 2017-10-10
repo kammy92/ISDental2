@@ -2,11 +2,9 @@ package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -14,10 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
@@ -28,11 +23,7 @@ import com.indiasupply.isdental.utils.Utils;
 
 public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     ImageView ivCancel;
-    ImageView ivSearch;
     TextView tvTitle;
-    RelativeLayout rlSearch;
-    EditText etSearch;
-    
     SubsamplingScaleImageView ivFloorPlan;
     
     @Override
@@ -64,27 +55,7 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
                     if (event.getAction () != KeyEvent.ACTION_UP)
                         return true;
                     else {
-                        if (rlSearch.getVisibility () == View.VISIBLE) {
-                            final Handler handler = new Handler ();
-                            handler.postDelayed (new Runnable () {
-                                @Override
-                                public void run () {
-                                    ivSearch.setVisibility (View.VISIBLE);
-                                    etSearch.setText ("");
-                                }
-                            }, 300);
-                            final Handler handler2 = new Handler ();
-                            handler2.postDelayed (new Runnable () {
-                                @Override
-                                public void run () {
-                                    final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
-                                    imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
-                                }
-                            }, 600);
-                            rlSearch.setVisibility (View.GONE);
-                        } else {
-                            getDialog ().dismiss ();
-                        }
+                        getDialog ().dismiss ();
                         //Hide your keyboard here!!!!!!
                         return true; // pretend we've processed it
                     }
@@ -118,9 +89,6 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     private void initView (View root) {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
-        ivSearch = (ImageView) root.findViewById (R.id.ivSearch);
-        etSearch = (EditText) root.findViewById (R.id.etSearch);
-        rlSearch = (RelativeLayout) root.findViewById (R.id.rlSearch);
         ivFloorPlan = (SubsamplingScaleImageView) root.findViewById (R.id.ivFloorPlan);
     }
     
@@ -129,6 +97,7 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+//        ivFloorPlan.setImage (ImageSource.uri (Uri.parse ("http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg")));
         ivFloorPlan.setImage (ImageSource.resource (R.drawable.hallplan));
     }
     
@@ -136,49 +105,7 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
         ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                if (rlSearch.getVisibility () == View.VISIBLE) {
-                    final Handler handler = new Handler ();
-                    handler.postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            ivSearch.setVisibility (View.VISIBLE);
-                            etSearch.setText ("");
-                        }
-                    }, 300);
-                    final Handler handler2 = new Handler ();
-                    handler2.postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
-                        }
-                    }, 600);
-                    rlSearch.setVisibility (View.GONE);
-                } else {
                     getDialog ().dismiss ();
-                }
-            }
-        });
-        ivSearch.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                final Handler handler = new Handler ();
-                handler.postDelayed (new Runnable () {
-                    @Override
-                    public void run () {
-                        ivSearch.setVisibility (View.GONE);
-                        etSearch.requestFocus ();
-                    }
-                }, 300);
-                final Handler handler2 = new Handler ();
-                handler2.postDelayed (new Runnable () {
-                    @Override
-                    public void run () {
-                        final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
-                        imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                    }
-                }, 600);
-                rlSearch.setVisibility (View.VISIBLE);
             }
         });
     }

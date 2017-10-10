@@ -29,7 +29,7 @@ import java.util.List;
 public class SwiggyContactDetailDialogFragment extends DialogFragment {
     RecyclerView rvContactList;
     List<SwiggyContactDetail> contactDetailList = new ArrayList<> ();
-    SwiggyContactDetailAdapter swiggyAdapter2;
+    SwiggyContactDetailAdapter contactDetailAdapter;
     
     ImageView ivCancel;
     TextView tvTitle;
@@ -45,7 +45,6 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
         f.setArguments (args);
         return f;
     }
-    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -85,6 +84,7 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
@@ -100,27 +100,13 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         tvTitle.setText (contact_name.toUpperCase ());
-        contactDetailList.add (new SwiggyContactDetail (1, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (2, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (3, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (4, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (5, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (6, 1, R.drawable.ic_person, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (7, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
-        contactDetailList.add (new SwiggyContactDetail (8, 1, R.drawable.ic_person, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
     
-        swiggyAdapter2 = new SwiggyContactDetailAdapter (getActivity (), contactDetailList);
-        rvContactList.setAdapter (swiggyAdapter2);
+        contactDetailAdapter = new SwiggyContactDetailAdapter (getActivity (), contactDetailList);
+        rvContactList.setAdapter (contactDetailAdapter);
         rvContactList.setHasFixedSize (true);
         rvContactList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvContactList.setItemAnimator (new DefaultItemAnimator ());
-        
-        rvContactList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvContactList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -130,5 +116,17 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+    }
+    
+    private void setData () {
+        contactDetailList.add (new SwiggyContactDetail (1, 1, R.drawable.ic_card, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (2, 2, R.drawable.ic_card, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (3, 3, R.drawable.ic_card, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (4, 4, R.drawable.ic_card, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (5, 2, R.drawable.ic_card, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (6, 3, R.drawable.ic_card, true, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (7, 1, R.drawable.ic_card, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailList.add (new SwiggyContactDetail (8, 4, R.drawable.ic_card, false, "ABCD Pvt Ltd", "Dwarka Sector 8", "+919873684678", "http://famdent.indiasupply.com/isdental/api/images/contacts/sales.png"));
+        contactDetailAdapter.notifyDataSetChanged ();
     }
 }

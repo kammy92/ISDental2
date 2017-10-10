@@ -41,30 +41,24 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     ImageView ivDate;
     TextView tvTitle;
     
+    List<SwiggyEventScheduleDate> eventScheduleDateList = new ArrayList<> ();
+    List<SwiggyEventSchedule> eventScheduleList = new ArrayList<> ();
+    List<SwiggyEventSchedule> eventScheduleTempList = new ArrayList<> ();
     
-    List<SwiggyEventScheduleDate> swiggyEventScheduleDateList = new ArrayList<> ();
-    List<SwiggyEventSchedule> swiggyEventSchedules = new ArrayList<> ();
-    List<SwiggyEventSchedule> swiggyEventScheduleTemp = new ArrayList<> ();
-    
-    //    String contact_name;
-//    int contact_id;
     String event_date = "";
     EventDayAdapter eventDayAdapter;
-    SwiggyEventScheduleAdapter swiggyEventScheduleAdapter;
+    SwiggyEventScheduleAdapter eventScheduleAdapter;
     
     RelativeLayout rlDate;
     
-    
     public static SwiggyEventScheduleDialogFragment newInstance (int contact_id, String contact_name) {
         SwiggyEventScheduleDialogFragment f = new SwiggyEventScheduleDialogFragment ();
-        // Supply num input as an argument.
-        Bundle args = new Bundle ();
-        args.putInt ("contact_id", contact_id);
-        args.putString ("contact_name", contact_name);
-        f.setArguments (args);
+//        Bundle args = new Bundle ();
+//        args.putInt ("contact_id", contact_id);
+//        args.putString ("contact_name", contact_name);
+//        f.setArguments (args);
         return f;
     }
-    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -104,6 +98,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
@@ -121,44 +116,15 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (true, 1, R.drawable.ic_date, "2017-10-05", "05/10/2017", ""));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 2, R.drawable.ic_date, "2017-10-06", "06/10/2017", ""));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 3, R.drawable.ic_date, "2017-10-07", "07/10/2017", ""));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 4, R.drawable.ic_date, "2017-10-08", "08/10/2017", ""));
-        swiggyEventScheduleDateList.add (new SwiggyEventScheduleDate (false, 5, R.drawable.ic_date, "2017-10-09", "09/10/2017", ""));
-        
-        
-        eventDayAdapter = new EventDayAdapter (getActivity (), swiggyEventScheduleDateList);
+    
+        eventDayAdapter = new EventDayAdapter (getActivity (), eventScheduleDateList);
         rvDayList.setAdapter (eventDayAdapter);
         rvDayList.setHasFixedSize (true);
         rvDayList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
         rvDayList.setItemAnimator (new DefaultItemAnimator ());
-        rvDayList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
+        rvDayList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
     
-        rvEventList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-    
-    
-        swiggyEventSchedules.add (new SwiggyEventSchedule (1, R.drawable.ic_date, "2017-10-05", "16:40", "17:40", "Event Name1", "New Delhi", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (2, R.drawable.ic_date, "2017-10-05", "06:40", "07:40", "Event Name2", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-05", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (4, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (5, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (6, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (7, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (8, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (9, R.drawable.ic_date, "2017-10-08", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (10, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        swiggyEventSchedules.add (new SwiggyEventSchedule (11, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        rvEventList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -184,6 +150,27 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         });
     }
     
+    private void setData () {
+        eventScheduleDateList.add (new SwiggyEventScheduleDate (true, 1, R.drawable.ic_date, "2017-10-05", "05/10/2017", ""));
+        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 2, R.drawable.ic_date, "2017-10-06", "06/10/2017", ""));
+        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 3, R.drawable.ic_date, "2017-10-07", "07/10/2017", ""));
+        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 4, R.drawable.ic_date, "2017-10-08", "08/10/2017", ""));
+        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 5, R.drawable.ic_date, "2017-10-09", "09/10/2017", ""));
+        eventDayAdapter.notifyDataSetChanged ();
+        
+        eventScheduleList.add (new SwiggyEventSchedule (1, R.drawable.ic_date, "2017-10-05", "16:40", "17:40", "Event Name1", "New Delhi", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (2, R.drawable.ic_date, "2017-10-05", "06:40", "07:40", "Event Name2", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-05", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (4, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (5, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (6, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (7, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (8, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (9, R.drawable.ic_date, "2017-10-08", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (10, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        eventScheduleList.add (new SwiggyEventSchedule (11, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+    }
+    
     public class EventDayAdapter extends RecyclerView.Adapter<EventDayAdapter.ViewHolder> {
         private Activity activity;
         private List<SwiggyEventScheduleDate> dayList = new ArrayList<> ();
@@ -207,20 +194,20 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
             holder.tvDate.setText (eventDay.getDate ());
     
             if (eventDay.isSelected ()) {
-                swiggyEventScheduleTemp.clear ();
+                eventScheduleTempList.clear ();
             }
     
-            for (int i = 0; i < swiggyEventSchedules.size (); i++) {
-                SwiggyEventSchedule eventSchedule = swiggyEventSchedules.get (i);
+            for (int i = 0; i < eventScheduleList.size (); i++) {
+                SwiggyEventSchedule eventSchedule = SwiggyEventScheduleDialogFragment.this.eventScheduleList.get (i);
                 if (eventDay.getDate ().equalsIgnoreCase (eventSchedule.getDate ()) && eventDay.isSelected ()) {
-                    swiggyEventScheduleTemp.add (eventSchedule);
+                    eventScheduleTempList.add (eventSchedule);
                 }
             }
             
             if (eventDay.isSelected ()) {
                 holder.tvFooterLine.setBackgroundResource (R.color.primary_text2);
-                swiggyEventScheduleAdapter = new SwiggyEventScheduleAdapter (getActivity (), swiggyEventScheduleTemp);
-                rvEventList.setAdapter (swiggyEventScheduleAdapter);
+                eventScheduleAdapter = new SwiggyEventScheduleAdapter (getActivity (), eventScheduleTempList);
+                rvEventList.setAdapter (eventScheduleAdapter);
                 rvEventList.setHasFixedSize (true);
                 rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
                 rvEventList.setItemAnimator (new DefaultItemAnimator ());
@@ -282,8 +269,8 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
             public void onClick (View v) {
                 SwiggyEventScheduleDate swiggyEventScheduleDate = dayList.get (getLayoutPosition ());
                 event_date = swiggyEventScheduleDate.getDate ();
-                for (int i = 0; i < swiggyEventScheduleDateList.size (); i++) {
-                    SwiggyEventScheduleDate dayTemp = swiggyEventScheduleDateList.get (i);
+                for (int i = 0; i < eventScheduleDateList.size (); i++) {
+                    SwiggyEventScheduleDate dayTemp = eventScheduleDateList.get (i);
                     dayTemp.setSelected (false);
                 }
                 swiggyEventScheduleDate.setSelected (true);
