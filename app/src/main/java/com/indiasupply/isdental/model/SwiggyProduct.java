@@ -6,12 +6,13 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyProduct {
     boolean recommended;
-    int id;
+    int id, icon;
     String name, description, category, image, price, type;
     
-    public SwiggyProduct (boolean recommended, int id, String name, String description, String category, String image, String price, String type) {
+    public SwiggyProduct (boolean recommended, int id, int icon, String name, String description, String category, String price, String type, String image) {
         this.recommended = recommended;
         this.id = id;
+        this.icon = icon;
         this.name = name;
         this.description = description;
         this.category = category;
@@ -34,6 +35,14 @@ public class SwiggyProduct {
     
     public void setId (int id) {
         this.id = id;
+    }
+    
+    public int getIcon () {
+        return icon;
+    }
+    
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public String getName () {

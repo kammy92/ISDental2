@@ -23,10 +23,6 @@ import com.indiasupply.isdental.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by l on 26/09/2017.
- */
-
 public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.ViewHolder> {
     SwiggyEventAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;

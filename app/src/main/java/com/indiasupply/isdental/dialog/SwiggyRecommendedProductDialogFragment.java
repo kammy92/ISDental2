@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,10 +26,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SwiggyProductDetailDialogFragment extends DialogFragment {
+public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
     RecyclerView rv3;
-    List<SwiggyProduct> swiggyProductList = new ArrayList<> ();
-    SwiggyRecommendedProductAdapter2 swiggyAdapter;
+    List<SwiggyProduct> productList = new ArrayList<> ();
+    SwiggyRecommendedProductAdapter2 productAdapter;
     LinearLayoutManager linearLayoutManager;
     
     ImageView ivCancel;
@@ -72,6 +71,7 @@ public class SwiggyProductDetailDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
@@ -82,32 +82,20 @@ public class SwiggyProductDetailDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
-        
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
     
-        swiggyProductList.add (new SwiggyProduct (true, 1, "Name 1", "Description 1", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 12,000/-", "Recommended"));
-        swiggyProductList.add (new SwiggyProduct (true, 2, "Name 2", "Description 2 aksjd kjlaskd laks dllk sadlk asldk asdldk sadlk asdlka sdlk asldk asd ask jasdkj asd kj sadk kj asdk kj asdkn kaj sdk aakj sdk aksj dkj kj kjas aksj dkasjdka skdjnaksd kajs dk askdj aksd ka kajs dka sdk asdaksdajsdk asj dkja sdk kj askjd akjsd kajs dkja sdkja sdkj asdkasj ddkjasd kasdkjaslkdmalks dlkasd kasdlkmls dlk sadlk askjnhgldk", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg", "Rs 8,000/-", "Recommended"));
-        swiggyProductList.add (new SwiggyProduct (true, 3, "Name 3", "Description 3", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg", "Rs 3,000/-", "Recommended"));
-        swiggyProductList.add (new SwiggyProduct (true, 4, "Name 4", "Description 4", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg", "Rs 10,000/-", "Recommended"));
-        swiggyProductList.add (new SwiggyProduct (true, 5, "Name 5", "Description 5", "Dental Equipments", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg", "Rs 2,000/-", "Recommended"));
-    
-        swiggyAdapter = new SwiggyRecommendedProductAdapter2 (getActivity (), swiggyProductList);
-        rv3.setAdapter (swiggyAdapter);
+        productAdapter = new SwiggyRecommendedProductAdapter2 (getActivity (), productList);
+        rv3.setAdapter (productAdapter);
         rv3.setHasFixedSize (true);
         rv3.setLayoutManager (linearLayoutManager);
         rv3.setItemAnimator (new DefaultItemAnimator ());
-        rv3.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rv3.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         LinearLayoutManager layoutManager = ((LinearLayoutManager) rv3.getLayoutManager ());
-        tvTitle.setText ("Recommended 1/" + swiggyProductList.size ());
+        tvTitle.setText ("Recommended 1/" + productList.size ());
     }
     
     private void initListener () {
@@ -116,13 +104,13 @@ public class SwiggyProductDetailDialogFragment extends DialogFragment {
 //            public void onScrollStateChanged (RecyclerView recyclerView, int newState) {
 //                switch (newState){
 //                    case SCROLL_STATE_SETTLING:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
 //                        break;
 //                    case SCROLL_STATE_DRAGGING:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
 //                        break;
 //                    case SCROLL_STATE_IDLE:
-//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + swiggyProductList.size ());
+//                        tvTitle.setText ("Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition ()+1) + "/" + productList.size ());
 //                        break;
 //                }
 //
@@ -130,14 +118,13 @@ public class SwiggyProductDetailDialogFragment extends DialogFragment {
 //
 //                super.onScrollStateChanged (recyclerView, newState);
 //            }
-        
+    
             @Override
             public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
-                Log.e ("karman", " " + linearLayoutManager.findFirstCompletelyVisibleItemPosition ());
                 if (linearLayoutManager.findFirstCompletelyVisibleItemPosition () < 0) {
-//                    tvTitle.setText ("Recommended 1/" + swiggyProductList.size ());
+//                    tvTitle.setText ("Recommended 1/" + productList.size ());
                 } else {
-                    tvTitle.setText ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + swiggyProductList.size ());
+                    tvTitle.setText ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + productList.size ());
                 }
                 super.onScrolled (recyclerView, dx, dy);
             }
@@ -148,5 +135,14 @@ public class SwiggyProductDetailDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+    }
+    
+    private void setData () {
+        productList.add (new SwiggyProduct (true, 1, R.drawable.ic_information, "Name 1", "Description 1", "Dental Equipments", "Rs 12,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
+        productList.add (new SwiggyProduct (true, 2, R.drawable.ic_information, "Name 2", "Description 2 aksjd kjlaskd laks dllk sadlk asldk asdldk sadlk asdlka sdlk asldk asd ask jasdkj asd kj sadk kj asdk kj asdkn kaj sdk aakj sdk aksj dkj kj kjas aksj dkasjdka skdjnaksd kajs dk askdj aksd ka kajs dka sdk asdaksdajsdk asj dkja sdk kj askjd akjsd kajs dkja sdkja sdkj asdkasj ddkjasd kasdkjaslkdmalks dlkasd kasdlkmls dlk sadlk askjnhgldk", "Dental Equipments", "Rs 8,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg"));
+        productList.add (new SwiggyProduct (true, 3, R.drawable.ic_information, "Name 3", "Description 3", "Dental Equipments", "Rs 3,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg"));
+        productList.add (new SwiggyProduct (true, 4, R.drawable.ic_information, "Name 4", "Description 4", "Dental Equipments", "Rs 10,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg"));
+        productList.add (new SwiggyProduct (true, 5, R.drawable.ic_information, "Name 5", "Description 5", "Dental Equipments", "Rs 2,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
+        productAdapter.notifyDataSetChanged ();
     }
 }

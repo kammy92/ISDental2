@@ -5,19 +5,22 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyCompany {
-    
+    boolean is_offer;
+    boolean is_isassured;
     int id, icon;
-    String title, contacts, category, email, website, image;
+    String title, description, rating, offers, category, image;
     
-    public SwiggyCompany (int id, int icon, String title, String contacts, String category, String email, String website, String image) {
+    public SwiggyCompany (boolean is_offer, boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image) {
+        this.is_offer = is_offer;
+        this.is_isassured = is_isassured;
         this.id = id;
         this.icon = icon;
         this.title = title;
-        this.contacts = contacts;
+        this.description = description;
+        this.rating = rating;
+        this.offers = offers;
         this.category = category;
         this.image = image;
-        this.email = email;
-        this.website = website;
     }
     
     public int getIcon () {
@@ -26,6 +29,22 @@ public class SwiggyCompany {
     
     public void setIcon (int icon) {
         this.icon = icon;
+    }
+    
+    public boolean is_offer () {
+        return is_offer;
+    }
+    
+    public void setIs_offer (boolean is_offer) {
+        this.is_offer = is_offer;
+    }
+    
+    public boolean is_isassured () {
+        return is_isassured;
+    }
+    
+    public void setIs_isassured (boolean is_isassured) {
+        this.is_isassured = is_isassured;
     }
     
     public int getId () {
@@ -44,12 +63,28 @@ public class SwiggyCompany {
         this.title = title;
     }
     
-    public String getContacts () {
-        return contacts;
+    public String getDescription () {
+        return description;
     }
     
-    public void setContacts (String contacts) {
-        this.contacts = contacts;
+    public void setDescription (String description) {
+        this.description = description;
+    }
+    
+    public String getRating () {
+        return rating;
+    }
+    
+    public void setRating (String rating) {
+        this.rating = rating;
+    }
+    
+    public String getOffers () {
+        return offers;
+    }
+    
+    public void setOffers (String offers) {
+        this.offers = offers;
     }
     
     public String getCategory () {
@@ -66,21 +101,5 @@ public class SwiggyCompany {
     
     public void setImage (String image) {
         this.image = image;
-    }
-    
-    public String getEmail () {
-        return email;
-    }
-    
-    public void setEmail (String email) {
-        this.email = email;
-    }
-    
-    public String getWebsite () {
-        return website;
-    }
-    
-    public void setWebsite (String website) {
-        this.website = website;
     }
 }

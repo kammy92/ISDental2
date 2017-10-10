@@ -80,7 +80,7 @@
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyBrandDetailActivity"
+        <activity android:name="com.indiasupply.isdental.activity.SwiggyCompanyDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 

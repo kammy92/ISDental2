@@ -29,11 +29,11 @@ import static com.indiasupply.isdental.utils.Utils.makeTextViewResizable;
 public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<SwiggyRecommendedProductAdapter2.ViewHolder> {
     CompanyListAdapter.OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyProduct> swiggyProductList = new ArrayList<> ();
+    private List<SwiggyProduct> productList = new ArrayList<> ();
     
-    public SwiggyRecommendedProductAdapter2 (Activity activity, List<SwiggyProduct> swiggyProductList) {
+    public SwiggyRecommendedProductAdapter2 (Activity activity, List<SwiggyProduct> productList) {
         this.activity = activity;
-        this.swiggyProductList = swiggyProductList;
+        this.productList = productList;
     }
     
     @Override
@@ -45,43 +45,45 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyProduct swiggyProduct = swiggyProductList.get (position);
+        final SwiggyProduct product = productList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
-
-//        holder.tvProductName.setTypeface (SetTypeFace.getTypeface (activity), Typeface.BOLD);
-//        holder.tvProductPrice.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvProductDescription.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvAdd.setTypeface (SetTypeFace.getTypeface (activity));
     
-        holder.tvProductName.setText (swiggyProduct.getName ());
-        holder.tvProductPrice.setText (swiggyProduct.getPrice ());
-        holder.tvProductDescription.setText (swiggyProduct.getDescription ());
+        holder.tvProductName.setText (product.getName ());
+        holder.tvProductPrice.setText (product.getPrice ());
+        holder.tvProductDescription.setText (product.getDescription ());
         if (holder.tvProductDescription.getText ().toString ().trim ().length () > 70) {
             makeTextViewResizable (holder.tvProductDescription, 2, "...more", true);
         }
-        
-        Glide.with (activity)
-                .load (swiggyProduct.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.VISIBLE);
-                        return false;
-                    }
+    
+        if (product.getImage ().length () == 0) {
+            holder.ivProductImage.setImageResource (product.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            holder.progressBar.setVisibility (View.VISIBLE);
+            Glide.with (activity)
+                    .load (product.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivProductImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (product.getIcon ())
+                    .into (holder.ivProductImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return swiggyProductList.size ();
+        return productList.size ();
     }
     
     public void SetOnItemClickListener (final CompanyListAdapter.OnItemClickListener mItemClickListener) {

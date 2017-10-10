@@ -267,7 +267,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     Intent intent5 = new Intent (activity, SwiggyMainActivity.class);
                     activity.startActivity (intent5);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-//                    Intent intent5 = new Intent (activity, SwiggyBrandDetailActivity.class);
+//                    Intent intent5 = new Intent (activity, SwiggyCompanyDetailActivity.class);
 //                    activity.startActivity (intent5);
 //                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
     

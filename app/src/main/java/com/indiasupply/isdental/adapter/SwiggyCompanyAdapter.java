@@ -1,8 +1,6 @@
 package com.indiasupply.isdental.adapter;
-
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +14,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.SwiggyCompanyDetailActivity;
 import com.indiasupply.isdental.model.SwiggyCompany;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -25,70 +24,44 @@ import java.util.List;
 public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyCompany> companyList = new ArrayList<> ();
+    private List<SwiggyCompany> brandList = new ArrayList<> ();
     
-    public SwiggyCompanyAdapter (Activity activity, List<SwiggyCompany> companyList) {
+    public SwiggyCompanyAdapter (Activity activity, List<SwiggyCompany> brandList) {
         this.activity = activity;
-        this.companyList = companyList;
+        this.brandList = brandList;
     }
     
     @Override
     public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
         final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
-        final View sView = mInflater.inflate (R.layout.list_item_swiggy_company, parent, false);
+        final View sView = mInflater.inflate (R.layout.list_item_swiggy_company1, parent, false);
         return new ViewHolder (sView);
     }
     
     @Override
-    public void onBindViewHolder (final ViewHolder holder, int position) {
-        final SwiggyCompany company = companyList.get (position);
+    public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+        final SwiggyCompany brand = brandList.get (position);
         
-        Utils.setTypefaceToAllViews (activity, holder.tvCompanyName);
+        Utils.setTypefaceToAllViews (activity, holder.tvBrandName);
+        
+        holder.tvBrandName.setText (brand.getTitle ());
+        holder.tvBrandCategory.setText (brand.getCategory ());
+        holder.tvContacts.setText (brand.getDescription ());
+        holder.tvOffer.setText (brand.getOffers ());
+        
+        if (brand.is_isassured ()) {
+            holder.ivISAssured.setVisibility (View.VISIBLE);
+        } else {
+            holder.ivISAssured.setVisibility (View.GONE);
+        }
+        holder.tvRating.setText (brand.getRating ());
     
-        holder.tvCompanyName.setText (company.getTitle ());
-        holder.tvCompanyCategory.setText (company.getCategory ());
-        holder.tvCompanyContacts.setText (company.getContacts ());
-        
-        holder.ivCompanyEmail.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                if (company.getEmail ().length () > 0) {
-                    Intent email = new Intent (Intent.ACTION_SEND);
-                    email.putExtra (Intent.EXTRA_EMAIL, new String[] {company.getEmail ()});
-                    email.putExtra (Intent.EXTRA_SUBJECT, "Enquiry");
-                    email.putExtra (Intent.EXTRA_TEXT, "");
-                    email.setType ("message/rfc822");
-                    activity.startActivity (Intent.createChooser (email, "Choose an Email client :"));
-                } else {
-                    Utils.showToast (activity, "No email specified", false);
-                }
-            }
-        });
-        
-        holder.ivCompanyWebSite.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                if (company.getWebsite ().length () > 0) {
-                    Uri uri;
-                    if (company.getWebsite ().contains ("http://") || company.getWebsite ().contains ("https://")) {
-                        uri = Uri.parse (company.getWebsite ());
-                    } else {
-                        uri = Uri.parse ("http://" + company.getWebsite ());
-                    }
-                    Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                    activity.startActivity (intent);
-                } else {
-                    Utils.showToast (activity, "No website specified", false);
-                }
-            }
-        });
-    
-        if (company.getImage ().length () == 0) {
-            holder.ivCompanyImage.setImageResource (company.getIcon ());
+        if (brand.getImage ().length () == 0) {
+            holder.ivBrandImage.setImageResource (brand.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
         } else {
             Glide.with (activity)
-                    .load (company.getImage ())
+                    .load (brand.getImage ())
                     .listener (new RequestListener<String, GlideDrawable> () {
                         @Override
                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -102,17 +75,18 @@ public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdap
                             return false;
                         }
                     })
-                    .error (company.getIcon ())
-                    .into (holder.ivCompanyImage);
+                    .error (brand.getIcon ())
+                    .into (holder.ivBrandImage);
         }
+     
     }
     
     @Override
     public int getItemCount () {
-        return companyList.size ();
+        return brandList.size ();
     }
     
-    public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
+    public void SetOnItemClickListener (final SwiggyCompanyAdapter.OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
     
@@ -121,29 +95,34 @@ public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdap
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView tvCompanyName;
-        TextView tvCompanyCategory;
-        TextView tvCompanyContacts;
-        ImageView ivCompanyEmail;
-        ImageView ivCompanyWebSite;
-        ImageView ivCompanyImage;
+        TextView tvBrandName;
+        TextView tvBrandCategory;
+        TextView tvOffer;
+        ImageView ivISAssured;
+        TextView tvRating;
+        TextView tvContacts;
+        ImageView ivBrandImage;
         ProgressBar progressBar;
         
         public ViewHolder (View view) {
             super (view);
-            tvCompanyName = (TextView) view.findViewById (R.id.tvCompanyName);
-            tvCompanyCategory = (TextView) view.findViewById (R.id.tvCompanyCategory);
-            tvCompanyContacts = (TextView) view.findViewById (R.id.tvContactContacts);
-            ivCompanyEmail = (ImageView) view.findViewById (R.id.ivCompanyEmail);
-            ivCompanyImage = (ImageView) view.findViewById (R.id.ivCompanyImage);
-            ivCompanyWebSite = (ImageView) view.findViewById (R.id.ivCompanyWebSite);
+            tvBrandName = (TextView) view.findViewById (R.id.tvBrandName);
+            tvBrandCategory = (TextView) view.findViewById (R.id.tvBrandCategory);
+            tvOffer = (TextView) view.findViewById (R.id.tvOffer);
+            tvRating = (TextView) view.findViewById (R.id.tvRating);
+            tvContacts = (TextView) view.findViewById (R.id.tvContacts);
+            ivISAssured = (ImageView) view.findViewById (R.id.ivISAssured);
+            ivBrandImage = (ImageView) view.findViewById (R.id.ivBrand);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
-            mItemClickListener.onItemClick (v, getLayoutPosition ());
+            SwiggyCompany brand = brandList.get (getLayoutPosition ());
+            Intent intent5 = new Intent (activity, SwiggyCompanyDetailActivity.class);
+            activity.startActivity (intent5);
+            activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 }

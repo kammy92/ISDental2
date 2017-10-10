@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.dialog.SwiggyProductDetailDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyRecommendedProductDialogFragment;
 import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -23,14 +23,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRecommendProductAdapter.ViewHolder> {
+public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<SwiggyRecommendedProductAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyProduct> recommendList = new ArrayList<> ();
+    private List<SwiggyProduct> productList = new ArrayList<> ();
     
-    public SwiggyRecommendProductAdapter (Activity activity, List<SwiggyProduct> recommendList) {
+    public SwiggyRecommendedProductAdapter (Activity activity, List<SwiggyProduct> productList) {
         this.activity = activity;
-        this.recommendList = recommendList;
+        this.productList = productList;
     }
     
     @Override
@@ -42,40 +42,42 @@ public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRe
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyProduct recommended = recommendList.get (position);
-        
+        final SwiggyProduct product = productList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
-
-//        holder.tvProductName.setTypeface (SetTypeFace.getTypeface (activity), Typeface.BOLD);
-//        holder.tvProductCategory.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvProductPrice.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvAdd.setTypeface (SetTypeFace.getTypeface (activity));
-        
-        holder.tvProductName.setText (recommended.getName ());
-        holder.tvProductCategory.setText (recommended.getCategory ());
-        holder.tvProductPrice.setText (recommended.getPrice ());
-        
-        Glide.with (activity)
-                .load (recommended.getImage ())
-                .listener (new RequestListener<String, GlideDrawable> () {
-                    @Override
-                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
+    
+        holder.tvProductName.setText (product.getName ());
+        holder.tvProductCategory.setText (product.getCategory ());
+        holder.tvProductPrice.setText (product.getPrice ());
+    
+        if (product.getImage ().length () == 0) {
+            holder.ivProductImage.setImageResource (product.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            holder.progressBar.setVisibility (View.VISIBLE);
+            Glide.with (activity)
+                    .load (product.getImage ())
+//                    .placeholder (eventSchedule.getIcon ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
                     
-                    @Override
-                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        holder.progressBar.setVisibility (View.GONE);
-                        return false;
-                    }
-                })
-                .into (holder.ivProductImage);
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .error (product.getIcon ())
+                    .into (holder.ivProductImage);
+        }
     }
     
     @Override
     public int getItemCount () {
-        return recommendList.size ();
+        return productList.size ();
     }
     
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
@@ -108,7 +110,7 @@ public class SwiggyRecommendProductAdapter extends RecyclerView.Adapter<SwiggyRe
         @Override
         public void onClick (View v) {
             FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
-            SwiggyProductDetailDialogFragment frag = new SwiggyProductDetailDialogFragment ();
+            SwiggyRecommendedProductDialogFragment frag = new SwiggyRecommendedProductDialogFragment ();
             frag.show (ft, "rahul");
         }
     }
