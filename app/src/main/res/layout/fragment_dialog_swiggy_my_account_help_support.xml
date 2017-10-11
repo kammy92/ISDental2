@@ -3,7 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/text_color_white">
     <ImageView
         android:id="@+id/ivCancel"
@@ -19,7 +18,7 @@
         android:layout_alignTop="@+id/ivCancel"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:text="Information"
+        android:text="Help &amp; Support"
         android:textColor="@color/primary_text2"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"
@@ -40,7 +39,7 @@
         <FrameLayout
             android:id="@+id/fl1"
             android:layout_width="match_parent"
-            android:layout_height="2dp">
+            android:layout_height="1dp">
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"

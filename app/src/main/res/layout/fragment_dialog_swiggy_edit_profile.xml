@@ -72,11 +72,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv2"
+            android:layout_marginBottom="@dimen/activity_margin"
             android:background="@drawable/swiggy_et_background"
             android:inputType="textEmailAddress"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             android:theme="@style/EditTextTheme"/>
+
+        <TextView
+            android:id="@+id/tvUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etEmail"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:background="@color/primary_text2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin_small"
+            android:text="UPDATE"
+            android:textColor="@color/text_color_white"/>
     </RelativeLayout>
 </RelativeLayout>
