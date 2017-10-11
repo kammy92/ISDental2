@@ -51,6 +51,9 @@
         <activity android:name="com.indiasupply.isdental.activity.CompanyListActivity"
                   android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.indiasupply.isdental.activity.OffersActivity"
+                  android:screenOrientation="portrait">
+        </activity>
 
         <activity android:name="com.indiasupply.isdental.activity.CompanyDetailActivity"
                   android:screenOrientation="portrait">

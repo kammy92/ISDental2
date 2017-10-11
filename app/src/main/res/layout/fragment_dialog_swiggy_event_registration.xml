@@ -40,7 +40,7 @@
         <FrameLayout
             android:id="@+id/fl1"
             android:layout_width="match_parent"
-            android:layout_height="4dp">
+            android:layout_height="2dp">
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleHorizontal"

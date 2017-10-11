@@ -121,15 +121,16 @@ public class MainActivity extends AppCompatActivity {
 //        homeServices.add (new HomeService (4, R.drawable.ic_hall_plan, "", "IS SPECIAL"));
 //        homeServices.add (new HomeService (5, R.drawable.ic_favourite, "", "OFFERS"));
         //  homeServices.add (new HomeService (6, R.drawable.ic_information, "", "ABOUT US"));
-    
-    
-        homeServices.add (new HomeService (5, R.drawable.our_brands));
-        homeServices.add (new HomeService (3, R.drawable.online_trade_fair));
-        homeServices.add (new HomeService (1, R.drawable.our_brands));
-        homeServices.add (new HomeService (4, R.drawable.expodent_mumbai));
+
+
+//        homeServices.add (new HomeService (5, R.drawable.our_brands));
+        homeServices.add (new HomeService (3, R.drawable.online_market_place));
+        homeServices.add (new HomeService (1, R.drawable.contacts));
+//        homeServices.add (new HomeService (4, R.drawable.expodent_mumbai));
+        homeServices.add (new HomeService (7, R.drawable.offers));
         homeServices.add (new HomeService (2, R.drawable.upcoming_events));
-        
-        
+    
+    
         homeServiceAdapter = new HomeServiceAdapter (this, homeServices);
         rvHomeServiceList.setAdapter (homeServiceAdapter);
         rvHomeServiceList.setHasFixedSize (true);

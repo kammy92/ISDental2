@@ -68,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_margin">
-
                 <TextView
                     android:id="@+id/tvUserName"
                     android:layout_width="wrap_content"
@@ -78,7 +77,18 @@
                     android:layout_alignParentTop="true"
                     android:text="KARMAN SINGH"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_extra_large"
+                    android:textSize="@dimen/text_size_medium"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvEdit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:paddingBottom="@dimen/activity_margin_small"
+                    android:paddingLeft="@dimen/activity_margin"
+                    android:text="EDIT"
+                    android:textSize="@dimen/text_size_small"
                     android:textStyle="bold"/>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -139,16 +149,119 @@
                 android:layout_marginLeft="@dimen/activity_margin"
                 android:layout_marginRight="@dimen/activity_margin"
                 android:background="@color/primary_text2"/>
+            <RelativeLayout
+                android:id="@+id/rlAccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/v1"
+                android:layout_margin="@dimen/activity_margin">
+                <TextView
+                    android:id="@+id/tvMyAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="My Account"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvAccountDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tvMyAccount"
+                    android:text="Favorites, Inquiries, Offers"
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_extra_small"/>
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv1"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/rlAccount"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:layerType="software"
+                android:src="@drawable/dotted"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvMyAccount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/v1"
-
+                android:layout_below="@+id/iv1"
                 android:clipToPadding="false"
                 android:fillViewport="true"
                 android:overScrollMode="never"
                 android:scrollbarStyle="insideOverlay"/>
+            <ImageView
+                android:id="@+id/iv3"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/rvMyAccount"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:layerType="software"
+                android:src="@drawable/dotted"/>
+            <RelativeLayout
+                android:id="@+id/rlHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv3"
+                android:layout_margin="@dimen/activity_margin">
+                <TextView
+                    android:id="@+id/tvHelp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:text="Help"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/tvHelpDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tvHelp"
+                    android:text="Help, Legal"
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_extra_small"/>
+            </RelativeLayout>
+            <ImageView
+                android:id="@+id/iv2"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:layout_below="@+id/rlHelp"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:layerType="software"
+                android:src="@drawable/dotted"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvHelp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv2"
+                android:clipToPadding="false"
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:scrollbarStyle="insideOverlay"/>
+
+            <TextView
+                android:id="@+id/tvAppVersion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rvHelp"
+                android:background="#f0f0f0"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin"
+                android:text="App Version 2.0(200)"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_extra_small"/>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

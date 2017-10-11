@@ -8,7 +8,7 @@ public class SwiggyMyAccountItem {
     int id, icon;
     String title, image, description;
     
-    public SwiggyMyAccountItem (int id, int icon, String title, String description, String image) {
+    public SwiggyMyAccountItem (int id, int icon, String title, String image, String description) {
         this.id = id;
         this.icon = icon;
         this.title = title;

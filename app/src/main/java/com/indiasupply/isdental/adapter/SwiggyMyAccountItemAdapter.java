@@ -1,6 +1,7 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.dialog.SwiggyMyAccountFaqDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyMyAccountHelpSupportDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyMyAccountPrivacyPolicyDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyMyAccountTermsofUseDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyAccountItem;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -105,6 +110,26 @@ public class SwiggyMyAccountItemAdapter extends RecyclerView.Adapter<SwiggyMyAcc
         
         @Override
         public void onClick (View v) {
+            SwiggyMyAccountItem swiggyMyAccountItem = serviceItemList.get (getLayoutPosition ());
+            FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
+            switch (swiggyMyAccountItem.getId ()) {
+                case 5:
+                    SwiggyMyAccountHelpSupportDialogFragment frag1 = new SwiggyMyAccountHelpSupportDialogFragment ();
+                    frag1.show (ft, "2");
+                    break;
+                case 6:
+                    SwiggyMyAccountFaqDialogFragment frag2 = new SwiggyMyAccountFaqDialogFragment ();
+                    frag2.show (ft, "2");
+                    break;
+                case 7:
+                    SwiggyMyAccountTermsofUseDialogFragment frag3 = new SwiggyMyAccountTermsofUseDialogFragment ();
+                    frag3.show (ft, "2");
+                    break;
+                case 8:
+                    SwiggyMyAccountPrivacyPolicyDialogFragment frag4 = new SwiggyMyAccountPrivacyPolicyDialogFragment ();
+                    frag4.show (ft, "2");
+                    break;
+            }
         }
     }
 }
