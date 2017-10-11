@@ -99,9 +99,9 @@ public class SwiggyMyAccountFragment extends Fragment {
     }
     
     private void setData () {
-        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_favourite, "Favourites", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_favourite, "Offers", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_favourite, "Enquiries", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_favourite, "My Favourites", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_favourite, "My Offers", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_favourite, "My Enquiries", "", ""));
         
         myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_favourite, "Help & Support", "", ""));
         myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_favourite, "FAQs", "", ""));

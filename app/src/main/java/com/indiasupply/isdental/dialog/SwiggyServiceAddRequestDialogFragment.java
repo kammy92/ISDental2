@@ -5,6 +5,9 @@ import android.app.DialogFragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +17,24 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.utils.SetTypeFace;
+import com.indiasupply.isdental.utils.Utils;
+
+import java.util.ArrayList;
 
 
 public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
     ImageView ivCancel;
     TextView tvModelNumber;
     TextView tvSerialNumber;
-    TextView tvRequestService;
+    TextView tvSelectProduct;
+    TextView tvCounter;
+    CardView cv1;
     EditText etRequestDescription;
+    
+    ArrayList<String> productList = new ArrayList<> ();
     
     public static SwiggyServiceAddRequestDialogFragment newInstance (int contact_id) {
         SwiggyServiceAddRequestDialogFragment f = new SwiggyServiceAddRequestDialogFragment ();
@@ -78,18 +90,26 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         tvModelNumber = (TextView) root.findViewById (R.id.tvModelNumber);
         tvSerialNumber = (TextView) root.findViewById (R.id.tvSerialNumber);
-        tvRequestService = (TextView) root.findViewById (R.id.tvRequestService);
+        tvSelectProduct = (TextView) root.findViewById (R.id.tvSelectProduct);
+        tvCounter = (TextView) root.findViewById (R.id.tvCounter);
+        cv1 = (CardView) root.findViewById (R.id.cv1);
         etRequestDescription = (EditText) root.findViewById (R.id.etRequestDescription);
-        
-        
     }
     
     private void initBundle () {
     }
     
     private void initData () {
-        
-        
+        Utils.setTypefaceToAllViews (getActivity (), tvSerialNumber);
+    
+        productList.add ("Product 1");
+        productList.add ("Product 2");
+        productList.add ("Product 3");
+        productList.add ("Product 4");
+        productList.add ("Product 5");
+        productList.add ("Product 6");
+        productList.add ("Product 7");
+
     }
     
     private void initListener () {
@@ -99,8 +119,43 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+    
+    
+        tvSelectProduct.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                new MaterialDialog.Builder (getActivity ())
+                        .title ("Select a Product")
+                        .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
+                        .items (productList)
+                        .itemsCallback (new MaterialDialog.ListCallback () {
+                            @Override
+                            public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
+                                cv1.setVisibility (View.VISIBLE);
+                            }
+                        })
+                        .show ();
+            }
+        });
+        etRequestDescription.addTextChangedListener (new TextWatcher () {
+            @Override
+            public void onTextChanged (CharSequence s, int start, int before, int count) {
+                if (s.length () < 256) {
+                    tvCounter.setTextColor (getResources ().getColor (R.color.secondary_text2));
+                } else {
+                    tvCounter.setTextColor (getResources ().getColor (R.color.md_edittext_error));
+                }
+                tvCounter.setText (s.length () + "/255");
+            }
         
+            @Override
+            public void beforeTextChanged (CharSequence s, int start, int count, int after) {
+            }
         
+            @Override
+            public void afterTextChanged (Editable s) {
+            }
+        });
     }
     
     

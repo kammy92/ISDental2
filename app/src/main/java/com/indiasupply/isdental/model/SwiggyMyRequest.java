@@ -9,11 +9,14 @@ public class SwiggyMyRequest {
     String request_name, request_description, image;
     
     
-    public SwiggyMyRequest (int id, String request_name, String request_description) {
+    public SwiggyMyRequest (int id, int icon, String request_name, String request_description, String image) {
         this.id = id;
+        this.icon = icon;
         this.request_name = request_name;
         this.request_description = request_description;
+        this.image = image;
     }
+    
     
     public int getId () {
         return id;

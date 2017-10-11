@@ -5,11 +5,12 @@ public class SwiggyMyProduct {
     String product_name, product_description, image;
     
     
-    public SwiggyMyProduct (int id, String product_name, String product_description, int icon) {
+    public SwiggyMyProduct (int id, int icon, String product_name, String product_description, String image) {
         this.id = id;
         this.product_name = product_name;
         this.product_description = product_description;
         this.icon = icon;
+        this.image = image;
     }
     
     

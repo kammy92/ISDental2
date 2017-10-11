@@ -6,7 +6,6 @@ import android.app.DialogFragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.utils.SetTypeFace;
+import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,9 +33,12 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
     EditText etModelNo;
     EditText etSerialNo;
     EditText etPurchaseDate;
+    EditText etBrand;
     TextView tvSubmit;
+    TextView tvTitle;
     
     List<String> categoryList = new ArrayList<> ();
+    List<String> brandList = new ArrayList<> ();
     String date = "";
     private int mYear, mMonth, mDay;
     
@@ -48,11 +52,9 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
         return f;
     }
     
-    
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        
         setStyle (DialogFragment.STYLE_NORMAL, R.style.AppTheme);
     }
     
@@ -95,23 +97,28 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
         etSerialNo = (EditText) root.findViewById (R.id.etSerialNo);
         etPurchaseDate = (EditText) root.findViewById (R.id.etPurchaseDate);
         etModelNo = (EditText) root.findViewById (R.id.etModelNo);
+        etBrand = (EditText) root.findViewById (R.id.etProductBrand);
         tvSubmit = (TextView) root.findViewById (R.id.tvSubmit);
-        
-        
+        tvTitle = (TextView) root.findViewById (R.id.tvTitle);
     }
     
     private void initBundle () {
     }
     
     private void initData () {
+        Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         categoryList.add ("Category 1");
         categoryList.add ("Category 2");
         categoryList.add ("Category 3");
         categoryList.add ("Category 4");
         categoryList.add ("Category 5");
         categoryList.add ("Category 6");
-        
-        
+    
+        brandList.add ("Brand 1");
+        brandList.add ("Brand 2");
+        brandList.add ("Brand 3");
+        brandList.add ("Brand 4");
+        brandList.add ("Brand 5");
     }
     
     private void initListener () {
@@ -122,12 +129,12 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
             }
         });
         
-        
         etProductCategory.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 new MaterialDialog.Builder (getActivity ())
-                        .title ("Product Category")
+                        .title ("Select a Category")
+                        .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
                         .items (categoryList)
                         .itemsCallback (new MaterialDialog.ListCallback () {
                             @Override
@@ -138,12 +145,27 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                         .show ();
             }
         });
-        
+    
+        etBrand.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                new MaterialDialog.Builder (getActivity ())
+                        .title ("Select a Brand")
+                        .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
+                        .items (brandList)
+                        .itemsCallback (new MaterialDialog.ListCallback () {
+                            @Override
+                            public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
+                                etBrand.setText (text);
+                            }
+                        })
+                        .show ();
+            }
+        });
         
         etPurchaseDate.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                
                 final Calendar c = Calendar.getInstance ();
                 mYear = c.get (Calendar.YEAR);
                 mMonth = c.get (Calendar.MONTH);
@@ -152,9 +174,8 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                 DatePickerDialog datePickerDialog = new DatePickerDialog (getActivity (), new DatePickerDialog.OnDateSetListener () {
                     @Override
                     public void onDateSet (DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        etPurchaseDate.setText (String.format ("%02d", dayOfMonth) + "-" + String.format ("%02d", monthOfYear + 1) + "-" + year);
+                        etPurchaseDate.setText (String.format ("%02d", dayOfMonth) + "/" + String.format ("%02d", monthOfYear + 1) + "/" + year);
                         date = etPurchaseDate.getText ().toString ().trim ();
-                        Log.e ("date", date);
                     }
                 }, mYear, mMonth, mDay);
                 datePickerDialog.show ();

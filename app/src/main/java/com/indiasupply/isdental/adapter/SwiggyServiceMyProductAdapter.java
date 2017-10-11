@@ -9,6 +9,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.SwiggyMyProduct;
 import com.indiasupply.isdental.utils.Utils;
@@ -43,17 +47,14 @@ public class SwiggyServiceMyProductAdapter extends RecyclerView.Adapter<SwiggySe
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
         holder.tvProductName.setText (product.getProduct_name ());
         holder.tvProductDescription.setText (product.getProduct_description ());
-
-
-      /*  if (product.getImage().length() == 0) {
+    
+        if (product.getImage ().length () == 0) {
             holder.ivIcon.setImageResource(product.getIcon());
             holder.progressBar.setVisibility(View.GONE);
         } else {
-// holder.progressBar.setVisibility (View.VISIBLE);
             Glide.with(activity)
                     .load(product.getImage())
-// .placeholder (eventSchedule.getIcon ())
-                    .listener(new RequestListener<String, GlideDrawable>() {
+                    .listener (new RequestListener<String, GlideDrawable> () {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                             holder.progressBar.setVisibility(View.GONE);
@@ -68,7 +69,7 @@ public class SwiggyServiceMyProductAdapter extends RecyclerView.Adapter<SwiggySe
                     })
                     .error(product.getIcon())
                     .into(holder.ivIcon);
-        }*/
+        }
     }
     
     @Override
@@ -95,7 +96,7 @@ public class SwiggyServiceMyProductAdapter extends RecyclerView.Adapter<SwiggySe
             tvProductName = (TextView) view.findViewById (R.id.tvProductName);
             tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
             ivIcon = (ImageView) view.findViewById (R.id.ivProduct);
-            progressBar = (ProgressBar) view.findViewById (R.id.progressbar);
+            progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
         

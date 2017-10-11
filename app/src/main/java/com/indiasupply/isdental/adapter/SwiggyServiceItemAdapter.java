@@ -6,13 +6,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.dialog.SwiggyServiceAddProductDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyServiceAddRequestDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyServiceMyProductDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyServiceMyRequestDialogFragment;
 import com.indiasupply.isdental.model.SwiggyServiceItem;
 import com.indiasupply.isdental.utils.Utils;
@@ -46,9 +50,28 @@ public class SwiggyServiceItemAdapter extends RecyclerView.Adapter<SwiggyService
         final SwiggyServiceItem serviceItem = serviceItemList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvItemName);
         holder.tvItemName.setText (serviceItem.getName ());
-        Glide.with (activity)
-                .load (serviceItem.getIcon ())
-                .into (holder.ivItemIcon);
+        if (serviceItem.getImage ().length () == 0) {
+            holder.ivItemIcon.setImageResource (serviceItem.getIcon ());
+            holder.progressBar.setVisibility (View.GONE);
+        } else {
+            Glide.with (activity)
+                    .load (serviceItem.getImage ())
+                    .listener (new RequestListener<String, GlideDrawable> () {
+                        @Override
+                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            holder.ivItemIcon.setImageResource (serviceItem.getIcon ());
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    
+                        @Override
+                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            holder.progressBar.setVisibility (View.GONE);
+                            return false;
+                        }
+                    })
+                    .into (holder.ivItemIcon);
+        }
     }
     
     @Override
@@ -67,60 +90,36 @@ public class SwiggyServiceItemAdapter extends RecyclerView.Adapter<SwiggyService
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvItemName;
         ImageView ivItemIcon;
-        List<String> categoryList = new ArrayList<> ();
+        ProgressBar progressBar;
         
         public ViewHolder (View view) {
             super (view);
             tvItemName = (TextView) view.findViewById (R.id.tvItemName);
             ivItemIcon = (ImageView) view.findViewById (R.id.ivItemImage);
+            progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
             final SwiggyServiceItem service = serviceItemList.get (getLayoutPosition ());
+            final android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
             switch (service.getId ()) {
                 case 1:
-                    android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
                     SwiggyServiceMyProductDialogFragment frag = new SwiggyServiceMyProductDialogFragment ().newInstance (service.getId ());
-                    frag.show (ft, "MyProductDialog");
+                    frag.show (ft, "");
                     break;
-                
                 case 2:
-                    android.app.FragmentTransaction ft2 = activity.getFragmentManager ().beginTransaction ();
                     SwiggyServiceAddProductDialogFragment frag2 = new SwiggyServiceAddProductDialogFragment ().newInstance (service.getId ());
-                    frag2.show (ft2, "Add Product Dialog");
+                    frag2.show (ft, "");
                     break;
-                
                 case 3:
-                    android.app.FragmentTransaction ft3 = activity.getFragmentManager ().beginTransaction ();
                     SwiggyServiceMyRequestDialogFragment frag3 = new SwiggyServiceMyRequestDialogFragment ().newInstance (service.getId ());
-                    frag3.show (ft3, "MyProductDialog");
+                    frag3.show (ft, "");
                     break;
                 case 4:
-                    categoryList.clear ();
-                    categoryList.add ("Request 1");
-                    categoryList.add ("Request 2");
-                    categoryList.add ("Request 3");
-                    categoryList.add ("Request 4");
-                    categoryList.add ("Request 5");
-                    categoryList.add ("Request 6");
-                    categoryList.add ("Request 7");
-                    
-                    new MaterialDialog.Builder (activity)
-                            .title ("Request List")
-                            .items (categoryList)
-                            .itemsCallback (new MaterialDialog.ListCallback () {
-                                @Override
-                                public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
-                                    android.app.FragmentTransaction ft4 = activity.getFragmentManager ().beginTransaction ();
-                                    SwiggyServiceAddRequestDialogFragment frag4 = new SwiggyServiceAddRequestDialogFragment ().newInstance (service.getId ());
-                                    frag4.show (ft4, "MyProductDialog");
-                                    
-                                }
-                            })
-                            .show ();
-                    
+                    SwiggyServiceAddRequestDialogFragment frag4 = new SwiggyServiceAddRequestDialogFragment ().newInstance (service.getId ());
+                    frag4.show (ft, "");
                     break;
             }
         }

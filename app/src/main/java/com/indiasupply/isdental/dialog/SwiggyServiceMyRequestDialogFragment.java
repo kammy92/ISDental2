@@ -14,20 +14,23 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyServiceMyRequestAdapter;
 import com.indiasupply.isdental.model.SwiggyMyRequest;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
-    
+    TextView tvTitle;
     ImageView ivCancel;
     RecyclerView rvRequest;
-    SwiggyServiceMyRequestAdapter requestAdapter;
-    List<SwiggyMyRequest> SwiggyRequestList = new ArrayList<> ();
+    SwiggyServiceMyRequestAdapter myRequestAdapter;
+    List<SwiggyMyRequest> myRequestList = new ArrayList<> ();
     
     public static SwiggyServiceMyRequestDialogFragment newInstance (int contact_id) {
         SwiggyServiceMyRequestDialogFragment f = new SwiggyServiceMyRequestDialogFragment ();
@@ -38,7 +41,6 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
         f.setArguments (args);
         return f;
     }
-    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -77,36 +79,28 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
     private void initView (View root) {
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         rvRequest = (RecyclerView) root.findViewById (R.id.rvRequest);
-        
-        
+        tvTitle = (TextView) root.findViewById (R.id.tvTitle);
     }
     
     private void initBundle () {
     }
     
     private void initData () {
-        
-        SwiggyRequestList.add (new SwiggyMyRequest (1, "Request 1", "Description 1"));
-        SwiggyRequestList.add (new SwiggyMyRequest (2, "Request 2", "Description 2"));
-        SwiggyRequestList.add (new SwiggyMyRequest (3, "Request 3", "Description 3"));
-        SwiggyRequestList.add (new SwiggyMyRequest (4, "Request 4", "Description 4"));
-        SwiggyRequestList.add (new SwiggyMyRequest (5, "Request 5", "Description 5"));
-        SwiggyRequestList.add (new SwiggyMyRequest (6, "Request 6", "Description 6"));
-        
-        
-        requestAdapter = new SwiggyServiceMyRequestAdapter (getActivity (), SwiggyRequestList);
-        rvRequest.setAdapter (requestAdapter);
+        Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+    
+        myRequestAdapter = new SwiggyServiceMyRequestAdapter (getActivity (), myRequestList);
+        rvRequest.setAdapter (myRequestAdapter);
         rvRequest.setHasFixedSize (true);
         rvRequest.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvRequest.setItemAnimator (new DefaultItemAnimator ());
-        
-        
+        rvRequest.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -118,5 +112,14 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
         });
     }
     
+    private void setData () {
+        myRequestList.add (new SwiggyMyRequest (1, R.drawable.ic_card, "Request 1", "Description 1", ""));
+        myRequestList.add (new SwiggyMyRequest (2, R.drawable.ic_card, "Request 2", "Description 2", ""));
+        myRequestList.add (new SwiggyMyRequest (3, R.drawable.ic_card, "Request 3", "Description 3", ""));
+        myRequestList.add (new SwiggyMyRequest (4, R.drawable.ic_card, "Request 4", "Description 4", ""));
+        myRequestList.add (new SwiggyMyRequest (5, R.drawable.ic_card, "Request 5", "Description 5", ""));
+        myRequestList.add (new SwiggyMyRequest (6, R.drawable.ic_card, "Request 6", "Description 6", ""));
+        myRequestAdapter.notifyDataSetChanged ();
+    }
     
 }

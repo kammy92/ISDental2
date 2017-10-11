@@ -1,4 +1,4 @@
-package com.indiasupply.isdental.adapter;
+package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -14,16 +14,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.adapter.SwiggyServiceMyProductAdapter;
 import com.indiasupply.isdental.model.SwiggyMyProduct;
+import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
-    
     ImageView ivCancel;
+    TextView tvTitle;
     RecyclerView rvProductList;
     SwiggyServiceMyProductAdapter productAdapter;
     List<SwiggyMyProduct> swiggyMyProducts = new ArrayList<> ();
@@ -37,7 +41,6 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
         f.setArguments (args);
         return f;
     }
-    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -76,38 +79,28 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
+        setData ();
         return root;
     }
     
     private void initView (View root) {
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         rvProductList = (RecyclerView) root.findViewById (R.id.rvMyProduct);
-        
-        
+        tvTitle = (TextView) root.findViewById (R.id.tvTitle);
     }
     
     private void initBundle () {
     }
     
     private void initData () {
-        
-        swiggyMyProducts.add (new SwiggyMyProduct (1, "Product 1", "Description 1", R.drawable.ic_person));
-        swiggyMyProducts.add (new SwiggyMyProduct (2, "Product 2", "Description 2", R.drawable.ic_person));
-        swiggyMyProducts.add (new SwiggyMyProduct (3, "Product 3", "Description 3", R.drawable.ic_person));
-        swiggyMyProducts.add (new SwiggyMyProduct (4, "Product 4", "Description 4", R.drawable.ic_person));
-        swiggyMyProducts.add (new SwiggyMyProduct (5, "Product 5", "Description 5", R.drawable.ic_person));
-        swiggyMyProducts.add (new SwiggyMyProduct (6, "Product 6", "Description 6", R.drawable.ic_person));
-        
-        
+        Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+    
         productAdapter = new SwiggyServiceMyProductAdapter (getActivity (), swiggyMyProducts);
         rvProductList.setAdapter (productAdapter);
         rvProductList.setHasFixedSize (true);
         rvProductList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-//        lm.setSpanSizeLookup (new MySizeLookup ());
-        
         rvProductList.setItemAnimator (new DefaultItemAnimator ());
-        
-        
+        rvProductList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
@@ -119,5 +112,13 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
         });
     }
     
-    
+    private void setData () {
+        swiggyMyProducts.add (new SwiggyMyProduct (1, R.drawable.ic_person, "Product 1", "Description 1", ""));
+        swiggyMyProducts.add (new SwiggyMyProduct (2, R.drawable.ic_person, "Product 2", "Description 2", ""));
+        swiggyMyProducts.add (new SwiggyMyProduct (3, R.drawable.ic_person, "Product 3", "Description 3", ""));
+        swiggyMyProducts.add (new SwiggyMyProduct (4, R.drawable.ic_person, "Product 4", "Description 4", ""));
+        swiggyMyProducts.add (new SwiggyMyProduct (5, R.drawable.ic_person, "Product 5", "Description 5", ""));
+        swiggyMyProducts.add (new SwiggyMyProduct (6, R.drawable.ic_person, "Product 6", "Description 6", ""));
+        productAdapter.notifyDataSetChanged ();
+    }
 }

@@ -24,7 +24,6 @@ import java.util.List;
  */
 
 public class SwiggyServiceFragment extends Fragment {
-    
     ImageView ivCancel;
     RecyclerView rvServiceList;
     SwiggyServiceItemAdapter swiggyServiceAdapter;
@@ -45,7 +44,6 @@ public class SwiggyServiceFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_swiggy_service, container, false);
         initView (root);
-        
         initData ();
         initListener ();
         return root;
@@ -57,30 +55,20 @@ public class SwiggyServiceFragment extends Fragment {
     }
     
     private void initData () {
-        swiggyServiceItemList.add (new SwiggyServiceItem (1, R.drawable.ic_information, "MY PRODUCT"));
-        swiggyServiceItemList.add (new SwiggyServiceItem (2, R.drawable.ic_information, "ADD PRODUCT"));
-        swiggyServiceItemList.add (new SwiggyServiceItem (3, R.drawable.ic_information, "MY REQUEST"));
-        swiggyServiceItemList.add (new SwiggyServiceItem (4, R.drawable.ic_information, "ADD REQUEST"));
-        
+        Utils.setTypefaceToAllViews (getActivity (), rvServiceList);
+        swiggyServiceItemList.add (new SwiggyServiceItem (1, R.drawable.ic_information, "MY PRODUCTS", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (2, R.drawable.ic_information, "ADD PRODUCT", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (3, R.drawable.ic_information, "MY REQUESTS", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (4, R.drawable.ic_information, "ADD REQUEST", ""));
         
         swiggyServiceAdapter = new SwiggyServiceItemAdapter (getActivity (), swiggyServiceItemList);
         rvServiceList.setAdapter (swiggyServiceAdapter);
         rvServiceList.setHasFixedSize (true);
-        GridLayoutManager lm = new GridLayoutManager (getActivity (), 2, GridLayoutManager.VERTICAL, false);
-//        lm.setSpanSizeLookup (new MySizeLookup ());
-        rvServiceList.setLayoutManager (lm);
+        rvServiceList.setLayoutManager (new GridLayoutManager (getActivity (), 2, GridLayoutManager.VERTICAL, false));
         rvServiceList.setItemAnimator (new DefaultItemAnimator ());
-        rvServiceList.addItemDecoration (new RecyclerViewMargin (
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                (int) Utils.pxFromDp (getActivity (), 16),
-                2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
-        
+        rvServiceList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initListener () {
-        
     }
 }

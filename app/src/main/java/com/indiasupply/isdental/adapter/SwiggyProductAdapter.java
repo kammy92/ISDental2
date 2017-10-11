@@ -37,12 +37,6 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
         final SwiggyProduct swiggyProduct = swiggyProductList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
-
-//        holder.tvProductName.setTypeface (SetTypeFace.getTypeface (activity), Typeface.BOLD);
-//        holder.tvProductCategory.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvProductDescription.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvProductPrice.setTypeface (SetTypeFace.getTypeface (activity));
-//        holder.tvAdd.setTypeface (SetTypeFace.getTypeface (activity));
     
         if (swiggyProduct.getName ().length () > 0) {
             holder.tvProductName.setVisibility (View.VISIBLE);
