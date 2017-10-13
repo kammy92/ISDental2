@@ -2,7 +2,7 @@ package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
     public static String version = "v1.1.3";
-    //    public static String BASE_URL = "https://project-isdental-cammy92.c9users.io/api/" + version + "/";
+    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/v2.0/";// + version + "/";
     public static String BASE_URL = "http://famdent.indiasupply.com/isdental/api/" + version + "/";
     
     
@@ -25,4 +25,7 @@ public class AppConfigURL {
     
     public static String URL_SPECIAL_EVENT_DETAILS = BASE_URL + "event/special";
     
+    
+    public static String URL_SWIGGY_EVENT = BASE_URL2 + "events";
+    public static String URL_SWIGGY_EVENT_DETAILS = BASE_URL2 + "event";
 }

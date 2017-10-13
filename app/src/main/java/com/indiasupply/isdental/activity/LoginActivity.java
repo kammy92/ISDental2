@@ -556,17 +556,17 @@ public class LoginActivity extends AppCompatActivity {
                             progressDialog.dismiss ();
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
                             Utils.showSnackBar (LoginActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-    
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_ID, "1");
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_NAME, "Karman");
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_EMAIL, "karman.singh@actiknowbi.com");
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_MOBILE, "9873684678");
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_TYPE, "STUDENT");
-                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_LOGIN_KEY, "ec1377caada9e3c4fee3a546c085ff11");
-                            Intent intent = new Intent (LoginActivity.this, MainActivity.class);
-                            intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity (intent);
-                            overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_ID, "1");
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_NAME, "Karman");
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_EMAIL, "karman.singh@actiknowbi.com");
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_MOBILE, "9873684678");
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_TYPE, "STUDENT");
+//                            userDetailsPref.putStringPref (LoginActivity.this, UserDetailsPref.USER_LOGIN_KEY, "ec1377caada9e3c4fee3a546c085ff11");
+//                            Intent intent = new Intent (LoginActivity.this, MainActivity.class);
+//                            intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            startActivity (intent);
+//                            overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
     
     
                         }
@@ -574,7 +574,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-//                    params.put (AppConfigTags.MOBILE, mobile);
+                    params.put (AppConfigTags.MOBILE, mobile);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
@@ -582,7 +582,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
-//                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }

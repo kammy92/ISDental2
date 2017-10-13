@@ -243,9 +243,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     Intent intent1 = new Intent (activity, CompanyListActivity.class);
                     activity.startActivity (intent1);
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
-    
                     break;
-                
                 case 2:
                     Intent intent3 = new Intent (activity, EventListActivity.class);
                     activity.startActivity (intent3);
@@ -257,7 +255,7 @@ public class HomeServiceAdapter extends RecyclerView.Adapter<HomeServiceAdapter.
                     activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case 4:
-                    isUserRegisterToEvent (2);
+                    isUserRegisterToEvent (3);
                     break;
                 case 6:
                     Intent intent6 = new Intent (activity, InformationActivity.class);

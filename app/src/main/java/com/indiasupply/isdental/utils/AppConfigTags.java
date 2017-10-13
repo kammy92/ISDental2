@@ -163,4 +163,37 @@ public class AppConfigTags {
     public static final String PAST_EVENT = "past_events";
     public static final String UPCOMING_EVENT = "upcoming_events";
     
+    
+    public static final String SWIGGY_EVENTS = "events";
+    public static final String SWIGGY_EVENT_ID = "event_id";
+    public static final String SWIGGY_EVENT_NAME = "event_name";
+    public static final String SWIGGY_EVENT_IMAGE = "event_image";
+    public static final String SWIGGY_EVENT_TYPE = "event_type";
+    public static final String SWIGGY_EVENT_START_DATE = "event_start_date";
+    public static final String SWIGGY_EVENT_END_DATE = "event_end_date";
+    public static final String SWIGGY_EVENT_CITY = "event_city";
+    
+    
+    public static final String SWIGGY_EVENT_WEBSITE = "event_website";
+    public static final String SWIGGY_EVENT_INFORMATION = "event_information";
+    public static final String SWIGGY_EVENT_REGISTRATION = "event_registrations";
+    public static final String SWIGGY_EVENT_LATITUDE = "event_latitude";
+    public static final String SWIGGY_EVENT_LONGITUDE = "event_longitude";
+    public static final String SWIGGY_EVENT_FLOOR_PLAN = "event_floor_plan";
+    
+    
+    public static final String SWIGGY_EXHIBITORS = "exhibitors";
+    public static final String SWIGGY_EXHIBITOR_ID = "exhibitor_id";
+    public static final String SWIGGY_EXHIBITOR_NAME = "exhibitor_name";
+    public static final String SWIGGY_EXHIBITOR_DESCRIPTION = "exhibitor_description";
+    public static final String SWIGGY_EXHIBITOR_IMAGE = "exhibitor_image";
+    
+    
+    public static final String SWIGGY_SPEAKERS = "speakers";
+    public static final String SWIGGY_SPEAKER_ID = "speaker_id";
+    public static final String SWIGGY_SPEAKERS_NAME = "speaker_name";
+    public static final String SWIGGY_SPEAKERS_DESCRIPTION = "speaker_description";
+    public static final String SWIGGY_SPEAKERS_IMAGE = "speaker_image";
+    
+    
 }

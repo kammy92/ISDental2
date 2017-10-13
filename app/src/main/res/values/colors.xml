@@ -8,9 +8,9 @@
     <color name="primary">#2889c9</color>
 
 
-    <color name="primary2">#009688</color>
-    <color name="primary_dark2">#00796B</color>
-    <color name="primary_light2">#B2DFDB</color>
+    <color name="primary2">#1976d2</color>
+    <color name="primary_dark2">#0d47a1</color>
+    <color name="primary_light2">#2196f3</color>
     <color name="accent2">#009688</color>
     <color name="primary_text2">#272b3d</color>
     <color name="secondary_text2">#8a8c96</color>

@@ -3,27 +3,26 @@
     <item
         android:id="@+id/action_item1"
         android:name="Exhibitors"
-
-        android:icon="@drawable/ic_account_box_black_24dp"
+        android:icon="@drawable/ic_home_exhibitors"
         android:title="Exhibitors"/>
     <item
         android:id="@+id/action_item2"
         android:name="Events"
-        android:icon="@drawable/ic_account_box_black_24dp"
+        android:icon="@drawable/ic_home_events"
         android:title="Events"/>
     <item
         android:id="@+id/action_item3"
         android:name="Contacts"
-        android:icon="@drawable/ic_account_circle_black_24dp"
+        android:icon="@drawable/ic_home_contacts"
         android:title="Contacts"/>
     <item
         android:id="@+id/action_item4"
         android:name="Requests"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
+        android:icon="@drawable/ic_home_services"
         android:title="Service"/>
     <item
         android:id="@+id/action_item5"
         android:name="Account"
-        android:icon="@drawable/ic_assignment_ind_black_24dp"
+        android:icon="@drawable/ic_home_account"
         android:title="Account"/>
 </menu>
