@@ -412,11 +412,11 @@ public class MainActivity extends AppCompatActivity {
                 .onNeutral (new MaterialDialog.SingleButtonCallback () {
                     @Override
                     public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        userDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_ID, "");
-                        userDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_NAME, "");
-                        userDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_EMAIL, "");
-                        userDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_MOBILE, "");
-                        userDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.HEADER_USER_LOGIN_KEY, "");
+                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_ID, "");
+                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_NAME, "");
+                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_EMAIL, "");
+                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_MOBILE, "");
+                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.HEADER_USER_LOGIN_KEY, "");
 
                         Intent intent = new Intent (MainActivity.this, LoginActivity.class);
                         intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -427,7 +427,7 @@ public class MainActivity extends AppCompatActivity {
                 .onPositive (new MaterialDialog.SingleButtonCallback () {
                     @Override
                     public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        userDetailsPref.putBooleanPref (MainActivity.this, UserDetailsPref.LOGGED_IN_SESSION, false);
+                        applicationDetailsPref.putBooleanPref (MainActivity.this, UserDetailsPref.LOGGED_IN_SESSION, false);
 
 
                         finish ();

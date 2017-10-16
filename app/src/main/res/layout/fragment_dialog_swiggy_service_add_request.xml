@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/clMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -165,5 +170,5 @@
         android:text="SUBMIT"
         android:textColor="@color/text_color_white"/>
 </RelativeLayout>
-
+</android.support.design.widget.CoordinatorLayout>
 

@@ -43,7 +43,7 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     public static SwiggyEventSpeakerDialogFragment newInstance (String eventSpeakers) {
         SwiggyEventSpeakerDialogFragment fragment = new SwiggyEventSpeakerDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_INFORMATION, eventSpeakers);
+        args.putString (AppConfigTags.SWIGGY_EVENT_SPEAKERS, eventSpeakers);
         fragment.setArguments (args);
         return fragment;
     }

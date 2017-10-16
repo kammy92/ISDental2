@@ -18,6 +18,12 @@
     <color name="divider">#BDBDBD</color>
     <color name="app_background2">#ffffff</color>
 
+    <color name="text_color_grey_light3">#e0e0e0</color>
+
+
+    <color name="shimmer_color">#f7f7f7</color>
+    <color name="shimmer_bg_color">#fafafa</color>
+
 
     <color name="accent">#cccccc</color>
     <color name="primary_text">#fff</color>

@@ -197,5 +197,43 @@ public class AppConfigTags {
     public static final String SWIGGY_SPEAKERS_DESCRIPTION = "speaker_description";
     public static final String SWIGGY_SPEAKERS_IMAGE = "speaker_image";
     
+    public static final String SWIGGY_MODEL_NUMBER = "model_number";
+    public static final String SWIGGY_SERIAL_NUMBER = "serial_number";
+    public static final String SWIGGY_PURCHASE_DATE = "purchase_date";
+    
+    public static final String SWIGGY_PRODUCTS = "products";
+    public static final String SWIGGY_PRODUCT_ID = "product_id";
+    public static final String SWIGGY_PRODUCT_NAME = "product_name";
+    public static final String SWIGGY_PRODUCT_IMAGE = "product_image";
+    public static final String SWIGGY_PRODUCT_DESCRIPTION = "product_description";
+    public static final String SWIGGY_PRODUCT_CATEGORY = "product_category";
+    public static final String SWIGGY_PRODUCT_BRAND = "product_brand";
+    public static final String SWIGGY_PRODUCT_MODEL_NUMBER = "product_model_number";
+    public static final String SWIGGY_PRODUCT_SERIAL_NUMBER = "product_serial_number";
+    public static final String SWIGGY_PRODUCT_PURCHASE_DATE = "product_purchase_date";
+    
+    public static final String SWIGGY_REQUESTS = "requests";
+    public static final String SWIGGY_REQUEST_ID = "request_id";
+    public static final String SWIGGY_REQUEST_DESCRIPTION = "request_description";
+    public static final String SWIGGY_REQUEST_IMAGE = "request_image";
+    public static final String SWIGGY_REQUEST_TICKET_NUMBER = "request_ticket_number";
+    public static final String SWIGGY_REQUEST_CREATED_aT = "request_created_at";
+    
+    
+    public static final String SWIGGY_BRANDS = "brands";
+    public static final String SWIGGY_BRAND_ID = "brand_id";
+    public static final String SWIGGY_BRAND_NAME = "brand_name";
+    
+    public static final String SWIGGY_CATEGORIES = "categories";
+    public static final String SWIGGY_CATEGORY_ID = "category_id";
+    public static final String SWIGGY_CATEGORY_ICON = "category_icon";
+    public static final String SWIGGY_CATEGORY_NAME = "category_name";
+    public static final String SWIGGY_CATEGORY_IMAGE = "category_image";
+    
+    
+    public static final String SWIGGY_DESCRIPTION = "description";
+    
+    
+    
     
 }

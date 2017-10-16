@@ -16,6 +16,7 @@ public class AppConfigURL {
     public static String URL_COMPANY_LIST = BASE_URL + "company";
     public static String URL_COMPANY_DETAILS = BASE_URL + "company";
     
+    
     public static String URL_EVENT_LIST = BASE_URL + "event";
     public static String URL_EVENT_DETAILS = BASE_URL + "event";
     
@@ -29,4 +30,9 @@ public class AppConfigURL {
     public static String URL_SWIGGY_EVENT = BASE_URL2 + "events";
     public static String URL_SWIGGY_EVENT_DETAILS = BASE_URL2 + "event";
     
+    public static String URL_SWIGGY_INIT = BASE_URL2 + "/init/application";
+    public static String URL_SWIGGY_PRODUCT = BASE_URL2 + "user/product";
+    public static String URL_SWIGGY_MY_PRODUCT_LIST = BASE_URL2 + "user/products";
+    public static String URL_SWIGGY_REQUEST = BASE_URL2 + "user/request";
+    public static String URL_SWIGGY_MY_REQUEST_LIST = BASE_URL2 + "user/requests";
 }

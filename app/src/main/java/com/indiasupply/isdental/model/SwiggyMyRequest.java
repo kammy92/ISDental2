@@ -6,17 +6,33 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyMyRequest {
     int id, icon;
-    String request_name, request_description, image;
+    String request_ticket_number, request_serial_number, request_description, image;
     
     
-    public SwiggyMyRequest (int id, int icon, String request_name, String request_description, String image) {
+    public SwiggyMyRequest (int id, int icon, String request_ticket_number, String request_serial_number, String request_description, String image) {
         this.id = id;
         this.icon = icon;
-        this.request_name = request_name;
+        this.request_ticket_number = request_ticket_number;
+        this.request_serial_number = request_serial_number;
         this.request_description = request_description;
         this.image = image;
     }
     
+    public String getRequest_ticket_number () {
+        return request_ticket_number;
+    }
+    
+    public void setRequest_ticket_number (String request_ticket_number) {
+        this.request_ticket_number = request_ticket_number;
+    }
+    
+    public String getRequest_serial_number () {
+        return request_serial_number;
+    }
+    
+    public void setRequest_serial_number (String request_serial_number) {
+        this.request_serial_number = request_serial_number;
+    }
     
     public int getId () {
         return id;
@@ -34,13 +50,6 @@ public class SwiggyMyRequest {
         this.icon = icon;
     }
     
-    public String getRequest_name () {
-        return request_name;
-    }
-    
-    public void setRequest_name (String request_name) {
-        this.request_name = request_name;
-    }
     
     public String getRequest_description () {
         return request_description;

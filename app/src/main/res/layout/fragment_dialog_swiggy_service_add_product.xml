@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/clMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -53,7 +58,6 @@
                 android:background="@drawable/swiggy_et_background"
                 android:focusable="false"
                 android:inputType="number"
-                android:maxLength="10"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -75,7 +79,6 @@
                 android:background="@drawable/swiggy_et_background"
                 android:focusable="false"
                 android:inputType="number"
-                android:maxLength="10"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
                 android:textStyle="bold"
@@ -154,5 +157,5 @@
                 android:textColor="@color/text_color_white"/>
         </RelativeLayout>
     </ScrollView>
-
 </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

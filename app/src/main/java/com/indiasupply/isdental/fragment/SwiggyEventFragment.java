@@ -7,7 +7,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventAdapter;
 import com.indiasupply.isdental.model.SwiggyEvent;
@@ -41,7 +41,7 @@ import java.util.Map;
 
 
 public class SwiggyEventFragment extends Fragment {
-    RecyclerView rvEvents;
+    ShimmerRecyclerView rvEvents;
     List<SwiggyEvent> eventList = new ArrayList<> ();
     SwiggyEventAdapter eventAdapter;
     
@@ -67,7 +67,7 @@ public class SwiggyEventFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvEvents = (RecyclerView) rootView.findViewById (R.id.rvEvents);
+        rvEvents = (ShimmerRecyclerView) rootView.findViewById (R.id.rvEvents);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
     }
     
@@ -76,8 +76,7 @@ public class SwiggyEventFragment extends Fragment {
         rvEvents.setNestedScrollingEnabled (false);
         rvEvents.setFocusable (false);
     
-        eventAdapter = new SwiggyEventAdapter (getActivity (), eventList);
-        rvEvents.setAdapter (eventAdapter);
+        rvEvents.showShimmerAdapter ();
         rvEvents.setHasFixedSize (true);
         rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvEvents.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
@@ -97,7 +96,6 @@ public class SwiggyEventFragment extends Fragment {
     
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             eventList.clear ();
-            eventAdapter.notifyDataSetChanged ();
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EVENT,
                     new Response.Listener<String> () {
@@ -125,6 +123,13 @@ public class SwiggyEventFragment extends Fragment {
                                             );
                                             eventList.add (i, swiggyEvent);
                                         }
+    
+                                        eventAdapter = new SwiggyEventAdapter (getActivity (), eventList);
+                                        rvEvents.setAdapter (eventAdapter);
+                                        rvEvents.setHasFixedSize (true);
+                                        rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+    
+                                        rvEvents.hideShimmerAdapter ();
                                         eventAdapter.notifyDataSetChanged ();
                                     }
                                 } catch (Exception e) {

@@ -46,8 +46,8 @@ public class SwiggyServiceMyRequestAdapter extends RecyclerView.Adapter<SwiggySe
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final SwiggyMyRequest product = swiggyMyRequestList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvRequestName);
-        holder.tvRequestName.setText (product.getRequest_name ());
-        holder.tvRequestDescription.setText (product.getRequest_description ());
+        holder.tvRequestName.setText (product.getRequest_ticket_number ());
+        holder.tvRequestDescription.setText (product.getRequest_serial_number () + " - " + product.getRequest_description ());
     
         if (product.getImage ().length () == 0) {
             holder.ivIcon.setImageResource(product.getIcon());

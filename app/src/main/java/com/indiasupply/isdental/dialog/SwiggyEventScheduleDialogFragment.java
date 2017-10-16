@@ -246,7 +246,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
             final SwiggyEventScheduleDate eventDay = dayList.get (position);
             Utils.setTypefaceToAllViews (activity, holder.tvDate);
-            holder.tvDate.setText (eventDay.getDate ());
+            holder.tvDate.setText (Utils.convertTimeFormat (eventDay.getDate (), "yyyy-MM-dd", "dd/MM/yyyy"));
     
             if (eventDay.isSelected ()) {
                 eventScheduleTempList.clear ();
@@ -254,7 +254,7 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     
             for (int i = 0; i < eventScheduleList.size (); i++) {
                 SwiggyEventSchedule eventSchedule = SwiggyEventScheduleDialogFragment.this.eventScheduleList.get (i);
-                if (eventDay.getDate ().equalsIgnoreCase (eventSchedule.getDate ()) && eventDay.isSelected ()) {
+                if (eventDay.getId () == eventSchedule.getDay_id () && eventDay.isSelected ()) {
                     eventScheduleTempList.add (eventSchedule);
                 }
             }
@@ -266,7 +266,6 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
                 rvEventList.setHasFixedSize (true);
                 rvEventList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
                 rvEventList.setItemAnimator (new DefaultItemAnimator ());
-    
     
             } else {
                 holder.tvFooterLine.setBackgroundResource (android.R.color.transparent);

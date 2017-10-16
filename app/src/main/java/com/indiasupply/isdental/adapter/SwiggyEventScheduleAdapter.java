@@ -46,7 +46,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
         final SwiggyEventSchedule eventSchedule = eventScheduleList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvEventTiming);
     
-        holder.tvEventTiming.setText (eventSchedule.getStart_time () + " - " + eventSchedule.getEnd_time ());
+        holder.tvEventTiming.setText (Utils.convertTimeFormat (eventSchedule.getStart_time (), "HH:mm:ss", "HH:mm") + " - " + Utils.convertTimeFormat (eventSchedule.getEnd_time (), "HH:mm:ss", "HH:mm"));
         holder.tvEventDescription.setText (eventSchedule.getDescription ());
         holder.tvEventLocation.setText (eventSchedule.getLocation ());
     

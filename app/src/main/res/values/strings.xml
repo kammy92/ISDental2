@@ -161,5 +161,12 @@
 
     <string name="facebook_app_id">1050784248336887</string>
 
+    <string name="dialog_enter_product_brand">Please Enter Brand.</string>
+    <string name="dialog_select_product_category">Please Select Category</string>
+    <string name="dialog_enter_model_number">Please Enter Model Number</string>
+    <string name="dialog_enter_serial_number">Please Enter Serial Number</string>
+    <string name="dialog_select_purchase_date">Please Select Purchase Date</string>
+
+    <string name="dialog_enter_request_description">Please Enter Request Description</string>
 
 </resources>
