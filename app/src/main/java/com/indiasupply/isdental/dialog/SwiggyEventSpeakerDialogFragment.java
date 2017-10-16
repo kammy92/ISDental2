@@ -19,8 +19,13 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventSpeakerAdapter;
 import com.indiasupply.isdental.model.SwiggyEventSpeaker;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +37,17 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     TextView tvTitle;
+    
+    String eventSpeakers;
+    
+    public static SwiggyEventSpeakerDialogFragment newInstance (String eventSpeakers) {
+        SwiggyEventSpeakerDialogFragment fragment = new SwiggyEventSpeakerDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_EVENT_INFORMATION, eventSpeakers);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -80,6 +96,8 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        eventSpeakers = bundle.getString (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
     }
     
     private void initData () {
@@ -103,10 +121,26 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-        eventSpeakerList.add (new SwiggyEventSpeaker (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        eventSpeakerList.add (new SwiggyEventSpeaker (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        eventSpeakerList.add (new SwiggyEventSpeaker (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        eventSpeakerList.add (new SwiggyEventSpeaker (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        eventSpeakerAdapter.notifyDataSetChanged ();
+//        eventSpeakerList.add (new SwiggyEventSpeaker (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        eventSpeakerList.add (new SwiggyEventSpeaker (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        eventSpeakerList.add (new SwiggyEventSpeaker (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        eventSpeakerList.add (new SwiggyEventSpeaker (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        eventSpeakerAdapter.notifyDataSetChanged ();
+    
+    
+        try {
+            JSONArray jsonArray = new JSONArray (eventSpeakers);
+            for (int j = 0; j < jsonArray.length (); j++) {
+                JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
+                eventSpeakerList.add (j, new SwiggyEventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                        R.drawable.ic_person,
+                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
+                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
+                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+            }
+            eventSpeakerAdapter.notifyDataSetChanged ();
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
 }

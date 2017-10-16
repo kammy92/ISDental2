@@ -27,8 +27,13 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventScheduleAdapter;
 import com.indiasupply.isdental.model.SwiggyEventSchedule;
 import com.indiasupply.isdental.model.SwiggyEventScheduleDate;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,12 +56,13 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     
     RelativeLayout rlDate;
     
-    public static SwiggyEventScheduleDialogFragment newInstance (int contact_id, String contact_name) {
+    String eventSchedule;
+    
+    public static SwiggyEventScheduleDialogFragment newInstance (String eventSchedule) {
         SwiggyEventScheduleDialogFragment f = new SwiggyEventScheduleDialogFragment ();
-//        Bundle args = new Bundle ();
-//        args.putInt ("contact_id", contact_id);
-//        args.putString ("contact_name", contact_name);
-//        f.setArguments (args);
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_EVENT_SCHEDULE, eventSchedule);
+        f.setArguments (args);
         return f;
     }
     
@@ -112,6 +118,8 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        eventSchedule = bundle.getString (AppConfigTags.SWIGGY_EVENT_SCHEDULE);
     }
     
     private void initData () {
@@ -151,24 +159,71 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-        eventScheduleDateList.add (new SwiggyEventScheduleDate (true, 1, R.drawable.ic_date, "2017-10-05", "05/10/2017", ""));
-        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 2, R.drawable.ic_date, "2017-10-06", "06/10/2017", ""));
-        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 3, R.drawable.ic_date, "2017-10-07", "07/10/2017", ""));
-        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 4, R.drawable.ic_date, "2017-10-08", "08/10/2017", ""));
-        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 5, R.drawable.ic_date, "2017-10-09", "09/10/2017", ""));
-        eventDayAdapter.notifyDataSetChanged ();
+//        eventScheduleDateList.add (new SwiggyEventScheduleDate (true, 1, R.drawable.ic_date, "2017-10-05", "05/10/2017", ""));
+//        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 2, R.drawable.ic_date, "2017-10-06", "06/10/2017", ""));
+//        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 3, R.drawable.ic_date, "2017-10-07", "07/10/2017", ""));
+//        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 4, R.drawable.ic_date, "2017-10-08", "08/10/2017", ""));
+//        eventScheduleDateList.add (new SwiggyEventScheduleDate (false, 5, R.drawable.ic_date, "2017-10-09", "09/10/2017", ""));
+//        eventDayAdapter.notifyDataSetChanged ();
+//
+//        eventScheduleList.add (new SwiggyEventSchedule (1, R.drawable.ic_date, "2017-10-05", "16:40", "17:40", "Event Name1", "New Delhi", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (2, R.drawable.ic_date, "2017-10-05", "06:40", "07:40", "Event Name2", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-05", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (4, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (5, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (6, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (7, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (8, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (9, R.drawable.ic_date, "2017-10-08", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (10, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//        eventScheduleList.add (new SwiggyEventSchedule (11, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+//
+    
+        try {
+            JSONObject jsonObj = new JSONObject (eventSchedule);
+            JSONArray jsonArrayDays = jsonObj.getJSONArray ("dates");
+            for (int i = 0; i < jsonArrayDays.length (); i++) {
+                JSONObject jsonObjectDays = jsonArrayDays.getJSONObject (i);
+                if (i == 0) {
+                    eventScheduleDateList.add (new SwiggyEventScheduleDate (true,
+                            jsonObjectDays.getInt ("date_id"),
+                            R.drawable.ic_date,
+                            jsonObjectDays.getString ("date_date"),
+                            jsonObjectDays.getString ("date_title"),
+                            jsonObjectDays.getString ("date_image")
+                    ));
+                } else {
+                    eventScheduleDateList.add (new SwiggyEventScheduleDate (false,
+                            jsonObjectDays.getInt ("date_id"),
+                            R.drawable.ic_date,
+                            jsonObjectDays.getString ("date_date"),
+                            jsonObjectDays.getString ("date_title"),
+                            jsonObjectDays.getString ("date_image")
+                    ));
+                }
+            }
+            eventDayAdapter.notifyDataSetChanged ();
+            JSONArray jsonArraySchedules = jsonObj.getJSONArray ("schedules");
+            for (int j = 0; j < jsonArraySchedules.length (); j++) {
+                JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
+                eventScheduleList.add (new SwiggyEventSchedule (
+                        jsonObjectSchedules.getInt ("schedule_id"),
+                        R.drawable.ic_date,
+                        jsonObjectSchedules.getInt ("schedule_date_id"),
+                        jsonObjectSchedules.getString ("schedule_date"),
+                        jsonObjectSchedules.getString ("schedule_start_time"),
+                        jsonObjectSchedules.getString ("schedule_end_time"),
+                        jsonObjectSchedules.getString ("schedule_description"),
+                        jsonObjectSchedules.getString ("schedule_location"),
+                        jsonObjectSchedules.getString ("schedule_image")
+                ));
+            }
         
-        eventScheduleList.add (new SwiggyEventSchedule (1, R.drawable.ic_date, "2017-10-05", "16:40", "17:40", "Event Name1", "New Delhi", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (2, R.drawable.ic_date, "2017-10-05", "06:40", "07:40", "Event Name2", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (3, R.drawable.ic_date, "2017-10-05", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (4, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (5, R.drawable.ic_date, "2017-10-06", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (6, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (7, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (8, R.drawable.ic_date, "2017-10-07", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (9, R.drawable.ic_date, "2017-10-08", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (10, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
-        eventScheduleList.add (new SwiggyEventSchedule (11, R.drawable.ic_date, "2017-10-09", "07:40", "08:40", "Event Name3", "Mumbai", ""));
+        
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
+        
     }
     
     public class EventDayAdapter extends RecyclerView.Adapter<EventDayAdapter.ViewHolder> {

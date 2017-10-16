@@ -108,7 +108,7 @@ public class SwiggyEventScheduleAdapter extends RecyclerView.Adapter<SwiggyEvent
         
         @Override
         public void onClick (View v) {
-            mItemClickListener.onItemClick (v, getLayoutPosition ());
+//            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

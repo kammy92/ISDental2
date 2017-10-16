@@ -1,19 +1,30 @@
 package com.indiasupply.isdental.activity;
 
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventItemAdapter;
 import com.indiasupply.isdental.dialog.SwiggyEventExhibitorDialogFragment;
@@ -23,19 +34,26 @@ import com.indiasupply.isdental.dialog.SwiggyEventRegistrationsDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyEventScheduleDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyEventSpeakerDialogFragment;
 import com.indiasupply.isdental.model.SwiggyEventItem;
+import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.Constants;
+import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.json.JSONObject;
 
-/**
- * Created by sud on 3/10/17.
- */
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 public class SwiggyEventDetailActivity extends AppCompatActivity {
     RelativeLayout rlBack;
     RecyclerView rvEventItems;
+    CoordinatorLayout clMain;
     
     List<SwiggyEventItem> eventItemList = new ArrayList<> ();
     SwiggyEventItemAdapter eventItemAdapter;
@@ -43,10 +61,22 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     TextView tvTitleEventName;
     TextView tvTitleEventDetail;
     
+    
+    int event_id;
+    
+    String eventExhibitors;
+    String eventSpeakers;
+    String eventSchedule;
+    String eventFloorPlan;
+    String eventInformation;
+    String evevntRegistration;
+    
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_event_detail);
+        getExtras ();
         initView ();
         initData ();
         initListener ();
@@ -62,6 +92,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 
             }
         });
+    
         eventItemAdapter.SetOnItemClickListener (new SwiggyEventItemAdapter.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
@@ -69,28 +100,28 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 switch (eventItem.getId ()) {
                     case 1:
-                        SwiggyEventScheduleDialogFragment frag1 = new SwiggyEventScheduleDialogFragment ();
+                        SwiggyEventScheduleDialogFragment frag1 = SwiggyEventScheduleDialogFragment.newInstance (eventSchedule);
                         frag1.show (ft, "2");
                         break;
                     case 2:
-                        SwiggyEventSpeakerDialogFragment frag2 = new SwiggyEventSpeakerDialogFragment ();
+                        SwiggyEventSpeakerDialogFragment frag2 = SwiggyEventSpeakerDialogFragment.newInstance (eventSpeakers);
                         frag2.show (ft, "2");
                         break;
                     case 3:
-                        SwiggyEventExhibitorDialogFragment frag3 = new SwiggyEventExhibitorDialogFragment ();
-                        frag3.show (ft, "2");
+                        SwiggyEventExhibitorDialogFragment frag3 = SwiggyEventExhibitorDialogFragment.newInstance (eventExhibitors);
+                        frag3.show (ft, "3");
                         break;
                     case 4:
-                        SwiggyEventFloorPlanDialogFragment frag4 = new SwiggyEventFloorPlanDialogFragment ();
-                        frag4.show (ft, "2");
+                        SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
+                        frag4.show (ft, "4");
                         break;
                     case 5:
-                        SwiggyEventInformationDialogFragment frag5 = new SwiggyEventInformationDialogFragment ();
-                        frag5.show (ft, "2");
+                        SwiggyEventInformationDialogFragment frag5 = SwiggyEventInformationDialogFragment.newInstance (eventInformation);
+                        frag5.show (ft, "5");
                         break;
                     case 6:
-                        SwiggyEventRegistrationsDialogFragment frag6 = new SwiggyEventRegistrationsDialogFragment ();
-                        frag6.show (ft, "2");
+                        SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (evevntRegistration);
+                        frag6.show (ft, "6");
                         break;
                 }
             }
@@ -117,8 +148,14 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         rvEventItems = (RecyclerView) findViewById (R.id.rvEventItems);
+        clMain = (CoordinatorLayout) findViewById (R.id.clMain);
         tvTitleEventName = (TextView) findViewById (R.id.tvTitleEventName);
         tvTitleEventDetail = (TextView) findViewById (R.id.tvTitleEventDetail);
+    }
+    
+    private void getExtras () {
+        Intent intent = getIntent ();
+        event_id = intent.getIntExtra (AppConfigTags.EVENT_ID, 0);
     }
     
     @Override
@@ -128,12 +165,99 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     }
     
     private void setData () {
-        eventItemList.add (new SwiggyEventItem (1, R.drawable.ic_information, "EVENT SCHEDULE", ""));
-        eventItemList.add (new SwiggyEventItem (2, R.drawable.ic_information, "SPEAKERS", ""));
-        eventItemList.add (new SwiggyEventItem (3, R.drawable.ic_information, "EXHIBITORS", ""));
-        eventItemList.add (new SwiggyEventItem (4, R.drawable.ic_information, "FLOOR PLAN", ""));
-        eventItemList.add (new SwiggyEventItem (5, R.drawable.ic_information, "GENERAL INFORMATION", ""));
-        eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_information, "REGISTRATIONS", ""));
-        eventItemAdapter.notifyDataSetChanged ();
+        if (NetworkConnection.isNetworkAvailable (this)) {
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT_DETAILS + "/" + event_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EVENT_DETAILS + "/" + event_id,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                                        eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                                        eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+                                        eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
+                                        evevntRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+                                        tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
+                                        tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                                    
+                                        if (eventSchedule.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (1, R.drawable.ic_information, "EVENT SCHEDULE", ""));
+                                        }
+                                        if (eventSpeakers.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (2, R.drawable.ic_information, "SPEAKERS", ""));
+                                        }
+                                        if (eventExhibitors.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (3, R.drawable.ic_information, "EXHIBITORS", ""));
+                                        }
+                                        if (eventFloorPlan.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (4, R.drawable.ic_information, "FLOOR PLAN", ""));
+                                        }
+                                        if (eventInformation.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (5, R.drawable.ic_information, "GENERAL INFORMATION", ""));
+                                        }
+                                        if (evevntRegistration.length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_information, "REGISTRATIONS", ""));
+                                        }
+                                        eventItemAdapter.notifyDataSetChanged ();
+                                    } else {
+                                        Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred) + " : " + message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace ();
+                                    Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
+                            } else {
+                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                    }) {
+            
+                @Override
+                protected Map<String, String> getParams () throws AuthFailureError {
+                    Map<String, String> params = new Hashtable<String, String> ();
+                    Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
+                    return params;
+                }
+            
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (SwiggyEventDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 5);
+        } else {
+            Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity (dialogIntent);
+                }
+            });
+        }
     }
 }

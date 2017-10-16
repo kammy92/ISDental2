@@ -5,12 +5,13 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyEventSchedule {
-    int id, icon;
+    int id, icon, day_id;
     String start_time, end_time, description, location, image, date;
     
-    public SwiggyEventSchedule (int id, int icon, String date, String start_time, String end_time, String description, String location, String image) {
+    public SwiggyEventSchedule (int id, int icon, int day_id, String date, String start_time, String end_time, String description, String location, String image) {
         this.id = id;
         this.icon = icon;
+        this.day_id = day_id;
         this.start_time = start_time;
         this.end_time = end_time;
         this.description = description;
@@ -19,6 +20,14 @@ public class SwiggyEventSchedule {
         this.date = date;
     }
     
+    public int getDay_id () {
+        return day_id;
+    }
+    
+    public void setDay_id (int day_id) {
+        this.day_id = day_id;
+    }
+
     public int getIcon () {
         return icon;
     }

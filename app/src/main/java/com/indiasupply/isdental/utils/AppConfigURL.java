@@ -28,4 +28,5 @@ public class AppConfigURL {
     
     public static String URL_SWIGGY_EVENT = BASE_URL2 + "events";
     public static String URL_SWIGGY_EVENT_DETAILS = BASE_URL2 + "event";
+    
 }

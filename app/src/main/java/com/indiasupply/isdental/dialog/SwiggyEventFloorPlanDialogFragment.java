@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 
@@ -25,6 +27,16 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     ImageView ivCancel;
     TextView tvTitle;
     SubsamplingScaleImageView ivFloorPlan;
+    
+    String eventFloorPlan;
+    
+    public static SwiggyEventFloorPlanDialogFragment newInstance (String eventFloorPlan) {
+        SwiggyEventFloorPlanDialogFragment fragment = new SwiggyEventFloorPlanDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN, eventFloorPlan);
+        fragment.setArguments (args);
+        return fragment;
+    }
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -79,11 +91,17 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_floor_plan, container, false);
-        initView (root);
+    
         initBundle ();
+        initView (root);
         initData ();
         initListener ();
         return root;
+    }
+    
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        eventFloorPlan = bundle.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
     }
     
     private void initView (View root) {
@@ -92,12 +110,13 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
         ivFloorPlan = (SubsamplingScaleImageView) root.findViewById (R.id.ivFloorPlan);
     }
     
-    private void initBundle () {
-    }
-    
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-//        ivFloorPlan.setImage (ImageSource.uri (Uri.parse ("http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg")));
+        Log.d ("eventFloorPlan", eventFloorPlan);
+
+//        ivFloorPlan.setImage (ImageSource.bitmap (getBitmapFromURL (eventFloorPlan)));
+    
+        //        ivFloorPlan.setImage (ImageSource.uri (Uri.parse ("http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg")));
         ivFloorPlan.setImage (ImageSource.resource (R.drawable.hallplan));
     }
     

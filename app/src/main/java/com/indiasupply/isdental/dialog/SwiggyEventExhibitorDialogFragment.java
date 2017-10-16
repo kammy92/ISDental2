@@ -26,8 +26,13 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventExhibitorAdapter;
 import com.indiasupply.isdental.model.SwiggyEventExhibitor;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +48,16 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     TextView tvTitle;
     RelativeLayout rlSearch;
     EditText etSearch;
+    
+    String eventExhibitor;
+    
+    public static SwiggyEventExhibitorDialogFragment newInstance (String eventExhibitor) {
+        SwiggyEventExhibitorDialogFragment fragment = new SwiggyEventExhibitorDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_EVENT_EXHIBITORS, eventExhibitor);
+        fragment.setArguments (args);
+        return fragment;
+    }
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -135,6 +150,8 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        eventExhibitor = bundle.getString (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
     }
     
     private void initData () {
@@ -201,10 +218,26 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-        exhibitorList.add (new SwiggyEventExhibitor (1, R.drawable.ic_program, "3M ESPE", "A-31", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        exhibitorList.add (new SwiggyEventExhibitor (2, R.drawable.ic_program, "DEURR DENTAL", "H-Island", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        exhibitorList.add (new SwiggyEventExhibitor (3, R.drawable.ic_program, "CHESA", "B-3, B-4", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        exhibitorList.add (new SwiggyEventExhibitor (4, R.drawable.ic_program, "WOODPECKER", "A-20", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        exhibitorAdapter.notifyDataSetChanged ();
+//        exhibitorList.add (new SwiggyEventExhibitor (1, R.drawable.ic_program, "3M ESPE", "A-31", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        exhibitorList.add (new SwiggyEventExhibitor (2, R.drawable.ic_program, "DEURR DENTAL", "H-Island", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        exhibitorList.add (new SwiggyEventExhibitor (3, R.drawable.ic_program, "CHESA", "B-3, B-4", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        exhibitorList.add (new SwiggyEventExhibitor (4, R.drawable.ic_program, "WOODPECKER", "A-20", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+//        exhibitorAdapter.notifyDataSetChanged ();
+    
+    
+        try {
+            JSONArray jsonArray = new JSONArray (eventExhibitor);
+            for (int j = 0; j < jsonArray.length (); j++) {
+                JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
+                exhibitorList.add (j, new SwiggyEventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                        R.drawable.ic_person,
+                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
+                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
+                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+            }
+            exhibitorAdapter.notifyDataSetChanged ();
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
 }

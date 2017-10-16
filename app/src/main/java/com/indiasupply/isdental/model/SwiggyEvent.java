@@ -6,23 +6,25 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyEvent {
     int id, icon;
-    String image, name, date, location;
+    String image, name, start_date, end_date, location, type;
     
-    public SwiggyEvent (int id, int icon, String name, String date, String location, String image) {
+    public SwiggyEvent (int id, int icon, String type, String name, String start_date, String end_date, String location, String image) {
         this.id = id;
         this.icon = icon;
         this.image = image;
         this.name = name;
-        this.date = date;
+        this.start_date = start_date;
+        this.end_date = end_date;
         this.location = location;
+        this.type = type;
     }
     
-    public int getIcon () {
-        return icon;
+    public String getType () {
+        return type;
     }
     
-    public void setIcon (int icon) {
-        this.icon = icon;
+    public void setType (String type) {
+        this.type = type;
     }
     
     public int getId () {
@@ -33,28 +35,12 @@ public class SwiggyEvent {
         this.id = id;
     }
     
-    public String getName () {
-        return name;
+    public int getIcon () {
+        return icon;
     }
     
-    public void setName (String name) {
-        this.name = name;
-    }
-    
-    public String getDate () {
-        return date;
-    }
-    
-    public void setDate (String date) {
-        this.date = date;
-    }
-    
-    public String getLocation () {
-        return location;
-    }
-    
-    public void setLocation (String location) {
-        this.location = location;
+    public void setIcon (int icon) {
+        this.icon = icon;
     }
     
     public String getImage () {
@@ -63,5 +49,37 @@ public class SwiggyEvent {
     
     public void setImage (String image) {
         this.image = image;
+    }
+    
+    public String getName () {
+        return name;
+    }
+    
+    public void setName (String name) {
+        this.name = name;
+    }
+    
+    public String getStart_date () {
+        return start_date;
+    }
+    
+    public void setStart_date (String start_date) {
+        this.start_date = start_date;
+    }
+    
+    public String getEnd_date () {
+        return end_date;
+    }
+    
+    public void setEnd_date (String end_date) {
+        this.end_date = end_date;
+    }
+    
+    public String getLocation () {
+        return location;
+    }
+    
+    public void setLocation (String location) {
+        this.location = location;
     }
 }

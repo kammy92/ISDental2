@@ -46,7 +46,7 @@ public class SwiggyEventAdapter extends RecyclerView.Adapter<SwiggyEventAdapter.
         Utils.setTypefaceToAllViews (activity, holder.tvEventName);
         
         holder.tvEventName.setText (event.getName ());
-        holder.tvEventDetails.setText (event.getDate () + ", " + event.getLocation ());
+        holder.tvEventDetails.setText (Utils.convertTimeFormat (event.getStart_date (), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (event.getEnd_date (), "yyyy-MM-dd", "dd MMM") + ", " + event.getLocation ());
     
         if (event.getImage ().length () == 0) {
             holder.ivEventImage.setImageResource (event.getIcon ());

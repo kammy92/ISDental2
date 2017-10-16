@@ -174,12 +174,14 @@ public class AppConfigTags {
     public static final String SWIGGY_EVENT_CITY = "event_city";
     
     
-    public static final String SWIGGY_EVENT_WEBSITE = "event_website";
     public static final String SWIGGY_EVENT_INFORMATION = "event_information";
     public static final String SWIGGY_EVENT_REGISTRATION = "event_registrations";
-    public static final String SWIGGY_EVENT_LATITUDE = "event_latitude";
-    public static final String SWIGGY_EVENT_LONGITUDE = "event_longitude";
     public static final String SWIGGY_EVENT_FLOOR_PLAN = "event_floor_plan";
+    public static final String SWIGGY_EVENT_SCHEDULE = "event_schedule";
+    public static final String SWIGGY_EVENT_SPEAKERS = "event_speakers";
+    public static final String SWIGGY_EVENT_EXHIBITORS = "event_exhibitors";
+    
+    
     
     
     public static final String SWIGGY_EXHIBITORS = "exhibitors";
