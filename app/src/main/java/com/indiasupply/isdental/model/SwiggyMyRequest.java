@@ -6,32 +6,41 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyMyRequest {
     int id, icon;
-    String request_ticket_number, request_serial_number, request_description, image;
+    String ticket_number, serial_number, description, image, generated_at;
     
     
-    public SwiggyMyRequest (int id, int icon, String request_ticket_number, String request_serial_number, String request_description, String image) {
+    public SwiggyMyRequest (int id, int icon, String ticket_number, String serial_number, String description, String image, String generated_at) {
         this.id = id;
         this.icon = icon;
-        this.request_ticket_number = request_ticket_number;
-        this.request_serial_number = request_serial_number;
-        this.request_description = request_description;
+        this.ticket_number = ticket_number;
+        this.serial_number = serial_number;
+        this.description = description;
         this.image = image;
+        this.generated_at = generated_at;
     }
     
-    public String getRequest_ticket_number () {
-        return request_ticket_number;
+    public String getGenerated_at () {
+        return generated_at;
     }
     
-    public void setRequest_ticket_number (String request_ticket_number) {
-        this.request_ticket_number = request_ticket_number;
+    public void setGenerated_at (String generated_at) {
+        this.generated_at = generated_at;
     }
     
-    public String getRequest_serial_number () {
-        return request_serial_number;
+    public String getTicket_number () {
+        return ticket_number;
     }
     
-    public void setRequest_serial_number (String request_serial_number) {
-        this.request_serial_number = request_serial_number;
+    public void setTicket_number (String ticket_number) {
+        this.ticket_number = ticket_number;
+    }
+    
+    public String getSerial_number () {
+        return serial_number;
+    }
+    
+    public void setSerial_number (String serial_number) {
+        this.serial_number = serial_number;
     }
     
     public int getId () {
@@ -51,12 +60,12 @@ public class SwiggyMyRequest {
     }
     
     
-    public String getRequest_description () {
-        return request_description;
+    public String getDescription () {
+        return description;
     }
     
-    public void setRequest_description (String request_description) {
-        this.request_description = request_description;
+    public void setDescription (String description) {
+        this.description = description;
     }
     
     public String getImage () {

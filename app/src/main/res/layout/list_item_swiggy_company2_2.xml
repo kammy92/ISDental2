@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center_vertical"
+        android:background="@color/shimmer_bg_color">
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="@dimen/activity_margin">
+        <TextView
+            android:id="@+id/tvCompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="@color/shimmer_bg_color"
+            android:text="                     "
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"
+            android:visibility="visible"/>
+        <TextView
+            android:id="@+id/tvCompanyCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvCompanyName"
+            android:background="@color/shimmer_bg_color"
+            android:text="                                         "
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="visible"/>
+        <View
+            android:id="@id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tvCompanyCategory"
+            android:layout_marginTop="@dimen/activity_margin_small"
+            android:background="#f5f5f5"/>
+
+
+        <RelativeLayout
+            android:id="@+id/ll1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/activity_margin_small"
+            android:paddingTop="@dimen/activity_margin_small">
+            <TextView
+                android:id="@+id/tvContactContacts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:background="@color/shimmer_bg_color"
+                android:text="                        "
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_extra_small"
+                android:visibility="visible"/>
+            <RelativeLayout
+                android:id="@+id/rlButtons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true">
+                <ImageView
+                    android:id="@+id/ivCompanyEmail"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/shimmer_bg_color"
+                    android:paddingLeft="@dimen/activity_margin_extra_small"
+                    android:paddingRight="@dimen/activity_margin_extra_small"
+                />
+                <ImageView
+                    android:id="@+id/ivCompanyWebSite"
+                    android:layout_width="40dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="@dimen/activity_margin_extra_small"
+                    android:layout_marginLeft="@dimen/activity_margin_small"
+                    android:layout_marginRight="@dimen/activity_margin_extra_small"
+                    android:layout_marginStart="@dimen/activity_margin_small"
+                    android:layout_toEndOf="@+id/ivCompanyEmail"
+                    android:layout_toRightOf="@+id/ivCompanyEmail"
+                    android:background="@color/shimmer_bg_color"
+                    android:paddingLeft="@dimen/activity_margin_extra_small"
+                    android:paddingRight="@dimen/activity_margin_extra_small"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

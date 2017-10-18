@@ -44,10 +44,10 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
         final SwiggyCompany2 company = companyList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvCompanyName);
-        
-        holder.tvCompanyName.setText (company.getTitle ());
+    
+        holder.tvCompanyName.setText (company.getName ());
         holder.tvCompanyCategory.setText (company.getCategory ());
-        holder.tvCompanyContacts.setText (company.getContacts ());
+        holder.tvCompanyContacts.setText (company.getNo_of_contacts () + " CONTACTS");
         
         holder.ivCompanyEmail.setOnClickListener (new View.OnClickListener () {
             @Override

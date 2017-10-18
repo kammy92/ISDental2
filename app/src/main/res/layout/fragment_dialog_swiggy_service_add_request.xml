@@ -4,171 +4,181 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
-    android:background="@color/text_color_white">
-    <ImageView
-        android:id="@+id/ivCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:padding="@dimen/activity_margin"
-        android:src="@drawable/ic_close"/>
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/ivCancel"
-        android:layout_alignTop="@+id/ivCancel"
-        android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:text="Add Request"
-        android:textColor="@color/primary_text2"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold"/>
-    <View
-        android:id="@+id/v1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/ivCancel"
-        android:background="@color/text_color_grey_light2"/>
-    <TextView
-        android:id="@+id/tvSelectProduct"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/v1"
-        android:layout_margin="@dimen/activity_margin"
-        android:background="@color/primary_text2"
-        android:gravity="center"
-        android:padding="@dimen/activity_margin_small"
-        android:text="SELECT PRODUCT"
-        android:textColor="@color/text_color_white"/>
-    <android.support.v7.widget.CardView
-        android:id="@+id/cv1"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvSelectProduct"
-        android:layout_margin="@dimen/activity_margin"
-        android:visibility="gone"
-        card_view:cardCornerRadius="@dimen/cardview_default_radius"
-        card_view:cardElevation="@dimen/cardview_elevation">
-
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/ivItemImage"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_gravity="center_vertical"
-                android:layout_margin="@dimen/activity_margin"
-                android:scaleType="fitXY"
-                android:src="@drawable/ic_date"/>
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/activity_margin">
-                <TextView
-                    android:id="@+id/tvModel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="MODEL NUMBER"
-                    android:textColor="@color/secondary_text2"
-                    android:textSize="@dimen/text_size_extra_small"/>
-
-                <TextView
-                    android:id="@+id/tvModelNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvModel"
-                    android:text="MX1234HJ22"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"/>
-
-
-                <TextView
-                    android:id="@+id/tvSerial"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvModelNumber"
-                    android:layout_marginTop="@dimen/activity_margin"
-                    android:text="SERIAL NUMBER"
-                    android:textColor="@color/secondary_text2"
-                    android:textSize="@dimen/text_size_extra_small"/>
-
-                <TextView
-                    android:id="@+id/tvSerialNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tvSerial"
-                    android:text="S1234CG32"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"/>
-
-
-            </RelativeLayout>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
     <RelativeLayout
-        android:id="@+id/rlDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cv1"
-        android:layout_margin="@dimen/activity_margin">
-
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@color/text_color_white">
+        <ImageView
+            android:id="@+id/ivCancel"
+            android:layout_width="wrap_content"
+            android:layout_height="?attr/actionBarSize"
+            android:padding="@dimen/activity_margin"
+            android:src="@drawable/ic_close"/>
         <TextView
-            android:id="@+id/tv3"
+            android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REQUEST DESCRIPTION"
-            android:textColor="@color/primary_text2"
-            android:textSize="@dimen/text_size_extra_small"/>
-        <EditText
-            android:id="@+id/etRequestDescription"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv3"
-            android:background="@drawable/swiggy_et_background"
-            android:inputType="textMultiLine"
-            android:text=""
+            android:layout_alignBottom="@+id/ivCancel"
+            android:layout_alignTop="@+id/ivCancel"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="Add Request"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            android:theme="@style/EditTextTheme"/>
-        <TextView
-            android:id="@+id/tvCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/etRequestDescription"
-            android:text="0/255"
-            android:textColor="@color/secondary_text2"
-            android:textSize="@dimen/text_size_extra_small"/>
+            android:textStyle="bold"/>
+        <View
+            android:id="@+id/v1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ivCancel"
+            android:background="@color/text_color_grey_light2"/>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/v1"
+            android:overScrollMode="never">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/tvSelectProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:background="@color/primary_text2"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_small"
+                    android:text="SELECT PRODUCT"
+                    android:textColor="@color/text_color_white"/>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/cv1"
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvSelectProduct"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:visibility="gone"
+                    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+                    card_view:cardElevation="@dimen/cardview_elevation">
+
+                    <LinearLayout
+                        xmlns:android="http://schemas.android.com/apk/res/android"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/ivItemImage"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/activity_margin"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_date"/>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/activity_margin">
+                            <TextView
+                                android:id="@+id/tvModel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="MODEL NUMBER"
+                                android:textColor="@color/secondary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+
+                            <TextView
+                                android:id="@+id/tvModelNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tvModel"
+                                android:text="MX1234HJ22"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_large"/>
+
+
+                            <TextView
+                                android:id="@+id/tvSerial"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tvModelNumber"
+                                android:layout_marginTop="@dimen/activity_margin"
+                                android:text="SERIAL NUMBER"
+                                android:textColor="@color/secondary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+
+                            <TextView
+                                android:id="@+id/tvSerialNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/tvSerial"
+                                android:text="S1234CG32"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_large"/>
+
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+                <RelativeLayout
+                    android:id="@+id/rlDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cv1"
+                    android:layout_margin="@dimen/activity_margin">
+
+                    <TextView
+                        android:id="@+id/tv3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="REQUEST DESCRIPTION"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_extra_small"/>
+                    <EditText
+                        android:id="@+id/etRequestDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv3"
+                        android:background="@drawable/swiggy_et_background"
+                        android:inputType="textMultiLine"
+                        android:text=""
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"
+                        android:theme="@style/EditTextTheme"/>
+                    <TextView
+                        android:id="@+id/tvCounter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/etRequestDescription"
+                        android:text="0/255"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_extra_small"/>
+                </RelativeLayout>
+                <TextView
+                    android:id="@+id/tvSubmit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlDescription"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:background="@color/primary_text2"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_margin_small"
+                    android:text="SUBMIT"
+                    android:textColor="@color/text_color_white"/>
+            </RelativeLayout>
+
+        </ScrollView>
 
     </RelativeLayout>
-    <TextView
-        android:id="@+id/tvSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlDescription"
-        android:layout_margin="@dimen/activity_margin"
-        android:background="@color/primary_text2"
-        android:gravity="center"
-        android:padding="@dimen/activity_margin_small"
-        android:text="SUBMIT"
-        android:textColor="@color/text_color_white"/>
-</RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
 

@@ -96,8 +96,8 @@ public class SwiggyEventFragment extends Fragment {
     
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             eventList.clear ();
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EVENT,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_EVENT, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_EVENT,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {

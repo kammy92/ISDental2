@@ -31,11 +31,8 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.model.SwiggyBrand;
-import com.indiasupply.isdental.model.SwiggyCategory;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
-import com.indiasupply.isdental.utils.ApplicationDetailsPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
@@ -51,12 +48,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
 import java.util.Map;
 
 
 public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
-    
     ImageView ivCancel;
     EditText etProductCategory;
     EditText etModelNo;
@@ -66,27 +61,24 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
     TextView tvSubmit;
     TextView tvTitle;
     
-    int[] category_id;
-    int[] brand_id;
-    int category_item_id;
-    int brand_item_id;
-    
-    ProgressDialog progressDialog;
-    List<SwiggyCategory> categoryList = new ArrayList<> ();
-    List<SwiggyBrand> brandList = new ArrayList<> ();
+    int category_id;
+    int brand_id;
     String date = "";
-    ArrayList<String> categorynamelist = new ArrayList<> ();
-    ArrayList<String> brandnamelist = new ArrayList<> ();
-    ApplicationDetailsPref applicationDetailsPref;
-    CoordinatorLayout clMain;
-    private int mYear, mMonth, mDay;
     
-    public static SwiggyServiceAddProductDialogFragment newInstance (int contact_id) {
+    int[] category_id_list;
+    int[] brand_id_list;
+    ArrayList<String> categoryNameList = new ArrayList<> ();
+    ArrayList<String> brandNameList = new ArrayList<> ();
+    CoordinatorLayout clMain;
+    ProgressDialog progressDialog;
+    
+    String categories, brands;
+    
+    public SwiggyServiceAddProductDialogFragment newInstance (String categories, String brands) {
         SwiggyServiceAddProductDialogFragment f = new SwiggyServiceAddProductDialogFragment ();
-        // Supply num input as an argument.
         Bundle args = new Bundle ();
-        // args.putInt("contact_id", contact_id);
-        //args.putString("contact_name", contact_name);
+        args.putString (AppConfigTags.SWIGGY_CATEGORIES, categories);
+        args.putString (AppConfigTags.SWIGGY_BRANDS, brands);
         f.setArguments (args);
         return f;
     }
@@ -143,54 +135,33 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        categories = bundle.getString (AppConfigTags.SWIGGY_CATEGORIES);
+        brands = bundle.getString (AppConfigTags.SWIGGY_BRANDS);
     }
     
     private void initData () {
-        applicationDetailsPref = ApplicationDetailsPref.getInstance ();
         progressDialog = new ProgressDialog (getActivity ());
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         try {
-            JSONArray jsonArrayBrands = new JSONArray (applicationDetailsPref.getStringPref (getActivity (), ApplicationDetailsPref.SWIGGY_BRANDS));
-            brand_id = new int[jsonArrayBrands.length ()];
+            JSONArray jsonArrayBrands = new JSONArray (brands);
+            brand_id_list = new int[jsonArrayBrands.length ()];
             for (int i = 0; i < jsonArrayBrands.length (); i++) {
                 JSONObject jsonObjectBrands = jsonArrayBrands.getJSONObject (i);
-                brandList.add (new SwiggyBrand (jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID), jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME)));
-                brand_id[i] = jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID);
-                brandnamelist.add (jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME));
+                brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID);
+                brandNameList.add (jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME));
             }
-        } catch (JSONException e) {
-            e.printStackTrace ();
-        }
     
-        try {
-            JSONArray jsonArrayCategory = new JSONArray (applicationDetailsPref.getStringPref (getActivity (), ApplicationDetailsPref.SWIGGY_CATEGORIES));
-            category_id = new int[jsonArrayCategory.length ()];
+            JSONArray jsonArrayCategory = new JSONArray (categories);
+            category_id_list = new int[jsonArrayCategory.length ()];
             for (int j = 0; j < jsonArrayCategory.length (); j++) {
                 JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (j);
-                categoryList.add (new SwiggyCategory (
-                        jsonObjectCategory.getInt (AppConfigTags.SWIGGY_CATEGORY_ID),
-                        jsonObjectCategory.getString (AppConfigTags.SWIGGY_CATEGORY_NAME),
-                        jsonObjectCategory.getString (AppConfigTags.SWIGGY_CATEGORY_IMAGE)
-                ));
-                categorynamelist.add (jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME));
-                category_id[j] = jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID);
+                categoryNameList.add (jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME));
+                category_id_list[j] = jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID);
             }
         } catch (JSONException e) {
             e.printStackTrace ();
         }
-
-      /*  categoryList.add ("Category 1");
-        categoryList.add ("Category 2");
-        categoryList.add ("Category 3");
-        categoryList.add ("Category 4");
-        categoryList.add ("Category 5");
-        categoryList.add ("Category 6");
-    
-        brandList.add ("Brand 1");
-        brandList.add ("Brand 2");
-        brandList.add ("Brand 3");
-        brandList.add ("Brand 4");
-        brandList.add ("Brand 5");*/
     }
     
     private void initListener () {
@@ -206,13 +177,13 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                 new MaterialDialog.Builder (getActivity ())
                         .title ("Select a Category")
                         .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
-                        .items (categorynamelist)
-                        .itemsIds (category_id)
+                        .items (categoryNameList)
+                        .itemsIds (category_id_list)
                         .itemsCallback (new MaterialDialog.ListCallback () {
                             @Override
                             public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
                                 etProductCategory.setText (text);
-                                category_item_id = view.getId ();
+                                category_id = view.getId ();
                             }
                         })
                         .show ();
@@ -225,12 +196,12 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                 new MaterialDialog.Builder (getActivity ())
                         .title ("Select a Brand")
                         .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
-                        .items (brandnamelist)
-                        .itemsIds (brand_id)
+                        .items (brandNameList)
+                        .itemsIds (brand_id_list)
                         .itemsCallback (new MaterialDialog.ListCallback () {
                             @Override
                             public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
-                                brand_item_id = view.getId ();
+                                brand_id = view.getId ();
                                 etBrand.setText (text);
                             }
                         })
@@ -242,17 +213,13 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
             @Override
             public void onClick (View v) {
                 final Calendar c = Calendar.getInstance ();
-                mYear = c.get (Calendar.YEAR);
-                mMonth = c.get (Calendar.MONTH);
-                mDay = c.get (Calendar.DAY_OF_MONTH);
-                
                 DatePickerDialog datePickerDialog = new DatePickerDialog (getActivity (), new DatePickerDialog.OnDateSetListener () {
                     @Override
                     public void onDateSet (DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         etPurchaseDate.setText (String.format ("%02d", dayOfMonth) + "/" + String.format ("%02d", monthOfYear + 1) + "/" + year);
-                        date = etPurchaseDate.getText ().toString ().trim ();
+                        date = Utils.convertTimeFormat (etPurchaseDate.getText ().toString ().trim (), "dd/MM/yyyy", "yyyy-MM-dd");
                     }
-                }, mYear, mMonth, mDay);
+                }, c.get (Calendar.YEAR), c.get (Calendar.MONTH), c.get (Calendar.DAY_OF_MONTH));
                 datePickerDialog.show ();
             }
             
@@ -292,7 +259,7 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                 } else if (etPurchaseDate.getText ().toString ().trim ().length () == 0) {
                     etPurchaseDate.setError (s);
                 } else {
-                    addProductToServer (etBrand.getText ().toString ().trim (), etProductCategory.getText ().toString ().trim (), etModelNo.getText ().toString ().trim (), etSerialNo.getText ().toString ().trim (), Utils.convertTimeFormat (date, "dd/MM/yyyy", "yyyy-MM-dd"));
+                    addProductToServer (etBrand.getText ().toString ().trim (), etProductCategory.getText ().toString ().trim (), etModelNo.getText ().toString ().trim (), etSerialNo.getText ().toString ().trim (), date);
                 }
             }
         });
@@ -301,8 +268,8 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
     private void addProductToServer (final String brand, final String category, final String model, final String serial_number, final String purchase_date) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_PRODUCT, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_PRODUCT,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_PRODUCT, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_PRODUCT,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -346,9 +313,9 @@ public class SwiggyServiceAddProductDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_BRAND_ID, String.valueOf (brand_item_id));
+                    params.put (AppConfigTags.SWIGGY_BRAND_ID, String.valueOf (brand_id));
                     params.put (AppConfigTags.SWIGGY_BRAND_NAME, brand);
-                    params.put (AppConfigTags.SWIGGY_CATEGORY_ID, String.valueOf (category_item_id));
+                    params.put (AppConfigTags.SWIGGY_CATEGORY_ID, String.valueOf (category_id));
                     params.put (AppConfigTags.SWIGGY_CATEGORY_NAME, category);
                     params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
                     params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);

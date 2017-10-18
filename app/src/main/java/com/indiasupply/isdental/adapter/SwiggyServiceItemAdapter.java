@@ -14,10 +14,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.dialog.SwiggyServiceAddProductDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyServiceAddRequestDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyServiceMyProductDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyServiceMyRequestDialogFragment;
 import com.indiasupply.isdental.model.SwiggyServiceItem;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -102,26 +98,7 @@ public class SwiggyServiceItemAdapter extends RecyclerView.Adapter<SwiggyService
         
         @Override
         public void onClick (View v) {
-            final SwiggyServiceItem service = serviceItemList.get (getLayoutPosition ());
-            final android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
-            switch (service.getId ()) {
-                case 1:
-                    SwiggyServiceMyProductDialogFragment frag = new SwiggyServiceMyProductDialogFragment ().newInstance (service.getId ());
-                    frag.show (ft, "");
-                    break;
-                case 2:
-                    SwiggyServiceAddProductDialogFragment frag2 = new SwiggyServiceAddProductDialogFragment ().newInstance (service.getId ());
-                    frag2.show (ft, "");
-                    break;
-                case 3:
-                    SwiggyServiceMyRequestDialogFragment frag3 = new SwiggyServiceMyRequestDialogFragment ().newInstance (service.getId ());
-                    frag3.show (ft, "");
-                    break;
-                case 4:
-                    SwiggyServiceAddRequestDialogFragment frag4 = new SwiggyServiceAddRequestDialogFragment ().newInstance (service.getId ());
-                    frag4.show (ft, "");
-                    break;
-            }
+            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

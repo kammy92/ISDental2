@@ -33,6 +33,7 @@
             android:layout_height="1dp"
             android:layout_below="@+id/ivCancel"
             android:background="@color/text_color_grey_light2"/>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvMyProduct"
             android:layout_width="match_parent"

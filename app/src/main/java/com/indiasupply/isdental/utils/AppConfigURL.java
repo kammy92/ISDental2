@@ -27,12 +27,13 @@ public class AppConfigURL {
     public static String URL_SPECIAL_EVENT_DETAILS = BASE_URL + "event/special";
     
     
-    public static String URL_SWIGGY_EVENT = BASE_URL2 + "events";
+    public static String URL_SWIGGY_HOME_EVENT = BASE_URL2 + "home/events";
     public static String URL_SWIGGY_EVENT_DETAILS = BASE_URL2 + "event";
     
+    public static String URL_SWIGGY_HOME_SERVICE = BASE_URL2 + "home/service";
+    public static String URL_SWIGGY_HOME_COMPANIES = BASE_URL2 + "home/companies";
+    
     public static String URL_SWIGGY_INIT = BASE_URL2 + "/init/application";
-    public static String URL_SWIGGY_PRODUCT = BASE_URL2 + "user/product";
-    public static String URL_SWIGGY_MY_PRODUCT_LIST = BASE_URL2 + "user/products";
-    public static String URL_SWIGGY_REQUEST = BASE_URL2 + "user/request";
-    public static String URL_SWIGGY_MY_REQUEST_LIST = BASE_URL2 + "user/requests";
+    public static String URL_SWIGGY_ADD_PRODUCT = BASE_URL2 + "user/product";
+    public static String URL_SWIGGY_ADD_REQUEST = BASE_URL2 + "user/request";
 }

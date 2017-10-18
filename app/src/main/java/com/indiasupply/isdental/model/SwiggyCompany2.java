@@ -1,23 +1,29 @@
 package com.indiasupply.isdental.model;
 
-/**
- * Created by l on 26/09/2017.
- */
-
 public class SwiggyCompany2 {
     
-    int id, icon;
-    String title, contacts, category, email, website, image;
+    int id, icon, no_of_contacts;
+    String name, desciption, category, email, website, image, contacts;
     
-    public SwiggyCompany2 (int id, int icon, String title, String contacts, String category, String email, String website, String image) {
+    public SwiggyCompany2 (int id, int icon, int no_of_contacts, String name, String description, String category, String email, String website, String image, String contacts) {
         this.id = id;
         this.icon = icon;
-        this.title = title;
-        this.contacts = contacts;
+        this.no_of_contacts = no_of_contacts;
+        this.name = name;
+        this.desciption = description;
         this.category = category;
-        this.image = image;
         this.email = email;
         this.website = website;
+        this.image = image;
+        this.contacts = contacts;
+    }
+    
+    public int getNo_of_contacts () {
+        return no_of_contacts;
+    }
+    
+    public void setNo_of_contacts (int no_of_contacts) {
+        this.no_of_contacts = no_of_contacts;
     }
     
     public int getIcon () {
@@ -36,12 +42,12 @@ public class SwiggyCompany2 {
         this.id = id;
     }
     
-    public String getTitle () {
-        return title;
+    public String getName () {
+        return name;
     }
     
-    public void setTitle (String title) {
-        this.title = title;
+    public void setName (String name) {
+        this.name = name;
     }
     
     public String getContacts () {

@@ -34,7 +34,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
-import com.indiasupply.isdental.utils.ApplicationDetailsPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
@@ -42,6 +41,8 @@ import com.indiasupply.isdental.utils.TypefaceSpan;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -60,20 +61,21 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
     EditText etRequestDescription;
     CoordinatorLayout clMain;
     TextView tvSubmit;
-    ArrayList<String> productList = new ArrayList<> ();
     ProgressDialog progressDialog;
-    ApplicationDetailsPref applicationDetailsPref;
     
-    public static SwiggyServiceAddRequestDialogFragment newInstance (int contact_id) {
+    String myProducts;
+    int[] product_id_list;
+    ArrayList<String> productNameList = new ArrayList<> ();
+    
+    int product_id;
+    
+    public static SwiggyServiceAddRequestDialogFragment newInstance (String myProducts) {
         SwiggyServiceAddRequestDialogFragment f = new SwiggyServiceAddRequestDialogFragment ();
-        // Supply num input as an argument.
         Bundle args = new Bundle ();
-        // args.putInt("contact_id", contact_id);
-        //args.putString("contact_name", contact_name);
+        args.putString (AppConfigTags.SWIGGY_PRODUCTS, myProducts);
         f.setArguments (args);
         return f;
     }
-    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -127,21 +129,24 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        myProducts = bundle.getString (AppConfigTags.SWIGGY_PRODUCTS);
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvSerialNumber);
         progressDialog = new ProgressDialog (getActivity ());
-        applicationDetailsPref = ApplicationDetailsPref.getInstance ();
-   
-        
-        productList.add ("Product 1");
-        productList.add ("Product 2");
-        productList.add ("Product 3");
-        productList.add ("Product 4");
-        productList.add ("Product 5");
-        productList.add ("Product 6");
-        productList.add ("Product 7");
+        try {
+            JSONArray jsonArrayProducts = new JSONArray (myProducts);
+            product_id_list = new int[jsonArrayProducts.length ()];
+            for (int i = 0; i < jsonArrayProducts.length (); i++) {
+                JSONObject jsonObjectProduct = jsonArrayProducts.getJSONObject (i);
+                product_id_list[i] = jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID);
+                productNameList.add (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + "\nSR : " + jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
     
     private void initListener () {
@@ -171,16 +176,31 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
                 new MaterialDialog.Builder (getActivity ())
                         .title ("Select a Product")
                         .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
-                        .items (productList)
+                        .items (productNameList)
+                        .itemsIds (product_id_list)
                         .itemsCallback (new MaterialDialog.ListCallback () {
                             @Override
                             public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
-                                cv1.setVisibility (View.VISIBLE);
+                                product_id = view.getId ();
+                                try {
+                                    JSONArray jsonArrayProducts = new JSONArray (myProducts);
+                                    for (int i = 0; i < jsonArrayProducts.length (); i++) {
+                                        JSONObject jsonObjectProduct = jsonArrayProducts.getJSONObject (i);
+                                        if (jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID) == view.getId ()) {
+                                            tvModelNumber.setText (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
+                                            tvSerialNumber.setText (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+                                            cv1.setVisibility (View.VISIBLE);
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace ();
+                                }
                             }
                         })
                         .show ();
             }
         });
+    
         etRequestDescription.addTextChangedListener (new TextWatcher () {
             @Override
             public void onTextChanged (CharSequence s, int start, int before, int count) {
@@ -205,8 +225,8 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
     private void addRequestToServer (final String request) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_REQUEST, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_REQUEST,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_REQUEST, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_REQUEST,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -250,7 +270,7 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, "1");
+                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (product_id));
                     params.put (AppConfigTags.SWIGGY_DESCRIPTION, request);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
@@ -278,6 +298,4 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
             });
         }
     }
-    
-    
 }

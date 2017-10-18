@@ -217,7 +217,7 @@ public class AppConfigTags {
     public static final String SWIGGY_REQUEST_DESCRIPTION = "request_description";
     public static final String SWIGGY_REQUEST_IMAGE = "request_image";
     public static final String SWIGGY_REQUEST_TICKET_NUMBER = "request_ticket_number";
-    public static final String SWIGGY_REQUEST_CREATED_aT = "request_created_at";
+    public static final String SWIGGY_REQUEST_GENERATED_AT = "request_created_at";
     
     
     public static final String SWIGGY_BRANDS = "brands";
@@ -234,6 +234,15 @@ public class AppConfigTags {
     public static final String SWIGGY_DESCRIPTION = "description";
     
     
+    public static final String SWIGGY_COMPANIES = "companies";
+    public static final String SWIGGY_COMPANY_ID = "company_id";
+    public static final String SWIGGY_COMPANY_NAME = "company_name";
+    public static final String SWIGGY_COMPANY_EMAIL = "company_email";
+    public static final String SWIGGY_COMPANY_DESCRIPTION = "company_description";
+    public static final String SWIGGY_COMPANY_IMAGE = "company_image";
+    public static final String SWIGGY_COMPANY_WEBSITE = "company_website";
+    public static final String SWIGGY_COMPANY_CATEGORIES = "company_categories";
+    public static final String SWIGGY_COMPANY_CONTACTS = "company_contacts";
     
     
 }

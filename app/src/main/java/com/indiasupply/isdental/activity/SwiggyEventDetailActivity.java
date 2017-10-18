@@ -71,6 +71,9 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     String eventInformation;
     String evevntRegistration;
     
+    RelativeLayout rlTitle;
+    RelativeLayout rlTitle2;
+    
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -111,6 +114,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
+        rlTitle = (RelativeLayout) findViewById (R.id.rlTitle);
+        rlTitle2 = (RelativeLayout) findViewById (R.id.rlTitle2);
         rvEventItems = (ShimmerRecyclerView) findViewById (R.id.rvEventItems);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
         tvTitleEventName = (TextView) findViewById (R.id.tvTitleEventName);
@@ -167,6 +172,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         rvEventItems.hideShimmerAdapter ();
     
     
+                                        rlTitle2.setVisibility (View.GONE);
+                                        rlTitle.setVisibility (View.VISIBLE);
                                         eventItemAdapter.notifyDataSetChanged ();
     
     

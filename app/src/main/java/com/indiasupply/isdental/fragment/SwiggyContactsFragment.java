@@ -1,30 +1,54 @@
 package com.indiasupply.isdental.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter2;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyCompany2;
+import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.Constants;
+import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SwiggyContactsFragment extends Fragment {
-    RecyclerView rvContacts;
-    List<SwiggyCompany2> contactsList = new ArrayList<> ();
-    SwiggyCompanyAdapter2 contactAdapter;
+    ShimmerRecyclerView rvContacts;
+    CoordinatorLayout clMain;
+    List<SwiggyCompany2> companyList = new ArrayList<> ();
+    SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
+
+//    ShimmerFrameLayout container;
     
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
@@ -46,19 +70,31 @@ public class SwiggyContactsFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvContacts = (RecyclerView) rootView.findViewById (R.id.rvContacts);
+        rvContacts = (ShimmerRecyclerView) rootView.findViewById (R.id.rvContacts);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
+        clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+//        container = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        /*
+        <com.facebook.shimmer.ShimmerFrameLayout
+        android:id = "@+id/shimmer_view_container"
+        android:layout_width = "wrap_content"
+        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
+        android:layout_height = "wrap_content" >
+        </com.facebook.shimmer.ShimmerFrameLayout >
+    */
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
     
-        contactAdapter = new SwiggyCompanyAdapter2 (getActivity (), contactsList);
-        rvContacts.setAdapter (contactAdapter);
+        rvContacts.showShimmerAdapter ();
         rvContacts.setHasFixedSize (true);
         rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-        rvContacts.setItemAnimator (new DefaultItemAnimator ());
         rvContacts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+
+
+//        container.startShimmerAnimation ();
+    
     }
     
     private void initListener () {
@@ -67,24 +103,103 @@ public class SwiggyContactsFragment extends Fragment {
             public void onClick (View v) {
             }
         });
-        contactAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
-            @Override
-            public void onItemClick (View view, int position) {
-                SwiggyCompany2 contact = contactsList.get (position);
-                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                new SwiggyContactDetailDialogFragment ().newInstance (contact.getId (), contact.getTitle ()).show (ft, "Contacts");
-            }
-        });
+    
     }
     
     private void setData () {
-        contactsList.add (new SwiggyCompany2 (1, R.drawable.ic_person, "Chesa", "12 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand1.jpg"));
-        contactsList.add (new SwiggyCompany2 (2, R.drawable.ic_person, "Duerr", "10 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactsList.add (new SwiggyCompany2 (3, R.drawable.ic_person, "Woodpecker", "5 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactsList.add (new SwiggyCompany2 (4, R.drawable.ic_person, "Satelec", "3 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactsList.add (new SwiggyCompany2 (5, R.drawable.ic_person, "MicroNX", "12 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactsList.add (new SwiggyCompany2 (6, R.drawable.ic_person, "Doctor Smile", "16 CONTACTS", "Dental Implants", "", "", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactsList.add (new SwiggyCompany2 (7, R.drawable.ic_person, "Vatech", "8 CONTACTS", "Dental Implants", "karman.singh@actiknowbi.com", "www.indiasupply.com", "http://famdent.indiasupply.com/isdental/api/images/brands/brand2.jpg"));
-        contactAdapter.notifyDataSetChanged ();
+        if (NetworkConnection.isNetworkAvailable (getActivity ())) {
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_COMPANIES, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_COMPANIES,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                companyList.clear ();
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                                        for (int i = 0; i < jsonArrayCompany.length (); i++) {
+                                            JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
+                                            companyList.add (new SwiggyCompany2 (
+                                                    jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                                    R.drawable.ic_person,
+                                                    jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_EMAIL),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_WEBSITE),
+                                                    jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
+                                                    jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
+                                        }
+                                    
+                                    
+                                        companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyList);
+                                        rvContacts.setAdapter (companyAdapter);
+                                        rvContacts.setHasFixedSize (true);
+                                        rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+                                        rvContacts.setItemAnimator (new DefaultItemAnimator ());
+                                        companyAdapter.notifyDataSetChanged ();
+                                    
+                                        rvContacts.hideShimmerAdapter ();
+                                        companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                                            @Override
+                                            public void onItemClick (View view, int position) {
+                                                SwiggyCompany2 contact = companyList.get (position);
+                                                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                                                new SwiggyContactDetailDialogFragment ().newInstance (contact.getId (), contact.getName ()).show (ft, "Contacts");
+                                            }
+                                        });
+                                    } else {
+                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace ();
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
+                            } else {
+                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        
+                        }
+                    }) {
+            
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (getActivity (), UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 5);
+        } else {
+            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity (dialogIntent);
+                }
+            });
+        }
     }
 }
