@@ -244,5 +244,21 @@ public class AppConfigTags {
     public static final String SWIGGY_COMPANY_CATEGORIES = "company_categories";
     public static final String SWIGGY_COMPANY_CONTACTS = "company_contacts";
     
+    public static final String SWIGGY_CONTACT_ID = "contact_id";
+    public static final String SWIGGY_CONTACT_NAME = "contact_name";
+    public static final String SWIGGY_CONTACT_IMAGE = "contact_image";
+    public static final String SWIGGY_CONTACT_PHONE = "contact_phone";
+    public static final String SWIGGY_CONTACT_LOCATION = "contact_location";
+    public static final String SWIGGY_CONTACT_FAVOURITE = "contact_favourite";
+    public static final String SWIGGY_CONTACT_EMAIL = "contact_email";
+    public static final String SWIGGY_CONTACT_WEBSITE = "contact_website";
+    public static final String SWIGGY_CONTACT_TYPE = "contact_type";
     
+    public static final String SWIGGY_FAVOURITES = "favourites";
+    public static final String SWIGGY_OFFERS = "offers";
+    public static final String SWIGGY_ENQUIRIES = "enquiries";
+    public static final String SWIGGY_HTML_PRIVACY_POLICY = "html_privacy_policy";
+    public static final String SWIGGY_HTML_TERMS_OF_USE = "html_terms_of_use";
+    public static final String SWIGGY_HTML_FAQS = "html_faqs";
+    public static final String SWIGGY_HTML_HELP_AND_SUPPORT = "html_help_and_support";
 }

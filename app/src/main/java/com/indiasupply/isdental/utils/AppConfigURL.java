@@ -32,6 +32,7 @@ public class AppConfigURL {
     
     public static String URL_SWIGGY_HOME_SERVICE = BASE_URL2 + "home/service";
     public static String URL_SWIGGY_HOME_COMPANIES = BASE_URL2 + "home/companies";
+    public static String URL_SWIGGY_HOME_ACCOUNT = BASE_URL2 + "home/account";
     
     public static String URL_SWIGGY_INIT = BASE_URL2 + "/init/application";
     public static String URL_SWIGGY_ADD_PRODUCT = BASE_URL2 + "user/product";

@@ -1,7 +1,6 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +14,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountEnquiriesDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountFaqDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountFavouritesDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountHelpSupportDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountOffersDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountPrivacyPolicyDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountTermsofUseDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyAccountItem;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -113,38 +105,7 @@ public class SwiggyMyAccountItemAdapter extends RecyclerView.Adapter<SwiggyMyAcc
         
         @Override
         public void onClick (View v) {
-            SwiggyMyAccountItem swiggyMyAccountItem = serviceItemList.get (getLayoutPosition ());
-            FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
-            switch (swiggyMyAccountItem.getId ()) {
-                case 1:
-                    SwiggyMyAccountFavouritesDialogFragment frag1 = new SwiggyMyAccountFavouritesDialogFragment ();
-                    frag1.show (ft, "2");
-                    break;
-                case 2:
-                    SwiggyMyAccountOffersDialogFragment frag2 = new SwiggyMyAccountOffersDialogFragment ();
-                    frag2.show (ft, "2");
-                    break;
-                case 3:
-                    SwiggyMyAccountEnquiriesDialogFragment frag3 = new SwiggyMyAccountEnquiriesDialogFragment ();
-                    frag3.show (ft, "2");
-                    break;
-                case 5:
-                    SwiggyMyAccountHelpSupportDialogFragment frag5 = new SwiggyMyAccountHelpSupportDialogFragment ();
-                    frag5.show (ft, "2");
-                    break;
-                case 6:
-                    SwiggyMyAccountFaqDialogFragment frag6 = new SwiggyMyAccountFaqDialogFragment ();
-                    frag6.show (ft, "2");
-                    break;
-                case 7:
-                    SwiggyMyAccountTermsofUseDialogFragment frag7 = new SwiggyMyAccountTermsofUseDialogFragment ();
-                    frag7.show (ft, "2");
-                    break;
-                case 8:
-                    SwiggyMyAccountPrivacyPolicyDialogFragment frag8 = new SwiggyMyAccountPrivacyPolicyDialogFragment ();
-                    frag8.show (ft, "2");
-                    break;
-            }
+            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

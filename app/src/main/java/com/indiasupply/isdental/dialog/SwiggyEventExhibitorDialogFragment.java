@@ -218,13 +218,6 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-//        exhibitorList.add (new SwiggyEventExhibitor (1, R.drawable.ic_program, "3M ESPE", "A-31", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-//        exhibitorList.add (new SwiggyEventExhibitor (2, R.drawable.ic_program, "DEURR DENTAL", "H-Island", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-//        exhibitorList.add (new SwiggyEventExhibitor (3, R.drawable.ic_program, "CHESA", "B-3, B-4", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-//        exhibitorList.add (new SwiggyEventExhibitor (4, R.drawable.ic_program, "WOODPECKER", "A-20", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-//        exhibitorAdapter.notifyDataSetChanged ();
-    
-    
         try {
             JSONArray jsonArray = new JSONArray (eventExhibitor);
             for (int j = 0; j < jsonArray.length (); j++) {

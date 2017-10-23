@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyAccountOfferAdapter;
 import com.indiasupply.isdental.model.SwiggyMyAccountOffer;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -32,6 +33,17 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     TextView tvTitle;
+    
+    
+    String myOffers = "";
+    
+    public static SwiggyMyAccountOffersDialogFragment newInstance (String myOffers) {
+        SwiggyMyAccountOffersDialogFragment fragment = new SwiggyMyAccountOffersDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_OFFERS, myOffers);
+        fragment.setArguments (args);
+        return fragment;
+    }
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -80,6 +92,8 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        myOffers = bundle.getString (AppConfigTags.SWIGGY_OFFERS);
     }
     
     private void initData () {

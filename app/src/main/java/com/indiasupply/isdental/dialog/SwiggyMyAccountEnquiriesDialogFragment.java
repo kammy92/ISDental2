@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyAccountEnquiryAdapter;
 import com.indiasupply.isdental.model.SwiggyMyAccountEnquiry;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -32,6 +33,17 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     TextView tvTitle;
+    
+    String myEnquiries = "";
+    
+    public static SwiggyMyAccountEnquiriesDialogFragment newInstance (String myEnquiries) {
+        SwiggyMyAccountEnquiriesDialogFragment fragment = new SwiggyMyAccountEnquiriesDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_ENQUIRIES, myEnquiries);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -80,6 +92,8 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        myEnquiries = bundle.getString (AppConfigTags.SWIGGY_ENQUIRIES);
     }
     
     private void initData () {

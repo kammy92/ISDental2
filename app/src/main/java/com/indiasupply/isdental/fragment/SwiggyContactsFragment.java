@@ -8,6 +8,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +21,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter2;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
@@ -42,13 +42,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SwiggyContactsFragment extends Fragment {
-    ShimmerRecyclerView rvContacts;
+    RecyclerView rvContacts;
     CoordinatorLayout clMain;
     List<SwiggyCompany2> companyList = new ArrayList<> ();
     SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
-
-//    ShimmerFrameLayout container;
     
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
@@ -70,31 +68,20 @@ public class SwiggyContactsFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvContacts = (ShimmerRecyclerView) rootView.findViewById (R.id.rvContacts);
+        rvContacts = (RecyclerView) rootView.findViewById (R.id.rvContacts);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
-//        container = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
-        /*
-        <com.facebook.shimmer.ShimmerFrameLayout
-        android:id = "@+id/shimmer_view_container"
-        android:layout_width = "wrap_content"
-        app:layout_behavior = "@string/appbar_scrolling_view_behavior"
-        android:layout_height = "wrap_content" >
-        </com.facebook.shimmer.ShimmerFrameLayout >
-    */
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
     
-        rvContacts.showShimmerAdapter ();
+        companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyList);
+        rvContacts.setAdapter (companyAdapter);
         rvContacts.setHasFixedSize (true);
         rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvContacts.setItemAnimator (new DefaultItemAnimator ());
         rvContacts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-
-
-//        container.startShimmerAnimation ();
-    
     }
     
     private void initListener () {
@@ -103,7 +90,14 @@ public class SwiggyContactsFragment extends Fragment {
             public void onClick (View v) {
             }
         });
-    
+        companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+            @Override
+            public void onItemClick (View view, int position) {
+                SwiggyCompany2 contact = companyList.get (position);
+                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+            }
+        });
     }
     
     private void setData () {
@@ -138,22 +132,7 @@ public class SwiggyContactsFragment extends Fragment {
                                         }
                                     
                                     
-                                        companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyList);
-                                        rvContacts.setAdapter (companyAdapter);
-                                        rvContacts.setHasFixedSize (true);
-                                        rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-                                        rvContacts.setItemAnimator (new DefaultItemAnimator ());
                                         companyAdapter.notifyDataSetChanged ();
-                                    
-                                        rvContacts.hideShimmerAdapter ();
-                                        companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
-                                            @Override
-                                            public void onItemClick (View view, int position) {
-                                                SwiggyCompany2 contact = companyList.get (position);
-                                                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                                                new SwiggyContactDetailDialogFragment ().newInstance (contact.getId (), contact.getName ()).show (ft, "Contacts");
-                                            }
-                                        });
                                     } else {
                                         Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }

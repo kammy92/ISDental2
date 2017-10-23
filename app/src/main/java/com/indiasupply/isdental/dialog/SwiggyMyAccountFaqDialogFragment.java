@@ -3,9 +3,11 @@ package com.indiasupply.isdental.dialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 
@@ -29,6 +32,17 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
     ProgressBar progressBar;
     FrameLayout fl1;
     View v1;
+    
+    String htmlFaq = "";
+    
+    public static SwiggyMyAccountFaqDialogFragment newInstance (String htmlFaq) {
+        SwiggyMyAccountFaqDialogFragment fragment = new SwiggyMyAccountFaqDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_HTML_FAQS, htmlFaq);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -79,7 +93,8 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
-        
+        Bundle bundle = this.getArguments ();
+        htmlFaq = bundle.getString (AppConfigTags.SWIGGY_HTML_FAQS);
     }
     
     private void initData () {
@@ -100,13 +115,11 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
         WebSettings webSetting = webView.getSettings ();
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
-        webView.loadUrl ("https://www.google.com/");
-        webView.setWebViewClient (new WebViewClient () {
-            public void onPageFinished (WebView view, String url) {
-                // progressDialog.dismiss ();
-            }
-        });
-        
+        //htmlWebView.loadUrl ("https://www.indiasupply.com/");
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (htmlFaq);
+        webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
+    
+    
         if (Build.VERSION.SDK_INT >= 21) {
             progressBar.setProgressTintList (ColorStateList.valueOf (getResources ().getColor (R.color.primary)));
             progressBar.setIndeterminateTintList (ColorStateList.valueOf (getResources ().getColor (R.color.primary)));
@@ -116,8 +129,18 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
             progressBar.getIndeterminateDrawable ().setColorFilter (
                     getResources ().getColor (R.color.primary), android.graphics.PorterDuff.Mode.SRC_IN);
         }
-        
+    
+    
         webView.setWebViewClient (new WebViewClient () {
+            @Override
+            public void onPageStarted (WebView view, String url, Bitmap favicon) {
+                super.onPageStarted (view, url, favicon);
+                if (url.length () > 0) {
+                    fl1.setVisibility (View.VISIBLE);
+                    v1.setVisibility (View.GONE);
+                }
+            }
+            
             public void onPageFinished (WebView view, String url) {
                 //  progressDialog.dismiss ();
                 fl1.setVisibility (View.GONE);

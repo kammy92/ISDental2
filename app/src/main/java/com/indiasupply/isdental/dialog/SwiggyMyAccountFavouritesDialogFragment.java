@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyAccountFavouriteAdapter;
 import com.indiasupply.isdental.model.SwiggyMyAccountFavourite;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -32,6 +33,17 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     TextView tvTitle;
+    
+    String myFavourites = "";
+    
+    public static SwiggyMyAccountFavouritesDialogFragment newInstance (String myFavourites) {
+        SwiggyMyAccountFavouritesDialogFragment fragment = new SwiggyMyAccountFavouritesDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_FAVOURITES, myFavourites);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -80,6 +92,8 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        myFavourites = bundle.getString (AppConfigTags.SWIGGY_FAVOURITES);
     }
     
     private void initData () {
@@ -103,6 +117,7 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
     }
     
     private void setData () {
+    
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
