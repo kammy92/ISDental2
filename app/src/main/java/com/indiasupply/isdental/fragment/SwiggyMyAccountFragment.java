@@ -58,6 +58,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     List<SwiggyMyAccountItem> myAccountItemList = new ArrayList<> ();
     List<SwiggyMyAccountItem> myHelpItemList = new ArrayList<> ();
     SwiggyMyAccountItemAdapter myAccountItemAdapter;
+    SwiggyMyAccountItemAdapter myAccountItemAdapter2;
     
     String myFavourites = "";
     String myOffers = "";
@@ -65,7 +66,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     String htmlHelpSupport = "";
     String htmlFaqs = "";
     String htmlTermsOfUse = "";
-    String htmlPrivacyPolivy = "";
+    String htmlPrivacyPolicy = "";
     
     public static SwiggyMyAccountFragment newInstance () {
         SwiggyMyAccountFragment fragment = new SwiggyMyAccountFragment ();
@@ -122,13 +123,12 @@ public class SwiggyMyAccountFragment extends Fragment {
         rvMyAccount.setHasFixedSize (true);
         rvMyAccount.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvMyAccount.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
-        myAccountItemAdapter = new SwiggyMyAccountItemAdapter (getActivity (), myHelpItemList);
-        rvHelp.setAdapter (myAccountItemAdapter);
+    
+        myAccountItemAdapter2 = new SwiggyMyAccountItemAdapter (getActivity (), myHelpItemList);
+        rvHelp.setAdapter (myAccountItemAdapter2);
         rvHelp.setHasFixedSize (true);
         rvHelp.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvHelp.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
     }
     
     private void initListener () {
@@ -150,6 +150,16 @@ public class SwiggyMyAccountFragment extends Fragment {
                         SwiggyMyAccountEnquiriesDialogFragment frag3 = SwiggyMyAccountEnquiriesDialogFragment.newInstance (myEnquiries);
                         frag3.show (ft, "2");
                         break;
+                }
+            }
+        });
+    
+        myAccountItemAdapter2.SetOnItemClickListener (new SwiggyMyAccountItemAdapter.OnItemClickListener () {
+            @Override
+            public void onItemClick (View view, int position) {
+                SwiggyMyAccountItem swiggyMyAccountItem = myHelpItemList.get (position);
+                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                switch (swiggyMyAccountItem.getId ()) {
                     case 5:
                         SwiggyMyAccountHelpSupportDialogFragment frag5 = SwiggyMyAccountHelpSupportDialogFragment.newInstance (htmlHelpSupport);
                         frag5.show (ft, "2");
@@ -163,7 +173,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                         frag7.show (ft, "2");
                         break;
                     case 8:
-                        SwiggyMyAccountPrivacyPolicyDialogFragment frag8 = SwiggyMyAccountPrivacyPolicyDialogFragment.newInstance (htmlPrivacyPolivy);
+                        SwiggyMyAccountPrivacyPolicyDialogFragment frag8 = SwiggyMyAccountPrivacyPolicyDialogFragment.newInstance (htmlPrivacyPolicy);
                         frag8.show (ft, "2");
                         break;
                 }
@@ -199,7 +209,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                                         myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
                                         myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
                                         myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
-                                        htmlPrivacyPolivy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
+                                        htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
                                         htmlFaqs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_FAQS);
                                         htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
                                         htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
