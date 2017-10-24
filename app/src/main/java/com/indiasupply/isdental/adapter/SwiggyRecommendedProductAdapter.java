@@ -1,7 +1,6 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
-import android.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,15 +19,14 @@ import com.indiasupply.isdental.model.SwiggyProduct;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<SwiggyRecommendedProductAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     private Activity activity;
-    private List<SwiggyProduct> productList = new ArrayList<> ();
+    private ArrayList<SwiggyProduct> productList = new ArrayList<> ();
     
-    public SwiggyRecommendedProductAdapter (Activity activity, List<SwiggyProduct> productList) {
+    public SwiggyRecommendedProductAdapter (Activity activity, ArrayList<SwiggyProduct> productList) {
         this.activity = activity;
         this.productList = productList;
     }
@@ -109,9 +107,11 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
         
         @Override
         public void onClick (View v) {
-            FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
+         /*   FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
             SwiggyRecommendedProductDialogFragment frag = new SwiggyRecommendedProductDialogFragment ();
-            frag.show (ft, "rahul");
+            frag.show (ft, "rahul");*/
+            android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
+            new SwiggyRecommendedProductDialogFragment ().newInstance (productList, getLayoutPosition ()).show (ft, "Products");
         }
     }
 }

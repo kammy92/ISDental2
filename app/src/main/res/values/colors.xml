@@ -24,6 +24,8 @@
     <color name="shimmer_color">#f7f7f7</color>
     <color name="shimmer_bg_color">#fafafa</color>
 
+    <color name="view_color">#f0f0f0</color>
+
 
     <color name="accent">#cccccc</color>
     <color name="primary_text">#fff</color>

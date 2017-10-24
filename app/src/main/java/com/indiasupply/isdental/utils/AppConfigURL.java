@@ -37,4 +37,6 @@ public class AppConfigURL {
     public static String URL_SWIGGY_INIT = BASE_URL2 + "/init/application";
     public static String URL_SWIGGY_ADD_PRODUCT = BASE_URL2 + "user/product";
     public static String URL_SWIGGY_ADD_REQUEST = BASE_URL2 + "user/request";
+    public static String URL_SWIGGY_COMPANY_DETAILS = BASE_URL2 + "company";
+    public static String URL_SWIGGY_EXHIBITORS_LIST = BASE_URL2 + "home/exhibitors";
 }

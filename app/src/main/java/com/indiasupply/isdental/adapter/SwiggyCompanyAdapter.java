@@ -46,15 +46,23 @@ public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdap
         
         holder.tvBrandName.setText (brand.getTitle ());
         holder.tvBrandCategory.setText (brand.getCategory ());
-        holder.tvContacts.setText (brand.getDescription ());
-        holder.tvOffer.setText (brand.getOffers ());
+        holder.tvContacts.setText (brand.getTotal_contacts () + " CONTACTS");
+        if (! brand.getOffers ().equalsIgnoreCase ("0")) {
+            holder.tvOffer.setText (brand.getOffers () + " OFFERS");
+        } else {
+            holder.tvOffer.setVisibility (View.INVISIBLE);
+        }
         
         if (brand.is_isassured ()) {
             holder.ivISAssured.setVisibility (View.VISIBLE);
         } else {
             holder.ivISAssured.setVisibility (View.GONE);
         }
-        holder.tvRating.setText (brand.getRating ());
+        if (! brand.getTotal_ratings ().equalsIgnoreCase ("0")) {
+            holder.tvRating.setText (brand.getRating ());
+        } else {
+            holder.tvRating.setText ("0.0");
+        }
     
         if (brand.getImage ().length () == 0) {
             holder.ivBrandImage.setImageResource (brand.getIcon ());

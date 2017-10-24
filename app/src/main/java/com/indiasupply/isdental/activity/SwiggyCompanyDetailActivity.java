@@ -1,9 +1,12 @@
 package com.indiasupply.isdental.activity;
 
+import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
+import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
@@ -11,44 +14,75 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyProductAdapter;
 import com.indiasupply.isdental.adapter.SwiggyRecommendedProductAdapter;
+import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyProduct;
+import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.Constants;
+import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.SetTypeFace;
+import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by sud on 26/9/17.
  */
 
 public class SwiggyCompanyDetailActivity extends AppCompatActivity {
-    ArrayList<SwiggyProduct> recommendedList = new ArrayList<> ();
-    ArrayList<SwiggyProduct> productList = new ArrayList<> ();
-    RecyclerView rvRecommended;
-    RecyclerView rvProducts;
     NestedScrollView nestedScrollView;
     CoordinatorLayout clMain;
-    AppBarLayout appBarLayout;
     TextView tvTitleBrandCategory;
     TextView tvTitleBrandName;
     View v1;
     SwiggyRecommendedProductAdapter recommendedProductAdapter;
     SwiggyProductAdapter productAdapter;
     RelativeLayout rlBack;
+    LinearLayout llDynamic;
+    
+    TextView tvBrandName;
+    TextView tvBrandCategory;
+    TextView tvRating;
+    TextView tvTotalRating;
+    TextView tvEnquiry;
+    TextView tvContacts;
+    TextView tvOffer;
+    RelativeLayout rlOffer;
+    LinearLayout llContacts;
+    
+    String company_name;
+    String company_contacts;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_swiggy_brand_detail);
+        setContentView (R.layout.activity_swiggy_company_detail);
         initView ();
         initData ();
         initListener ();
@@ -77,7 +111,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                 
                 if (scrollY == 0) {
 //                    Log.i (TAG, "TOP SCROLL");
-                    v1.setVisibility (View.INVISIBLE);
+                    v1.setVisibility (View.GONE);
                 }
                 
                 if (scrollY > 0) {
@@ -94,18 +128,36 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    
+        llContacts.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                new SwiggyContactDetailDialogFragment ().newInstance (company_name, company_contacts).show (ft, "Contacts");
+            }
+        });
+        
     }
     
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         v1 = findViewById (R.id.v1);
-        rvRecommended = (RecyclerView) findViewById (R.id.rvRecommended);
-        rvProducts = (RecyclerView) findViewById (R.id.rvProducts);
         nestedScrollView = (NestedScrollView) findViewById (R.id.nestedScrollView);
-        appBarLayout = (AppBarLayout) findViewById (R.id.appBar);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
         tvTitleBrandCategory = (TextView) findViewById (R.id.tvTitleBrandCategory);
         tvTitleBrandName = (TextView) findViewById (R.id.tvTitleBrandName);
+        llDynamic = (LinearLayout) findViewById (R.id.llDynamic);
+    
+        tvBrandName = (TextView) findViewById (R.id.tvBrandName);
+        tvBrandCategory = (TextView) findViewById (R.id.tvBrandCategory);
+        tvRating = (TextView) findViewById (R.id.tvRating);
+        tvTotalRating = (TextView) findViewById (R.id.tvTotalRating);
+        tvEnquiry = (TextView) findViewById (R.id.tvEnquiry);
+        tvContacts = (TextView) findViewById (R.id.tvContacts);
+        tvOffer = (TextView) findViewById (R.id.tvOffer);
+        rlOffer = (RelativeLayout) findViewById (R.id.rlOffer);
+    
+        llContacts = (LinearLayout) findViewById (R.id.llContacts);
     }
     
     private void initData () {
@@ -115,32 +167,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
             window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
-    
-        Utils.setTypefaceToAllViews (SwiggyCompanyDetailActivity.this, rvProducts);
-        rvProducts.setNestedScrollingEnabled (false);
-        rvRecommended.setNestedScrollingEnabled (false);
-        rvRecommended.setFocusable (false);
-        rvProducts.setFocusable (false);
-    
-        productAdapter = new SwiggyProductAdapter (SwiggyCompanyDetailActivity.this, productList);
-        rvProducts.setAdapter (productAdapter);
-        rvProducts.setHasFixedSize (true);
-        rvProducts.setLayoutManager (new LinearLayoutManager (SwiggyCompanyDetailActivity.this, LinearLayoutManager.VERTICAL, false));
-        rvProducts.setItemAnimator (new DefaultItemAnimator ());
-        rvProducts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-    
-        recommendedProductAdapter = new SwiggyRecommendedProductAdapter (SwiggyCompanyDetailActivity.this, recommendedList);
-        rvRecommended.setAdapter (recommendedProductAdapter);
-        rvRecommended.setHasFixedSize (true);
-        rvRecommended.setLayoutManager (new GridLayoutManager (SwiggyCompanyDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
-        rvRecommended.setItemAnimator (new DefaultItemAnimator ());
-        rvRecommended.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams ();
-        AppBarLayout.Behavior behavior = (AppBarLayout.Behavior) params.getBehavior ();
-        if (behavior != null) {
-            behavior.onNestedFling (clMain, appBarLayout, null, 0, 10000, true);
-        }
+        Utils.setTypefaceToAllViews (SwiggyCompanyDetailActivity.this, tvTitleBrandCategory);
     }
     
     @Override
@@ -150,18 +177,138 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
     }
     
     private void setData () {
-        recommendedList.add (new SwiggyProduct (true, 1, R.drawable.ic_information, "Name 1", "Description 1", "Dental Equipments", "Rs 12,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
-        recommendedList.add (new SwiggyProduct (true, 2, R.drawable.ic_information, "Name 2", "Description 2", "Dental Equipments", "Rs 8,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg"));
-        recommendedList.add (new SwiggyProduct (true, 3, R.drawable.ic_information, "Name 3", "Description 3", "Dental Equipments", "Rs 3,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg"));
-        recommendedList.add (new SwiggyProduct (true, 4, R.drawable.ic_information, "Name 4", "Description 4", "Dental Equipments", "Rs 10,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg"));
-        recommendedList.add (new SwiggyProduct (true, 5, R.drawable.ic_information, "Name 5", "Description 5", "Dental Equipments", "Rs 2,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
-        recommendedProductAdapter.notifyDataSetChanged ();
-        
-        productList.add (new SwiggyProduct (false, 6, R.drawable.ic_information, "Name 6", "Description 6", "", "Rs 15,599/-", "Offers", ""));
-        productList.add (new SwiggyProduct (false, 7, R.drawable.ic_information, "Name 7", "", "Dental Equipments", "Rs 18,399/-", "Offers", ""));
-        productList.add (new SwiggyProduct (false, 8, R.drawable.ic_information, "Name 8", "Description 8 askj kas  kja sdkj asdkj asdkj asdkj asdkja sdkja sdkj asdkj askdj askddj ask dakj sjd aks dkja sdk asd lk sadksadkj asdk as", "", "Rs 12,230/-", "Offers", ""));
-        productList.add (new SwiggyProduct (false, 9, R.drawable.ic_information, "Name 9", "", "Dental Equipments", "Rs 499/-", "Offers", ""));
-        productList.add (new SwiggyProduct (false, 10, R.drawable.ic_information, "Name 10", "Description 10", "", "Rs 1,499/-", "Offers", ""));
-        productAdapter.notifyDataSetChanged ();
+        if (NetworkConnection.isNetworkAvailable (this)) {
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/1", true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/1",
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        tvBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
+                                        company_name = jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME);
+                                        tvBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
+                                        tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
+                                        tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
+                                        tvRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_RATING));
+                                        tvTotalRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) + " Ratings");
+                                        tvContacts.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_CONTACTS));
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS).length () > 0) {
+                                            tvOffer.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS));
+                                            rlOffer.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlOffer.setVisibility (View.GONE);
+                                        }
+                                        company_contacts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ();
+                                    
+                                        JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_PRODUCT_GROUPS);
+                                        for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
+                                            ArrayList<SwiggyProduct> productList = new ArrayList<> ();
+                                            productList.clear ();
+                                            JSONObject jsonObjectProductGroup = jsonArrayProductGroup.getJSONObject (i);
+                                            View view = new View (SwiggyCompanyDetailActivity.this);
+                                            view.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16)));
+                                            view.setBackgroundColor (getResources ().getColor (R.color.view_color));
+                                            llDynamic.addView (view);
+                                            TextView tv = new TextView (SwiggyCompanyDetailActivity.this);
+                                            tv.setText (jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE));
+                                            tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                                            tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 24);
+                                            tv.setTypeface (SetTypeFace.getTypeface (SwiggyCompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
+                                            tv.setTextColor (getResources ().getColor (R.color.primary_text2));
+                                            tv.setPadding ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 0);
+                                            llDynamic.addView (tv);
+                                            JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS);
+                                            for (int j = 0; j < jsonArrayProduct.length (); j++) {
+                                                JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
+                                                productList.add (new SwiggyProduct (
+                                                        jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                                                        R.drawable.ic_information,
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
+                                                        jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE),
+                                                        jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE),
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
+                                                ));
+                                            }
+                                        
+                                            if (jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE) == 1) {
+                                                RecyclerView rv = new RecyclerView (SwiggyCompanyDetailActivity.this);
+                                                recommendedProductAdapter = new SwiggyRecommendedProductAdapter (SwiggyCompanyDetailActivity.this, productList);
+                                                rv.setAdapter (recommendedProductAdapter);
+                                                rv.setHasFixedSize (true);
+                                                rv.setNestedScrollingEnabled (false);
+                                                rv.setFocusable (false);
+                                                rv.setLayoutManager (new GridLayoutManager (SwiggyCompanyDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
+                                                rv.setItemAnimator (new DefaultItemAnimator ());
+                                                rv.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+                                                llDynamic.addView (rv);
+                                            } else {
+                                                RecyclerView rv = new RecyclerView (SwiggyCompanyDetailActivity.this);
+                                                productAdapter = new SwiggyProductAdapter (SwiggyCompanyDetailActivity.this, productList);
+                                                rv.setAdapter (productAdapter);
+                                                rv.setNestedScrollingEnabled (false);
+                                                rv.setFocusable (false);
+                                                rv.setHasFixedSize (true);
+                                                rv.setLayoutManager (new LinearLayoutManager (SwiggyCompanyDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+                                                rv.setItemAnimator (new DefaultItemAnimator ());
+                                                rv.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+                                                llDynamic.addView (rv);
+                                            }
+                                        
+                                        }
+                                    } else {
+                                        Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace ();
+                                    Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
+                            } else {
+                                Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                            Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                    }) {
+            
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (SwiggyCompanyDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 5);
+        } else {
+            Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                @Override
+                public void onClick (View v) {
+                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity (dialogIntent);
+                }
+            });
+        }
     }
 }

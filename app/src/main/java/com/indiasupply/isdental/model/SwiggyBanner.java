@@ -6,15 +6,33 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyBanner {
     int id, icon;
-    String image, title;
+    String image, title, type, url;
     
-    public SwiggyBanner (int id, int icon, String image, String title) {
+    public SwiggyBanner (int id, int icon, String image, String title, String type, String url) {
         this.id = id;
         this.icon = icon;
         this.image = image;
         this.title = title;
+        this.type = type;
+        this.url = url;
     }
     
+    public String getType () {
+        return type;
+    }
+    
+    public void setType (String type) {
+        this.type = type;
+    }
+    
+    public String getUrl () {
+        return url;
+    }
+    
+    public void setUrl (String url) {
+        this.url = url;
+    }
+
     public int getIcon () {
         return icon;
     }

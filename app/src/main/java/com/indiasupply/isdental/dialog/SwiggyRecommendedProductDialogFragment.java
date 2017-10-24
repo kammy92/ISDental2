@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyRecommendedProductAdapter2;
 import com.indiasupply.isdental.model.SwiggyProduct;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -34,6 +35,16 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
     
     ImageView ivCancel;
     TextView tvTitle;
+    int position;
+    
+    public SwiggyRecommendedProductDialogFragment newInstance (ArrayList<SwiggyProduct> product_list, int position) {
+        SwiggyRecommendedProductDialogFragment f = new SwiggyRecommendedProductDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putParcelableArrayList (AppConfigTags.SWIGGY_PRODUCTS, product_list);
+        args.putInt ("position", position);
+        f.setArguments (args);
+        return f;
+    }
     
     @Override
     public void onCreate (Bundle savedInstanceState) {
@@ -71,7 +82,6 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
         initBundle ();
         initData ();
         initListener ();
-        setData ();
         return root;
     }
     
@@ -82,6 +92,9 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
     }
     
     private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        productList = bundle.getParcelableArrayList (AppConfigTags.SWIGGY_PRODUCTS);
+        position = bundle.getInt ("position");
     }
     
     private void initData () {
@@ -94,8 +107,9 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
         rv3.setLayoutManager (linearLayoutManager);
         rv3.setItemAnimator (new DefaultItemAnimator ());
         rv3.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        LinearLayoutManager layoutManager = ((LinearLayoutManager) rv3.getLayoutManager ());
         tvTitle.setText ("Recommended 1/" + productList.size ());
+    
+        rv3.scrollToPosition (position);
     }
     
     private void initListener () {
@@ -135,14 +149,5 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
-    }
-    
-    private void setData () {
-        productList.add (new SwiggyProduct (true, 1, R.drawable.ic_information, "Name 1", "Description 1", "Dental Equipments", "Rs 12,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
-        productList.add (new SwiggyProduct (true, 2, R.drawable.ic_information, "Name 2", "Description 2 aksjd kjlaskd laks dllk sadlk asldk asdldk sadlk asdlka sdlk asldk asd ask jasdkj asd kj sadk kj asdk kj asdkn kaj sdk aakj sdk aksj dkj kj kjas aksj dkasjdka skdjnaksd kajs dk askdj aksd ka kajs dka sdk asdaksdajsdk asj dkja sdk kj askjd akjsd kajs dkja sdkja sdkj asdkasj ddkjasd kasdkjaslkdmalks dlkasd kasdlkmls dlk sadlk askjnhgldk", "Dental Equipments", "Rs 8,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product2.jpg"));
-        productList.add (new SwiggyProduct (true, 3, R.drawable.ic_information, "Name 3", "Description 3", "Dental Equipments", "Rs 3,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product3.jpg"));
-        productList.add (new SwiggyProduct (true, 4, R.drawable.ic_information, "Name 4", "Description 4", "Dental Equipments", "Rs 10,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product4.jpg"));
-        productList.add (new SwiggyProduct (true, 5, R.drawable.ic_information, "Name 5", "Description 5", "Dental Equipments", "Rs 2,000/-", "Recommended", "http://famdent.indiasupply.com/isdental/api/images/products/product1.jpg"));
-        productAdapter.notifyDataSetChanged ();
     }
 }

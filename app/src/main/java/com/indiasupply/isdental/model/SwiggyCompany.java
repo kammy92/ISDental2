@@ -5,13 +5,11 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyCompany {
-    boolean is_offer;
     boolean is_isassured;
     int id, icon;
-    String title, description, rating, offers, category, image;
+    String title, description, rating, offers, category, image, total_ratings, total_contacts;
     
-    public SwiggyCompany (boolean is_offer, boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image) {
-        this.is_offer = is_offer;
+    public SwiggyCompany (boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image, String total_ratings, String total_contacts) {
         this.is_isassured = is_isassured;
         this.id = id;
         this.icon = icon;
@@ -21,6 +19,24 @@ public class SwiggyCompany {
         this.offers = offers;
         this.category = category;
         this.image = image;
+        this.total_ratings = total_ratings;
+        this.total_contacts = total_contacts;
+    }
+    
+    public String getTotal_ratings () {
+        return total_ratings;
+    }
+    
+    public void setTotal_ratings (String total_ratings) {
+        this.total_ratings = total_ratings;
+    }
+    
+    public String getTotal_contacts () {
+        return total_contacts;
+    }
+    
+    public void setTotal_contacts (String total_contacts) {
+        this.total_contacts = total_contacts;
     }
     
     public int getIcon () {
@@ -29,14 +45,6 @@ public class SwiggyCompany {
     
     public void setIcon (int icon) {
         this.icon = icon;
-    }
-    
-    public boolean is_offer () {
-        return is_offer;
-    }
-    
-    public void setIs_offer (boolean is_offer) {
-        this.is_offer = is_offer;
     }
     
     public boolean is_isassured () {

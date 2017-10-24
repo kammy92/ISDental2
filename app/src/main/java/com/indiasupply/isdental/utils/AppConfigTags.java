@@ -201,6 +201,7 @@ public class AppConfigTags {
     public static final String SWIGGY_SERIAL_NUMBER = "serial_number";
     public static final String SWIGGY_PURCHASE_DATE = "purchase_date";
     
+    
     public static final String SWIGGY_PRODUCTS = "products";
     public static final String SWIGGY_PRODUCT_ID = "product_id";
     public static final String SWIGGY_PRODUCT_NAME = "product_name";
@@ -211,6 +212,7 @@ public class AppConfigTags {
     public static final String SWIGGY_PRODUCT_MODEL_NUMBER = "product_model_number";
     public static final String SWIGGY_PRODUCT_SERIAL_NUMBER = "product_serial_number";
     public static final String SWIGGY_PRODUCT_PURCHASE_DATE = "product_purchase_date";
+    public static final String SWIGGY_PRODUCT_PRICE = "product_price";
     
     public static final String SWIGGY_REQUESTS = "requests";
     public static final String SWIGGY_REQUEST_ID = "request_id";
@@ -243,6 +245,14 @@ public class AppConfigTags {
     public static final String SWIGGY_COMPANY_WEBSITE = "company_website";
     public static final String SWIGGY_COMPANY_CATEGORIES = "company_categories";
     public static final String SWIGGY_COMPANY_CONTACTS = "company_contacts";
+    public static final String SWIGGY_COMPANY_RATING = "company_rating";
+    public static final String SWIGGY_COMPANY_TOTAL_RATINGS = "company_total_ratings";
+    public static final String SWIGGY_COMPANY_TOTAL_CONTACTS = "company_total_contacts";
+    public static final String SWIGGY_COMPANY_OFFERS = "company_offers";
+    
+    public static final String SWIGGY_TOTAL_RATINGS = "total_ratings";
+    public static final String SWIGGY_TOTAL_OFFERS = "total_offers";
+    public static final String SWIGGY_TOTAL_CONTACTS = "total_contacts";
     
     public static final String SWIGGY_CONTACT_ID = "contact_id";
     public static final String SWIGGY_CONTACT_NAME = "contact_name";
@@ -261,4 +271,16 @@ public class AppConfigTags {
     public static final String SWIGGY_HTML_TERMS_OF_USE = "html_terms_of_use";
     public static final String SWIGGY_HTML_FAQS = "html_faqs";
     public static final String SWIGGY_HTML_HELP_AND_SUPPORT = "html_help_and_support";
+    
+    public static final String SWIGGY_COMPANY_PRODUCT_GROUPS = "product_groups";
+    public static final String SWIGGY_GROUP_TITLE = "group_title";
+    public static final String SWIGGY_GROUP_TYPE = "group_type";
+    
+    public static final String SWIGGY_BANNERS = "banners";
+    public static final String SWIGGY_BANNER_ID = "banner_id";
+    public static final String SWIGGY_BANNER_TITLE = "banner_title";
+    public static final String SWIGGY_BANNER_URL = "banner_url";
+    public static final String SWIGGY_BANNER_TYPE = "banner_type";
+    public static final String SWIGGY_BANNER_IMAGE = "banner_image";
 }
+
