@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -31,6 +32,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -50,11 +52,13 @@ import java.util.Map;
 public class SwiggyExhibitorsFragment extends Fragment {
     RecyclerView rvBanners;
     RecyclerView rvCompany;
+    ShimmerFrameLayout shimmerFrameLayout;
     List<SwiggyBanner> bannerList = new ArrayList<> ();
     List<SwiggyCompany> companyList = new ArrayList<> ();
     SwiggyBannerAdapter bannerAdapter;
     SwiggyCompanyAdapter companyAdapter;
     Button btFilter;
+    RelativeLayout rlMain;
     
     CoordinatorLayout clMain;
     
@@ -83,6 +87,8 @@ public class SwiggyExhibitorsFragment extends Fragment {
         rvCompany = (RecyclerView) rootView.findViewById (R.id.rvCompany);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+        shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -160,7 +166,10 @@ public class SwiggyExhibitorsFragment extends Fragment {
                                                     jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
                                             ));
                                         }
+    
                                         companyAdapter.notifyDataSetChanged ();
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
                                     } else {
                                         Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -191,14 +200,14 @@ public class SwiggyExhibitorsFragment extends Fragment {
                             // tvNoResult.setVisibility(View.VISIBLE);
                         }
                     }) {
-            
+    
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-            
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -222,5 +231,33 @@ public class SwiggyExhibitorsFragment extends Fragment {
                 }
             });
         }
+    }
+    
+    private void startShimmer () {
+        shimmerFrameLayout.useDefaults ();
+        shimmerFrameLayout.setDuration (1500);
+        shimmerFrameLayout.setBaseAlpha (0.3f);
+        shimmerFrameLayout.setRepeatDelay (500);
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        startShimmer ();
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
     }
 }

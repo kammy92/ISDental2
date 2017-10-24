@@ -896,13 +896,13 @@ public class ShimmerFrameLayout extends FrameLayout {
          * @return An array of black and transparent colors
          */
         public int[] getGradientColors () {
-            switch (shape) {
-                default:
-                case LINEAR:
+//            switch (shape) {
+//                default:
+//                case LINEAR:
                     return new int[] {Color.TRANSPARENT, Color.BLACK, Color.BLACK, Color.TRANSPARENT};
-                case RADIAL:
-                    return new int[] {Color.BLACK, Color.BLACK, Color.TRANSPARENT};
-            }
+//                case RADIAL:
+//                    return new int[] {Color.BLACK, Color.BLACK, Color.TRANSPARENT};
+//            }
         }
         
         /**
