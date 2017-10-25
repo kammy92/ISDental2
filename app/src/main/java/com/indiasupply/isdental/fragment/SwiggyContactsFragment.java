@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -30,6 +31,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -47,6 +49,10 @@ public class SwiggyContactsFragment extends Fragment {
     List<SwiggyCompany2> companyList = new ArrayList<> ();
     SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
+    
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
+    
     
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
@@ -71,6 +77,8 @@ public class SwiggyContactsFragment extends Fragment {
         rvContacts = (RecyclerView) rootView.findViewById (R.id.rvContacts);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+        shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -130,9 +138,9 @@ public class SwiggyContactsFragment extends Fragment {
                                                     jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
                                                     jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
                                         }
-                                    
-                                    
                                         companyAdapter.notifyDataSetChanged ();
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
                                     } else {
                                         Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -181,4 +189,33 @@ public class SwiggyContactsFragment extends Fragment {
             });
         }
     }
+    
+    private void startShimmer () {
+        shimmerFrameLayout.useDefaults ();
+        shimmerFrameLayout.setDuration (1500);
+        shimmerFrameLayout.setBaseAlpha (0.3f);
+        shimmerFrameLayout.setRepeatDelay (500);
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        startShimmer ();
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
+    }
+    
 }

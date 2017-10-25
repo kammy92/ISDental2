@@ -7,10 +7,12 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -18,7 +20,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventAdapter;
 import com.indiasupply.isdental.model.SwiggyEvent;
@@ -27,6 +28,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -41,11 +43,13 @@ import java.util.Map;
 
 
 public class SwiggyEventFragment extends Fragment {
-    ShimmerRecyclerView rvEvents;
+    RecyclerView rvEvents;
     List<SwiggyEvent> eventList = new ArrayList<> ();
     SwiggyEventAdapter eventAdapter;
     
     CoordinatorLayout clMain;
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
     
     public static SwiggyEventFragment newInstance () {
         return new SwiggyEventFragment ();
@@ -67,8 +71,10 @@ public class SwiggyEventFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvEvents = (ShimmerRecyclerView) rootView.findViewById (R.id.rvEvents);
+        rvEvents = (RecyclerView) rootView.findViewById (R.id.rvEvents);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+        shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -76,7 +82,8 @@ public class SwiggyEventFragment extends Fragment {
         rvEvents.setNestedScrollingEnabled (false);
         rvEvents.setFocusable (false);
     
-        rvEvents.showShimmerAdapter ();
+        eventAdapter = new SwiggyEventAdapter (getActivity (), eventList);
+        rvEvents.setAdapter (eventAdapter);
         rvEvents.setHasFixedSize (true);
         rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvEvents.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
@@ -86,14 +93,6 @@ public class SwiggyEventFragment extends Fragment {
     }
     
     private void setData () {
-//        eventList.add (new SwiggyEvent (1, R.drawable.expodent_mumbai, "EXPODENT", "2 - 5 Oct", "Mumbai", "http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg"));
-//        eventList.add (new SwiggyEvent (2, R.drawable.expodent_mumbai, "EXPODENT", "2 - 5 Oct", "Delhi", "http://famdent.indiasupply.com/isdental/api/images/delhi.jpg"));
-//        eventList.add (new SwiggyEvent (3, R.drawable.expodent_mumbai, "EXPODENT", "2 - 5 Oct", "Mumbai", "http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg"));
-//        eventList.add (new SwiggyEvent (4, R.drawable.expodent_mumbai, "EXPODENT", "2 - 5 Oct", "Mumbai", "http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg"));
-//        eventList.add (new SwiggyEvent (5, R.drawable.expodent_mumbai, "EXPODENT", "2 - 5 Oct", "Mumbai", "http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg"));
-//        eventAdapter.notifyDataSetChanged ();
-    
-    
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             eventList.clear ();
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_EVENT, true);
@@ -123,14 +122,11 @@ public class SwiggyEventFragment extends Fragment {
                                             );
                                             eventList.add (i, swiggyEvent);
                                         }
-    
-                                        eventAdapter = new SwiggyEventAdapter (getActivity (), eventList);
-                                        rvEvents.setAdapter (eventAdapter);
-                                        rvEvents.setHasFixedSize (true);
-                                        rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
-    
-                                        rvEvents.hideShimmerAdapter ();
                                         eventAdapter.notifyDataSetChanged ();
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
+                                    } else {
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
@@ -184,4 +180,33 @@ public class SwiggyEventFragment extends Fragment {
             });
         }
     }
+    
+    private void startShimmer () {
+        shimmerFrameLayout.useDefaults ();
+        shimmerFrameLayout.setDuration (1500);
+        shimmerFrameLayout.setBaseAlpha (0.3f);
+        shimmerFrameLayout.setRepeatDelay (500);
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        startShimmer ();
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
+    }
+    
 }

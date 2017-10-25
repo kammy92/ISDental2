@@ -2,10 +2,8 @@
     android:id="@+id/clMain"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:shimmer="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     android:background="@color/text_color_white">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -50,7 +48,8 @@
                     android:paddingStart="@dimen/activity_margin"
                     android:text="ISDental"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_extra_large"/>
+                    android:textSize="@dimen/text_size_title_app_name"
+                    android:textStyle="bold"/>
                 <Button
                     android:id="@+id/btFilter"
                     android:layout_width="wrap_content"
@@ -126,9 +125,7 @@
         android:id="@+id/shimmer_view_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        shimmer:duration="1000"
-        shimmer:mockup_opacity="20">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
             android:id="@+id/rlLoading"
             android:layout_width="match_parent"

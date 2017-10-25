@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -24,7 +25,6 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyEventItemAdapter;
 import com.indiasupply.isdental.dialog.SwiggyEventExhibitorDialogFragment;
@@ -39,6 +39,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -52,7 +53,7 @@ import java.util.Map;
 
 public class SwiggyEventDetailActivity extends AppCompatActivity {
     RelativeLayout rlBack;
-    ShimmerRecyclerView rvEventItems;
+    RecyclerView rvEventItems;
     CoordinatorLayout clMain;
     
     List<SwiggyEventItem> eventItemList = new ArrayList<> ();
@@ -60,7 +61,6 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     
     TextView tvTitleEventName;
     TextView tvTitleEventDetail;
-    
     
     int event_id;
     
@@ -71,8 +71,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     String eventInformation;
     String evevntRegistration;
     
-    RelativeLayout rlTitle;
-    RelativeLayout rlTitle2;
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
     
     
     @Override
@@ -95,6 +95,57 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 
             }
         });
+        eventItemAdapter.SetOnItemClickListener (new SwiggyEventItemAdapter.OnItemClickListener () {
+            @Override
+            public void onItemClick (View view, int position) {
+                SwiggyEventItem eventItem = eventItemList.get (position);
+                FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                switch (eventItem.getId ()) {
+                    case 1:
+                        if (eventSchedule.length () > 0) {
+                            SwiggyEventScheduleDialogFragment frag1 = SwiggyEventScheduleDialogFragment.newInstance (eventSchedule);
+                            frag1.show (ft, "2");
+                        } else {
+                        }
+                        break;
+                    case 2:
+                        if (eventSpeakers.length () > 0) {
+                            SwiggyEventSpeakerDialogFragment frag2 = SwiggyEventSpeakerDialogFragment.newInstance (eventSpeakers);
+                            frag2.show (ft, "2");
+                        } else {
+                        }
+                        break;
+                    case 3:
+                        if (eventExhibitors.length () > 0) {
+                            SwiggyEventExhibitorDialogFragment frag3 = SwiggyEventExhibitorDialogFragment.newInstance (eventExhibitors);
+                            frag3.show (ft, "3");
+                        } else {
+                        }
+                        break;
+                    case 4:
+                        if (eventFloorPlan.length () > 0) {
+                            SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
+                            frag4.show (ft, "4");
+                        } else {
+                        }
+                        break;
+                    case 5:
+                        if (eventInformation.length () > 0) {
+                            SwiggyEventInformationDialogFragment frag5 = SwiggyEventInformationDialogFragment.newInstance (eventInformation);
+                            frag5.show (ft, "5");
+                        } else {
+                        }
+                        break;
+                    case 6:
+                        if (evevntRegistration.length () > 0) {
+                            SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (evevntRegistration);
+                            frag6.show (ft, "6");
+                        } else {
+                        }
+                        break;
+                }
+            }
+        });
     }
     
     private void initData () {
@@ -106,20 +157,22 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
     
-        rvEventItems.showShimmerAdapter ();
+        eventItemAdapter = new SwiggyEventItemAdapter (SwiggyEventDetailActivity.this, eventItemList);
+        rvEventItems.setAdapter (eventItemAdapter);
         rvEventItems.setHasFixedSize (true);
         rvEventItems.setLayoutManager (new GridLayoutManager (SwiggyEventDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
+        rvEventItems.setItemAnimator (new DefaultItemAnimator ());
         rvEventItems.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
-        rlTitle = (RelativeLayout) findViewById (R.id.rlTitle);
-        rlTitle2 = (RelativeLayout) findViewById (R.id.rlTitle2);
-        rvEventItems = (ShimmerRecyclerView) findViewById (R.id.rvEventItems);
+        rvEventItems = (RecyclerView) findViewById (R.id.rvEventItems);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
         tvTitleEventName = (TextView) findViewById (R.id.tvTitleEventName);
         tvTitleEventDetail = (TextView) findViewById (R.id.tvTitleEventDetail);
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) findViewById (R.id.rlMain);
     }
     
     private void getExtras () {
@@ -164,71 +217,12 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
     
     
-                                        eventItemAdapter = new SwiggyEventItemAdapter (SwiggyEventDetailActivity.this, eventItemList);
-                                        rvEventItems.setAdapter (eventItemAdapter);
-                                        rvEventItems.setHasFixedSize (true);
-                                        rvEventItems.setLayoutManager (new GridLayoutManager (SwiggyEventDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
-                                        rvEventItems.setItemAnimator (new DefaultItemAnimator ());
-                                        rvEventItems.hideShimmerAdapter ();
     
     
-                                        rlTitle2.setVisibility (View.GONE);
-                                        rlTitle.setVisibility (View.VISIBLE);
                                         eventItemAdapter.notifyDataSetChanged ();
     
-    
-                                        eventItemAdapter.SetOnItemClickListener (new SwiggyEventItemAdapter.OnItemClickListener () {
-                                            @Override
-                                            public void onItemClick (View view, int position) {
-                                                SwiggyEventItem eventItem = eventItemList.get (position);
-                                                FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-                                                switch (eventItem.getId ()) {
-                                                    case 1:
-                                                        if (eventSchedule.length () > 0) {
-                                                            SwiggyEventScheduleDialogFragment frag1 = SwiggyEventScheduleDialogFragment.newInstance (eventSchedule);
-                                                            frag1.show (ft, "2");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                    case 2:
-                                                        if (eventSpeakers.length () > 0) {
-                                                            SwiggyEventSpeakerDialogFragment frag2 = SwiggyEventSpeakerDialogFragment.newInstance (eventSpeakers);
-                                                            frag2.show (ft, "2");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                    case 3:
-                                                        if (eventExhibitors.length () > 0) {
-                                                            SwiggyEventExhibitorDialogFragment frag3 = SwiggyEventExhibitorDialogFragment.newInstance (eventExhibitors);
-                                                            frag3.show (ft, "3");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                    case 4:
-                                                        if (eventFloorPlan.length () > 0) {
-                                                            SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
-                                                            frag4.show (ft, "4");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                    case 5:
-                                                        if (eventInformation.length () > 0) {
-                                                            SwiggyEventInformationDialogFragment frag5 = SwiggyEventInformationDialogFragment.newInstance (eventInformation);
-                                                            frag5.show (ft, "5");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                    case 6:
-                                                        if (evevntRegistration.length () > 0) {
-                                                            SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (evevntRegistration);
-                                                            frag6.show (ft, "6");
-                                                        } else {
-                                                        }
-                                                        break;
-                                                }
-                                            }
-                                        });
-    
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
                                     } else {
                                         Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred) + " : " + message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
@@ -282,5 +276,33 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    
+    private void startShimmer () {
+        shimmerFrameLayout.useDefaults ();
+        shimmerFrameLayout.setDuration (1500);
+        shimmerFrameLayout.setBaseAlpha (0.3f);
+        shimmerFrameLayout.setRepeatDelay (500);
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        startShimmer ();
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
     }
 }

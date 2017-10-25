@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.Utils;
 
 
@@ -115,9 +116,8 @@ public class SwiggyEventInformationDialogFragment extends DialogFragment {
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
         //htmlWebView.loadUrl ("https://www.indiasupply.com/");
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (eventInformation);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + eventInformation);
         webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
-    
     
         if (Build.VERSION.SDK_INT >= 21) {
             progressBar.setProgressTintList (ColorStateList.valueOf (getResources ().getColor (R.color.primary)));

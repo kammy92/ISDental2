@@ -56,7 +56,7 @@
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/rlBack"
                     android:layout_toRightOf="@+id/rlBack"
-                    android:visibility="gone">
+                    android:visibility="visible">
                     <TextView
                         android:id="@+id/tvTitleEventName"
                         android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                         android:ellipsize="end"
                         android:lines="1"
                         android:maxLines="1"
-                        android:text="EXPODENT"
+                        android:text=""
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_extra_large"
                         android:textStyle="bold"/>
@@ -76,40 +76,7 @@
                         android:ellipsize="end"
                         android:lines="1"
                         android:maxLines="1"
-                        android:text="2 - 5 Oct, Mumbai"
-                        android:textColor="@color/secondary_text2"
-                        android:textSize="@dimen/text_size_small"/>
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/rlTitle2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@+id/rlBack"
-                    android:layout_toRightOf="@+id/rlBack">
-                    <TextView
-                        android:id="@+id/tvView1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:background="@color/shimmer_bg_color"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:text="                      "
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_extra_large"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:id="@+id/tvView2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_below="@+id/tvView1"
-                        android:layout_marginTop="@dimen/activity_margin_extra_small"
-                        android:background="@color/shimmer_bg_color"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:maxLines="1"
-                        android:text="                                     "
+                        android:text=""
                         android:textColor="@color/secondary_text2"
                         android:textSize="@dimen/text_size_small"/>
                 </RelativeLayout>
@@ -132,17 +99,269 @@
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
+            android:id="@+id/rlMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvEventItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:shimmer_demo_angle="10"
-                app:shimmer_demo_child_count="6"
-                app:shimmer_demo_layout="@layout/list_item_swiggy_event_item2"
-                app:shimmer_demo_shimmer_color="@color/shimmer_color"/>
+                android:visibility="visible"/>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+    <com.indiasupply.isdental.utils.ShimmerFrameLayout
+        android:id="@+id/shimmer_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <RelativeLayout
+                android:id="@+id/rll1"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize">
+                <View
+                    android:id="@+id/ivl1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/activity_margin"
+                    android:visibility="invisible"/>
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@+id/ivl1"
+                    android:layout_toRightOf="@+id/ivl1">
+                    <TextView
+                        android:id="@+id/tvView1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@color/shimmer_bg_color"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:text="                      "
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tvView1"
+                        android:layout_marginTop="@dimen/activity_margin_extra_small"
+                        android:background="@color/shimmer_bg_color"
+                        android:ellipsize="end"
+                        android:lines="1"
+                        android:maxLines="1"
+                        android:text="                                     "
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"/>
+                </RelativeLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlLoading"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/rll1">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl1"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl1"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl11"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl11"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl12"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl12"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl111"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl111"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl14"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl14"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                        <RelativeLayout
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_weight="1"
+                            android:background="@color/shimmer_bg_color"
+                            android:orientation="vertical">
+                            <RelativeLayout
+                                android:id="@+id/rl113"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_centerHorizontal="true"
+                                android:layout_margin="@dimen/activity_margin">
+                            </RelativeLayout>
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/rl113"
+                                android:layout_weight="1"
+                                android:gravity="center"
+                                android:lines="2"
+                                android:maxLines="2"
+                                android:padding="@dimen/activity_margin_extra_small"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_extra_small"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+    </com.indiasupply.isdental.utils.ShimmerFrameLayout>
 </android.support.design.widget.CoordinatorLayout>

@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.Utils;
 
 
@@ -116,7 +117,7 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
         //htmlWebView.loadUrl ("https://www.indiasupply.com/");
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (htmlFaq);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + htmlFaq);
         webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
     
     

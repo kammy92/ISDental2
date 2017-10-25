@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -38,6 +39,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -54,6 +56,17 @@ public class SwiggyMyAccountFragment extends Fragment {
     TextView tvEdit;
     TextView tvAppVersion;
     CoordinatorLayout clMain;
+    
+    TextView tvUserName;
+    TextView tvUserMobile;
+    TextView tvUserEmail;
+    TextView tvUserName2;
+    TextView tvUserMobile2;
+    TextView tvUserEmail2;
+    
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
+    
     
     List<SwiggyMyAccountItem> myAccountItemList = new ArrayList<> ();
     List<SwiggyMyAccountItem> myHelpItemList = new ArrayList<> ();
@@ -94,6 +107,13 @@ public class SwiggyMyAccountFragment extends Fragment {
         tvEdit = (TextView) rootView.findViewById (R.id.tvEdit);
         tvAppVersion = (TextView) rootView.findViewById (R.id.tvAppVersion);
     
+        tvUserName = (TextView) rootView.findViewById (R.id.tvUserName);
+        tvUserName2 = (TextView) rootView.findViewById (R.id.tvUserName2);
+        tvUserMobile = (TextView) rootView.findViewById (R.id.tvUserMobile);
+        tvUserMobile2 = (TextView) rootView.findViewById (R.id.tvUserMobile2);
+        tvUserEmail = (TextView) rootView.findViewById (R.id.tvUserEmail);
+        tvUserEmail2 = (TextView) rootView.findViewById (R.id.tvUserEmail2);
+    
         tvEdit.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
@@ -102,6 +122,9 @@ public class SwiggyMyAccountFragment extends Fragment {
             }
         });
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+    
+        shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -206,6 +229,10 @@ public class SwiggyMyAccountFragment extends Fragment {
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
+                                        tvUserName.setText (jsonObj.getString (AppConfigTags.USER_NAME).toUpperCase ());
+                                        tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
+                                        tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
+                                        
                                         myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
                                         myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
                                         myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
@@ -213,6 +240,8 @@ public class SwiggyMyAccountFragment extends Fragment {
                                         htmlFaqs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_FAQS);
                                         htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
                                         htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
                                     } else {
                                         Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -263,4 +292,33 @@ public class SwiggyMyAccountFragment extends Fragment {
             });
         }
     }
+    
+    private void startShimmer () {
+        shimmerFrameLayout.useDefaults ();
+        shimmerFrameLayout.setDuration (1500);
+        shimmerFrameLayout.setBaseAlpha (0.3f);
+        shimmerFrameLayout.setRepeatDelay (500);
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        startShimmer ();
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
+    }
+    
 }

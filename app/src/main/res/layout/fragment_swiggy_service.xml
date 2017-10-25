@@ -39,29 +39,13 @@
                     android:id="@+id/tvSearch"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/btFilter"
-                    android:layout_alignTop="@+id/btFilter"
-                    android:layout_toLeftOf="@+id/btFilter"
-                    android:layout_toStartOf="@+id/btFilter"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/activity_margin"
                     android:paddingStart="@dimen/activity_margin"
-                    android:text="Search   'Chesa Dental'"
-                    android:textColor="@color/secondary_text2"
-                    android:textSize="@dimen/text_size_large"/>
-
-                <Button
-                    android:id="@+id/btFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@android:color/transparent"
-                    android:padding="@dimen/activity_margin"
-                    android:text="FILTER"
-                    android:textColor="@color/text_color_black"
-                    android:textStyle="bold"
-                    android:visibility="visible"/>
+                    android:text="Service Request"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_title_app_name"
+                    android:textStyle="bold"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
         <View
