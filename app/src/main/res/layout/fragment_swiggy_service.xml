@@ -67,15 +67,11 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+            <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvServiceList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
-                app:shimmer_demo_angle="10"
-                app:shimmer_demo_child_count="4"
-                app:shimmer_demo_layout="@layout/list_item_swiggy_service_item2"
-                app:shimmer_demo_shimmer_color="@color/shimmer_color"/>
+                android:visibility="visible"/>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

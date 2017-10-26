@@ -101,41 +101,42 @@ public class SwiggyEventFragment extends Fragment {
                         @Override
                         public void onResponse (String response) {
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
-                            if (response != null) {
-                                try {
-                                    JSONObject jsonObj = new JSONObject (response);
-                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
-                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
-                                    if (! is_error) {
-                                        JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
-                                        for (int i = 0; i < jsonArrayEvents.length (); i++) {
-                                            JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
-                                            SwiggyEvent swiggyEvent = new SwiggyEvent (
-                                                    jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
-                                                    R.drawable.expodent_mumbai,
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
-                                                    jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
-                                            );
-                                            eventList.add (i, swiggyEvent);
+                            if (getActivity () != null && isAdded ()) {
+                                if (response != null) {
+                                    try {
+                                        JSONObject jsonObj = new JSONObject (response);
+                                        boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                        String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                        if (! is_error) {
+                                            JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
+                                            for (int i = 0; i < jsonArrayEvents.length (); i++) {
+                                                JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
+                                                SwiggyEvent swiggyEvent = new SwiggyEvent (
+                                                        jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
+                                                        R.drawable.expodent_mumbai,
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
+                                                );
+                                                eventList.add (i, swiggyEvent);
+                                            }
+                                            eventAdapter.notifyDataSetChanged ();
+                                            rlMain.setVisibility (View.VISIBLE);
+                                            shimmerFrameLayout.setVisibility (View.GONE);
+                                        } else {
+                                            Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                         }
-                                        eventAdapter.notifyDataSetChanged ();
-                                        rlMain.setVisibility (View.VISIBLE);
-                                        shimmerFrameLayout.setVisibility (View.GONE);
-                                    } else {
-                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    } catch (Exception e) {
+                                        e.printStackTrace ();
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
-                                } catch (Exception e) {
-                                    e.printStackTrace ();
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                                
+                                } else {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                                 }
-                            } else {
-                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                         }
                     },
@@ -143,21 +144,23 @@ public class SwiggyEventFragment extends Fragment {
                         @Override
                         public void onErrorResponse (VolleyError error) {
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
-                            NetworkResponse response = error.networkResponse;
-                            if (response != null && response.data != null) {
-                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            if (getActivity () != null && isAdded ()) {
+                                NetworkResponse response = error.networkResponse;
+                                if (response != null && response.data != null) {
+                                    Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                                }
+                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
-                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                     }) {
-            
+    
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-            
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -170,14 +173,16 @@ public class SwiggyEventFragment extends Fragment {
             };
             Utils.sendRequest (strRequest, 5);
         } else {
-            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                @Override
-                public void onClick (View v) {
-                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity (dialogIntent);
-                }
-            });
+            if (getActivity () != null && isAdded ()) {
+                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity (dialogIntent);
+                    }
+                });
+            }
         }
     }
     
@@ -208,5 +213,4 @@ public class SwiggyEventFragment extends Fragment {
         shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
     }
-    
 }

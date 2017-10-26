@@ -123,81 +123,76 @@ public class SwiggyExhibitorsFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            //tvNoResult.setVisibility(View.GONE);
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EXHIBITORS_LIST, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EXHIBITORS_LIST,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
-                            //categoryList.clear ();
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
-                            if (response != null) {
-                                try {
-                                    JSONObject jsonObj = new JSONObject (response);
-                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
-                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
-                                    if (! is_error) {
-                                        JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
-                                        for (int i = 0; i < jsonArrayBanners.length (); i++) {
-                                            JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
-                                            bannerList.add (new SwiggyBanner (
-                                                    jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
-                                                    R.drawable.default_banner,
-                                                    jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
-                                                    jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
-                                                    jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
-                                                    jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
-                                            ));
+                            if (getActivity () != null && isAdded ()) {
+                                if (response != null) {
+                                    try {
+                                        JSONObject jsonObj = new JSONObject (response);
+                                        boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                        String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                        if (! is_error) {
+                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                                            for (int i = 0; i < jsonArrayBanners.length (); i++) {
+                                                JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
+                                                bannerList.add (new SwiggyBanner (
+                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
+                                                        R.drawable.default_banner,
+                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
+                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
+                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
+                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
+                                                ));
+                                            }
+                                            bannerAdapter.notifyDataSetChanged ();
+                                            JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                                            for (int j = 0; j < jsonArrayCompanies.length (); j++) {
+                                                JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
+                                                companyList.add (new SwiggyCompany (false,
+                                                        jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                                        R.drawable.ic_person,
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_OFFERS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
+                                                ));
+                                            }
+                                            companyAdapter.notifyDataSetChanged ();
+                                            rlMain.setVisibility (View.VISIBLE);
+                                            shimmerFrameLayout.setVisibility (View.GONE);
+                                        } else {
+                                            Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                         }
-                                        bannerAdapter.notifyDataSetChanged ();
-                                        JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
-                                        for (int j = 0; j < jsonArrayCompanies.length (); j++) {
-                                            JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
-                                            companyList.add (new SwiggyCompany (false,
-                                                    jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
-                                                    R.drawable.ic_person,
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_OFFERS),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
-                                                    jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
-                                            ));
-                                        }
-    
-                                        companyAdapter.notifyDataSetChanged ();
-                                        rlMain.setVisibility (View.VISIBLE);
-                                        shimmerFrameLayout.setVisibility (View.GONE);
-                                    } else {
-                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                    } catch (Exception e) {
+                                        e.printStackTrace ();
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
-                                } catch (Exception e) {
-                                    // swipeRefreshLayout.setRefreshing(false);
-                                    e.printStackTrace ();
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                                    // tvNoResult.setVisibility(View.VISIBLE);
+                                } else {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                                 }
-                            } else {
-                                // tvNoResult.setVisibility(View.VISIBLE);
-                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
-                            //  swipeRefreshLayout.setRefreshing(false);
                         }
                     },
                     new Response.ErrorListener () {
                         @Override
                         public void onErrorResponse (VolleyError error) {
                             Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
-                            NetworkResponse response = error.networkResponse;
-                            if (response != null && response.data != null) {
-                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            if (getActivity () != null && isAdded ()) {
+                                NetworkResponse response = error.networkResponse;
+                                if (response != null && response.data != null) {
+                                    Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                                }
+                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
-                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
-                            // swipeRefreshLayout.setRefreshing(false);
-                            // tvNoResult.setVisibility(View.VISIBLE);
                         }
                     }) {
     
@@ -220,16 +215,16 @@ public class SwiggyExhibitorsFragment extends Fragment {
             };
             Utils.sendRequest (strRequest, 5);
         } else {
-            //tvNoResult.setVisibility(View.VISIBLE);
-            //swipeRefreshLayout.setRefreshing(false);
-            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                @Override
-                public void onClick (View v) {
-                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity (dialogIntent);
-                }
-            });
+            if (getActivity () != null && isAdded ()) {
+                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity (dialogIntent);
+                    }
+                });
+            }
         }
     }
     
