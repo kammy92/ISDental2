@@ -43,6 +43,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvCompanyName"
+            android:ellipsize="end"
+            android:lines="1"
             android:text="Categories"
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_small"

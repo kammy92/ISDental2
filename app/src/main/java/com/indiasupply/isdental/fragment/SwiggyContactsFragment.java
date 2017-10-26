@@ -1,7 +1,9 @@
 package com.indiasupply.isdental.fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
@@ -49,6 +53,9 @@ public class SwiggyContactsFragment extends Fragment {
     List<SwiggyCompany2> companyList = new ArrayList<> ();
     SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
+    Button btSearch;
+    RelativeLayout rlSearch;
+    EditText etSearch;
     
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
@@ -76,6 +83,9 @@ public class SwiggyContactsFragment extends Fragment {
     private void initView (View rootView) {
         rvContacts = (RecyclerView) rootView.findViewById (R.id.rvContacts);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
+        btSearch = (Button) rootView.findViewById (R.id.btSearch);
+        etSearch = (EditText) rootView.findViewById (R.id.etSearch);
+        rlSearch = (RelativeLayout) rootView.findViewById (R.id.rlSearch);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
@@ -86,6 +96,8 @@ public class SwiggyContactsFragment extends Fragment {
     
         companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyList);
         rvContacts.setAdapter (companyAdapter);
+        rvContacts.setNestedScrollingEnabled (false);
+        rvContacts.setFocusable (false);
         rvContacts.setHasFixedSize (true);
         rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvContacts.setItemAnimator (new DefaultItemAnimator ());
@@ -104,6 +116,82 @@ public class SwiggyContactsFragment extends Fragment {
                 SwiggyCompany2 contact = companyList.get (position);
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+            }
+        });
+        
+        
+/*
+        getParentFragment ().getView ().setOnKeyListener (new View.OnKeyListener () {
+            @Override
+            public boolean onKey (View v, int keyCode, KeyEvent event) {
+                if ((keyCode == android.view.KeyEvent.KEYCODE_BACK)) {
+                    //This is the filter
+                    if (event.getAction () != KeyEvent.ACTION_UP)
+                        return true;
+                    else {
+                        if (rlSearch.getVisibility () == View.VISIBLE) {
+                            final Handler handler = new Handler ();
+                            handler.postDelayed (new Runnable () {
+                                @Override
+                                public void run () {
+                                    etSearch.setText ("");
+                                }
+                            }, 300);
+                            final Handler handler2 = new Handler ();
+                            handler2.postDelayed (new Runnable () {
+                                @Override
+                                public void run () {
+                                    final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                                    imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
+                                }
+                            }, 600);
+                            rlSearch.setVisibility (View.GONE);
+                        } else {
+                            getActivity ().onBackPressed ();
+                        }
+                        //Hide your keyboard here!!!!!!
+                        return true; // pretend we've processed it
+                    }
+                } else
+                    return false; // pass on to be processed as normal
+            }
+        });
+*/
+    
+        btSearch.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (rlSearch.getVisibility () == View.VISIBLE) {
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            etSearch.setText ("");
+                        }
+                    }, 600);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
+                        }
+                    }, 300);
+                    rlSearch.setVisibility (View.GONE);
+                } else {
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            etSearch.requestFocus ();
+                        }
+                    }, 300);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                            imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                        }
+                    }, 600);
+                    rlSearch.setVisibility (View.VISIBLE);
+                }
             }
         });
     }
@@ -142,6 +230,13 @@ public class SwiggyContactsFragment extends Fragment {
                                             companyAdapter.notifyDataSetChanged ();
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
+//                                            new Handler ().postDelayed (new Runnable () {
+//                                                @Override
+//                                                public void run () {
+                                            btSearch.setVisibility (View.VISIBLE);
+                                            btFilter.setVisibility (View.VISIBLE);
+//                                                }
+//                                            }, 500);
                                         } else {
                                             Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                         }
@@ -169,7 +264,7 @@ public class SwiggyContactsFragment extends Fragment {
                             }
                         }
                     }) {
-            
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -195,20 +290,10 @@ public class SwiggyContactsFragment extends Fragment {
         }
     }
     
-    private void startShimmer () {
-        shimmerFrameLayout.useDefaults ();
-        shimmerFrameLayout.setDuration (1500);
-        shimmerFrameLayout.setBaseAlpha (0.3f);
-        shimmerFrameLayout.setRepeatDelay (500);
-        if (shimmerFrameLayout.isAnimationStarted ()) {
-            shimmerFrameLayout.startShimmerAnimation ();
-        }
-    }
-    
     @Override
     public void onStart () {
         super.onStart ();
-        startShimmer ();
+        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override

@@ -79,11 +79,11 @@ public class SwiggyEventFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvEvents);
-        rvEvents.setNestedScrollingEnabled (false);
-        rvEvents.setFocusable (false);
     
         eventAdapter = new SwiggyEventAdapter (getActivity (), eventList);
         rvEvents.setAdapter (eventAdapter);
+        rvEvents.setNestedScrollingEnabled (false);
+        rvEvents.setFocusable (false);
         rvEvents.setHasFixedSize (true);
         rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvEvents.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
@@ -186,20 +186,10 @@ public class SwiggyEventFragment extends Fragment {
         }
     }
     
-    private void startShimmer () {
-        shimmerFrameLayout.useDefaults ();
-        shimmerFrameLayout.setDuration (1500);
-        shimmerFrameLayout.setBaseAlpha (0.3f);
-        shimmerFrameLayout.setRepeatDelay (500);
-        if (shimmerFrameLayout.isAnimationStarted ()) {
-            shimmerFrameLayout.startShimmerAnimation ();
-        }
-    }
-    
     @Override
     public void onStart () {
         super.onStart ();
-        startShimmer ();
+        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override

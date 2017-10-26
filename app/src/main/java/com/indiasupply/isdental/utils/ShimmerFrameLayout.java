@@ -178,9 +178,9 @@ public class ShimmerFrameLayout extends FrameLayout {
     public void useDefaults () {
         // Set defaults
         setAutoStart (false);
-        setDuration (1000);
+        setDuration (1500);
         setRepeatCount (ObjectAnimator.INFINITE);
-        setRepeatDelay (0);
+        setRepeatDelay (500);
         setRepeatMode (ObjectAnimator.RESTART);
         
         mMask.angle = MaskAngle.CW_0;
@@ -194,8 +194,8 @@ public class ShimmerFrameLayout extends FrameLayout {
         mMask.tilt = 20;
         
         mMaskTranslation = new MaskTranslation ();
-        
-        setBaseAlpha (0.3f);
+    
+        setBaseAlpha (0.5f);
         
         resetAll ();
     }

@@ -144,11 +144,15 @@ public class SwiggyMyAccountFragment extends Fragment {
         myAccountItemAdapter = new SwiggyMyAccountItemAdapter (getActivity (), myAccountItemList);
         rvMyAccount.setAdapter (myAccountItemAdapter);
         rvMyAccount.setHasFixedSize (true);
+        rvMyAccount.setNestedScrollingEnabled (false);
+        rvMyAccount.setFocusable (false);
         rvMyAccount.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvMyAccount.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     
         myAccountItemAdapter2 = new SwiggyMyAccountItemAdapter (getActivity (), myHelpItemList);
         rvHelp.setAdapter (myAccountItemAdapter2);
+        rvHelp.setNestedScrollingEnabled (false);
+        rvHelp.setFocusable (false);
         rvHelp.setHasFixedSize (true);
         rvHelp.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvHelp.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
@@ -233,7 +237,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                                             tvUserName.setText (jsonObj.getString (AppConfigTags.USER_NAME).toUpperCase ());
                                             tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
                                             tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
-                    
+    
                                             myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
                                             myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
                                             myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
@@ -270,7 +274,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                             }
                         }
                     }) {
-            
+    
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -296,20 +300,10 @@ public class SwiggyMyAccountFragment extends Fragment {
         }
     }
     
-    private void startShimmer () {
-        shimmerFrameLayout.useDefaults ();
-        shimmerFrameLayout.setDuration (1500);
-        shimmerFrameLayout.setBaseAlpha (0.3f);
-        shimmerFrameLayout.setRepeatDelay (500);
-        if (shimmerFrameLayout.isAnimationStarted ()) {
-            shimmerFrameLayout.startShimmerAnimation ();
-        }
-    }
-    
     @Override
     public void onStart () {
         super.onStart ();
-        startShimmer ();
+        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override

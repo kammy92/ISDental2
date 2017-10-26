@@ -217,8 +217,6 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
     
     
-    
-    
                                         eventItemAdapter.notifyDataSetChanged ();
     
                                         rlMain.setVisibility (View.VISIBLE);
@@ -278,20 +276,10 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
         }
     }
     
-    private void startShimmer () {
-        shimmerFrameLayout.useDefaults ();
-        shimmerFrameLayout.setDuration (1500);
-        shimmerFrameLayout.setBaseAlpha (0.3f);
-        shimmerFrameLayout.setRepeatDelay (500);
-        if (shimmerFrameLayout.isAnimationStarted ()) {
-            shimmerFrameLayout.startShimmerAnimation ();
-        }
-    }
-    
     @Override
     public void onStart () {
         super.onStart ();
-        startShimmer ();
+        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override

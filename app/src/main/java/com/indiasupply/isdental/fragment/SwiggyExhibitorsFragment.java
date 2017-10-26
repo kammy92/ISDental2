@@ -93,20 +93,20 @@ public class SwiggyExhibitorsFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), btFilter);
-        rvBanners.setNestedScrollingEnabled (false);
-        rvCompany.setNestedScrollingEnabled (false);
-        rvCompany.setFocusable (false);
-        rvBanners.setFocusable (false);
     
         bannerAdapter = new SwiggyBannerAdapter (getActivity (), bannerList);
         rvBanners.setAdapter (bannerAdapter);
         rvBanners.setHasFixedSize (true);
+        rvBanners.setNestedScrollingEnabled (false);
+        rvBanners.setFocusable (false);
         rvBanners.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
         rvBanners.setItemAnimator (new DefaultItemAnimator ());
         rvBanners.addItemDecoration (new RecyclerViewMargin (0, 0, (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
     
         companyAdapter = new SwiggyCompanyAdapter (getActivity (), companyList);
         rvCompany.setAdapter (companyAdapter);
+        rvCompany.setNestedScrollingEnabled (false);
+        rvCompany.setFocusable (false);
         rvCompany.setHasFixedSize (true);
         rvCompany.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvCompany.setItemAnimator (new DefaultItemAnimator ());
@@ -228,20 +228,10 @@ public class SwiggyExhibitorsFragment extends Fragment {
         }
     }
     
-    private void startShimmer () {
-        shimmerFrameLayout.useDefaults ();
-        shimmerFrameLayout.setDuration (1500);
-        shimmerFrameLayout.setBaseAlpha (0.3f);
-        shimmerFrameLayout.setRepeatDelay (500);
-        if (shimmerFrameLayout.isAnimationStarted ()) {
-            shimmerFrameLayout.startShimmerAnimation ();
-        }
-    }
-    
     @Override
     public void onStart () {
         super.onStart ();
-        startShimmer ();
+        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override

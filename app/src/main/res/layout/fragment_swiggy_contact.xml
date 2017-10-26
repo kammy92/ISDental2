@@ -33,48 +33,74 @@
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
                 android:gravity="center_vertical">
                 <TextView
                     android:id="@+id/tvSearch"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/btSearch"
-                    android:layout_alignTop="@+id/btSearch"
-                    android:layout_toLeftOf="@+id/btSearch"
-                    android:layout_toStartOf="@+id/btSearch"
-                    android:gravity="center_vertical"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/llButtons"
+                    android:layout_toStartOf="@+id/llButtons"
+                    android:paddingEnd="@dimen/activity_margin"
                     android:paddingLeft="@dimen/activity_margin"
+                    android:paddingRight="@dimen/activity_margin"
                     android:paddingStart="@dimen/activity_margin"
                     android:text="Contacts"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_title_app_name"
                     android:textStyle="bold"/>
-                <Button
-                    android:id="@+id/btSearch"
+                <LinearLayout
+                    android:id="@+id/llButtons"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/btFilter"
-                    android:background="@android:color/transparent"
-                    android:padding="@dimen/activity_margin"
-                    android:text="SEARCH"
-                    android:textColor="@color/text_color_black"
-                    android:textStyle="bold"
-                    android:visibility="visible"/>
-                <Button
-                    android:id="@+id/btFilter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@android:color/transparent"
-                    android:padding="@dimen/activity_margin"
-                    android:text="FILTER"
-                    android:textColor="@color/text_color_black"
-                    android:textStyle="bold"
-                    android:visibility="visible"/>
+                    android:layout_centerVertical="true">
+                    <Button
+                        android:id="@+id/btSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toLeftOf="@+id/btFilter"
+                        android:layout_toStartOf="@+id/btFilter"
+                        android:background="@android:color/transparent"
+                        android:padding="@dimen/activity_margin"
+                        android:text="SEARCH"
+                        android:textColor="@color/text_color_black"
+                        android:textStyle="bold"
+                        android:visibility="visible"/>
+                    <Button
+                        android:id="@+id/btFilter"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:padding="@dimen/activity_margin"
+                        android:text="FILTER"
+                        android:textColor="@color/text_color_black"
+                        android:textStyle="bold"
+                        android:visibility="visible"/>
+                </LinearLayout>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
+        <RelativeLayout
+            android:id="@+id/rlSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llButtons"
+            android:background="@color/text_color_white"
+            android:visibility="visible">
+            <EditText
+                android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="Search Company"
+                android:inputType="textNoSuggestions"
+                android:padding="@dimen/activity_margin"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"/>
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -33,6 +34,7 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -54,6 +56,10 @@ public class SwiggyServiceFragment extends Fragment {
     String myProducts = "";
     String categories = "";
     String brands = "";
+    
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
+    
     
     public static SwiggyServiceFragment newInstance () {
         SwiggyServiceFragment fragment = new SwiggyServiceFragment ();
@@ -79,6 +85,8 @@ public class SwiggyServiceFragment extends Fragment {
         ivCancel = (ImageView) rootView.findViewById (R.id.ivCancel);
         rvServiceList = (RecyclerView) rootView.findViewById (R.id.rvServiceList);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+        shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -146,6 +154,9 @@ public class SwiggyServiceFragment extends Fragment {
                                             myProducts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS).toString ();
                                             categories = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORIES).toString ();
                                             brands = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BRANDS).toString ();
+    
+                                            rlMain.setVisibility (View.VISIBLE);
+                                            shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
                                             Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                         }
@@ -197,5 +208,23 @@ public class SwiggyServiceFragment extends Fragment {
                 });
             }
         }
+    }
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        Utils.startShimmer (shimmerFrameLayout);
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
     }
 }

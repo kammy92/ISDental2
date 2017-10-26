@@ -610,4 +610,12 @@ public class Utils {
         }
         return ssb;
     }
+    
+    public static void startShimmer (ShimmerFrameLayout shimmerFrameLayout) {
+        shimmerFrameLayout.useDefaults ();
+        if (shimmerFrameLayout.isAnimationStarted ()) {
+            shimmerFrameLayout.startShimmerAnimation ();
+        }
+    }
+    
 }
