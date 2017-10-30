@@ -41,6 +41,7 @@ import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.SetTypeFace;
+import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -78,6 +79,9 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
     
     String company_name;
     String company_contacts;
+    
+    ShimmerFrameLayout shimmerFrameLayout;
+    RelativeLayout rlMain;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -158,6 +162,9 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
         rlOffer = (RelativeLayout) findViewById (R.id.rlOffer);
     
         llContacts = (LinearLayout) findViewById (R.id.llContacts);
+    
+        shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
+        rlMain = (RelativeLayout) findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -264,6 +271,8 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                             }
                                         
                                         }
+                                        rlMain.setVisibility (View.VISIBLE);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
                                     } else {
                                         Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -310,5 +319,24 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    
+    
+    @Override
+    public void onStart () {
+        super.onStart ();
+        Utils.startShimmer (shimmerFrameLayout);
+    }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        shimmerFrameLayout.startShimmerAnimation ();
+    }
+    
+    @Override
+    public void onPause () {
+        shimmerFrameLayout.stopShimmerAnimation ();
+        super.onPause ();
     }
 }

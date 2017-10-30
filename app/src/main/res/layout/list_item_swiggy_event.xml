@@ -17,8 +17,7 @@
             android:id="@+id/ivEventImage"
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:scaleType="fitXY"
-            android:src="#000000"/>
+            android:scaleType="fitXY"/>
 
         <ProgressBar
             android:id="@+id/progressBar"

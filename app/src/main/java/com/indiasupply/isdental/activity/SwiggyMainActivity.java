@@ -7,8 +7,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -16,9 +14,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -31,52 +31,31 @@ import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventFragment;
-import com.indiasupply.isdental.fragment.SwiggyExhibitorsFragment;
+import com.indiasupply.isdental.fragment.SwiggyFeaturedFragment;
 import com.indiasupply.isdental.fragment.SwiggyMyAccountFragment;
 import com.indiasupply.isdental.fragment.SwiggyServiceFragment;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
-import com.indiasupply.isdental.utils.ApplicationDetailsPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
+import com.stephentuso.welcome.WelcomeHelper;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
 
 public class SwiggyMainActivity extends AppCompatActivity {
-    ApplicationDetailsPref applicationDetailsPref;
+    private static final int REQUEST_WELCOME_SCREEN_RESULT = 13;
     CoordinatorLayout clMain;
-    
-    public static void disableShiftMode (BottomNavigationView view) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt (0);
-        try {
-            Field shiftingMode = menuView.getClass ().getDeclaredField ("mShiftingMode");
-            shiftingMode.setAccessible (true);
-            shiftingMode.setBoolean (menuView, false);
-            shiftingMode.setAccessible (false);
-            for (int i = 0; i < menuView.getChildCount (); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt (i);
-                //noinspection RestrictedApi
-                item.setShiftingMode (false);
-                // set once again checked value, so view will be updated
-                //noinspection RestrictedApi
-                item.setChecked (item.getItemData ().isChecked ());
-            }
-        } catch (NoSuchFieldException e) {
-            Log.e ("BNVHelper", "Unable to get shift mode field", e);
-        } catch (IllegalAccessException e) {
-            Log.e ("BNVHelper", "Unable to change value of shift mode", e);
-        }
-    }
+    BottomNavigationView bottomNavigationView;
+    UserDetailsPref userDetailsPref;
+    private WelcomeHelper sampleWelcomeScreen;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -86,42 +65,73 @@ public class SwiggyMainActivity extends AppCompatActivity {
         initData ();
         initListener ();
         initApplication ();
+    
+        Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
+        startActivity (intent);
+    
+        // The welcome screen for this app (only one that automatically shows)
+//        sampleWelcomeScreen = new WelcomeHelper (this, SwiggyIntroActivity.class);
+//        sampleWelcomeScreen.show (savedInstanceState);
+//        sampleWelcomeScreen.forceShow (REQUEST_WELCOME_SCREEN_RESULT);
+    
+    }
+    
+    private void initView () {
+        clMain = (CoordinatorLayout) findViewById (R.id.clMain);
+        bottomNavigationView = (BottomNavigationView) findViewById (R.id.navigation);
+    }
+    
+    private void initData () {
+        Utils.setTypefaceToAllViews (this, clMain);
+        Utils.disableShiftMode (bottomNavigationView);
+        userDetailsPref = UserDetailsPref.getInstance ();
         Window window = getWindow ();
-//        window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         if (Build.VERSION.SDK_INT >= 21) {
             window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            if (clMain != null) {
-//                clMain.setSystemUiVisibility (View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-//            }
-//        }
+        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
+        transaction.replace (R.id.frame_layout, SwiggyFeaturedFragment.newInstance ());
+        transaction.commit ();
         
-        
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById (R.id.navigation);
-        
+        Menu menu = bottomNavigationView.getMenu ();
+        menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
+    }
+    
+    private void initListener () {
         bottomNavigationView.setOnNavigationItemSelectedListener
                 (new BottomNavigationView.OnNavigationItemSelectedListener () {
                     @Override
                     public boolean onNavigationItemSelected (@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
+    
+                        Menu menu = bottomNavigationView.getMenu ();
+                        menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
+                        menu.findItem (R.id.action_item2).setIcon (R.drawable.ic_home_events);
+                        menu.findItem (R.id.action_item3).setIcon (R.drawable.ic_home_contacts);
+                        menu.findItem (R.id.action_item4).setIcon (R.drawable.ic_home_services);
+                        menu.findItem (R.id.action_item5).setIcon (R.drawable.ic_home_account);
+    
                         switch (item.getItemId ()) {
                             case R.id.action_item1:
-                                selectedFragment = SwiggyExhibitorsFragment.newInstance ();
+                                item.setIcon (R.drawable.ic_home_featured_filled);
+                                selectedFragment = SwiggyFeaturedFragment.newInstance ();
                                 break;
                             case R.id.action_item2:
+                                item.setIcon (R.drawable.ic_home_events_filled);
                                 selectedFragment = SwiggyEventFragment.newInstance ();
                                 break;
                             case R.id.action_item3:
+                                item.setIcon (R.drawable.ic_home_contacts_filled);
                                 selectedFragment = SwiggyContactsFragment.newInstance ();
                                 break;
                             case R.id.action_item4:
+                                item.setIcon (R.drawable.ic_home_services_filled);
                                 selectedFragment = SwiggyServiceFragment.newInstance ();
                                 break;
                             case R.id.action_item5:
+                                item.setIcon (R.drawable.ic_home_account_filled);
                                 selectedFragment = SwiggyMyAccountFragment.newInstance ();
                                 break;
                         }
@@ -131,76 +141,30 @@ public class SwiggyMainActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-        disableShiftMode (bottomNavigationView);
-        
-        //Manually displaying the first fragment - one time only
-        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
-        transaction.replace (R.id.frame_layout, SwiggyExhibitorsFragment.newInstance ());
-        transaction.commit ();
-
-//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams ();
-//        layoutParams.setBehavior (new BottomNavigationViewBehavior ());
-        
-        //Used to select an item programmatically
-        //bottomNavigationView.getMenu().getItem(2).setChecked(true);
-    }
-    
-    private void initView () {
-        clMain = (CoordinatorLayout) findViewById (R.id.clMain);
-    }
-    
-    private void initData () {
-        applicationDetailsPref = ApplicationDetailsPref.getInstance ();
-        Utils.setTypefaceToAllViews (this, clMain);
-    }
-    
-    private void initListener () {
     }
     
     @Override
     public void onBackPressed () {
-/*
         MaterialDialog dialog = new MaterialDialog.Builder (this)
                 .content (R.string.dialog_text_quit_application)
-                .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
-                .neutralColor (getResources ().getColor (R.color.app_text_color_dark))
-                .contentColor (getResources ().getColor (R.color.app_text_color_dark))
-                .negativeColor (getResources ().getColor (R.color.app_text_color_dark))
+                .positiveColor (getResources ().getColor (R.color.primary_text2))
+                .contentColor (getResources ().getColor (R.color.primary_text2))
+                .negativeColor (getResources ().getColor (R.color.primary_text2))
                 .typeface (SetTypeFace.getTypeface (this), SetTypeFace.getTypeface (this))
-                .canceledOnTouchOutside (false)
-                .cancelable (false)
+                .canceledOnTouchOutside (true)
+                .cancelable (true)
                 .positiveText (R.string.dialog_action_yes)
                 .negativeText (R.string.dialog_action_no)
-                .neutralText (R.string.dialog_action_logout)
-                .onNeutral (new MaterialDialog.SingleButtonCallback () {
-                    @Override
-                    public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_ID, "");
-                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_NAME, "");
-                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_EMAIL, "");
-                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.USER_MOBILE, "");
-                        applicationDetailsPref.putStringPref (MainActivity.this, UserDetailsPref.HEADER_USER_LOGIN_KEY, "");
-
-                        Intent intent = new Intent (MainActivity.this, LoginActivity.class);
-                        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity (intent);
-                        overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
-                    }
-                })
                 .onPositive (new MaterialDialog.SingleButtonCallback () {
                     @Override
                     public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        applicationDetailsPref.putBooleanPref (MainActivity.this, UserDetailsPref.LOGGED_IN_SESSION, false);
-
-
+                        userDetailsPref.putBooleanPref (SwiggyMainActivity.this, UserDetailsPref.LOGGED_IN_SESSION, false);
                         finish ();
                         overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
                     }
                 }).build ();
         dialog.show ();
-*/
-        super.onBackPressed ();
-        finish ();
+//        super.onBackPressed ();
     }
     
     private void initApplication () {
@@ -225,40 +189,36 @@ public class SwiggyMainActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        JSONArray jsonArrayCategories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
-                                        applicationDetailsPref.putStringPref (SwiggyMainActivity.this, ApplicationDetailsPref.SWIGGY_CATEGORIES, jsonArrayCategories.toString ());
-                                        
-                                        JSONArray jsonArrayBrands = jsonObj.getJSONArray (AppConfigTags.BRANDS);
-                                        applicationDetailsPref.putStringPref (SwiggyMainActivity.this, ApplicationDetailsPref.SWIGGY_BRANDS, jsonArrayBrands.toString ());
-                                        
                                         if (jsonObj.getBoolean (AppConfigTags.VERSION_UPDATE)) {
-                                            new MaterialDialog.Builder (SwiggyMainActivity.this)
-                                                    .content (R.string.dialog_text_new_version_available)
-                                                    .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
-                                                    .contentColor (getResources ().getColor (R.color.app_text_color_dark))
-                                                    .negativeColor (getResources ().getColor (R.color.app_text_color_dark))
-                                                    .typeface (SetTypeFace.getTypeface (SwiggyMainActivity.this), SetTypeFace.getTypeface (SwiggyMainActivity.this))
-                                                    .canceledOnTouchOutside (false)
-                                                    .cancelable (false)
-                                                    .positiveText (R.string.dialog_action_update)
-                                                    .negativeText (R.string.dialog_action_ignore)
-                                                    .onPositive (new MaterialDialog.SingleButtonCallback () {
-                                                        @Override
-                                                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            final String appPackageName = getPackageName ();
-                                                            try {
-                                                                startActivity (new Intent (Intent.ACTION_VIEW, Uri.parse ("market://details?id=" + appPackageName)));
-                                                            } catch (android.content.ActivityNotFoundException anfe) {
-                                                                startActivity (new Intent (Intent.ACTION_VIEW, Uri.parse ("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                            if (! userDetailsPref.getBooleanPref (SwiggyMainActivity.this, UserDetailsPref.LOGGED_IN_SESSION)) {
+                                                new MaterialDialog.Builder (SwiggyMainActivity.this)
+                                                        .content (R.string.dialog_text_new_version_available)
+                                                        .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
+                                                        .contentColor (getResources ().getColor (R.color.app_text_color_dark))
+                                                        .negativeColor (getResources ().getColor (R.color.app_text_color_dark))
+                                                        .typeface (SetTypeFace.getTypeface (SwiggyMainActivity.this), SetTypeFace.getTypeface (SwiggyMainActivity.this))
+                                                        .canceledOnTouchOutside (false)
+                                                        .cancelable (false)
+                                                        .positiveText (R.string.dialog_action_update)
+                                                        .negativeText (R.string.dialog_action_ignore)
+                                                        .onPositive (new MaterialDialog.SingleButtonCallback () {
+                                                            @Override
+                                                            public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                final String appPackageName = getPackageName ();
+                                                                try {
+                                                                    startActivity (new Intent (Intent.ACTION_VIEW, Uri.parse ("market://details?id=" + appPackageName)));
+                                                                } catch (android.content.ActivityNotFoundException anfe) {
+                                                                    startActivity (new Intent (Intent.ACTION_VIEW, Uri.parse ("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                                                                }
                                                             }
-                                                        }
-                                                    })
-                                                    .onNegative (new MaterialDialog.SingleButtonCallback () {
-                                                        @Override
-                                                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                                                            dialog.dismiss ();
-                                                        }
-                                                    }).show ();
+                                                        })
+                                                        .onNegative (new MaterialDialog.SingleButtonCallback () {
+                                                            @Override
+                                                            public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                                                dialog.dismiss ();
+                                                            }
+                                                        }).show ();
+                                            }
                                         }
                                     }
                                 } catch (Exception e) {
@@ -299,5 +259,32 @@ public class SwiggyMainActivity extends AppCompatActivity {
             Utils.sendRequest (strRequest, 30);
         } else {
         }
+    }
+    
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult (requestCode, resultCode, data);
+        
+        if (requestCode == REQUEST_WELCOME_SCREEN_RESULT) {
+            
+            if (resultCode == RESULT_OK) {
+                Toast.makeText (getApplicationContext (), "Completed (RESULT_OK)", Toast.LENGTH_SHORT).show ();
+            } else if (resultCode == RESULT_CANCELED) {
+                Toast.makeText (getApplicationContext (), "Canceled (RESULT_CANCELED)", Toast.LENGTH_SHORT).show ();
+            }
+            
+        }
+        
+    }
+    
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState (outState);
+        // This is needed to prevent welcome screens from being
+        // automatically shown multiple times
+        
+        // This is the only one needed because it is the only one that
+        // is shown automatically. The others are only force shown.
+//        sampleWelcomeScreen.onSaveInstanceState (outState);
     }
 }

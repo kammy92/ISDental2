@@ -91,10 +91,10 @@ public class SwiggyServiceFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvServiceList);
-        swiggyServiceItemList.add (new SwiggyServiceItem (1, R.drawable.ic_information, "MY PRODUCTS", ""));
-        swiggyServiceItemList.add (new SwiggyServiceItem (2, R.drawable.ic_information, "ADD PRODUCT", ""));
-        swiggyServiceItemList.add (new SwiggyServiceItem (3, R.drawable.ic_information, "MY REQUESTS", ""));
-        swiggyServiceItemList.add (new SwiggyServiceItem (4, R.drawable.ic_information, "ADD REQUEST", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (1, R.drawable.ic_service_my_products, "MY PRODUCTS", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (2, R.drawable.ic_service_add_product, "ADD PRODUCT", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (3, R.drawable.ic_service_my_requests, "MY REQUESTS", ""));
+        swiggyServiceItemList.add (new SwiggyServiceItem (4, R.drawable.ic_service_add_request, "ADD REQUEST", ""));
     
     
         swiggyServiceAdapter = new SwiggyServiceItemAdapter (getActivity (), swiggyServiceItemList);

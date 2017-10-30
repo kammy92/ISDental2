@@ -18,7 +18,8 @@
             android:id="@+id/progressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateTint="@color/colorPrimary"
+            android:indeterminateDuration="1000"
+            android:indeterminateTint="@color/primary_text2"
             android:indeterminateTintMode="src_in"/>
         <com.indiasupply.isdental.utils.CustomFontTextView
             android:id="@+id/tvProgressDialogMessage"

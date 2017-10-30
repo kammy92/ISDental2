@@ -49,7 +49,7 @@ import java.util.Map;
  * Created by l on 27/09/2017.
  */
 
-public class SwiggyExhibitorsFragment extends Fragment {
+public class SwiggyFeaturedFragment extends Fragment {
     RecyclerView rvBanners;
     RecyclerView rvCompany;
     ShimmerFrameLayout shimmerFrameLayout;
@@ -63,8 +63,8 @@ public class SwiggyExhibitorsFragment extends Fragment {
     CoordinatorLayout clMain;
     
     
-    public static SwiggyExhibitorsFragment newInstance () {
-        return new SwiggyExhibitorsFragment ();
+    public static SwiggyFeaturedFragment newInstance () {
+        return new SwiggyFeaturedFragment ();
     }
     
     @Override
@@ -74,7 +74,7 @@ public class SwiggyExhibitorsFragment extends Fragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate (R.layout.fragment_swiggy_home, container, false);
+        View rootView = inflater.inflate (R.layout.fragment_swiggy_featured, container, false);
         initView (rootView);
         initData ();
         initListener ();
@@ -123,8 +123,8 @@ public class SwiggyExhibitorsFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EXHIBITORS_LIST, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EXHIBITORS_LIST,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_FEATURED_LIST, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_FEATURED_LIST,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {

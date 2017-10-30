@@ -23,8 +23,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="@dimen/activity_margin"
-                android:scaleType="fitXY"
-                android:src="@drawable/famdent_logo"/>
+                android:scaleType="fitXY"/>
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyleSmall"

@@ -146,7 +146,7 @@ public class LoginActivity extends AppCompatActivity {
                 s5.setSpan (new TypefaceSpan(LoginActivity.this, Constants.font_name), 0, s5.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 SpannableString s6 = new SpannableString (getResources ().getString (R.string.please_enter_valid_email));
                 s6.setSpan (new TypefaceSpan(LoginActivity.this, Constants.font_name), 0, s6.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                SpannableString s7 = new SpannableString (getResources ().getString (R.string.please_select_visitor_type));
+                SpannableString s7 = new SpannableString (getResources ().getString (R.string.please_select_user_type));
                 s7.setSpan (new TypefaceSpan(LoginActivity.this, Constants.font_name), 0, s7.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 SpannableString s8 = new SpannableString (getResources ().getString (R.string.activity_login_text_check_term_condition));
                 s8.setSpan (new TypefaceSpan(LoginActivity.this, Constants.font_name), 0, s8.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

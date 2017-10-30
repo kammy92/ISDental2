@@ -11,6 +11,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
@@ -51,11 +54,16 @@ public class SwiggyContactsFragment extends Fragment {
     RecyclerView rvContacts;
     CoordinatorLayout clMain;
     List<SwiggyCompany2> companyList = new ArrayList<> ();
+    List<SwiggyCompany2> tempCompanyList = new ArrayList<> ();
     SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
     Button btSearch;
+    ImageView ivCancel;
+    ImageView ivBack;
     RelativeLayout rlSearch;
+    RelativeLayout rlToolbar;
     EditText etSearch;
+    
     
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
@@ -86,6 +94,9 @@ public class SwiggyContactsFragment extends Fragment {
         btSearch = (Button) rootView.findViewById (R.id.btSearch);
         etSearch = (EditText) rootView.findViewById (R.id.etSearch);
         rlSearch = (RelativeLayout) rootView.findViewById (R.id.rlSearch);
+        rlToolbar = (RelativeLayout) rootView.findViewById (R.id.rlToolbar);
+        ivBack = (ImageView) rootView.findViewById (R.id.ivBack);
+        ivCancel = (ImageView) rootView.findViewById (R.id.ivCancel);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
@@ -158,40 +169,96 @@ public class SwiggyContactsFragment extends Fragment {
         });
 */
     
+    
+        etSearch.addTextChangedListener (new TextWatcher () {
+            
+            @Override
+            public void onTextChanged (CharSequence s, int start, int before, int count) {
+                if (s.length () > 0) {
+                    ivCancel.setVisibility (View.VISIBLE);
+                } else {
+                    ivCancel.setVisibility (View.GONE);
+                }
+            }
+        
+            @Override
+            public void beforeTextChanged (CharSequence s, int start, int count,
+                                           int after) {
+            
+            }
+        
+            @Override
+            public void afterTextChanged (Editable s) {
+                tempCompanyList.clear ();
+                for (SwiggyCompany2 swiggyCompany2 : companyList) {
+                    if (swiggyCompany2.getName ().toUpperCase ().contains (s.toString ().toUpperCase ()) ||
+                            swiggyCompany2.getName ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
+                            swiggyCompany2.getCategory ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
+                            swiggyCompany2.getCategory ().toUpperCase ().contains (s.toString ().toUpperCase ())) {
+                        tempCompanyList.add (swiggyCompany2);
+                    }
+                }
+            
+                companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), tempCompanyList);
+                rvContacts.setAdapter (companyAdapter);
+                companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                    @Override
+                    public void onItemClick (View view, int position) {
+                        SwiggyCompany2 contact = tempCompanyList.get (position);
+                        android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                        new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                    }
+                });
+            
+            }
+        });
+    
+        ivBack.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                new Handler ().postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
+                    }
+                }, 1000);
+                new Handler ().postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        etSearch.setText ("");
+                        rlToolbar.setVisibility (View.VISIBLE);
+                    }
+                }, 300);
+                rlSearch.setVisibility (View.GONE);
+            }
+        });
+    
         btSearch.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                if (rlSearch.getVisibility () == View.VISIBLE) {
-                    new Handler ().postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            etSearch.setText ("");
-                        }
-                    }, 600);
-                    new Handler ().postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow (getView ().getWindowToken (), 0);
-                        }
-                    }, 300);
-                    rlSearch.setVisibility (View.GONE);
-                } else {
-                    new Handler ().postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            etSearch.requestFocus ();
-                        }
-                    }, 300);
-                    new Handler ().postDelayed (new Runnable () {
-                        @Override
-                        public void run () {
-                            final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
-                            imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
-                        }
-                    }, 600);
-                    rlSearch.setVisibility (View.VISIBLE);
-                }
+                new Handler ().postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        rlSearch.setVisibility (View.VISIBLE);
+                        etSearch.requestFocus ();
+                    }
+                }, 300);
+                new Handler ().postDelayed (new Runnable () {
+                    @Override
+                    public void run () {
+                        final InputMethodManager imm = (InputMethodManager) getActivity ().getSystemService (Context.INPUT_METHOD_SERVICE);
+                        imm.toggleSoftInput (InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    }
+                }, 1000);
+                rlToolbar.setVisibility (View.GONE);
+            }
+        });
+    
+        ivCancel.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                etSearch.setText ("");
             }
         });
     }
@@ -230,13 +297,13 @@ public class SwiggyContactsFragment extends Fragment {
                                             companyAdapter.notifyDataSetChanged ();
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
-//                                            new Handler ().postDelayed (new Runnable () {
-//                                                @Override
-//                                                public void run () {
-                                            btSearch.setVisibility (View.VISIBLE);
-                                            btFilter.setVisibility (View.VISIBLE);
-//                                                }
-//                                            }, 500);
+                                            new Handler ().postDelayed (new Runnable () {
+                                                @Override
+                                                public void run () {
+                                                    btSearch.setVisibility (View.VISIBLE);
+                                                    btFilter.setVisibility (View.VISIBLE);
+                                                }
+                                            }, 500);
                                         } else {
                                             Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                         }

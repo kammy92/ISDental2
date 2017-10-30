@@ -60,8 +60,7 @@
                 android:inputType="number"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:theme="@style/EditTextTheme"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv1"
                 android:layout_width="wrap_content"
@@ -81,8 +80,7 @@
                 android:inputType="number"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:theme="@style/EditTextTheme"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv2"
                 android:layout_width="wrap_content"
@@ -98,11 +96,10 @@
                 android:layout_below="@id/tv2"
                 android:layout_marginBottom="@dimen/activity_margin"
                 android:background="@drawable/swiggy_et_background"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:theme="@style/EditTextTheme"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv3"
                 android:layout_width="wrap_content"
@@ -118,11 +115,10 @@
                 android:layout_below="@id/tv3"
                 android:layout_marginBottom="@dimen/activity_margin"
                 android:background="@drawable/swiggy_et_background"
-                android:inputType="textEmailAddress"
+                android:inputType="text"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:theme="@style/EditTextTheme"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tv4"
                 android:layout_width="wrap_content"
@@ -142,8 +138,7 @@
                 android:inputType="date"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_large"
-                android:textStyle="bold"
-                android:theme="@style/EditTextTheme"/>
+                android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tvSubmit"
                 android:layout_width="match_parent"

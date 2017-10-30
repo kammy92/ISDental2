@@ -19,6 +19,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.internal.BottomNavigationMenuView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -51,6 +54,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -495,19 +499,18 @@ public class Utils {
             activity.sendBroadcast (poke);
         }
     }
-
-
-    public static int isValidMobile (String phone2) {
+    
+    
+    public static int isValidMobile (String mobile) {
         int number_status = 0;
-        String first_char = "";
-        first_char = phone2.substring (0, 1);
-        if (phone2.length () == 10 && Integer.parseInt (first_char) > 6) {
-            number_status = 3;
-        } else if (phone2.length () < 10 && Integer.parseInt (first_char) > 6) {
+        String first_char = mobile.substring (0, 1);
+        if (mobile.length () == 10 && Integer.parseInt (first_char) > 6) {
             number_status = 1;
-        } else if (Integer.parseInt (first_char) <= 6 && Integer.parseInt (first_char) > 0 && phone2.length () <= 10 && phone2.length () > 1) {
+        } else if (mobile.length () < 10 && Integer.parseInt (first_char) > 6) {
             number_status = 2;
-        } else if (phone2.equalsIgnoreCase ("")) {
+        } else if (Integer.parseInt (first_char) <= 6 && Integer.parseInt (first_char) > 0 && mobile.length () <= 10 && mobile.length () > 1) {
+            number_status = 3;
+        } else if (mobile.length () == 0) {
             number_status = 4;
         }
         return number_status;
@@ -618,4 +621,25 @@ public class Utils {
         }
     }
     
+    public static void disableShiftMode (BottomNavigationView view) {
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt (0);
+        try {
+            Field shiftingMode = menuView.getClass ().getDeclaredField ("mShiftingMode");
+            shiftingMode.setAccessible (true);
+            shiftingMode.setBoolean (menuView, false);
+            shiftingMode.setAccessible (false);
+            for (int i = 0; i < menuView.getChildCount (); i++) {
+                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt (i);
+                //noinspection RestrictedApi
+                item.setShiftingMode (false);
+                // set once again checked value, so view will be updated
+                //noinspection RestrictedApi
+                item.setChecked (item.getItemData ().isChecked ());
+            }
+        } catch (NoSuchFieldException e) {
+            Log.e ("BNVHelper", "Unable to get shift mode field", e);
+        } catch (IllegalAccessException e) {
+            Log.e ("BNVHelper", "Unable to change value of shift mode", e);
+        }
+    }
 }
