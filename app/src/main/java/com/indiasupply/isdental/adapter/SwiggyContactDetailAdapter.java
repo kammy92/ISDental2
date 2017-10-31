@@ -49,16 +49,16 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         
         switch (contactsDetail.getType ()) {
             case 1:
-                holder.tvContactType.setText ("Service Center");
+                holder.tvContactType.setText ("Company Office");
                 break;
             case 2:
-                holder.tvContactType.setText ("Dealer");
+                holder.tvContactType.setText ("Sales Office");
                 break;
             case 3:
-                holder.tvContactType.setText ("Distributor");
+                holder.tvContactType.setText ("Service Office");
                 break;
             case 4:
-                holder.tvContactType.setText ("Sales Office");
+                holder.tvContactType.setText ("Dealer / Distributor");
                 break;
         }
         
@@ -97,7 +97,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                             holder.progressBar.setVisibility (View.GONE);
                             return false;
                         }
-                    
+    
                         @Override
                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             holder.progressBar.setVisibility (View.GONE);

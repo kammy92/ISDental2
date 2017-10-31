@@ -111,6 +111,7 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
         ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+    
                 getDialog ().dismiss ();
             }
         });

@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -41,7 +40,6 @@ import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
-import com.stephentuso.welcome.WelcomeHelper;
 
 import org.json.JSONObject;
 
@@ -51,11 +49,9 @@ import java.util.Map;
 
 
 public class SwiggyMainActivity extends AppCompatActivity {
-    private static final int REQUEST_WELCOME_SCREEN_RESULT = 13;
     CoordinatorLayout clMain;
     BottomNavigationView bottomNavigationView;
     UserDetailsPref userDetailsPref;
-    private WelcomeHelper sampleWelcomeScreen;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -65,15 +61,7 @@ public class SwiggyMainActivity extends AppCompatActivity {
         initData ();
         initListener ();
         initApplication ();
-    
-        Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
-        startActivity (intent);
-    
-        // The welcome screen for this app (only one that automatically shows)
-//        sampleWelcomeScreen = new WelcomeHelper (this, SwiggyIntroActivity.class);
-//        sampleWelcomeScreen.show (savedInstanceState);
-//        sampleWelcomeScreen.forceShow (REQUEST_WELCOME_SCREEN_RESULT);
-    
+        isLogin ();
     }
     
     private void initView () {
@@ -97,6 +85,16 @@ public class SwiggyMainActivity extends AppCompatActivity {
         
         Menu menu = bottomNavigationView.getMenu ();
         menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
+    }
+    
+    private void isLogin () {
+        if (userDetailsPref.getStringPref (SwiggyMainActivity.this, UserDetailsPref.USER_LOGIN_KEY).length () == 0) {
+            Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
+            startActivity (intent);
+            finish ();
+        } else {
+            initApplication ();
+        }
     }
     
     private void initListener () {
@@ -259,32 +257,5 @@ public class SwiggyMainActivity extends AppCompatActivity {
             Utils.sendRequest (strRequest, 30);
         } else {
         }
-    }
-    
-    @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
-        super.onActivityResult (requestCode, resultCode, data);
-        
-        if (requestCode == REQUEST_WELCOME_SCREEN_RESULT) {
-            
-            if (resultCode == RESULT_OK) {
-                Toast.makeText (getApplicationContext (), "Completed (RESULT_OK)", Toast.LENGTH_SHORT).show ();
-            } else if (resultCode == RESULT_CANCELED) {
-                Toast.makeText (getApplicationContext (), "Canceled (RESULT_CANCELED)", Toast.LENGTH_SHORT).show ();
-            }
-            
-        }
-        
-    }
-    
-    @Override
-    protected void onSaveInstanceState (Bundle outState) {
-        super.onSaveInstanceState (outState);
-        // This is needed to prevent welcome screens from being
-        // automatically shown multiple times
-        
-        // This is the only one needed because it is the only one that
-        // is shown automatically. The others are only force shown.
-//        sampleWelcomeScreen.onSaveInstanceState (outState);
     }
 }

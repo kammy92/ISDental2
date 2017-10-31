@@ -26,6 +26,7 @@ import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -53,6 +54,7 @@ import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.TypefaceSpan;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
+import com.stephentuso.welcome.WelcomeHelper;
 
 import org.json.JSONObject;
 
@@ -62,7 +64,8 @@ import java.util.Map;
 
 
 public class SwiggyLoginActivity extends AppCompatActivity {
-    public static int PERMISSION_REQUEST_CODE = 1;
+    private static final int REQUEST_WELCOME_SCREEN_RESULT = 13;
+   
     EditText etMobile;
     TextView tvName;
     EditText etName;
@@ -89,15 +92,20 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     int otp;
     private String[] user_type = new String[] {"Dentist", "Student", "Dealer", "Others"};
     
+    private WelcomeHelper sampleWelcomeScreen;
+    
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_login);
         initView ();
         initData ();
-//        checkPermissions ();
         initListener ();
-//        showAutoFillDialog ();
+    
+        sampleWelcomeScreen = new WelcomeHelper (this, SwiggyIntroActivity.class);
+        sampleWelcomeScreen.forceShow (REQUEST_WELCOME_SCREEN_RESULT);
+    
     }
     
     private void initData () {
@@ -452,7 +460,8 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                                                 .inputType (InputType.TYPE_CLASS_NUMBER)
                                                 .positiveText (R.string.dialog_action_submit)
                                                 .neutralText (R.string.dialog_action_resend_otp);
-                                        
+    
+    
                                         mBuilder.input ("OTP", null, new MaterialDialog.InputCallback () {
                                             @Override
                                             public void onInput (MaterialDialog dialog, CharSequence input) {
@@ -496,6 +505,7 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                                         FilterArray[0] = new InputFilter.LengthFilter (6);
                                         final MaterialDialog dialog = mBuilder.build ();
                                         try {
+                                            dialog.getInputEditText ().setGravity (Gravity.CENTER);
                                             
                                             dialog.getActionButton (DialogAction.NEUTRAL).setEnabled (false);
                                             dialog.getInputEditText ().setFilters (FilterArray);
@@ -619,8 +629,8 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     private void sendSignUpDetailsToServer (final String name, final String email, final String mobile, final String visitor_type, final int otp, final String device_details) {
         if (NetworkConnection.isNetworkAvailable (SwiggyLoginActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_REGISTER, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_REGISTER,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_REGISTER, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_REGISTER,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -704,6 +714,33 @@ public class SwiggyLoginActivity extends AppCompatActivity {
         }
     }
     
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult (requestCode, resultCode, data);
+        if (requestCode == REQUEST_WELCOME_SCREEN_RESULT) {
+            if (resultCode == RESULT_OK) {
+//                Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
+//                startActivity (intent);
+//                finish ();
+            } else if (resultCode == RESULT_CANCELED) {
+//                Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
+//                startActivity (intent);
+//                finish ();
+            }
+        }
+    }
+    
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState (outState);
+        // This is needed to prevent welcome screens from being
+        // automatically shown multiple times
+        
+        // This is the only one needed because it is the only one that
+        // is shown automatically. The others are only force shown.
+//        sampleWelcomeScreen.onSaveInstanceState (outState);
+    }
+    
     class CustomListener implements View.OnClickListener {
         private final MaterialDialog dialog;
         Activity activity;
@@ -755,6 +792,7 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                             e.printStackTrace ();
                         }
                         sendSignUpDetailsToServer (etName.getText ().toString (), etEmail.getText ().toString (), etMobile.getText ().toString (), etType.getText ().toString (), otp, jsonDeviceDetails.toString ());
+                        dialog.dismiss ();
                     } else {
                         SpannableString s6 = new SpannableString (activity.getResources ().getString (R.string.otp_didnt_match));
                         s6.setSpan (new TypefaceSpan (activity, Constants.font_name), 0, s6.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);

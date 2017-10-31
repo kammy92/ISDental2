@@ -7,7 +7,7 @@
     android:background="@color/text_color_white">
     <ImageView
         android:id="@+id/ivCancel"
-        android:layout_width="wrap_content"
+        android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:padding="@dimen/activity_margin"
         android:src="@drawable/ic_close"/>

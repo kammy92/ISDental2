@@ -24,6 +24,7 @@ public class SwiggyIntroActivity extends WelcomeActivity {
                 .doneButtonTypefacePath (Constants.font_name)
                 .skipButtonTypefacePath (Constants.font_name)
                 .animateButtons (true)
+                .canSkip (false)
                 .swipeToDismiss (false)
                 .page (new BasicPage (R.drawable.ic_home_featured,
                         "Welcome",
