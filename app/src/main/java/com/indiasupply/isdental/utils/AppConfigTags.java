@@ -6,6 +6,7 @@ package com.indiasupply.isdental.utils;
 public class AppConfigTags {
     public static final String URL = "URL";
     public static final String SERVER_RESPONSE = "SERVER RESPONSE";
+    public static final String EXCEPTION = "EXCEPTION";
     public static final String DIDNT_RECEIVE_ANY_DATA_FROM_SERVER = "DIDNT RECEIVE ANY DATA FROM SERVER";
     public static final String PARAMETERS_SENT_TO_THE_SERVER = "PARAMETERS SENT TO THE SERVER";
     public static final String HEADERS_SENT_TO_THE_SERVER = "HEADERS SENT TO THE SERVER";
@@ -231,6 +232,7 @@ public class AppConfigTags {
     public static final String SWIGGY_CATEGORY_ICON = "category_icon";
     public static final String SWIGGY_CATEGORY_NAME = "category_name";
     public static final String SWIGGY_CATEGORY_IMAGE = "category_image";
+    public static final String SWIGGY_CATEGORY_FILTERS = "filters";
     
     
     public static final String SWIGGY_DESCRIPTION = "description";
@@ -275,6 +277,7 @@ public class AppConfigTags {
     public static final String SWIGGY_COMPANY_PRODUCT_GROUPS = "product_groups";
     public static final String SWIGGY_GROUP_TITLE = "group_title";
     public static final String SWIGGY_GROUP_TYPE = "group_type";
+    public static final String SWIGGY_GROUP_NAME = "group_name";
     
     public static final String SWIGGY_BANNERS = "banners";
     public static final String SWIGGY_BANNER_ID = "banner_id";

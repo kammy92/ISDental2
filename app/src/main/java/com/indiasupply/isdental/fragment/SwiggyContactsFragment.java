@@ -31,6 +31,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter2;
+import com.indiasupply.isdental.dialog.SwiggyCategoryFilterDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyCompany2;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -67,6 +68,8 @@ public class SwiggyContactsFragment extends Fragment {
     
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
+    
+    String filters = "";
     
     
     public static SwiggyContactsFragment newInstance () {
@@ -119,6 +122,8 @@ public class SwiggyContactsFragment extends Fragment {
         btFilter.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                new SwiggyCategoryFilterDialogFragment ().newInstance (filters).show (ft, "Filter");
             }
         });
         companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
@@ -280,6 +285,7 @@ public class SwiggyContactsFragment extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                                            filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
                                             for (int i = 0; i < jsonArrayCompany.length (); i++) {
                                                 JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
                                                 companyList.add (new SwiggyCompany2 (

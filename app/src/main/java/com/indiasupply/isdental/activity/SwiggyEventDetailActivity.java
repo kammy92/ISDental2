@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -64,16 +65,21 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     
     int event_id;
     
-    String eventExhibitors;
-    String eventSpeakers;
-    String eventSchedule;
-    String eventFloorPlan;
-    String eventInformation;
-    String evevntRegistration;
+    String eventExhibitors = "";
+    String eventSpeakers = "";
+    String eventSchedule = "";
+    String eventFloorPlan = "";
+    String eventInformation = "";
+    String eventRegistration = "";
     
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
     
+    RelativeLayout rlNoResult;
+    ImageView ivNoResult;
+    TextView tvNoResultTitle;
+    TextView tvNoResultDescription;
+    TextView tvNoResultButton;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -106,6 +112,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             SwiggyEventScheduleDialogFragment frag1 = SwiggyEventScheduleDialogFragment.newInstance (eventSchedule);
                             frag1.show (ft, "2");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No schedule available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 2:
@@ -113,6 +120,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             SwiggyEventSpeakerDialogFragment frag2 = SwiggyEventSpeakerDialogFragment.newInstance (eventSpeakers);
                             frag2.show (ft, "2");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Speakers available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 3:
@@ -120,13 +128,22 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             SwiggyEventExhibitorDialogFragment frag3 = SwiggyEventExhibitorDialogFragment.newInstance (eventExhibitors);
                             frag3.show (ft, "3");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Exhibitors available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 4:
-                        if (eventFloorPlan.length () > 0) {
+                        boolean flag = false;
+                        for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
+                            if (eventFloorPlan.endsWith (ext)) {
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if (flag) {
                             SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
                             frag4.show (ft, "4");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Floor Plan available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 5:
@@ -134,13 +151,15 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             SwiggyEventInformationDialogFragment frag5 = SwiggyEventInformationDialogFragment.newInstance (eventInformation);
                             frag5.show (ft, "5");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Information available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 6:
-                        if (evevntRegistration.length () > 0) {
-                            SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (evevntRegistration);
+                        if (eventRegistration.length () > 0) {
+                            SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (eventRegistration);
                             frag6.show (ft, "6");
                         } else {
+                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Registration Details available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                 }
@@ -173,6 +192,11 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
         tvTitleEventDetail = (TextView) findViewById (R.id.tvTitleEventDetail);
         shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) findViewById (R.id.rlMain);
+        rlNoResult = (RelativeLayout) findViewById (R.id.rlNoResult);
+        ivNoResult = (ImageView) findViewById (R.id.ivNoResult);
+        tvNoResultTitle = (TextView) findViewById (R.id.tvNoResultTitle);
+        tvNoResultDescription = (TextView) findViewById (R.id.tvNoResultDescription);
+        tvNoResultButton = (TextView) findViewById (R.id.tvNoResultButton);
     }
     
     private void getExtras () {
@@ -187,6 +211,9 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     }
     
     private void setData () {
+        shimmerFrameLayout.setVisibility (View.VISIBLE);
+        rlMain.setVisibility (View.GONE);
+        rlNoResult.setVisibility (View.GONE);
         if (NetworkConnection.isNetworkAvailable (this)) {
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT_DETAILS + "/" + event_id, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EVENT_DETAILS + "/" + event_id,
@@ -200,15 +227,21 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
-                                        eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
+                                            eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                                        }
+                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
+                                            eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                                        }
                                         eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
                                         eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
-                                        evevntRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+                                        eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
                                         tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
                                         tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                                        eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
-    
+                                        if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
+                                            eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                                        }
+                                        
                                         eventItemList.add (new SwiggyEventItem (1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
                                         eventItemList.add (new SwiggyEventItem (2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
                                         eventItemList.add (new SwiggyEventItem (3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
@@ -216,21 +249,23 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         eventItemList.add (new SwiggyEventItem (5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
                                         eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
     
-    
                                         eventItemAdapter.notifyDataSetChanged ();
     
-                                        rlMain.setVisibility (View.VISIBLE);
-                                        shimmerFrameLayout.setVisibility (View.GONE);
+                                        updateLayoutOnResponse (0);
                                     } else {
-                                        Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred) + " : " + message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        updateLayoutOnResponse (1);
+                                        Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
+                                    Utils.showLog (Log.WARN, AppConfigTags.EXCEPTION, e.getMessage (), true);
+                                    updateLayoutOnResponse (2);
                                     Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 }
                             } else {
-                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                updateLayoutOnResponse (3);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
                         }
                     },
@@ -242,6 +277,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                             }
+                            updateLayoutOnResponse (4);
                             Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                     }) {
@@ -263,8 +299,9 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 60);
         } else {
+            updateLayoutOnResponse (5);
             Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
                 @Override
                 public void onClick (View v) {
@@ -274,6 +311,94 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    
+    
+    private void updateLayoutOnResponse (int type) {
+// type => 0(No error data fetched successfully)
+// type => 1(error true in server response)
+// type => 2(Exception Occurred)
+// type => 3(Blank response from server)
+// type => 4(In onError of volley)
+// type => 5(No Internet connection)
+        String title = "";
+        String description = "";
+        String button = "";
+        View.OnClickListener onClickListener = new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+            }
+        };
+        shimmerFrameLayout.setVisibility (View.GONE);
+        switch (type) {
+            case 0:
+                rlMain.setVisibility (View.VISIBLE);
+                break;
+            case 1:
+                title = "Oops.. Error Occurred!";
+                description = "There seems to be an error while processing your request";
+                button = "RETRY";
+                onClickListener = new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        setData ();
+                    }
+                };
+                rlNoResult.setVisibility (View.VISIBLE);
+                break;
+            case 2:
+                title = "Oops.. Exception Occurred!";
+                description = "An exception occurred while processing the request";
+                button = "RETRY";
+                onClickListener = new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        setData ();
+                    }
+                };
+                rlNoResult.setVisibility (View.VISIBLE);
+                break;
+            case 3:
+                title = "Oops.. Error Occurred!";
+                description = "A blank response was received from the server";
+                button = "RETRY";
+                onClickListener = new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        setData ();
+                    }
+                };
+                rlNoResult.setVisibility (View.VISIBLE);
+                break;
+            case 4:
+                title = "Oops.. Error Occurred!";
+                description = "An error occurred at the server end.\nPlease try again later";
+                button = "TRY AGAIN";
+                onClickListener = new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        setData ();
+                    }
+                };
+                rlNoResult.setVisibility (View.VISIBLE);
+                break;
+            case 5:
+                title = "Oops.. No Internet!";
+                description = "Seems to be no internet connection.\nPlease check your internet connection and try again";
+                button = "RETRY";
+                onClickListener = new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        setData ();
+                    }
+                };
+                rlNoResult.setVisibility (View.VISIBLE);
+                break;
+        }
+        tvNoResultTitle.setText (title);
+        tvNoResultDescription.setText (description);
+        tvNoResultButton.setText (button);
+        tvNoResultButton.setOnClickListener (onClickListener);
     }
     
     @Override

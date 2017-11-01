@@ -7,7 +7,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:layout_gravity="center_vertical"
+        android:visibility="gone">
         <ImageView
             android:id="@+id/ivEventSchedule"
             android:layout_width="40dp"
@@ -28,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:paddingLeft="@dimen/activity_margin">
+    >
 
         <TextView
             android:id="@+id/tvEventTiming"
