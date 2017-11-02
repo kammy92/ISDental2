@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -60,6 +61,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                 break;
         }
     
+    
         holder.ivContactFavourite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -73,7 +75,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
             }
         });
     
-        holder.tvCall.setOnClickListener (new View.OnClickListener () {
+        holder.rlCall.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 if (contactsDetail.getContact_number ().length () > 0) {
@@ -85,7 +87,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         });
     
     
-        holder.tvMail.setOnClickListener (new View.OnClickListener () {
+        holder.rlMail.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 if (contactsDetail.getEmail ().length () > 0) {
@@ -131,8 +133,8 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         TextView tvContactLocation;
         TextView tvContactType;
         ImageView ivContactFavourite;
-        TextView tvCall;
-        TextView tvMail;
+        RelativeLayout rlCall;
+        RelativeLayout rlMail;
         ImageView ivContactImage;
         ProgressBar progressBar;
         
@@ -143,8 +145,8 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
             tvContactLocation = (TextView) view.findViewById (R.id.tvContactLocation);
             tvContactType = (TextView) view.findViewById (R.id.tvContactType);
             ivContactFavourite = (ImageView) view.findViewById (R.id.ivContactFavourite);
-            tvCall = (TextView) view.findViewById (R.id.tvCall);
-            tvMail = (TextView) view.findViewById (R.id.tvMail);
+            rlCall = (RelativeLayout) view.findViewById (R.id.rlCall);
+            rlMail = (RelativeLayout) view.findViewById (R.id.rlMail);
             ivContactImage = (ImageView) view.findViewById (R.id.ivContactImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
