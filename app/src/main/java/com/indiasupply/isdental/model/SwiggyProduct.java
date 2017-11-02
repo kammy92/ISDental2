@@ -16,11 +16,12 @@ public class SwiggyProduct implements Parcelable {
             int group_type = in.readInt ();
             String name = in.readString ();
             String description = in.readString ();
+            String packaging = in.readString ();
             String category = in.readString ();
             String group_title = in.readString ();
             String image = in.readString ();
             String price = in.readString ();
-            return new SwiggyProduct (id, icon, name, description, category, price, group_type, group_title, image);
+            return new SwiggyProduct (id, icon, name, description, packaging, category, price, group_type, group_title, image);
         }
         
         @Override
@@ -29,12 +30,13 @@ public class SwiggyProduct implements Parcelable {
         }
     };
     int id, icon, group_type;
-    String name, description, category, image, price, group_title;
+    String name, description, packaging, category, image, price, group_title;
     
-    public SwiggyProduct (int id, int icon, String name, String description, String category, String price, int group_type, String group_title, String image) {
+    public SwiggyProduct (int id, int icon, String name, String description, String packaging, String category, String price, int group_type, String group_title, String image) {
         this.id = id;
         this.icon = icon;
         this.name = name;
+        this.packaging = packaging;
         this.description = description;
         this.category = category;
         this.image = image;
@@ -43,8 +45,13 @@ public class SwiggyProduct implements Parcelable {
         this.group_title = group_title;
     }
     
-    public SwiggyProduct () {
-
+    
+    public String getPackaging () {
+        return packaging;
+    }
+    
+    public void setPackaging (String packaging) {
+        this.packaging = packaging;
     }
     
     public int getId () {

@@ -56,6 +56,11 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
             makeTextViewResizable (holder.tvProductDescription, 2, "...more", true);
         }
     
+        if (product.getPackaging ().length () > 0) {
+            holder.tvProductPackaging.setText (product.getPackaging ());
+            holder.tvProductPackaging.setVisibility (View.VISIBLE);
+        }
+        
         if (product.getImage ().length () == 0) {
             holder.ivProductImage.setImageResource (product.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
@@ -98,6 +103,7 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
         TextView tvProductName;
         TextView tvProductPrice;
         TextView tvProductDescription;
+        TextView tvProductPackaging;
         TextView tvAdd;
         ImageView ivProductImage;
         ProgressBar progressBar;
@@ -108,6 +114,7 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
             tvProductName = (TextView) view.findViewById (R.id.tvProductName);
             tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
             tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
+            tvProductPackaging = (TextView) view.findViewById (R.id.tvProductPackaging);
             tvAdd = (TextView) view.findViewById (R.id.tvAdd);
             ivProductImage = (ImageView) view.findViewById (R.id.ivProductImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);

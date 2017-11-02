@@ -12,6 +12,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,63 +139,6 @@ public class SwiggyContactsFragment extends Fragment {
         });
     
     
-        rvContacts.setOnScrollListener (new RecyclerView.OnScrollListener () {
-            @Override
-            public void onScrollStateChanged (RecyclerView recyclerView, int newState) {
-                switch (newState) {
-                    case RecyclerView.SCROLL_STATE_SETTLING:
-                        int totalItemCount = linearLayoutManager.getItemCount ();
-                        int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition ();
-                        if (! isLoading && totalItemCount <= (lastVisibleItem + 20)) {
-                            new updateRecycler ().execute ();
-                            isLoading = true;
-                        }
-                    
-                        Log.e ("karman", "Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition () + 1) + "/" + companyDisplayList.size ());
-                        break;
-                    case RecyclerView.SCROLL_STATE_DRAGGING:
-                        break;
-                    case RecyclerView.SCROLL_STATE_IDLE:
-                        break;
-                }
-            }
-        
-            @Override
-            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
-                if (linearLayoutManager.findFirstCompletelyVisibleItemPosition () < 0) {
-//                    tvTitle.setText ("Recommended 1/" + productList.size ());
-                } else {
-//                    Log.e ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + productList.size ());
-                }
-                super.onScrolled (recyclerView, dx, dy);
-            }
-        
-        });
-//
-
-//        companyAdapter.setOnBottomReachedListener (new SwiggyCompanyAdapter2.OnBottomReachedListener () {
-//            @Override
-//            public void onBottomReached (int position) {
-//                if (! isLoading) {
-//                    new updateRecycler ().execute ();
-//                    isLoading = true;
-//                    Log.e ("karman", "in onbottomreached");
-//                }
-//            }
-//        });
-//
-//        rvContacts.addOnScrollListener (new RecyclerView.OnScrollListener () {
-//            @Override
-//            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled (recyclerView, dx, dy);
-//                int totalItemCount = linearLayoutManager.getItemCount ();
-//                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition ();
-//                if (! isLoading && totalItemCount <= (lastVisibleItem + 30)) {
-//                    new updateRecycler ().execute ();
-//                    isLoading = true;
-//                }
-//            }
-//        });
         
 /*
         getParentFragment ().getView ().setOnKeyListener (new View.OnKeyListener () {
@@ -234,7 +179,6 @@ public class SwiggyContactsFragment extends Fragment {
 */
         
         
-/*
         etSearch.addTextChangedListener (new TextWatcher () {
             @Override
             public void onTextChanged (CharSequence s, int start, int before, int count) {
@@ -252,23 +196,23 @@ public class SwiggyContactsFragment extends Fragment {
             
             @Override
             public void afterTextChanged (Editable s) {
-                if (s.toString ().length () == 0){
-                    companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
+                if (s.toString ().length () == 0) {
+                    companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyAllList);
                     rvContacts.setAdapter (companyAdapter);
                     companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
                         @Override
                         public void onItemClick (View view, int position) {
-                            SwiggyCompany2 contact = companyDisplayList.get (position);
+                            SwiggyCompany2 contact = companyAllList.get (position);
                             android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                             new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
                         }
                     });
                 }
-                if (s.toString ().length () >= 3) {
+                if (s.toString ().length () > 0) {
                     companyDisplayList.clear ();
                     for (SwiggyCompany2 swiggyCompany2 : companyAllList) {
                         if (swiggyCompany2.getName ().toUpperCase ().contains (s.toString ().toUpperCase ()) ||
-                                swiggyCompany2.getName ().toLowerCase ().contains (s.toString ().toLowerCase ())){// ||
+                                swiggyCompany2.getName ().toLowerCase ().contains (s.toString ().toLowerCase ())) {// ||
 //                                swiggyCompany2.getCategory ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
 //                                swiggyCompany2.getCategory ().toUpperCase ().contains (s.toString ().toUpperCase ())) {
                             companyDisplayList.add (swiggyCompany2);
@@ -288,11 +232,9 @@ public class SwiggyContactsFragment extends Fragment {
                 }
             }
         });
-*/
     
-        ivBack.setOnClickListener (new View.OnClickListener ()
     
-        {
+        ivBack.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 new Handler ().postDelayed (new Runnable () {
@@ -334,9 +276,7 @@ public class SwiggyContactsFragment extends Fragment {
             }
         });
     
-        ivCancel.setOnClickListener (new View.OnClickListener ()
-    
-        {
+        ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 etSearch.setText ("");

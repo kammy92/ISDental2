@@ -236,7 +236,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail"
@@ -341,7 +342,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail2"
@@ -444,7 +446,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail4"
@@ -546,7 +549,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail5"
@@ -650,7 +654,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail3"
@@ -752,7 +757,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/ivCompanyEmail6"
@@ -854,7 +860,8 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true">
+                            android:layout_centerVertical="true"
+                            android:visibility="gone">
                             <ImageView
                                 android:id="@+id/ivCompanyEmail7"
                                 android:layout_width="21dp"

@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -641,5 +642,28 @@ public class Utils {
         } catch (IllegalAccessException e) {
             Log.e ("BNVHelper", "Unable to change value of shift mode", e);
         }
+    }
+    
+    public static void shareToGmail (Activity activity, String[] email, String subject, String content) {
+        Intent emailIntent = new Intent (Intent.ACTION_SEND);
+        emailIntent.putExtra (Intent.EXTRA_EMAIL, email);
+        emailIntent.putExtra (Intent.EXTRA_SUBJECT, subject);
+        emailIntent.setType ("message/rfc822");
+        emailIntent.putExtra (android.content.Intent.EXTRA_TEXT, content);
+        final PackageManager pm = activity.getPackageManager ();
+        final List<ResolveInfo> matches = pm.queryIntentActivities (emailIntent, 0);
+        ResolveInfo best = null;
+        for (final ResolveInfo info : matches)
+            if (info.activityInfo.packageName.endsWith (".gm") || info.activityInfo.name.toLowerCase ().contains ("gmail"))
+                best = info;
+        if (best != null)
+            emailIntent.setClassName (best.activityInfo.packageName, best.activityInfo.name);
+        activity.startActivity (emailIntent);
+    }
+    
+    public static void callPhone (Activity activity, String number) {
+        Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + number));
+        sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+        activity.startActivity (sIntent);
     }
 }

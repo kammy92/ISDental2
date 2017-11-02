@@ -134,7 +134,8 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                 
                 tvTitleBrandName.setAlpha ((float) (scrollY * 0.003));
                 tvTitleBrandCategory.setAlpha ((float) (scrollY * 0.003));
-                
+//                v1.setAlpha ((float) (scrollY * 0.003));
+    
                 if (scrollY == (v.getChildAt (0).getMeasuredHeight () - v.getMeasuredHeight ())) {
 //                    Log.i (TAG, "BOTTOM SCROLL");
                 }
@@ -211,7 +212,11 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                         tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
                                         tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
                                         tvRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_RATING));
-                                        tvTotalRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) + " Ratings");
+                                        if (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) > 0) {
+                                            tvTotalRating.setText (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) + " Ratings");
+                                        } else {
+                                            tvTotalRating.setText ("0 Ratings");
+                                        }
                                         tvContacts.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_CONTACTS));
                                         if (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS).length () > 0) {
                                             tvOffer.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS));
@@ -246,6 +251,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                                         R.drawable.ic_information,
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
+                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
                                                         jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE),

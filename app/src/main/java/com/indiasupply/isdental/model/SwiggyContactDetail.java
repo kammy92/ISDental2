@@ -3,9 +3,9 @@ package com.indiasupply.isdental.model;
 public class SwiggyContactDetail {
     int id, type, icon;
     boolean is_favourite;
-    String name, location, image, contact_number;
+    String name, location, image, contact_number, email;
     
-    public SwiggyContactDetail (int id, int type, int icon, boolean is_favourite, String name, String location, String contact_number, String image) {
+    public SwiggyContactDetail (int id, int type, int icon, boolean is_favourite, String name, String location, String contact_number, String email, String image) {
         this.id = id;
         this.type = type;
         this.icon = icon;
@@ -13,7 +13,16 @@ public class SwiggyContactDetail {
         this.name = name;
         this.location = location;
         this.image = image;
+        this.email = email;
         this.contact_number = contact_number;
+    }
+    
+    public String getEmail () {
+        return email;
+    }
+    
+    public void setEmail (String email) {
+        this.email = email;
     }
     
     public int getId () {

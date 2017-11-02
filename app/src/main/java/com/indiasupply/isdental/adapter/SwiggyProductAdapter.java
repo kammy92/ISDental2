@@ -53,17 +53,18 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
         } else {
             holder.tvProductDescription.setVisibility (View.GONE);
         }
-        if (swiggyProduct.getCategory ().length () > 0) {
-            holder.tvProductCategory.setVisibility (View.VISIBLE);
-            holder.tvProductCategory.setText (swiggyProduct.getCategory ());
-        } else {
-            holder.tvProductCategory.setVisibility (View.GONE);
-        }
+
         if (swiggyProduct.getPrice ().length () > 0) {
             holder.tvProductPrice.setVisibility (View.VISIBLE);
             holder.tvProductPrice.setText (swiggyProduct.getPrice ());
         } else {
             holder.tvProductPrice.setVisibility (View.GONE);
+        }
+        if (swiggyProduct.getPackaging ().length () > 0) {
+            holder.tvProductPackaging.setVisibility (View.VISIBLE);
+            holder.tvProductPackaging.setText (swiggyProduct.getPackaging ());
+        } else {
+            holder.tvProductPackaging.setVisibility (View.GONE);
         }
     }
     
@@ -83,17 +84,17 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvProductDescription;
+        TextView tvProductPackaging;
         TextView tvProductName;
         TextView tvProductPrice;
-        TextView tvProductCategory;
         TextView tvAdd;
         
         public ViewHolder (View view) {
             super (view);
             tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
+            tvProductPackaging = (TextView) view.findViewById (R.id.tvProductPackaging);
             tvProductName = (TextView) view.findViewById (R.id.tvProductName);
             tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
-            tvProductCategory = (TextView) view.findViewById (R.id.tvProductCategory);
             tvAdd = (TextView) view.findViewById (R.id.tvAdd);
             view.setOnClickListener (this);
         }

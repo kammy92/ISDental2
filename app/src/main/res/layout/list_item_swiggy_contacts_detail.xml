@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="horizontal">
@@ -25,24 +24,22 @@
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"/>
     </RelativeLayout>
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_margin">
-
         <TextView
             android:id="@+id/tvContactName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:paddingRight="30dp"
             android:text="Chesa Dental"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"
             android:visibility="visible"/>
-
         <TextView
             android:id="@+id/tvContactType"
             android:layout_width="wrap_content"
@@ -52,41 +49,16 @@
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
-
-        <com.varunest.sparkbutton.SparkButton
-            android:id="@+id/spark_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            app:sparkbutton_activeImage="@drawable/ic_star3"
-            app:sparkbutton_animationSpeed="0.7"
-            app:sparkbutton_iconSize="20dp"
-            app:sparkbutton_inActiveImage="@drawable/ic_star2"
-            app:sparkbutton_primaryColor="@color/primary"
-            app:sparkbutton_secondaryColor="@color/primary_dark2"/>
-
-        <com.like.LikeButton
-            android:id="@+id/star_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:visibility="gone"
-            app:icon_size="15dp"
-            app:icon_type="heart"
-            app:paddingEnd="0dp"
-            app:paddingStart="0dp"/>
         <ImageView
             android:id="@+id/ivContactFavourite"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:src="@drawable/ic_star2"
-            android:visibility="gone"/>
-
-
+            android:paddingBottom="@dimen/activity_margin_small"
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:src="@drawable/ic_favourite"
+            android:visibility="visible"/>
         <View
             android:id="@id/view"
             android:layout_width="match_parent"
@@ -100,11 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/view"
-            android:orientation="horizontal"
-
-        >
-
-
+            android:orientation="horizontal">
             <TextView
                 android:id="@+id/tvContactLocation"
                 android:layout_width="wrap_content"
@@ -114,28 +82,52 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/activity_margin"
                 android:layout_marginRight="@dimen/activity_margin"
-                android:layout_toLeftOf="@+id/tvCall"
-                android:layout_toStartOf="@+id/tvCall"
                 android:text="DWARKA SECTOR 8"
                 android:textColor="@color/secondary_text2"
                 android:textSize="@dimen/text_size_extra_small"
                 android:visibility="visible"/>
+        </RelativeLayout>
+        <View
+            android:id="@id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ll1"
+            android:layout_marginTop="@dimen/activity_margin_small"
+            android:background="#f5f5f5"/>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/view2"
+            android:orientation="horizontal"
+            android:weightSum="2.0">
             <TextView
                 android:id="@+id/tvCall"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:background="@drawable/button_background"
-                android:paddingBottom="@dimen/activity_margin_extra_small"
-                android:paddingLeft="@dimen/activity_margin_small"
-                android:paddingRight="@dimen/activity_margin_small"
-                android:paddingTop="@dimen/activity_margin_extra_small"
-                android:text="  CALL  "
-                android:textColor="@color/mb_green_dark"
-                android:textSize="@dimen/text_size_small"/>
-        </RelativeLayout>
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_small"
+                android:text="CALL"
+                android:textColor="@color/accent2"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:background="#f5f5f5"
+                android:gravity="center"
+            />
+            <TextView
+                android:id="@+id/tvMail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_small"
+                android:text="MAIL"
+                android:textColor="@color/accent2"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
     </RelativeLayout>
 </LinearLayout>

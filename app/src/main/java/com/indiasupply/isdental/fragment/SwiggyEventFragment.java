@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -49,7 +48,6 @@ public class SwiggyEventFragment extends Fragment {
     
     CoordinatorLayout clMain;
     ShimmerFrameLayout shimmerFrameLayout;
-    RelativeLayout rlMain;
     
     public static SwiggyEventFragment newInstance () {
         return new SwiggyEventFragment ();
@@ -74,7 +72,6 @@ public class SwiggyEventFragment extends Fragment {
         rvEvents = (RecyclerView) rootView.findViewById (R.id.rvEvents);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
-        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
@@ -124,7 +121,7 @@ public class SwiggyEventFragment extends Fragment {
                                                 eventList.add (i, swiggyEvent);
                                             }
                                             eventAdapter.notifyDataSetChanged ();
-                                            rlMain.setVisibility (View.VISIBLE);
+                                            rvEvents.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
                                             Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);

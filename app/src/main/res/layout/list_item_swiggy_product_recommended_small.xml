@@ -35,12 +35,12 @@
         android:layout_marginTop="@dimen/activity_margin_small"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="Name1"
+        android:text="Name"
         android:textColor="@color/primary_text2"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
     <TextView
-        android:id="@+id/tvProductCategory"
+        android:id="@+id/tvProductDescription"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/rl1"
@@ -50,9 +50,24 @@
         android:layout_below="@+id/tvProductName"
         android:ellipsize="end"
         android:maxLines="1"
-        android:text="Name1asd kksad "
+        android:text="Description"
         android:textColor="@color/secondary_text2"
         android:textSize="@dimen/text_size_extra_small"/>
+    <TextView
+        android:id="@+id/tvProductPackaging"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/rl1"
+        android:layout_alignLeft="@+id/rl1"
+        android:layout_alignRight="@+id/rl1"
+        android:layout_alignStart="@+id/rl1"
+        android:layout_below="@+id/tvProductDescription"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Name1asd kksad "
+        android:textColor="@color/secondary_text2"
+        android:textSize="@dimen/text_size_extra_small"
+        android:visibility="gone"/>
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,8 +75,8 @@
         android:layout_alignLeft="@+id/rl1"
         android:layout_alignRight="@+id/rl1"
         android:layout_alignStart="@+id/rl1"
-        android:layout_below="@+id/tvProductCategory"
-        android:layout_marginTop="@dimen/activity_margin_small"
+        android:layout_below="@+id/tvProductPackaging"
+        android:layout_marginTop="@dimen/activity_margin_extra_small"
         android:orientation="horizontal">
         <TextView
             android:id="@+id/tvProductPrice"
@@ -72,8 +87,8 @@
             android:layout_centerVertical="true"
             android:text="Rs 14,599/-"
             android:textColor="@color/primary_text2"
-            android:textSize="@dimen/text_size_small"/>
-
+            android:textSize="@dimen/text_size_extra_small"
+            android:textStyle="bold"/>
         <TextView
             android:id="@+id/tvAdd"
             android:layout_width="wrap_content"
@@ -86,7 +101,7 @@
             android:paddingRight="@dimen/activity_margin_small"
             android:paddingTop="@dimen/activity_margin_extra_small"
             android:text="INQUIRE"
-            android:textColor="@color/mb_green_dark"
+            android:textColor="@color/accent2"
             android:textSize="@dimen/text_size_small"/>
     </RelativeLayout>
 </RelativeLayout>

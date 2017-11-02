@@ -44,9 +44,14 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
     
         holder.tvProductName.setText (product.getName ());
-        holder.tvProductCategory.setText (product.getCategory ());
+        holder.tvProductDescription.setText (product.getDescription ());
         holder.tvProductPrice.setText (product.getPrice ());
     
+        if (product.getPackaging ().length () > 0) {
+            holder.tvProductPackaging.setText (product.getPackaging ());
+            holder.tvProductPackaging.setVisibility (View.VISIBLE);
+        }
+        
         if (product.getImage ().length () == 0) {
             holder.ivProductImage.setImageResource (product.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
@@ -61,7 +66,7 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                             holder.progressBar.setVisibility (View.GONE);
                             return false;
                         }
-                    
+    
                         @Override
                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                             holder.progressBar.setVisibility (View.GONE);
@@ -89,7 +94,8 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView ivProductImage;
         TextView tvProductName;
-        TextView tvProductCategory;
+        TextView tvProductDescription;
+        TextView tvProductPackaging;
         TextView tvProductPrice;
         TextView tvAdd;
         ProgressBar progressBar;
@@ -98,7 +104,8 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
             super (view);
             ivProductImage = (ImageView) view.findViewById (R.id.ivProductImage);
             tvProductName = (TextView) view.findViewById (R.id.tvProductName);
-            tvProductCategory = (TextView) view.findViewById (R.id.tvProductCategory);
+            tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
+            tvProductPackaging = (TextView) view.findViewById (R.id.tvProductPackaging);
             tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             tvAdd = (TextView) view.findViewById (R.id.tvAdd);

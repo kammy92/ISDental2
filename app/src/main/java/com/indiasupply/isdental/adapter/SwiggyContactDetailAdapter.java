@@ -1,8 +1,6 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +43,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         Utils.setTypefaceToAllViews (activity, holder.tvContactName);
         
         holder.tvContactName.setText (contactsDetail.getName ());
-        holder.tvContactLocation.setText (contactsDetail.getLocation ().toUpperCase ());
+        holder.tvContactLocation.setText (contactsDetail.getLocation ());
         
         switch (contactsDetail.getType ()) {
             case 1:
@@ -61,29 +59,43 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                 holder.tvContactType.setText ("Dealer / Distributor");
                 break;
         }
-        
-        holder.tvCall.setOnClickListener (new View.OnClickListener () {
+    
+        holder.ivContactFavourite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 if (contactsDetail.is_favourite ()) {
-                    Utils.showToast (activity, "Removed from favourite", false);
+                    contactsDetail.setIs_favourite (false);
+                    holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite);
                 } else {
-                    Utils.showToast (activity, "Added to favourite", false);
+                    contactsDetail.setIs_favourite (true);
+                    holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite_filled);
                 }
             }
         });
+    
         holder.tvCall.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 if (contactsDetail.getContact_number ().length () > 0) {
-                    Intent sIntent = new Intent (Intent.ACTION_DIAL, Uri.parse ("tel:" + contactsDetail.getContact_number ()));
-                    sIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                    activity.startActivity (sIntent);
+                    Utils.callPhone (activity, contactsDetail.getContact_number ());
                 } else {
                     Utils.showToast (activity, "No Phone specified", false);
                 }
             }
         });
+    
+    
+        holder.tvMail.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (contactsDetail.getEmail ().length () > 0) {
+                    Utils.shareToGmail (activity, new String[] {contactsDetail.getEmail ()}, "Enquiry", "");
+                } else {
+                    Utils.showToast (activity, "No email specified", false);
+                }
+            }
+        });
+    
     
         if (contactsDetail.getImage ().length () == 0) {
             holder.ivContactImage.setImageResource (contactsDetail.getIcon ());
@@ -120,6 +132,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         TextView tvContactType;
         ImageView ivContactFavourite;
         TextView tvCall;
+        TextView tvMail;
         ImageView ivContactImage;
         ProgressBar progressBar;
         
@@ -131,6 +144,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
             tvContactType = (TextView) view.findViewById (R.id.tvContactType);
             ivContactFavourite = (ImageView) view.findViewById (R.id.ivContactFavourite);
             tvCall = (TextView) view.findViewById (R.id.tvCall);
+            tvMail = (TextView) view.findViewById (R.id.tvMail);
             ivContactImage = (ImageView) view.findViewById (R.id.ivContactImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);

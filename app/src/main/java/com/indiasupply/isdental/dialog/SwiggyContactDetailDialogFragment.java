@@ -138,6 +138,7 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_PHONE),
+                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_EMAIL),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE)
                 ));
             }

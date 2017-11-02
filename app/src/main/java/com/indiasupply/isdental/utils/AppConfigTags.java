@@ -208,6 +208,7 @@ public class AppConfigTags {
     public static final String SWIGGY_PRODUCT_NAME = "product_name";
     public static final String SWIGGY_PRODUCT_IMAGE = "product_image";
     public static final String SWIGGY_PRODUCT_DESCRIPTION = "product_description";
+    public static final String SWIGGY_PRODUCT_PACKAGING = "product_packaging";
     public static final String SWIGGY_PRODUCT_CATEGORY = "product_category";
     public static final String SWIGGY_PRODUCT_BRAND = "product_brand";
     public static final String SWIGGY_PRODUCT_MODEL_NUMBER = "product_model_number";

@@ -413,7 +413,7 @@
                 android:layout_marginTop="@dimen/activity_margin"
                 android:background="@drawable/offer_background"
                 android:padding="@dimen/activity_margin_small"
-                android:visibility="visible">
+                android:visibility="gone">
                 <TextView
                     android:id="@+id/tvOffer2"
                     android:layout_width="match_parent"
@@ -484,7 +484,7 @@
                             android:textStyle="bold"/>
 
                         <TextView
-                            android:id="@+id/tvProductCategory"
+                            android:id="@+id/tvProductDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tvProductName"
@@ -503,7 +503,7 @@
                             android:layout_alignLeft="@+id/rl1"
                             android:layout_alignRight="@+id/rl1"
                             android:layout_alignStart="@+id/rl1"
-                            android:layout_below="@+id/tvProductCategory"
+                            android:layout_below="@+id/tvProductDescription"
                             android:layout_marginTop="@dimen/activity_margin_small"
                             android:orientation="horizontal">
                             <TextView

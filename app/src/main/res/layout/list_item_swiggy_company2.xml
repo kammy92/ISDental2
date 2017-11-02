@@ -83,7 +83,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true">
+                android:layout_centerVertical="true"
+                android:visibility="gone">
                 <ImageView
                     android:id="@+id/ivCompanyEmail"
                     android:layout_width="40dp"
