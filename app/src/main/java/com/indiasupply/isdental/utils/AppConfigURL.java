@@ -3,8 +3,8 @@ package com.indiasupply.isdental.utils;
 public class AppConfigURL {
     public static String version = "v1.1.3";
     public static String version2 = "v2.0";
-    //    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/v2.0/";// + version + "/";
-    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
+    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+    //    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     public static String BASE_URL = "http://famdent.indiasupply.com/isdental/api/" + version + "/";
     
     
@@ -46,6 +46,4 @@ public class AppConfigURL {
     public static String URL_SWIGGY_USER_EXIST = BASE_URL2 + "user/exist";
     public static String URL_SWIGGY_GETOTP = BASE_URL2 + "user/otp";
     public static String URL_SWIGGY_REGISTER = BASE_URL2 + "user/register";
-    
-    
 }
