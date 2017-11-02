@@ -28,6 +28,7 @@ import com.indiasupply.isdental.adapter.SwiggyEventExhibitorAdapter;
 import com.indiasupply.isdental.model.SwiggyEventExhibitor;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.SimpleDividerItemDecoration;
 import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONArray;
@@ -164,6 +165,7 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
         rvExhibitor.setLayoutManager (linearLayoutManager);
         rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
         rvExhibitor.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvExhibitor.addItemDecoration (new SimpleDividerItemDecoration (getActivity ()));
     }
     
     private void initListener () {

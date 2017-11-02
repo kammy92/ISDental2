@@ -108,58 +108,51 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                 FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 switch (eventItem.getId ()) {
                     case 1:
-                        if (eventSchedule.length () > 0) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventScheduleDialogFragment frag1 = SwiggyEventScheduleDialogFragment.newInstance (eventSchedule);
                             frag1.show (ft, "2");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No schedule available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No schedule available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 2:
-                        if (eventSpeakers.length () > 0) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventSpeakerDialogFragment frag2 = SwiggyEventSpeakerDialogFragment.newInstance (eventSpeakers);
                             frag2.show (ft, "2");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Speakers available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Speakers available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 3:
-                        if (eventExhibitors.length () > 0) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventExhibitorDialogFragment frag3 = SwiggyEventExhibitorDialogFragment.newInstance (eventExhibitors);
                             frag3.show (ft, "3");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Exhibitors available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Exhibitors available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 4:
-                        boolean flag = false;
-                        for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                            if (eventFloorPlan.endsWith (ext)) {
-                                flag = true;
-                                break;
-                            }
-                        }
-                        if (flag) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
                             frag4.show (ft, "4");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Floor Plan available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Floor Plan available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 5:
-                        if (eventInformation.length () > 0) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventInformationDialogFragment frag5 = SwiggyEventInformationDialogFragment.newInstance (eventInformation);
                             frag5.show (ft, "5");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Information available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Information available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                     case 6:
-                        if (eventRegistration.length () > 0) {
+                        if (eventItem.isEnabled ()) {
                             SwiggyEventRegistrationsDialogFragment frag6 = SwiggyEventRegistrationsDialogFragment.newInstance (eventRegistration);
                             frag6.show (ft, "6");
                         } else {
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Registration Details available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Registration Details available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                         break;
                 }
@@ -227,28 +220,53 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
-                                            eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                                        if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
+                                            eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
                                         }
                                         if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (true, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
                                             eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
                                         }
-                                        eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
-                                        eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
-                                        eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
-                                        tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
-                                        tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                                        if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-                                            eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (true, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
+                                            eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
+                                        }
+                                        boolean flag = false;
+                                        for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
+                                            if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
+                                                flag = true;
+                                                break;
+                                            }
+                                        }
+                                        if (flag) {
+                                            eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+                                            eventItemList.add (new SwiggyEventItem (true, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (true, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
+                                            eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
+                                        }
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
+                                            eventItemList.add (new SwiggyEventItem (true, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
+                                            eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+                                        } else {
+                                            eventItemList.add (new SwiggyEventItem (false, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
                                         }
                                         
-                                        eventItemList.add (new SwiggyEventItem (1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
-                                        eventItemList.add (new SwiggyEventItem (2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
-                                        eventItemList.add (new SwiggyEventItem (3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
-                                        eventItemList.add (new SwiggyEventItem (4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
-                                        eventItemList.add (new SwiggyEventItem (5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
-                                        eventItemList.add (new SwiggyEventItem (6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
-    
+                                        tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
+                                        tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        
                                         eventItemAdapter.notifyDataSetChanged ();
     
                                         updateLayoutOnResponse (0);

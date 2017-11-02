@@ -16,6 +16,7 @@ import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.SwiggyCompanyDetailActivity;
 import com.indiasupply.isdental.model.SwiggyCompany;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -129,6 +130,7 @@ public class SwiggyCompanyAdapter extends RecyclerView.Adapter<SwiggyCompanyAdap
         public void onClick (View v) {
             SwiggyCompany brand = brandList.get (getLayoutPosition ());
             Intent intent5 = new Intent (activity, SwiggyCompanyDetailActivity.class);
+            intent5.putExtra (AppConfigTags.COMPANY_ID, brand.getId ());
             activity.startActivity (intent5);
             activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
         }

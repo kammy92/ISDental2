@@ -24,6 +24,7 @@ import java.util.List;
 
 public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAdapter2.ViewHolder> {
     OnItemClickListener mItemClickListener;
+    //    OnBottomReachedListener onBottomReachedListener;
     private Activity activity;
     private List<SwiggyCompany2> companyList = new ArrayList<> ();
     
@@ -42,7 +43,11 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final SwiggyCompany2 company = companyList.get (position);
-        
+//        if (position == companyList.size () - 1) {
+//            onBottomReachedListener.onBottomReached (position);
+//        }
+    
+    
         Utils.setTypefaceToAllViews (activity, holder.tvCompanyName);
     
         holder.tvCompanyName.setText (company.getName ());
@@ -115,10 +120,18 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
+
+//    public void setOnBottomReachedListener (OnBottomReachedListener onBottomReachedListener) {
+//        this.onBottomReachedListener = onBottomReachedListener;
+//    }
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);
     }
+
+//    public interface OnBottomReachedListener {
+//        public void onBottomReached (int position);
+//    }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvCompanyName;

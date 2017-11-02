@@ -123,7 +123,7 @@
                         android:textStyle="bold"/>
                     <ImageView
                         android:id="@+id/ivCancel"
-                        android:layout_width="wrap_content"
+                        android:layout_width="?attr/actionBarSize"
                         android:layout_height="?attr/actionBarSize"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
@@ -141,27 +141,14 @@
             android:layout_alignParentBottom="true"
             android:background="@color/text_color_grey_light2"/>
     </android.support.design.widget.AppBarLayout>
-    <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvContacts"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:overScrollMode="never"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <RelativeLayout
-            android:id="@+id/rlMain"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appBar"
-            android:visibility="gone">
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rvContacts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:overScrollMode="never"
-                android:scrollbarStyle="insideOverlay"
-                android:visibility="visible"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
+        android:scrollbarStyle="insideOverlay"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
     <com.indiasupply.isdental.utils.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"

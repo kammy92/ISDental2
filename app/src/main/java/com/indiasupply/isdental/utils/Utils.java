@@ -157,11 +157,11 @@ public class Utils {
         snackbar.setAction (button_text, onClickListener);
 
         View sbView = snackbar.getView ();
-        sbView.setBackgroundColor (activity.getResources ().getColor (R.color.snackbar_background));
+        sbView.setBackgroundColor (activity.getResources ().getColor (R.color.accent2));
         TextView textView = (TextView) sbView.findViewById (android.support.design.R.id.snackbar_text);
         TextView textView2 = (TextView) sbView.findViewById (android.support.design.R.id.snackbar_action);
-        textView.setTextColor (activity.getResources ().getColor (R.color.text_color_white));
-        textView2.setTextColor (activity.getResources ().getColor (R.color.text_color_white));
+        textView.setTextColor (activity.getResources ().getColor (R.color.tertiary_text2));
+        textView2.setTextColor (activity.getResources ().getColor (R.color.tertiary_text2));
         textView.setTypeface (SetTypeFace.getTypeface (activity));
         textView2.setTypeface (SetTypeFace.getTypeface (activity));
         snackbar.show ();

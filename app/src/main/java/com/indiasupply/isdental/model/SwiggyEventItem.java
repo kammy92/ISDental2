@@ -5,14 +5,24 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyEventItem {
+    boolean enabled;
     int id, icon;
     String name, image;
     
-    public SwiggyEventItem (int id, int icon, String name, String image) {
+    public SwiggyEventItem (boolean enabled, int id, int icon, String name, String image) {
+        this.enabled = enabled;
         this.id = id;
         this.icon = icon;
         this.name = name;
         this.image = image;
+    }
+    
+    public boolean isEnabled () {
+        return enabled;
+    }
+    
+    public void setEnabled (boolean enabled) {
+        this.enabled = enabled;
     }
     
     public int getIcon () {

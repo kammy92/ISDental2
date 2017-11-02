@@ -2,6 +2,7 @@ package com.indiasupply.isdental.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -11,8 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,8 +53,8 @@ import java.util.Map;
 public class SwiggyContactsFragment extends Fragment {
     RecyclerView rvContacts;
     CoordinatorLayout clMain;
-    List<SwiggyCompany2> companyList = new ArrayList<> ();
-    List<SwiggyCompany2> tempCompanyList = new ArrayList<> ();
+    List<SwiggyCompany2> companyAllList = new ArrayList<> ();
+    List<SwiggyCompany2> companyDisplayList = new ArrayList<> ();
     SwiggyCompanyAdapter2 companyAdapter;
     Button btFilter;
     Button btSearch;
@@ -65,11 +64,12 @@ public class SwiggyContactsFragment extends Fragment {
     RelativeLayout rlToolbar;
     EditText etSearch;
     
+    LinearLayoutManager linearLayoutManager;
     
     ShimmerFrameLayout shimmerFrameLayout;
-    RelativeLayout rlMain;
     
     String filters = "";
+    boolean isLoading = false;
     
     
     public static SwiggyContactsFragment newInstance () {
@@ -102,18 +102,19 @@ public class SwiggyContactsFragment extends Fragment {
         ivCancel = (ImageView) rootView.findViewById (R.id.ivCancel);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
-        rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
+        linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
+//        linearLayoutManager.setAutoMeasureEnabled (false);
     
-        companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyList);
+        companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
         rvContacts.setAdapter (companyAdapter);
         rvContacts.setNestedScrollingEnabled (false);
         rvContacts.setFocusable (false);
         rvContacts.setHasFixedSize (true);
-        rvContacts.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        rvContacts.setLayoutManager (linearLayoutManager);
         rvContacts.setItemAnimator (new DefaultItemAnimator ());
         rvContacts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
@@ -129,12 +130,70 @@ public class SwiggyContactsFragment extends Fragment {
         companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
-                SwiggyCompany2 contact = companyList.get (position);
+                SwiggyCompany2 contact = companyDisplayList.get (position);
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
             }
         });
+    
+    
+        rvContacts.setOnScrollListener (new RecyclerView.OnScrollListener () {
+            @Override
+            public void onScrollStateChanged (RecyclerView recyclerView, int newState) {
+                switch (newState) {
+                    case RecyclerView.SCROLL_STATE_SETTLING:
+                        int totalItemCount = linearLayoutManager.getItemCount ();
+                        int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition ();
+                        if (! isLoading && totalItemCount <= (lastVisibleItem + 20)) {
+                            new updateRecycler ().execute ();
+                            isLoading = true;
+                        }
+                    
+                        Log.e ("karman", "Recommended " + (((LinearLayoutManager) recyclerView.getLayoutManager ()).findFirstCompletelyVisibleItemPosition () + 1) + "/" + companyDisplayList.size ());
+                        break;
+                    case RecyclerView.SCROLL_STATE_DRAGGING:
+                        break;
+                    case RecyclerView.SCROLL_STATE_IDLE:
+                        break;
+                }
+            }
         
+            @Override
+            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
+                if (linearLayoutManager.findFirstCompletelyVisibleItemPosition () < 0) {
+//                    tvTitle.setText ("Recommended 1/" + productList.size ());
+                } else {
+//                    Log.e ("Recommended " + (linearLayoutManager.findFirstCompletelyVisibleItemPosition () + 1) + "/" + productList.size ());
+                }
+                super.onScrolled (recyclerView, dx, dy);
+            }
+        
+        });
+//
+
+//        companyAdapter.setOnBottomReachedListener (new SwiggyCompanyAdapter2.OnBottomReachedListener () {
+//            @Override
+//            public void onBottomReached (int position) {
+//                if (! isLoading) {
+//                    new updateRecycler ().execute ();
+//                    isLoading = true;
+//                    Log.e ("karman", "in onbottomreached");
+//                }
+//            }
+//        });
+//
+//        rvContacts.addOnScrollListener (new RecyclerView.OnScrollListener () {
+//            @Override
+//            public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled (recyclerView, dx, dy);
+//                int totalItemCount = linearLayoutManager.getItemCount ();
+//                int lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition ();
+//                if (! isLoading && totalItemCount <= (lastVisibleItem + 30)) {
+//                    new updateRecycler ().execute ();
+//                    isLoading = true;
+//                }
+//            }
+//        });
         
 /*
         getParentFragment ().getView ().setOnKeyListener (new View.OnKeyListener () {
@@ -173,10 +232,10 @@ public class SwiggyContactsFragment extends Fragment {
             }
         });
 */
-    
-    
+        
+        
+/*
         etSearch.addTextChangedListener (new TextWatcher () {
-            
             @Override
             public void onTextChanged (CharSequence s, int start, int before, int count) {
                 if (s.length () > 0) {
@@ -185,40 +244,55 @@ public class SwiggyContactsFragment extends Fragment {
                     ivCancel.setVisibility (View.GONE);
                 }
             }
-        
-            @Override
-            public void beforeTextChanged (CharSequence s, int start, int count,
-                                           int after) {
             
+            @Override
+            public void beforeTextChanged (CharSequence s, int start, int count, int after) {
+                
             }
-        
+            
             @Override
             public void afterTextChanged (Editable s) {
-                tempCompanyList.clear ();
-                for (SwiggyCompany2 swiggyCompany2 : companyList) {
-                    if (swiggyCompany2.getName ().toUpperCase ().contains (s.toString ().toUpperCase ()) ||
-                            swiggyCompany2.getName ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
-                            swiggyCompany2.getCategory ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
-                            swiggyCompany2.getCategory ().toUpperCase ().contains (s.toString ().toUpperCase ())) {
-                        tempCompanyList.add (swiggyCompany2);
-                    }
+                if (s.toString ().length () == 0){
+                    companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
+                    rvContacts.setAdapter (companyAdapter);
+                    companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                        @Override
+                        public void onItemClick (View view, int position) {
+                            SwiggyCompany2 contact = companyDisplayList.get (position);
+                            android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                            new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                        }
+                    });
                 }
-            
-                companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), tempCompanyList);
-                rvContacts.setAdapter (companyAdapter);
-                companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
-                    @Override
-                    public void onItemClick (View view, int position) {
-                        SwiggyCompany2 contact = tempCompanyList.get (position);
-                        android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                        new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                if (s.toString ().length () >= 3) {
+                    companyDisplayList.clear ();
+                    for (SwiggyCompany2 swiggyCompany2 : companyAllList) {
+                        if (swiggyCompany2.getName ().toUpperCase ().contains (s.toString ().toUpperCase ()) ||
+                                swiggyCompany2.getName ().toLowerCase ().contains (s.toString ().toLowerCase ())){// ||
+//                                swiggyCompany2.getCategory ().toLowerCase ().contains (s.toString ().toLowerCase ()) ||
+//                                swiggyCompany2.getCategory ().toUpperCase ().contains (s.toString ().toUpperCase ())) {
+                            companyDisplayList.add (swiggyCompany2);
+                        }
                     }
-                });
-            
+                    
+                    companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
+                    rvContacts.setAdapter (companyAdapter);
+                    companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                        @Override
+                        public void onItemClick (View view, int position) {
+                            SwiggyCompany2 contact = companyDisplayList.get (position);
+                            android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                            new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                        }
+                    });
+                }
             }
         });
+*/
     
-        ivBack.setOnClickListener (new View.OnClickListener () {
+        ivBack.setOnClickListener (new View.OnClickListener ()
+    
+        {
             @Override
             public void onClick (View v) {
                 new Handler ().postDelayed (new Runnable () {
@@ -260,7 +334,9 @@ public class SwiggyContactsFragment extends Fragment {
             }
         });
     
-        ivCancel.setOnClickListener (new View.OnClickListener () {
+        ivCancel.setOnClickListener (new View.OnClickListener ()
+    
+        {
             @Override
             public void onClick (View v) {
                 etSearch.setText ("");
@@ -278,7 +354,7 @@ public class SwiggyContactsFragment extends Fragment {
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
                             if (getActivity () != null && isAdded ()) {
                                 if (response != null) {
-                                    companyList.clear ();
+                                    companyAllList.clear ();
                                     try {
                                         JSONObject jsonObj = new JSONObject (response);
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
@@ -288,7 +364,7 @@ public class SwiggyContactsFragment extends Fragment {
                                             filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
                                             for (int i = 0; i < jsonArrayCompany.length (); i++) {
                                                 JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
-                                                companyList.add (new SwiggyCompany2 (
+                                                companyAllList.add (new SwiggyCompany2 (
                                                         jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
                                                         R.drawable.ic_person,
                                                         jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
@@ -300,8 +376,10 @@ public class SwiggyContactsFragment extends Fragment {
                                                         jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
                                                         jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
                                             }
+//                                            onScrolledToBottom ();
+                                            companyDisplayList.addAll (companyAllList);
                                             companyAdapter.notifyDataSetChanged ();
-                                            rlMain.setVisibility (View.VISIBLE);
+                                            rvContacts.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                             new Handler ().postDelayed (new Runnable () {
                                                 @Override
@@ -380,4 +458,99 @@ public class SwiggyContactsFragment extends Fragment {
         shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
     }
+    
+    
+    private void onScrolledToBottom () {
+        if (companyDisplayList.size () < companyAllList.size ()) {
+            int x, y;
+            if ((companyAllList.size () - companyDisplayList.size ()) >= 20) {
+                x = companyDisplayList.size ();
+                y = x + 20;
+            } else {
+                x = companyDisplayList.size ();
+                y = x + companyAllList.size () - companyDisplayList.size ();
+            }
+            for (int i = x; i < y; i++) {
+                companyDisplayList.add (companyAllList.get (i));
+                Log.e ("karman", "company added " + i);
+            }
+        }
+        companyAdapter.notifyDataSetChanged ();
+    }
+    
+    
+    public class updateRecycler extends AsyncTask<String, Void, String> {
+        
+        int start;
+        
+        @Override
+        protected String doInBackground (String... params) {
+            start = companyDisplayList.size ();
+            if (companyDisplayList.size () < companyAllList.size ()) {
+                int x, y;
+                if ((companyAllList.size () - companyDisplayList.size ()) >= 20) {
+                    x = companyDisplayList.size ();
+                    y = x + 20;
+                } else {
+                    x = companyDisplayList.size ();
+                    y = x + companyAllList.size () - companyDisplayList.size ();
+                }
+                for (int i = x; i < y; i++) {
+                    companyDisplayList.add (companyAllList.get (i));
+                    Log.e ("karman", "company added in on background " + i);
+                }
+            }
+            return "Executed";
+        }
+        
+        @Override
+        protected void onPostExecute (String result) {
+            companyAdapter.notifyDataSetChanged ();
+            isLoading = false;
+        }
+        
+        @Override
+        protected void onPreExecute () {
+        }
+        
+        @Override
+        protected void onProgressUpdate (Void... values) {
+        }
+    }
+    
+    
+    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
+        
+        LinearLayoutManager layoutManager;
+        
+        public PaginationScrollListener (LinearLayoutManager layoutManager) {
+            this.layoutManager = layoutManager;
+        }
+        
+        @Override
+        public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled (recyclerView, dx, dy);
+            
+            int visibleItemCount = layoutManager.getChildCount ();
+            int totalItemCount = layoutManager.getItemCount ();
+            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition ();
+            
+            if (! isLoading () && ! isLastPage ()) {
+                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                        && firstVisibleItemPosition >= 0) {
+                    loadMoreItems ();
+                }
+            }
+        }
+        
+        protected abstract void loadMoreItems ();
+        
+        public abstract int getTotalPageCount ();
+        
+        public abstract boolean isLastPage ();
+        
+        public abstract boolean isLoading ();
+    }
+    
+    
 }

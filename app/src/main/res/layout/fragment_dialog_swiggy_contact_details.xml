@@ -19,6 +19,8 @@
         android:layout_alignBottom="@+id/ivCancel"
         android:layout_alignTop="@+id/ivCancel"
         android:layout_centerHorizontal="true"
+        android:layout_marginLeft="?attr/actionBarSize"
+        android:layout_marginRight="?attr/actionBarSize"
         android:gravity="center"
         android:text=""
         android:textColor="@color/primary_text2"

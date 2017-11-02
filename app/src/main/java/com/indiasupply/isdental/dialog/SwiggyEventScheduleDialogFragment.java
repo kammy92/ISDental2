@@ -218,8 +218,6 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
                         jsonObjectSchedules.getString ("schedule_image")
                 ));
             }
-        
-        
         } catch (JSONException e) {
             e.printStackTrace ();
         }
@@ -294,6 +292,9 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
                         })
                         .error (eventDay.getIcon ())
                         .into (holder.ivDate);
+            }
+            if (dayList.size () == 1) {
+                rlDate.setVisibility (View.GONE);
             }
         }
         

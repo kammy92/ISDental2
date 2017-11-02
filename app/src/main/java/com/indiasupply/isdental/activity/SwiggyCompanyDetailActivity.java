@@ -83,14 +83,22 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
     
+    int company_id;
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_company_detail);
+        getExtras ();
         initView ();
         initData ();
         initListener ();
         setData ();
+    }
+    
+    private void getExtras () {
+        Intent intent = getIntent ();
+        company_id = intent.getIntExtra (AppConfigTags.COMPANY_ID, 0);
     }
     
     private void initListener () {
@@ -185,8 +193,8 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (this)) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/1", true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/1",
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/" + company_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/" + company_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -212,7 +220,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                             rlOffer.setVisibility (View.GONE);
                                         }
                                         company_contacts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ();
-                                    
+    
                                         JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_PRODUCT_GROUPS);
                                         for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
                                             ArrayList<SwiggyProduct> productList = new ArrayList<> ();
@@ -245,7 +253,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
                                                 ));
                                             }
-                                        
+    
                                             if (jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE) == 1) {
                                                 RecyclerView rv = new RecyclerView (SwiggyCompanyDetailActivity.this);
                                                 recommendedProductAdapter = new SwiggyRecommendedProductAdapter (SwiggyCompanyDetailActivity.this, productList);
@@ -269,7 +277,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                                 rv.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
                                                 llDynamic.addView (rv);
                                             }
-                                        
+    
                                         }
                                         rlMain.setVisibility (View.VISIBLE);
                                         shimmerFrameLayout.setVisibility (View.GONE);
@@ -297,7 +305,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                             Utils.showSnackBar (SwiggyCompanyDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                         }
                     }) {
-            
+        
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();

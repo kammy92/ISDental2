@@ -14,6 +14,7 @@
     <color name="accent2">#009688</color>
     <color name="primary_text2">#272b3d</color>
     <color name="secondary_text2">#8a8c96</color>
+    <color name="tertiary_text2">#eeeeee</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
     <color name="app_background2">#ffffff</color>

@@ -41,16 +41,18 @@
                 android:text="EXPODENT"
                 android:textColor="@color/primary_text2"
                 android:textSize="@dimen/text_size_small"/>
-            <TextView
-                android:id="@+id/tvEventDetails"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:padding="@dimen/activity_margin_small"
-                android:text="10-12 Aug,  Chandigarh"
-                android:textColor="@color/primary_text2"
-                android:textSize="@dimen/text_size_small"/>
         </RelativeLayout>
+        <TextView
+            android:id="@+id/tvEventDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:background="#ddffffff"
+            android:padding="@dimen/activity_margin_small"
+            android:text="10-12 Aug,  Chandigarh"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_small"/>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

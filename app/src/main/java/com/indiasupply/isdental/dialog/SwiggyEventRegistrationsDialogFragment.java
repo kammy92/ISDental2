@@ -116,7 +116,8 @@ public class SwiggyEventRegistrationsDialogFragment extends DialogFragment {
         webSetting.setJavaScriptEnabled (true);
         webSetting.setDisplayZoomControls (true);
         //htmlWebView.loadUrl ("https://www.indiasupply.com/");
-        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder ("<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + eventRegistration);
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (
+                "<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + eventRegistration);
         webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
     
     

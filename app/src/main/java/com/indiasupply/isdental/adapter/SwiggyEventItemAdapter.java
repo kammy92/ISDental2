@@ -1,12 +1,14 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -69,6 +71,9 @@ public class SwiggyEventItemAdapter extends RecyclerView.Adapter<SwiggyEventItem
                     .error (eventItem.getIcon ())
                     .into (holder.ivItemImage);
         }
+        if (! eventItem.isEnabled ()) {
+            holder.rlItem.setBackgroundColor (Color.parseColor ("#99FFFFFF"));
+        }
     }
     
     @Override
@@ -88,12 +93,14 @@ public class SwiggyEventItemAdapter extends RecyclerView.Adapter<SwiggyEventItem
         TextView tvItemName;
         ImageView ivItemImage;
         ProgressBar progressBar;
+        RelativeLayout rlItem;
         
         public ViewHolder (View view) {
             super (view);
             tvItemName = (TextView) view.findViewById (R.id.tvItemName);
             ivItemImage = (ImageView) view.findViewById (R.id.ivItemImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
+            rlItem = (RelativeLayout) view.findViewById (R.id.rlItem);
             view.setOnClickListener (this);
         }
         
