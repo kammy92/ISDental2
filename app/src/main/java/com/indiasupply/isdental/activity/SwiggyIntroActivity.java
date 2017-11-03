@@ -37,7 +37,7 @@ public class SwiggyIntroActivity extends WelcomeActivity {
                 .page (new ParallaxPage (R.layout.parallax_example,
                         "Easy parallax",
                         "Supply a layout and parallax effects will automatically be applied")
-                        .lastParallaxFactor (0.5f)
+                        .lastParallaxFactor (1.0f)
                         .background (R.color.material_deep_purple))
                 .page (new BasicPage (R.drawable.ic_home_events,
                         "Customizable",
