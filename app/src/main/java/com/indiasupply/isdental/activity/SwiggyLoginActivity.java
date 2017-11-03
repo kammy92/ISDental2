@@ -1,6 +1,8 @@
 
 package com.indiasupply.isdental.activity;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +17,7 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -28,6 +31,8 @@ import android.text.style.ClickableSpan;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,7 +70,8 @@ import java.util.Map;
 
 public class SwiggyLoginActivity extends AppCompatActivity {
     private static final int REQUEST_WELCOME_SCREEN_RESULT = 13;
-   
+    public static int PERMISSION_REQUEST_CODE = 1;
+    
     EditText etMobile;
     TextView tvName;
     EditText etName;
@@ -88,7 +94,7 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     ImageView ivNext;
     TextView tvGetStarted;
     LinearLayout llFields;
-    
+
     int otp;
     private String[] user_type = new String[] {"Dentist", "Student", "Dealer", "Others"};
     
@@ -99,13 +105,18 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_login);
+        Window window = getWindow ();
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
+        }
         initView ();
         initData ();
         initListener ();
-    
+        checkPermissions ();
         sampleWelcomeScreen = new WelcomeHelper (this, SwiggyIntroActivity.class);
         sampleWelcomeScreen.forceShow (REQUEST_WELCOME_SCREEN_RESULT);
-    
     }
     
     private void initData () {
@@ -711,6 +722,80 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                     startActivity (dialogIntent);
                 }
             });
+        }
+    }
+    
+    public void checkPermissions () {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission (Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission (Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                
+                requestPermissions (new String[] {
+                                Manifest.permission.RECEIVE_SMS,
+                                Manifest.permission.READ_SMS,
+                        },
+                        PERMISSION_REQUEST_CODE);
+            }
+/*
+            if (checkSelfPermission (Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions (new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.PERMISSION_REQUEST_CODE);
+            }
+            if (checkSelfPermission (Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions (new String[] {Manifest.permission.INTERNET}, MainActivity.PERMISSION_REQUEST_CODE);
+            }
+            if (checkSelfPermission (Manifest.permission.RECEIVE_BOOT_COMPLETED) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions (new String[] {Manifest.permission.RECEIVE_BOOT_COMPLETED,}, MainActivity.PERMISSION_REQUEST_CODE);
+            }
+            if (checkSelfPermission (Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions (new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.PERMISSION_REQUEST_CODE);
+            }
+*/
+        }
+    }
+    
+    @Override
+    @TargetApi(23)
+    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult (requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (int i = 0, len = permissions.length; i < len; i++) {
+                String permission = permissions[i];
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    boolean showRationale = shouldShowRequestPermissionRationale (permission);
+                    if (! showRationale) {
+                        new MaterialDialog.Builder (SwiggyLoginActivity.this)
+                                .content ("Permission are required please enable them on the App Setting page")
+                                .positiveText ("OK")
+                                .theme (Theme.LIGHT)
+                                .contentColorRes (R.color.primary_text2)
+                                .positiveColorRes (R.color.primary_text2)
+                                .onPositive (new MaterialDialog.SingleButtonCallback () {
+                                    @Override
+                                    public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss ();
+                                        Intent intent = new Intent (Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts ("package", getPackageName (), null));
+                                        startActivity (intent);
+                                    }
+                                }).show ();
+                        // user denied flagging NEVER ASK AGAIN
+                        // you can either enable some fall back,
+                        // disable features of your app
+                        // or open another dialog explaining
+                        // again the permission and directing to
+                        // the app setting
+                    } else if (Manifest.permission.RECEIVE_SMS.equals (permission)) {
+//                        Utils.showToast (this, "Camera Permission is required");
+//                        showRationale (permission, R.string.permission_denied_contacts);
+                        // user denied WITHOUT never ask again
+                        // this is a good place to explain the user
+                        // why you need the permission and ask if he want
+                        // to accept it (the rationale)
+                    } else if (Manifest.permission.READ_SMS.equals (permission)) {
+                    }
+                }
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+            }
         }
     }
     

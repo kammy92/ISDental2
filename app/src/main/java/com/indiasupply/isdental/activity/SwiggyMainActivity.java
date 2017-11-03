@@ -57,6 +57,12 @@ public class SwiggyMainActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activtiy_swiggy_main);
+        Window window = getWindow ();
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
+        }
         initView ();
         initData ();
         initListener ();
@@ -73,12 +79,6 @@ public class SwiggyMainActivity extends AppCompatActivity {
         Utils.setTypefaceToAllViews (this, clMain);
         Utils.disableShiftMode (bottomNavigationView);
         userDetailsPref = UserDetailsPref.getInstance ();
-        Window window = getWindow ();
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
-        }
         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
         transaction.replace (R.id.frame_layout, SwiggyFeaturedFragment.newInstance ());
         transaction.commit ();

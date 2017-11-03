@@ -286,5 +286,8 @@ public class AppConfigTags {
     public static final String SWIGGY_BANNER_URL = "banner_url";
     public static final String SWIGGY_BANNER_TYPE = "banner_type";
     public static final String SWIGGY_BANNER_IMAGE = "banner_image";
+    
+    public static final String SWIGGY_TYPE = "type";
+    public static final String SWIGGY_TYPE_ID = "type_id";
 }
 
