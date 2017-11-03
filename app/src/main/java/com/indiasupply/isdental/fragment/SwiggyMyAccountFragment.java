@@ -26,8 +26,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyAccountItemAdapter;
 import com.indiasupply.isdental.dialog.SwiggyEditProfileDialogFragment;
+import com.indiasupply.isdental.dialog.SwiggyMyAccountAboutUsDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyMyAccountEnquiriesDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyMyAccountFaqDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyMyAccountFavouritesDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyMyAccountHelpSupportDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyMyAccountOffersDialogFragment;
@@ -77,7 +77,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     String myOffers = "";
     String myEnquiries = "";
     String htmlHelpSupport = "";
-    String htmlFaqs = "";
+    String htmlAboutUs = "";
     String htmlTermsOfUse = "";
     String htmlPrivacyPolicy = "";
     
@@ -192,7 +192,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                         frag5.show (ft, "2");
                         break;
                     case 6:
-                        SwiggyMyAccountFaqDialogFragment frag6 = SwiggyMyAccountFaqDialogFragment.newInstance (htmlFaqs);
+                        SwiggyMyAccountAboutUsDialogFragment frag6 = SwiggyMyAccountAboutUsDialogFragment.newInstance (htmlAboutUs);
                         frag6.show (ft, "2");
                         break;
                     case 7:
@@ -209,14 +209,14 @@ public class SwiggyMyAccountFragment extends Fragment {
     }
     
     private void setData () {
-        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_favourite, "My Favourites", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_favourite, "My Offers", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_favourite, "My Enquiries", "", ""));
-        
-        myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_favourite, "Help & Support", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_favourite, "FAQs", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_favourite, "Terms of Use", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_favourite, "Privacy Policy", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_my_account_favourites, "My Favourites", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
+    
+        myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
+        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
+        myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_my_account_terms_of_use, "Terms of Use", "", ""));
+        myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_my_account_privacy_policy, "Privacy Policy", "", ""));
         
         myAccountItemAdapter.notifyDataSetChanged ();
     
@@ -242,7 +242,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                                             myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
                                             myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
                                             htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
-                                            htmlFaqs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_FAQS);
+                                            htmlAboutUs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
                                             htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
                                             htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
                                             rlMain.setVisibility (View.VISIBLE);

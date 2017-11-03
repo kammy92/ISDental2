@@ -27,7 +27,7 @@ import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.Utils;
 
 
-public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
+public class SwiggyMyAccountAboutUsDialogFragment extends DialogFragment {
     ImageView ivCancel;
     WebView webView;
     ProgressBar progressBar;
@@ -36,10 +36,10 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
     
     String htmlFaq = "";
     
-    public static SwiggyMyAccountFaqDialogFragment newInstance (String htmlFaq) {
-        SwiggyMyAccountFaqDialogFragment fragment = new SwiggyMyAccountFaqDialogFragment ();
+    public static SwiggyMyAccountAboutUsDialogFragment newInstance (String htmlFaq) {
+        SwiggyMyAccountAboutUsDialogFragment fragment = new SwiggyMyAccountAboutUsDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_HTML_FAQS, htmlFaq);
+        args.putString (AppConfigTags.SWIGGY_HTML_ABOUT_US, htmlFaq);
         fragment.setArguments (args);
         return fragment;
     }
@@ -95,7 +95,7 @@ public class SwiggyMyAccountFaqDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        htmlFaq = bundle.getString (AppConfigTags.SWIGGY_HTML_FAQS);
+        htmlFaq = bundle.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
     }
     
     private void initData () {

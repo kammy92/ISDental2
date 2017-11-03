@@ -2,7 +2,6 @@ package com.indiasupply.isdental.activity;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.utils.Constants;
-import com.stephentuso.welcome.BasicPage;
 import com.stephentuso.welcome.ParallaxPage;
 import com.stephentuso.welcome.WelcomeActivity;
 import com.stephentuso.welcome.WelcomeConfiguration;
@@ -24,25 +23,37 @@ public class SwiggyIntroActivity extends WelcomeActivity {
                 .doneButtonTypefacePath (Constants.font_name)
                 .skipButtonTypefacePath (Constants.font_name)
                 .animateButtons (true)
+        
                 .canSkip (false)
                 .swipeToDismiss (false)
-                .page (new BasicPage (R.drawable.ic_home_featured,
-                        "Welcome",
-                        "An Android library for onboarding, instructional screens, and more")
-                        .background (R.color.material_deep_orange))
-                .page (new BasicPage (R.drawable.ic_home_services,
-                        "Simple to use",
-                        "Add a welcome screen to your app with only a few lines of code.")
-                        .background (R.color.material_red))
-                .page (new ParallaxPage (R.layout.parallax_example,
-                        "Easy parallax",
-                        "Supply a layout and parallax effects will automatically be applied")
-                        .lastParallaxFactor (1.0f)
-                        .background (R.color.material_deep_purple))
-                .page (new BasicPage (R.drawable.ic_home_events,
-                        "Customizable",
-                        "All elements of the welcome screen can be customized easily.")
-                        .background (R.color.md_material_blue_800))
+                .page (new ParallaxPage (R.layout.intro_screen_1,
+                        "Offers",
+                        "Offers Description")
+                        .lastParallaxFactor (0.5f)
+                        .headerColorResource (this, R.color.primary_text2)
+                        .descriptionColorResource (this, R.color.primary_text2)
+                        .background (R.color.intro_screen_1))
+                .page (new ParallaxPage (R.layout.intro_screen_2,
+                        "Events",
+                        "Events Description")
+                        .lastParallaxFactor (0.5f)
+                        .headerColorResource (this, R.color.primary_text2)
+                        .descriptionColorResource (this, R.color.primary_text2)
+                        .background (R.color.intro_screen_2))
+                .page (new ParallaxPage (R.layout.intro_screen_3,
+                        "Contacts",
+                        "Contacts Description")
+                        .lastParallaxFactor (0.5f)
+                        .headerColorResource (this, R.color.primary_text2)
+                        .descriptionColorResource (this, R.color.primary_text2)
+                        .background (R.color.intro_screen_3))
+                .page (new ParallaxPage (R.layout.intro_screen_4,
+                        "Service",
+                        "Service Description")
+                        .lastParallaxFactor (0.5f)
+                        .headerColorResource (this, R.color.primary_text2)
+                        .descriptionColorResource (this, R.color.primary_text2)
+                        .background (R.color.intro_screen_4))
                 .exitAnimation (R.anim.slide_out_left)
                 .build ();
     }

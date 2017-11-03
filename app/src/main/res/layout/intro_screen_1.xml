@@ -31,6 +31,6 @@
         android:layout_marginRight="20dp"
         android:layout_marginStart="0dp"
         android:layout_marginTop="20dp"
-        android:padding="150dp"
+        android:padding="120dp"
         android:src="@drawable/ic_intro_1_c"/>
 </RelativeLayout>

@@ -272,7 +272,7 @@ public class AppConfigTags {
     public static final String SWIGGY_ENQUIRIES = "enquiries";
     public static final String SWIGGY_HTML_PRIVACY_POLICY = "html_privacy_policy";
     public static final String SWIGGY_HTML_TERMS_OF_USE = "html_terms_of_use";
-    public static final String SWIGGY_HTML_FAQS = "html_faqs";
+    public static final String SWIGGY_HTML_ABOUT_US = "html_about_us";
     public static final String SWIGGY_HTML_HELP_AND_SUPPORT = "html_help_and_support";
     
     public static final String SWIGGY_COMPANY_PRODUCT_GROUPS = "product_groups";

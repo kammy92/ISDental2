@@ -28,6 +28,12 @@
     <color name="view_color">#f0f0f0</color>
 
 
+    <color name="intro_screen_1">#d46c6c</color>
+    <color name="intro_screen_2">#88c3e3</color>
+    <color name="intro_screen_3">#eba36c</color>
+    <color name="intro_screen_4">#84cfbc</color>
+
+
     <color name="accent">#cccccc</color>
     <color name="primary_text">#fff</color>
     <color name="secondary_text">#fff</color>
