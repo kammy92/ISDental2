@@ -4,20 +4,16 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -49,6 +45,7 @@ import java.util.Map;
 
 
 public class SwiggyMainActivity extends AppCompatActivity {
+    public static final int REQUEST_LOGIN_SCREEN_RESULT = 2;
     CoordinatorLayout clMain;
     BottomNavigationView bottomNavigationView;
     UserDetailsPref userDetailsPref;
@@ -57,17 +54,17 @@ public class SwiggyMainActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activtiy_swiggy_main);
-        Window window = getWindow ();
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
-        }
         initView ();
         initData ();
         initListener ();
-        initApplication ();
         isLogin ();
+    }
+    
+    private void initFirstFragment () {
+        bottomNavigationView.getMenu ().findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured_filled);
+        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
+        transaction.replace (R.id.frame_layout, SwiggyFeaturedFragment.newInstance ());
+        transaction.commit ();
     }
     
     private void initView () {
@@ -76,24 +73,40 @@ public class SwiggyMainActivity extends AppCompatActivity {
     }
     
     private void initData () {
+//        Window window = getWindow ();
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
+//        }
         Utils.setTypefaceToAllViews (this, clMain);
         Utils.disableShiftMode (bottomNavigationView);
-        userDetailsPref = UserDetailsPref.getInstance ();
-        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
-        transaction.replace (R.id.frame_layout, SwiggyFeaturedFragment.newInstance ());
-        transaction.commit ();
-        
         Menu menu = bottomNavigationView.getMenu ();
         menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
     }
     
     private void isLogin () {
+        userDetailsPref = UserDetailsPref.getInstance ();
         if (userDetailsPref.getStringPref (SwiggyMainActivity.this, UserDetailsPref.USER_LOGIN_KEY).length () == 0) {
             Intent intent = new Intent (SwiggyMainActivity.this, SwiggyLoginActivity.class);
-            startActivity (intent);
-            finish ();
+            startActivityForResult (intent, REQUEST_LOGIN_SCREEN_RESULT);
+            overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
         } else {
+            initFirstFragment ();
             initApplication ();
+        }
+    }
+    
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        super.onActivityResult (requestCode, resultCode, data);
+        if (requestCode == REQUEST_LOGIN_SCREEN_RESULT) {
+            if (data.getBooleanExtra ("LOGIN", false)) {
+                initFirstFragment ();
+                initApplication ();
+            } else {
+                finish ();
+            }
         }
     }
     
@@ -103,7 +116,6 @@ public class SwiggyMainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected (@NonNull MenuItem item) {
                         Fragment selectedFragment = null;
-    
                         Menu menu = bottomNavigationView.getMenu ();
                         menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
                         menu.findItem (R.id.action_item2).setIcon (R.drawable.ic_home_events);

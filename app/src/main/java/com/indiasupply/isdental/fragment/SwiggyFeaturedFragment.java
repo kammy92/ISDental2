@@ -29,6 +29,7 @@ import com.indiasupply.isdental.model.SwiggyBanner;
 import com.indiasupply.isdental.model.SwiggyCompany;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.AppDataPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
@@ -37,6 +38,7 @@ import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -62,6 +64,7 @@ public class SwiggyFeaturedFragment extends Fragment {
     
     CoordinatorLayout clMain;
     
+    AppDataPref appDataPref;
     
     public static SwiggyFeaturedFragment newInstance () {
         return new SwiggyFeaturedFragment ();
@@ -93,7 +96,8 @@ public class SwiggyFeaturedFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), btFilter);
-    
+        appDataPref = AppDataPref.getInstance ();
+        
         bannerAdapter = new SwiggyBannerAdapter (getActivity (), bannerList);
         rvBanners.setAdapter (bannerAdapter);
         rvBanners.setHasFixedSize (true);
@@ -136,6 +140,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            appDataPref.putStringPref (getActivity (), AppDataPref.HOME_FEATURED, response);
                                             JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
                                             for (int i = 0; i < jsonArrayBanners.length (); i++) {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
@@ -169,14 +174,20 @@ public class SwiggyFeaturedFragment extends Fragment {
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
-                                            Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            if (! showOfflineData ()) {
+                                                Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            }
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace ();
-                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        if (! showOfflineData ()) {
+                                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        }
                                     }
                                 } else {
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    if (! showOfflineData ()) {
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
                                     Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                                 }
                             }
@@ -191,7 +202,9 @@ public class SwiggyFeaturedFragment extends Fragment {
                                 if (response != null && response.data != null) {
                                     Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                                 }
-                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                if (! showOfflineData ()) {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
                             }
                         }
                     }) {
@@ -216,14 +229,16 @@ public class SwiggyFeaturedFragment extends Fragment {
             Utils.sendRequest (strRequest, 5);
         } else {
             if (getActivity () != null && isAdded ()) {
-                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity (dialogIntent);
-                    }
-                });
+                if (! showOfflineData ()) {
+                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                        @Override
+                        public void onClick (View v) {
+                            Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                            dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity (dialogIntent);
+                        }
+                    });
+                }
             }
         }
     }
@@ -244,5 +259,55 @@ public class SwiggyFeaturedFragment extends Fragment {
     public void onPause () {
         shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
+    }
+    
+    private boolean showOfflineData () {
+        String response = appDataPref.getStringPref (getActivity (), AppDataPref.HOME_FEATURED);
+        if (response.length () > 0) {
+            try {
+                JSONObject jsonObj = new JSONObject (response);
+                boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                if (! is_error) {
+                    JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                    for (int i = 0; i < jsonArrayBanners.length (); i++) {
+                        JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
+                        bannerList.add (new SwiggyBanner (
+                                jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
+                                R.drawable.default_banner,
+                                jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
+                                jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
+                                jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
+                                jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
+                        ));
+                    }
+                    bannerAdapter.notifyDataSetChanged ();
+                    JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                    for (int j = 0; j < jsonArrayCompanies.length (); j++) {
+                        JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
+                        companyList.add (new SwiggyCompany (false,
+                                jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                R.drawable.ic_person,
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_OFFERS),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
+                        ));
+                    }
+                    companyAdapter.notifyDataSetChanged ();
+                    rlMain.setVisibility (View.VISIBLE);
+                    shimmerFrameLayout.setVisibility (View.GONE);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace ();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

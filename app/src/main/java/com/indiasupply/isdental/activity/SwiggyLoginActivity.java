@@ -17,7 +17,6 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -32,7 +31,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -94,7 +92,7 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     ImageView ivNext;
     TextView tvGetStarted;
     LinearLayout llFields;
-
+    
     int otp;
     private String[] user_type = new String[] {"Dentist", "Student", "Dealer", "Others"};
     
@@ -106,17 +104,26 @@ public class SwiggyLoginActivity extends AppCompatActivity {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_login);
         Window window = getWindow ();
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
-        }
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+//            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
+//        }
+
         initView ();
         initData ();
         initListener ();
         checkPermissions ();
-        sampleWelcomeScreen = new WelcomeHelper (this, SwiggyIntroActivity.class);
+
+
+//        new Handler().postDelayed (new Runnable () {
+//            @Override
+//            public void run () {
+        sampleWelcomeScreen = new WelcomeHelper (SwiggyLoginActivity.this, SwiggyIntroActivity.class);
         sampleWelcomeScreen.forceShow (REQUEST_WELCOME_SCREEN_RESULT);
+//
+//            }
+//        }, 4000);
     }
     
     private void initData () {
@@ -658,10 +665,16 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                                         userDetailsPref.putStringPref (SwiggyLoginActivity.this, UserDetailsPref.USER_MOBILE, jsonObj.getString (AppConfigTags.USER_MOBILE));
                                         userDetailsPref.putStringPref (SwiggyLoginActivity.this, UserDetailsPref.USER_TYPE, jsonObj.getString (AppConfigTags.USER_TYPE));
                                         userDetailsPref.putStringPref (SwiggyLoginActivity.this, UserDetailsPref.USER_LOGIN_KEY, jsonObj.getString (AppConfigTags.USER_LOGIN_KEY));
-                                        Intent intent = new Intent (SwiggyLoginActivity.this, SwiggyMainActivity.class);
-                                        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                        startActivity (intent);
+    
+                                        Intent intent = new Intent ();
+                                        intent.putExtra ("LOGIN", true);
+                                        setResult (SwiggyMainActivity.REQUEST_LOGIN_SCREEN_RESULT, intent);
+                                        finish ();
                                         overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+//                                        Intent intent = new Intent (SwiggyLoginActivity.this, SwiggyMainActivity.class);
+//                                        intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                        startActivity (intent);
+//                                        overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                                     } else {
                                         Utils.showSnackBar (SwiggyLoginActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
@@ -816,14 +829,13 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     }
     
     @Override
-    protected void onSaveInstanceState (Bundle outState) {
-        super.onSaveInstanceState (outState);
-        // This is needed to prevent welcome screens from being
-        // automatically shown multiple times
-        
-        // This is the only one needed because it is the only one that
-        // is shown automatically. The others are only force shown.
-//        sampleWelcomeScreen.onSaveInstanceState (outState);
+    public void onBackPressed () {
+        Intent intent = new Intent ();
+        intent.putExtra ("LOGIN", false);
+        setResult (SwiggyMainActivity.REQUEST_LOGIN_SCREEN_RESULT, intent);
+        finish ();
+        overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+//        super.onBackPressed ();
     }
     
     class CustomListener implements View.OnClickListener {
@@ -917,4 +929,5 @@ public class SwiggyLoginActivity extends AppCompatActivity {
             }
         }
     }
+    
 }

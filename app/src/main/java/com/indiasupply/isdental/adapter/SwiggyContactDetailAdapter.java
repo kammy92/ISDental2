@@ -78,6 +78,12 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                 break;
         }
     
+        if (contactsDetail.is_favourite ()) {
+            holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite_filled);
+        } else {
+            holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite);
+        }
+    
     
         holder.ivContactFavourite.setOnClickListener (new View.OnClickListener () {
             @Override

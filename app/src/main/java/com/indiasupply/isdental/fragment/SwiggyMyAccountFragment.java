@@ -36,6 +36,7 @@ import com.indiasupply.isdental.dialog.SwiggyMyAccountTermsofUseDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyAccountItem;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.AppDataPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
@@ -80,6 +81,8 @@ public class SwiggyMyAccountFragment extends Fragment {
     String htmlAboutUs = "";
     String htmlTermsOfUse = "";
     String htmlPrivacyPolicy = "";
+    
+    AppDataPref appDataPref;
     
     public static SwiggyMyAccountFragment newInstance () {
         SwiggyMyAccountFragment fragment = new SwiggyMyAccountFragment ();
@@ -129,6 +132,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvMyAccount);
+        appDataPref = AppDataPref.getInstance ();
         rvMyAccount.setNestedScrollingEnabled (false);
         PackageInfo pInfo = null;
         try {
@@ -234,6 +238,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            appDataPref.putStringPref (getActivity (), AppDataPref.HOME_ACCOUNT, response);
                                             tvUserName.setText (jsonObj.getString (AppConfigTags.USER_NAME).toUpperCase ());
                                             tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
                                             tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
@@ -248,14 +253,20 @@ public class SwiggyMyAccountFragment extends Fragment {
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
-                                            Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            if (! showOfflineData ()) {
+                                                Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            }
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace ();
-                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        if (! showOfflineData ()) {
+                                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        }
                                     }
                                 } else {
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    if (! showOfflineData ()) {
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
                                     Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                                 }
                             }
@@ -270,7 +281,9 @@ public class SwiggyMyAccountFragment extends Fragment {
                                 if (response != null && response.data != null) {
                                     Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                                 }
-                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                if (! showOfflineData ()) {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
                             }
                         }
                     }) {
@@ -288,14 +301,16 @@ public class SwiggyMyAccountFragment extends Fragment {
             Utils.sendRequest (strRequest, 5);
         } else {
             if (getActivity () != null && isAdded ()) {
-                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity (dialogIntent);
-                    }
-                });
+                if (! showOfflineData ()) {
+                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                        @Override
+                        public void onClick (View v) {
+                            Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                            dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity (dialogIntent);
+                        }
+                    });
+                }
             }
         }
     }
@@ -316,5 +331,36 @@ public class SwiggyMyAccountFragment extends Fragment {
     public void onPause () {
         shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
+    }
+    
+    private boolean showOfflineData () {
+        String response = appDataPref.getStringPref (getActivity (), AppDataPref.HOME_ACCOUNT);
+        if (response.length () > 0) {
+            try {
+                JSONObject jsonObj = new JSONObject (response);
+                boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                if (! is_error) {
+                    tvUserName.setText (jsonObj.getString (AppConfigTags.USER_NAME).toUpperCase ());
+                    tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
+                    tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
+                    
+                    myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
+                    myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
+                    myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
+                    htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
+                    htmlAboutUs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
+                    htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
+                    htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
+                    rlMain.setVisibility (View.VISIBLE);
+                    shimmerFrameLayout.setVisibility (View.GONE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

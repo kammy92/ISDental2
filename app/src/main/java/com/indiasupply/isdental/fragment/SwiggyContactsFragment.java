@@ -2,7 +2,6 @@ package com.indiasupply.isdental.fragment;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -37,6 +36,7 @@ import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyCompany2;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.AppDataPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
@@ -73,6 +73,7 @@ public class SwiggyContactsFragment extends Fragment {
     String filters = "";
     boolean isLoading = false;
     
+    AppDataPref appDataPref;
     
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
@@ -108,6 +109,7 @@ public class SwiggyContactsFragment extends Fragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
+        appDataPref = AppDataPref.getInstance ();
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
 //        linearLayoutManager.setAutoMeasureEnabled (false);
     
@@ -300,6 +302,7 @@ public class SwiggyContactsFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            appDataPref.putStringPref (getActivity (), AppDataPref.HOME_CONTACTS, response);
                                             JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                                             filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
                                             for (int i = 0; i < jsonArrayCompany.length (); i++) {
@@ -329,15 +332,21 @@ public class SwiggyContactsFragment extends Fragment {
                                                 }
                                             }, 500);
                                         } else {
-                                            Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            if (! showOfflineData ()) {
+                                                Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            }
                                         }
                                     } catch (Exception e) {
                                         e.printStackTrace ();
-                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        if (! showOfflineData ()) {
+                                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        }
                                     }
                                 } else {
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                                    if (! showOfflineData ()) {
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
                                 }
                             }
                         }
@@ -351,7 +360,9 @@ public class SwiggyContactsFragment extends Fragment {
                                 if (response != null && response.data != null) {
                                     Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                                 }
-                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                if (! showOfflineData ()) {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
                             }
                         }
                     }) {
@@ -369,14 +380,16 @@ public class SwiggyContactsFragment extends Fragment {
             Utils.sendRequest (strRequest, 5);
         } else {
             if (getActivity () != null && isAdded ()) {
-                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity (dialogIntent);
-                    }
-                });
+                if (! showOfflineData ()) {
+                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                        @Override
+                        public void onClick (View v) {
+                            Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                            dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity (dialogIntent);
+                        }
+                    });
+                }
             }
         }
     }
@@ -399,98 +412,49 @@ public class SwiggyContactsFragment extends Fragment {
         super.onPause ();
     }
     
-    
-    private void onScrolledToBottom () {
-        if (companyDisplayList.size () < companyAllList.size ()) {
-            int x, y;
-            if ((companyAllList.size () - companyDisplayList.size ()) >= 20) {
-                x = companyDisplayList.size ();
-                y = x + 20;
-            } else {
-                x = companyDisplayList.size ();
-                y = x + companyAllList.size () - companyDisplayList.size ();
-            }
-            for (int i = x; i < y; i++) {
-                companyDisplayList.add (companyAllList.get (i));
-                Log.e ("karman", "company added " + i);
-            }
-        }
-        companyAdapter.notifyDataSetChanged ();
-    }
-    
-    
-    public class updateRecycler extends AsyncTask<String, Void, String> {
-        
-        int start;
-        
-        @Override
-        protected String doInBackground (String... params) {
-            start = companyDisplayList.size ();
-            if (companyDisplayList.size () < companyAllList.size ()) {
-                int x, y;
-                if ((companyAllList.size () - companyDisplayList.size ()) >= 20) {
-                    x = companyDisplayList.size ();
-                    y = x + 20;
-                } else {
-                    x = companyDisplayList.size ();
-                    y = x + companyAllList.size () - companyDisplayList.size ();
+    private boolean showOfflineData () {
+        String response = appDataPref.getStringPref (getActivity (), AppDataPref.HOME_CONTACTS);
+        if (response.length () > 0) {
+            companyAllList.clear ();
+            try {
+                JSONObject jsonObj = new JSONObject (response);
+                boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                if (! is_error) {
+                    JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                    filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
+                    for (int i = 0; i < jsonArrayCompany.length (); i++) {
+                        JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
+                        companyAllList.add (new SwiggyCompany2 (
+                                jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                R.drawable.ic_person,
+                                jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_EMAIL),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_WEBSITE),
+                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
+                                jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
+                    }
+                    companyDisplayList.addAll (companyAllList);
+                    companyAdapter.notifyDataSetChanged ();
+                    rvContacts.setVisibility (View.VISIBLE);
+                    shimmerFrameLayout.setVisibility (View.GONE);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            btSearch.setVisibility (View.VISIBLE);
+                            btFilter.setVisibility (View.VISIBLE);
+                        }
+                    }, 500);
                 }
-                for (int i = x; i < y; i++) {
-                    companyDisplayList.add (companyAllList.get (i));
-                    Log.e ("karman", "company added in on background " + i);
-                }
+            } catch (Exception e) {
+                e.printStackTrace ();
             }
-            return "Executed";
-        }
-        
-        @Override
-        protected void onPostExecute (String result) {
-            companyAdapter.notifyDataSetChanged ();
-            isLoading = false;
-        }
-        
-        @Override
-        protected void onPreExecute () {
-        }
-        
-        @Override
-        protected void onProgressUpdate (Void... values) {
+            return true;
+        } else {
+            return false;
         }
     }
-    
-    
-    public abstract class PaginationScrollListener extends RecyclerView.OnScrollListener {
-        
-        LinearLayoutManager layoutManager;
-        
-        public PaginationScrollListener (LinearLayoutManager layoutManager) {
-            this.layoutManager = layoutManager;
-        }
-        
-        @Override
-        public void onScrolled (RecyclerView recyclerView, int dx, int dy) {
-            super.onScrolled (recyclerView, dx, dy);
-            
-            int visibleItemCount = layoutManager.getChildCount ();
-            int totalItemCount = layoutManager.getItemCount ();
-            int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition ();
-            
-            if (! isLoading () && ! isLastPage ()) {
-                if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0) {
-                    loadMoreItems ();
-                }
-            }
-        }
-        
-        protected abstract void loadMoreItems ();
-        
-        public abstract int getTotalPageCount ();
-        
-        public abstract boolean isLastPage ();
-        
-        public abstract boolean isLoading ();
-    }
-    
-    
 }

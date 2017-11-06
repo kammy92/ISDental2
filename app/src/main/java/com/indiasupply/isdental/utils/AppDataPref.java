@@ -5,26 +5,22 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AppDataPref {
-    public static String HOME_FEATURED = "user_id";
-    public static String HOME_EVENTS = "user_name";
-    public static String HOME_ = "user_email";
-    public static String USER_MOBILE = "user_mobile";
-    public static String USER_TYPE = "user_type";
-    public static String USER_LOGIN_KEY = "user_login_key";
-    public static String USER_LOGIN_KEY_2 = "user_login_key_2";
-    public static String USER_FIREBASE_ID = "user_firebase_id";
-    public static String LOGGED_IN_SESSION = "logged_in_session";
-    private static AppDataPref userDetailsPref;
-    private String USER_DETAILS = "USER_DETAILS";
+    public static String HOME_FEATURED = "home_featured";
+    public static String HOME_EVENTS = "home_events";
+    public static String HOME_CONTACTS = "home_contacts";
+    public static String HOME_SERVICE = "home_service";
+    public static String HOME_ACCOUNT = "home_account";
+    private static AppDataPref appDataPref;
+    private String APP_DATA = "APP_DATA";
     
     public static AppDataPref getInstance () {
-        if (userDetailsPref == null)
-            userDetailsPref = new AppDataPref ();
-        return userDetailsPref;
+        if (appDataPref == null)
+            appDataPref = new AppDataPref ();
+        return appDataPref;
     }
     
     private SharedPreferences getPref (Context context) {
-        return context.getSharedPreferences (USER_DETAILS, Context.MODE_PRIVATE);
+        return context.getSharedPreferences (APP_DATA, Context.MODE_PRIVATE);
     }
     
     public String getStringPref (Context context, String key) {

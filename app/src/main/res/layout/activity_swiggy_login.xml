@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
-    android:background="@color/primary_text2">
+    android:background="@color/text_color_white">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -96,19 +96,19 @@
                 android:paddingRight="@dimen/activity_margin"
                 android:paddingTop="@dimen/activity_margin"
                 android:visibility="gone">
-                <TextView
-                    android:id="@+id/tvFieldsTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/llFields"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="@dimen/activity_margin"
-                    android:gravity="center"
-                    android:padding="@dimen/activity_margin_small"
-                    android:text="Enter your details to get started"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvFieldsTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_above="@+id/llFields"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginBottom="@dimen/activity_margin"
+                        android:gravity="center"
+                        android:padding="@dimen/activity_margin_small"
+                        android:text="Enter your details to get started"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -150,7 +150,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" android:indeterminateDuration="1000"
+                        android:layout_centerVertical="true"
+                        android:indeterminateDuration="1000"
                         android:indeterminateTint="@color/primary_text2"
                         android:indeterminateTintMode="src_in"
                         android:visibility="gone"/>
@@ -163,17 +164,17 @@
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
                     android:visibility="gone"/>
-                <EditText
-                    android:id="@+id/etName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/activity_margin"
-                    android:background="@drawable/swiggy_et_background"
-                    android:inputType="textPersonName|textCapWords"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"
-                    android:visibility="gone"/>
+                    <EditText
+                        android:id="@+id/etName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/activity_margin"
+                        android:background="@drawable/swiggy_et_background"
+                        android:inputType="textPersonName|textCapWords"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
@@ -249,19 +250,20 @@
                     android:textSize="@dimen/text_size_small"
                     android:visibility="gone"/>
             </RelativeLayout>
-            <TextView
-                android:id="@+id/tvTermsAndConditions"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="@dimen/activity_margin_small"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_marginRight="@dimen/activity_margin"
-                android:gravity="center"
-                android:text="By signing up you confirm that you have read &amp; agree to our company Privacy Policy &amp; Terms and Conditions"
-                android:textColor="@color/text_color_white"
-                android:textSize="@dimen/text_size_extra_small"
-                android:visibility="invisible"/>
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/tvTermsAndConditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="@dimen/activity_margin_small"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:gravity="center"
+                    android:text="By signing up you confirm that you have read &amp; agree to our company Privacy Policy &amp; Terms and Conditions"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_extra_small"
+                    android:textStyle="bold"
+                    android:visibility="invisible"/>
+            </RelativeLayout>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
