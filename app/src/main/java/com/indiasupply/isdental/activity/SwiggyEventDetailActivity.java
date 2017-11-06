@@ -34,6 +34,7 @@ import com.indiasupply.isdental.dialog.SwiggyEventInformationDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyEventRegistrationsDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyEventScheduleDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyEventSpeakerDialogFragment;
+import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.SwiggyEventItem;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -80,6 +81,8 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     TextView tvNoResultTitle;
     TextView tvNoResultDescription;
     TextView tvNoResultButton;
+    
+    DatabaseHandler db;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -161,6 +164,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     }
     
     private void initData () {
+        db = new DatabaseHandler (getApplicationContext ());
         Utils.setTypefaceToAllViews (this, tvTitleEventDetail);
         Window window = getWindow ();
         if (Build.VERSION.SDK_INT >= 21) {
@@ -220,6 +224,11 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
+                                        if (db.isEventExist (event_id)) {
+                                            db.updateEventDetails (event_id, response);
+                                        } else {
+                                            db.insertEvent (event_id, response);
+                                        }
                                         if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
                                             eventItemList.add (new SwiggyEventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
                                             eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
@@ -269,21 +278,29 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         
                                         eventItemAdapter.notifyDataSetChanged ();
     
-                                        updateLayoutOnResponse (0);
+                                        shimmerFrameLayout.setVisibility (View.GONE);
+                                        rlMain.setVisibility (View.VISIBLE);
+//                                       updateLayoutOnResponse (0);
                                     } else {
-                                        updateLayoutOnResponse (1);
-                                        Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        if (! showOfflineData (event_id)) {
+                                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        }
+//                                        updateLayoutOnResponse (1);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
                                     Utils.showLog (Log.WARN, AppConfigTags.EXCEPTION, e.getMessage (), true);
-                                    updateLayoutOnResponse (2);
-                                    Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    if (! showOfflineData (event_id)) {
+                                        Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
+//                                    updateLayoutOnResponse (2);
                                 }
                             } else {
-                                updateLayoutOnResponse (3);
+                                if (! showOfflineData (event_id)) {
+                                    Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
+//                                updateLayoutOnResponse (3);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
-                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
                         }
                     },
@@ -295,8 +312,10 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                             }
-                            updateLayoutOnResponse (4);
-                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+//                            updateLayoutOnResponse (4);
+                            if (! showOfflineData (event_id)) {
+                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                            }
                         }
                     }) {
     
@@ -319,19 +338,21 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             };
             Utils.sendRequest (strRequest, 60);
         } else {
-            updateLayoutOnResponse (5);
-            Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
-                @Override
-                public void onClick (View v) {
-                    Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
-                    dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity (dialogIntent);
-                }
-            });
+//            updateLayoutOnResponse (5);
+            if (! showOfflineData (event_id)) {
+                Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                        dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity (dialogIntent);
+                    }
+                });
+            }
         }
     }
     
-    
+    /*
     private void updateLayoutOnResponse (int type) {
 // type => 0(No error data fetched successfully)
 // type => 1(error true in server response)
@@ -418,7 +439,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
         tvNoResultButton.setText (button);
         tvNoResultButton.setOnClickListener (onClickListener);
     }
-    
+    */
     @Override
     public void onStart () {
         super.onStart ();
@@ -435,5 +456,74 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
     public void onPause () {
         shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
+    }
+    
+    private boolean showOfflineData (int event_id) {
+        if (db.isEventExist (event_id)) {
+            String response = db.getEventDetails (event_id);
+            try {
+                JSONObject jsonObj = new JSONObject (response);
+                boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                if (! is_error) {
+                    if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
+                        eventItemList.add (new SwiggyEventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
+                        eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
+                    }
+                    if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
+                        eventItemList.add (new SwiggyEventItem (true, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
+                        eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
+                    }
+                    if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
+                        eventItemList.add (new SwiggyEventItem (true, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
+                        eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
+                    }
+                    boolean flag = false;
+                    for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
+                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (flag) {
+                        eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+                        eventItemList.add (new SwiggyEventItem (true, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+                    }
+                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
+                        eventItemList.add (new SwiggyEventItem (true, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
+                        eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
+                    }
+                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
+                        eventItemList.add (new SwiggyEventItem (true, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
+                        eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+                    } else {
+                        eventItemList.add (new SwiggyEventItem (false, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
+                    }
+                    
+                    tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
+                    tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                    
+                    eventItemAdapter.notifyDataSetChanged ();
+                    
+                    shimmerFrameLayout.setVisibility (View.GONE);
+                    rlMain.setVisibility (View.VISIBLE);
+                }
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

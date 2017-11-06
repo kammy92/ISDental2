@@ -47,4 +47,5 @@ public class AppConfigURL {
     public static String URL_SWIGGY_GETOTP = BASE_URL2 + "user/otp";
     public static String URL_SWIGGY_REGISTER = BASE_URL2 + "user/register";
     public static String URL_SWIGGY_FAVOURITE = BASE_URL2 + "favourite";
+    public static String URL_SWIGGY_ENQUIRY = BASE_URL2 + "enquiry";
 }

@@ -244,7 +244,8 @@ public class SwiggyEventScheduleDialogFragment extends DialogFragment {
         public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
             final SwiggyEventScheduleDate eventDay = dayList.get (position);
             Utils.setTypefaceToAllViews (activity, holder.tvDate);
-            holder.tvDate.setText (Utils.convertTimeFormat (eventDay.getDate (), "yyyy-MM-dd", "dd/MM/yyyy"));
+//            holder.tvDate.setText (Utils.convertTimeFormat (eventDay.getDate (), "yyyy-MM-dd", "dd/MM/yyyy"));
+            holder.tvDate.setText (eventDay.getTitle ());
     
             if (eventDay.isSelected ()) {
                 eventScheduleTempList.clear ();

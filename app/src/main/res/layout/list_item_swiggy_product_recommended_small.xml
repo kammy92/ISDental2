@@ -89,19 +89,42 @@
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/tvAdd"
+        <RelativeLayout
+            android:id="@+id/rlButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:background="@drawable/button_background"
-            android:paddingBottom="@dimen/activity_margin_extra_small"
-            android:paddingLeft="@dimen/activity_margin_small"
-            android:paddingRight="@dimen/activity_margin_small"
-            android:paddingTop="@dimen/activity_margin_extra_small"
-            android:text="INQUIRE"
-            android:textColor="@color/accent2"
-            android:textSize="@dimen/text_size_small"/>
+            android:background="@drawable/button_background">
+            <TextView
+                android:id="@+id/tvButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/activity_margin_extra_small"
+                android:paddingLeft="@dimen/activity_margin_small"
+                android:paddingRight="@dimen/activity_margin_small"
+                android:paddingTop="@dimen/activity_margin_extra_small"
+                android:text="INQUIRE"
+                android:textColor="@color/accent2"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="gone"/>
+            <ImageView
+                android:id="@+id/ivButtonImage"
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:layout_centerInParent="true"/>
+            <ProgressBar
+                android:id="@+id/progressBarButton"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:paddingBottom="@dimen/activity_margin_extra_small"
+                android:paddingLeft="@dimen/activity_margin"
+                android:paddingRight="@dimen/activity_margin"
+                android:paddingTop="@dimen/activity_margin_extra_small"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
     </RelativeLayout>
 </RelativeLayout>

@@ -218,7 +218,7 @@ public class SwiggyMyAccountFragment extends Fragment {
         myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
     
         myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
+//        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
         myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_my_account_terms_of_use, "Terms of Use", "", ""));
         myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_my_account_privacy_policy, "Privacy Policy", "", ""));
         

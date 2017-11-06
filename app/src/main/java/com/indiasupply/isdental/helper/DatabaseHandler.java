@@ -18,12 +18,16 @@ import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     // Database Name
     private static final String DATABASE_NAME = "isdental";
     
     // Table Names
     private static final String TABLE_BANNERS = "tbl_banners";
+    
+    private static final String TABLE_EVENTS = "tbl_events";
+    private static final String TABLE_COMPANIES = "tbl_companies";
+    
     
     // Banners Table - column names
     private static final String BNNR_ID = "bnnr_id";
@@ -37,6 +41,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String BNNR_TYPE_EVENTS = "EVENTS";
     
     
+    private static final String EVNT_ID = "evnt_id";
+    private static final String EVNT_DETAILS = "evnt_details";
+    
+    private static final String CMPNY_ID = "cmpny_id";
+    private static final String CMPNY_DETAILS = "cmpny_details";
+    
+    
     // Notes table Create Statements
     private static final String CREATE_TABLE_BANNERS = "CREATE TABLE "
             + TABLE_BANNERS + "(" +
@@ -45,6 +56,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             BNNR_IMAGE + " TEXT," +
             BNNR_URL + " TEXT," +
             BNNR_TYPE + " TEXT" + ")";
+    
+    
+    // Notes table Create Statements
+    private static final String CREATE_TABLE_EVENTS = "CREATE TABLE "
+            + TABLE_EVENTS + "(" +
+            EVNT_ID + " INTEGER," +
+            EVNT_DETAILS + " TEXT" + ")";
+    
+    // Notes table Create Statements
+    private static final String CREATE_TABLE_COMPANIES = "CREATE TABLE "
+            + TABLE_COMPANIES + "(" +
+            CMPNY_ID + " INTEGER," +
+            CMPNY_DETAILS + " TEXT" + ")";
+    
     
     Context mContext;
     private boolean LOG_FLAG = false;
@@ -57,11 +82,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate (SQLiteDatabase db) {
         db.execSQL (CREATE_TABLE_BANNERS);
+        db.execSQL (CREATE_TABLE_COMPANIES);
+        db.execSQL (CREATE_TABLE_EVENTS);
     }
     
     @Override
     public void onUpgrade (SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL ("DROP TABLE IF EXISTS " + TABLE_BANNERS);
+        db.execSQL ("DROP TABLE IF EXISTS " + TABLE_EVENTS);
+        db.execSQL ("DROP TABLE IF EXISTS " + TABLE_COMPANIES);
         onCreate (db);
     }
     
@@ -178,4 +207,100 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Date date = new Date ();
         return dateFormat.format (date);
     }
+    
+    
+    public long insertEvent (int event_id, String event_details) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Creating Event", LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (EVNT_ID, event_id);
+        values.put (EVNT_DETAILS, event_details);
+        return db.insert (TABLE_EVENTS, null, values);
+    }
+    
+    public boolean isEventExist (int event_id) {
+        String countQuery = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + EVNT_ID + " = " + event_id;
+        SQLiteDatabase db = this.getReadableDatabase ();
+        Cursor cursor = db.rawQuery (countQuery, null);
+        int count = cursor.getCount ();
+        cursor.close ();
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int updateEventDetails (int event_id, String details) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Update event details in event id = " + event_id, LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (EVNT_DETAILS, details);
+        return db.update (TABLE_EVENTS, values, EVNT_ID + " = ?", new String[] {String.valueOf (event_id)});
+    }
+    
+    public String getEventDetails (int event_id) {
+        SQLiteDatabase db = this.getReadableDatabase ();
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + EVNT_ID + " = " + event_id;
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get event details where event ID = " + event_id, LOG_FLAG);
+        Cursor c = db.rawQuery (selectQuery, null);
+        if (c != null)
+            c.moveToFirst ();
+        return c.getString (c.getColumnIndex (EVNT_DETAILS));
+    }
+    
+    public void deleteEvent (int event_id) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Delete event where id = " + event_id, LOG_FLAG);
+        db.execSQL ("DELETE FROM " + TABLE_EVENTS + " WHERE " + EVNT_ID + " = " + event_id);
+    }
+    
+    
+    public long insertCompany (int company_id, String company_details) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Creating Company", LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (CMPNY_ID, company_id);
+        values.put (CMPNY_DETAILS, company_details);
+        return db.insert (TABLE_COMPANIES, null, values);
+    }
+    
+    public boolean isCompanyExist (int company_id) {
+        String countQuery = "SELECT * FROM " + TABLE_COMPANIES + " WHERE " + CMPNY_ID + " = " + company_id;
+        SQLiteDatabase db = this.getReadableDatabase ();
+        Cursor cursor = db.rawQuery (countQuery, null);
+        int count = cursor.getCount ();
+        cursor.close ();
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public int updateCompanyDetails (int company_id, String details) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Update company details in company id = " + company_id, LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (CMPNY_DETAILS, details);
+        return db.update (TABLE_COMPANIES, values, CMPNY_ID + " = ?", new String[] {String.valueOf (company_id)});
+    }
+    
+    public String getCompanyDetails (int company_id) {
+        SQLiteDatabase db = this.getReadableDatabase ();
+        String selectQuery = "SELECT * FROM " + TABLE_COMPANIES + " WHERE " + CMPNY_ID + " = " + company_id;
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get company details where company ID = " + company_id, LOG_FLAG);
+        Cursor c = db.rawQuery (selectQuery, null);
+        if (c != null)
+            c.moveToFirst ();
+        return c.getString (c.getColumnIndex (CMPNY_DETAILS));
+    }
+    
+    public void deleteCompany (int company_id) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Delete company where id = " + company_id, LOG_FLAG);
+        db.execSQL ("DELETE FROM " + TABLE_COMPANIES + " WHERE " + CMPNY_ID + " = " + company_id);
+    }
+    
+    
 }

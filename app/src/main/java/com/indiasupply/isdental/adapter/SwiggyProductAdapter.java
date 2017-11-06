@@ -2,17 +2,34 @@ package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.SwiggyProduct;
+import com.indiasupply.isdental.utils.AppConfigTags;
+import com.indiasupply.isdental.utils.AppConfigURL;
+import com.indiasupply.isdental.utils.Constants;
+import com.indiasupply.isdental.utils.NetworkConnection;
+import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 
 public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdapter.ViewHolder> {
@@ -33,39 +50,47 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
     }
     
     @Override
-    public void onBindViewHolder (ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
-        final SwiggyProduct swiggyProduct = swiggyProductList.get (position);
+    public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
+        final SwiggyProduct product = swiggyProductList.get (position);
         
         Utils.setTypefaceToAllViews (activity, holder.tvProductName);
     
-        if (swiggyProduct.getName ().length () > 0) {
+        if (product.getName ().length () > 0) {
             holder.tvProductName.setVisibility (View.VISIBLE);
-            holder.tvProductName.setText (swiggyProduct.getName ());
+            holder.tvProductName.setText (product.getName ());
         } else {
             holder.tvProductName.setVisibility (View.GONE);
         }
-        if (swiggyProduct.getDescription ().length () > 0) {
+        if (product.getDescription ().length () > 0) {
             holder.tvProductDescription.setVisibility (View.VISIBLE);
-            holder.tvProductDescription.setText (swiggyProduct.getDescription ());
-            if (swiggyProduct.getDescription ().length () > 70) {
+            holder.tvProductDescription.setText (product.getDescription ());
+            if (product.getDescription ().length () > 70) {
                 Utils.makeTextViewResizable (holder.tvProductDescription, 2, "... more", true);
             }
         } else {
             holder.tvProductDescription.setVisibility (View.GONE);
         }
-
-        if (swiggyProduct.getPrice ().length () > 0) {
+    
+        if (product.getPrice ().length () > 0) {
             holder.tvProductPrice.setVisibility (View.VISIBLE);
-            holder.tvProductPrice.setText (swiggyProduct.getPrice ());
+            holder.tvProductPrice.setText (product.getPrice ());
         } else {
             holder.tvProductPrice.setVisibility (View.GONE);
         }
-        if (swiggyProduct.getPackaging ().length () > 0) {
+        if (product.getPackaging ().length () > 0) {
             holder.tvProductPackaging.setVisibility (View.VISIBLE);
-            holder.tvProductPackaging.setText (swiggyProduct.getPackaging ());
+            holder.tvProductPackaging.setText (product.getPackaging ());
         } else {
             holder.tvProductPackaging.setVisibility (View.GONE);
         }
+    
+        holder.tvAdd.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                sendEnquiry (holder.tvAdd, product.getId ());
+            }
+        });
+    
     }
     
     @Override
@@ -77,6 +102,67 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
         this.mItemClickListener = mItemClickListener;
     }
     
+    private void sendEnquiry (final TextView textView, final int id) {
+        if (NetworkConnection.isNetworkAvailable (activity)) {
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        textView.setVisibility (View.GONE);
+                                    } else {
+                                        Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, message, true);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace ();
+                                    
+                                }
+                            } else {
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                        }
+                    }) {
+                
+                
+                @Override
+                protected Map<String, String> getParams () throws AuthFailureError {
+                    Map<String, String> params = new Hashtable<String, String> ();
+                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (id));
+                    Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
+                    return params;
+                }
+                
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (activity, UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 5);
+        } else {
+        }
+    }
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);
