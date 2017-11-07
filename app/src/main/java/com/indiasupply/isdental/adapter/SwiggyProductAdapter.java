@@ -1,11 +1,15 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -84,10 +88,24 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
             holder.tvProductPackaging.setVisibility (View.GONE);
         }
     
-        holder.tvAdd.setOnClickListener (new View.OnClickListener () {
+        if (product.getEnquiry_status () > 0) {
+            holder.tvButtonText.setVisibility (View.GONE);
+            holder.ivButtonImage.setVisibility (View.VISIBLE);
+            holder.ivButtonImage.setImageResource (R.drawable.ic_check_green);
+        } else {
+            holder.tvButtonText.setVisibility (View.VISIBLE);
+            holder.ivButtonImage.setVisibility (View.GONE);
+            holder.progressBarButton.setVisibility (View.GONE);
+        }
+    
+        holder.rlButton.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                sendEnquiry (holder.tvAdd, product.getId ());
+                if (product.getEnquiry_status () > 0) {
+                    Utils.showToast (activity, "Already enquired for this product", false);
+                } else {
+                    sendEnquiry (product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                }
             }
         });
     
@@ -102,13 +120,15 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
         this.mItemClickListener = mItemClickListener;
     }
     
-    private void sendEnquiry (final TextView textView, final int id) {
+    private void sendEnquiry (final SwiggyProduct product, final TextView tvButtonText, final ImageView ivButtonImage, final ProgressBar progressBarButton, final int id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
+            tvButtonText.setVisibility (View.GONE);
+            progressBarButton.setVisibility (View.VISIBLE);
             Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY, true);
             StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY,
                     new Response.Listener<String> () {
                         @Override
-                        public void onResponse (String response) {
+                        public void onResponse (final String response) {
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
                             if (response != null) {
                                 try {
@@ -116,8 +136,22 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        textView.setVisibility (View.GONE);
+                                        product.setEnquiry_status (1);
+                                        progressBarButton.setVisibility (View.GONE);
+                                        ivButtonImage.setVisibility (View.VISIBLE);
+                                        ivButtonImage.setImageResource (R.drawable.ic_check_green);
                                     } else {
+                                        progressBarButton.setVisibility (View.GONE);
+                                        ivButtonImage.setVisibility (View.VISIBLE);
+                                        ivButtonImage.setImageResource (R.drawable.ic_close_red);
+                                        new Handler ().postDelayed (new Runnable () {
+                                            @Override
+                                            public void run () {
+                                                ivButtonImage.setVisibility (View.GONE);
+                                                tvButtonText.setVisibility (View.VISIBLE);
+                                            }
+                                        }, 2000);
+                                        Utils.showToast (activity, message, false);
                                         Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, message, true);
                                     }
                                 } catch (Exception e) {
@@ -139,7 +173,6 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
                             }
                         }
                     }) {
-                
                 
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
@@ -173,7 +206,10 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
         TextView tvProductPackaging;
         TextView tvProductName;
         TextView tvProductPrice;
-        TextView tvAdd;
+        TextView tvButtonText;
+        RelativeLayout rlButton;
+        ProgressBar progressBarButton;
+        ImageView ivButtonImage;
         
         public ViewHolder (View view) {
             super (view);
@@ -181,7 +217,10 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
             tvProductPackaging = (TextView) view.findViewById (R.id.tvProductPackaging);
             tvProductName = (TextView) view.findViewById (R.id.tvProductName);
             tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
-            tvAdd = (TextView) view.findViewById (R.id.tvAdd);
+            progressBarButton = (ProgressBar) view.findViewById (R.id.progressBarButton);
+            tvButtonText = (TextView) view.findViewById (R.id.tvButtonText);
+            ivButtonImage = (ImageView) view.findViewById (R.id.ivButtonImage);
+            rlButton = (RelativeLayout) view.findViewById (R.id.rlButton);
             view.setOnClickListener (this);
         }
         

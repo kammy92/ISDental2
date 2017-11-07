@@ -10,7 +10,7 @@
         android:scaleY="-0.100000"
         android:translateY="128.000000">
         <path
-            android:fillColor="#33691e"
+            android:fillColor="#009688"
             android:pathData="M764 736 l-321 -325 -124 125 c-68 68 -128 124 -134 124 -13 0 -101 -88 -94 -94 99
 -104 344 -346 350 -346 12 0 749 734 749 746 0 12 -82 94 -95 94 -6 0 -155 -146
 -331 -324z"

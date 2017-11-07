@@ -60,6 +60,17 @@
             android:src="@drawable/ic_favourite"
             android:tint="@color/accent2"
             android:visibility="visible"/>
+        <ProgressBar
+            android:id="@+id/progressBarButton"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:paddingBottom="@dimen/activity_margin_small"
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:paddingTop="@dimen/activity_margin_extra_small"
+            android:visibility="gone"/>
         <View
             android:id="@id/view"
             android:layout_width="match_parent"

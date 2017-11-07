@@ -88,13 +88,10 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         holder.ivContactFavourite.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                updateFavourite (contactsDetail.getId (), holder.ivContactFavourite);
                 if (contactsDetail.is_favourite ()) {
-                    contactsDetail.setIs_favourite (false);
-                    holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite);
+                    updateFavourite (contactsDetail, holder.progressBarButton, holder.ivContactFavourite, contactsDetail.getId ());
                 } else {
-                    contactsDetail.setIs_favourite (true);
-                    holder.ivContactFavourite.setImageResource (R.drawable.ic_favourite_filled);
+                    updateFavourite (contactsDetail, holder.progressBarButton, holder.ivContactFavourite, contactsDetail.getId ());
                 }
             }
         });
@@ -152,8 +149,10 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         return contactDetailList.size ();
     }
     
-    private void updateFavourite (final int id, final ImageView ivFavourite) {
+    private void updateFavourite (final SwiggyContactDetail contactDetail, final ProgressBar progressBarButton, final ImageView ivFavourite, final int id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
+            ivFavourite.setVisibility (View.GONE);
+            progressBarButton.setVisibility (View.VISIBLE);
             Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_FAVOURITE, true);
             StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_FAVOURITE,
                     new Response.Listener<String> () {
@@ -168,9 +167,15 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                                     if (! is_error) {
                                         switch (jsonObj.getInt (AppConfigTags.STATUS)) {
                                             case 1:
+                                                contactDetail.setIs_favourite (true);
+                                                progressBarButton.setVisibility (View.GONE);
+                                                ivFavourite.setVisibility (View.VISIBLE);
                                                 ivFavourite.setImageResource (R.drawable.ic_favourite_filled);
                                                 break;
                                             case 2:
+                                                contactDetail.setIs_favourite (false);
+                                                progressBarButton.setVisibility (View.GONE);
+                                                ivFavourite.setVisibility (View.VISIBLE);
                                                 ivFavourite.setImageResource (R.drawable.ic_favourite);
                                                 break;
                                         }
@@ -233,7 +238,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
         RelativeLayout rlMail;
         ImageView ivContactImage;
         ProgressBar progressBar;
-        
+        ProgressBar progressBarButton;
         
         public ViewHolder (View view) {
             super (view);
@@ -245,6 +250,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
             rlMail = (RelativeLayout) view.findViewById (R.id.rlMail);
             ivContactImage = (ImageView) view.findViewById (R.id.ivContactImage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
+            progressBarButton = (ProgressBar) view.findViewById (R.id.progressBarButton);
             view.setOnClickListener (this);
         }
         

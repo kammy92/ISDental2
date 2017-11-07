@@ -5,27 +5,52 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
-    <TextView
-        android:id="@+id/tvAdd"
+    <RelativeLayout
+        android:id="@+id/rlButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="25dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:background="@drawable/button_background"
-        android:paddingBottom="@dimen/activity_margin_extra_small"
-        android:paddingLeft="@dimen/activity_margin_small"
-        android:paddingRight="@dimen/activity_margin_small"
-        android:paddingTop="@dimen/activity_margin_extra_small"
-        android:text="INQUIRE"
-        android:textColor="@color/accent2"
-        android:textSize="@dimen/text_size_small"/>
+        android:animateLayoutChanges="true"
+        android:background="@drawable/button_background">
+        <TextView
+            android:id="@+id/tvButtonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:paddingRight="@dimen/activity_margin_small"
+            android:text="INQUIRE"
+            android:textColor="@color/accent2"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="visible"/>
+        <ImageView
+            android:id="@+id/ivButtonImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:src="@drawable/ic_check_green"
+            android:visibility="gone"/>
+        <ProgressBar
+            android:id="@+id/progressBarButton"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:paddingBottom="@dimen/activity_margin_extra_small"
+            android:paddingTop="@dimen/activity_margin_extra_small"
+            android:visibility="gone"/>
+    </RelativeLayout>
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/tvAdd"
-        android:layout_toStartOf="@+id/tvAdd"
+        android:layout_toLeftOf="@+id/rlButton"
+        android:layout_toStartOf="@+id/rlButton"
         android:paddingRight="@dimen/activity_margin">
 
         <TextView

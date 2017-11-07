@@ -258,6 +258,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                                 productList.add (new SwiggyProduct (
                                                         jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
                                                         R.drawable.ic_information,
+                                                        jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
@@ -424,6 +425,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                             productList.add (new SwiggyProduct (
                                     jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
                                     R.drawable.ic_information,
+                                    jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
                                     jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                     jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
                                     jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),

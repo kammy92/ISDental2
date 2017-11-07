@@ -14,6 +14,7 @@ public class SwiggyProduct implements Parcelable {
             int id = in.readInt ();
             int icon = in.readInt ();
             int group_type = in.readInt ();
+            int enquiry_status = in.readInt ();
             String name = in.readString ();
             String description = in.readString ();
             String packaging = in.readString ();
@@ -21,7 +22,7 @@ public class SwiggyProduct implements Parcelable {
             String group_title = in.readString ();
             String image = in.readString ();
             String price = in.readString ();
-            return new SwiggyProduct (id, icon, name, description, packaging, category, price, group_type, group_title, image);
+            return new SwiggyProduct (id, icon, enquiry_status, name, description, packaging, category, price, group_type, group_title, image);
         }
         
         @Override
@@ -29,12 +30,14 @@ public class SwiggyProduct implements Parcelable {
             return new SwiggyProduct[size];
         }
     };
-    int id, icon, group_type;
+    
+    int id, icon, group_type, enquiry_status;
     String name, description, packaging, category, image, price, group_title;
     
-    public SwiggyProduct (int id, int icon, String name, String description, String packaging, String category, String price, int group_type, String group_title, String image) {
+    public SwiggyProduct (int id, int icon, int enquiry_status, String name, String description, String packaging, String category, String price, int group_type, String group_title, String image) {
         this.id = id;
         this.icon = icon;
+        this.enquiry_status = enquiry_status;
         this.name = name;
         this.packaging = packaging;
         this.description = description;
@@ -45,6 +48,13 @@ public class SwiggyProduct implements Parcelable {
         this.group_title = group_title;
     }
     
+    public int getEnquiry_status () {
+        return enquiry_status;
+    }
+    
+    public void setEnquiry_status (int enquiry_status) {
+        this.enquiry_status = enquiry_status;
+    }
     
     public String getPackaging () {
         return packaging;
@@ -105,7 +115,7 @@ public class SwiggyProduct implements Parcelable {
     public String getCategory () {
         return category;
     }
-
+    
     public void setCategory (String category) {
         this.category = category;
     }

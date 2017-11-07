@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
@@ -97,10 +96,24 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                     .into (holder.ivProductImage);
         }
     
+        if (product.getEnquiry_status () > 0) {
+            holder.tvButtonText.setVisibility (View.GONE);
+            holder.ivButtonImage.setVisibility (View.VISIBLE);
+            holder.ivButtonImage.setImageResource (R.drawable.ic_check_green);
+        } else {
+            holder.tvButtonText.setVisibility (View.VISIBLE);
+            holder.ivButtonImage.setVisibility (View.GONE);
+            holder.progressBarButton.setVisibility (View.GONE);
+        }
+        
         holder.rlButton.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                sendEnquiry (holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                if (product.getEnquiry_status () > 0) {
+                    Utils.showToast (activity, "Already enquired for this product", false);
+                } else {
+                    sendEnquiry (product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                }
             }
         });
     }
@@ -114,7 +127,7 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
         this.mItemClickListener = mItemClickListener;
     }
     
-    private void sendEnquiry (final TextView tvButtonText, final ImageView ivButtonImage, final ProgressBar progressBarButton, final int id) {
+    private void sendEnquiry (final SwiggyProduct product, final TextView tvButtonText, final ImageView ivButtonImage, final ProgressBar progressBarButton, final int id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
             tvButtonText.setVisibility (View.GONE);
             progressBarButton.setVisibility (View.VISIBLE);
@@ -130,17 +143,21 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
+                                        product.setEnquiry_status (1);
                                         progressBarButton.setVisibility (View.GONE);
+                                        ivButtonImage.setVisibility (View.VISIBLE);
                                         ivButtonImage.setImageResource (R.drawable.ic_check_green);
                                     } else {
                                         progressBarButton.setVisibility (View.GONE);
+                                        ivButtonImage.setVisibility (View.VISIBLE);
                                         ivButtonImage.setImageResource (R.drawable.ic_close_red);
                                         new Handler ().postDelayed (new Runnable () {
                                             @Override
                                             public void run () {
-                                                ivButtonImage.setImageResource (R.drawable.ic_check_green);
+                                                ivButtonImage.setVisibility (View.GONE);
+                                                tvButtonText.setVisibility (View.VISIBLE);
                                             }
-                                        }, Toast.LENGTH_SHORT);
+                                        }, 2000);
                                         Utils.showToast (activity, message, false);
                                         Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, message, true);
                                     }
