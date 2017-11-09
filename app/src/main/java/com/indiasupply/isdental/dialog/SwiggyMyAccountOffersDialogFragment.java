@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -22,6 +23,10 @@ import com.indiasupply.isdental.model.SwiggyMyAccountOffer;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +39,7 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
     ImageView ivCancel;
     TextView tvTitle;
     
+    RelativeLayout rlNoOffersFound;
     
     String myOffers = "";
     
@@ -89,6 +95,7 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         rvMyOffers = (RecyclerView) root.findViewById (R.id.rvMyOffers);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
+        rlNoOffersFound = (RelativeLayout) root.findViewById (R.id.rlNoOffersFound);
     }
     
     private void initBundle () {
@@ -117,10 +124,45 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-        myAccountOfferList.add (new SwiggyMyAccountOffer (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        myAccountOfferList.add (new SwiggyMyAccountOffer (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        myAccountOfferList.add (new SwiggyMyAccountOffer (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        myAccountOfferList.add (new SwiggyMyAccountOffer (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        List<SwiggyMyAccountOffer> tempMyAccountOfferList = new ArrayList<> ();
+        try {
+            rvMyOffers.setVisibility (View.VISIBLE);
+            rlNoOffersFound.setVisibility (View.GONE);
+            JSONArray jsonArrayOffer = new JSONArray (myOffers);
+            if (jsonArrayOffer.length () > 0) {
+                for (int i = 0; i < jsonArrayOffer.length (); i++) {
+                    JSONObject jsonObjectOffer = jsonArrayOffer.getJSONObject (i);
+                    tempMyAccountOfferList.add (new SwiggyMyAccountOffer (
+                            jsonObjectOffer.getInt (AppConfigTags.OFFER_ID),
+                            R.drawable.ic_person,
+                            jsonObjectOffer.getInt (AppConfigTags.OFFER_USER_ID),
+                            jsonObjectOffer.getInt (AppConfigTags.OFFER_STATUS),
+                            jsonObjectOffer.getString (AppConfigTags.OFFER_TEXT),
+                            jsonObjectOffer.getString (AppConfigTags.OFFER_EXPIRE),
+                            jsonObjectOffer.getString (AppConfigTags.OFFER_START)
+                    ));
+                }
+            
+                for (int i = 0; i < tempMyAccountOfferList.size (); i++) {
+                    SwiggyMyAccountOffer offer = tempMyAccountOfferList.get (i);
+                    if (offer.getStatus () != 0) {
+                        myAccountOfferList.add (offer);
+                    }
+                }
+            
+                for (int i = 0; i < tempMyAccountOfferList.size (); i++) {
+                    SwiggyMyAccountOffer offer = tempMyAccountOfferList.get (i);
+                    if (offer.getStatus () == 0) {
+                        myAccountOfferList.add (offer);
+                    }
+                }
+            } else {
+                rvMyOffers.setVisibility (View.GONE);
+                rlNoOffersFound.setVisibility (View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
         myAccountOfferAdapter.notifyDataSetChanged ();
     }
 }

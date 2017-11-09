@@ -75,6 +75,8 @@ public class SwiggyContactsFragment extends Fragment {
     
     AppDataPref appDataPref;
     
+    RelativeLayout rlNoCompanyFound;
+    
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
     }
@@ -105,6 +107,7 @@ public class SwiggyContactsFragment extends Fragment {
         ivCancel = (ImageView) rootView.findViewById (R.id.ivCancel);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+        rlNoCompanyFound = (RelativeLayout) rootView.findViewById (R.id.rlNoCompanyFound);
     }
     
     private void initData () {
@@ -209,6 +212,8 @@ public class SwiggyContactsFragment extends Fragment {
                             new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
                         }
                     });
+                    rlNoCompanyFound.setVisibility (View.GONE);
+                    rvContacts.setVisibility (View.VISIBLE);
                 }
                 if (s.toString ().length () > 0) {
                     companyDisplayList.clear ();
@@ -231,6 +236,14 @@ public class SwiggyContactsFragment extends Fragment {
                             new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
                         }
                     });
+    
+                    if (companyDisplayList.size () == 0) {
+                        rlNoCompanyFound.setVisibility (View.VISIBLE);
+                        rvContacts.setVisibility (View.GONE);
+                    } else {
+                        rvContacts.setVisibility (View.VISIBLE);
+                        rlNoCompanyFound.setVisibility (View.GONE);
+                    }
                 }
             }
         });
@@ -296,12 +309,12 @@ public class SwiggyContactsFragment extends Fragment {
                             Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
                             if (getActivity () != null && isAdded ()) {
                                 if (response != null) {
-                                    companyAllList.clear ();
                                     try {
                                         JSONObject jsonObj = new JSONObject (response);
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            companyAllList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_CONTACTS, response);
                                             JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                                             filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();

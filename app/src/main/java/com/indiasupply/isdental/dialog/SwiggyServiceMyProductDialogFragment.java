@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -39,6 +40,8 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
     List<SwiggyMyProduct> myProductList = new ArrayList<> ();
     
     String myProducts;
+    
+    RelativeLayout rlNoProductFound;
     
     public SwiggyServiceMyProductDialogFragment newInstance (String products) {
         SwiggyServiceMyProductDialogFragment f = new SwiggyServiceMyProductDialogFragment ();
@@ -93,6 +96,7 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
         rvMyProducts = (RecyclerView) root.findViewById (R.id.rvMyProduct);
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         clMain = (CoordinatorLayout) root.findViewById (R.id.clMain);
+        rlNoProductFound = (RelativeLayout) root.findViewById (R.id.rlNoProductFound);
     }
     
     private void initBundle () {
@@ -123,22 +127,30 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
     private void setData () {
         try {
             JSONArray jsonArrayBrand = new JSONArray (myProducts);
-            for (int i = 0; i < jsonArrayBrand.length (); i++) {
-                JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
-                myProductList.add (i, new SwiggyMyProduct (
-                        jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                        R.drawable.ic_person,
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE)
-                ));
+            rvMyProducts.setVisibility (View.VISIBLE);
+            rlNoProductFound.setVisibility (View.GONE);
+    
+            if (jsonArrayBrand.length () > 0) {
+                for (int i = 0; i < jsonArrayBrand.length (); i++) {
+                    JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
+                    myProductList.add (i, new SwiggyMyProduct (
+                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                            R.drawable.ic_person,
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE)
+                    ));
+                }
+                productAdapter.notifyDataSetChanged ();
+            } else {
+                rvMyProducts.setVisibility (View.GONE);
+                rlNoProductFound.setVisibility (View.VISIBLE);
             }
-            productAdapter.notifyDataSetChanged ();
         } catch (Exception e) {
             e.printStackTrace ();
         }

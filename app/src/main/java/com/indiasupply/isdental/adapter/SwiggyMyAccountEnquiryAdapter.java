@@ -5,14 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.SwiggyMyAccountEnquiry;
 import com.indiasupply.isdental.utils.Utils;
@@ -41,33 +35,38 @@ public class SwiggyMyAccountEnquiryAdapter extends RecyclerView.Adapter<SwiggyMy
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {//        runEnterAnimation (holder.itemView);
         final SwiggyMyAccountEnquiry myAccountEnquiry = myAccountEnquiryList.get (position);
-        Utils.setTypefaceToAllViews (activity, holder.tvSpeakerName);
-        
-        if (myAccountEnquiry.getImage ().length () == 0) {
-            holder.ivSpeaker.setImageResource (myAccountEnquiry.getIcon ());
-            holder.progressBar.setVisibility (View.GONE);
+        Utils.setTypefaceToAllViews (activity, holder.tvEnquiryTicketNumber);
+    
+        holder.tvEnquiryTicketNumber.setText (myAccountEnquiry.getEnquiry_ticket_number ());
+        holder.tvCompanyName.setText (myAccountEnquiry.getCompany_name ());
+        holder.tvProductName.setText (myAccountEnquiry.getProduct_name ());
+        holder.tvProductDescription.setText (myAccountEnquiry.getProduct_description ());
+        holder.tvProductPrice.setText (myAccountEnquiry.getProduct_price ());
+    
+    
+        if (myAccountEnquiry.getEnquiry_remark ().length () > 0) {
+            holder.tvEnquiryRemark.setVisibility (View.VISIBLE);
         } else {
-            Glide.with (activity)
-                    .load (myAccountEnquiry.getImage ())
-                    .listener (new RequestListener<String, GlideDrawable> () {
-                        @Override
-                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                            holder.progressBar.setVisibility (View.GONE);
-                            return false;
-                        }
-                        
-                        @Override
-                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                            holder.progressBar.setVisibility (View.GONE);
-                            return false;
-                        }
-                    })
-                    .error (myAccountEnquiry.getIcon ())
-                    .into (holder.ivSpeaker);
+            holder.tvEnquiryRemark.setVisibility (View.GONE);
         }
-        
-        holder.tvSpeakerName.setText (myAccountEnquiry.getName ());
-        holder.tvSpeakerQualification.setText (myAccountEnquiry.getQualification ());
+
+      /*  switch (myAccountEnquiry.getEnquiry_status()){
+            case 0:
+                holder.tvEnquiryStatus.setVisibility(View.VISIBLE);
+                 holder.tvEnquiryStatus.setText("Expired");
+                break;
+
+            case 1:
+                holder.tvEnquiryStatus.setVisibility(View.GONE);
+                break;
+
+            case 2:
+                holder.tvEnquiryStatus.setVisibility(View.VISIBLE);
+                holder.tvEnquiryStatus.setText("Upcoming");
+                break;
+        }
+        */
+
     }
     
     @Override
@@ -84,17 +83,27 @@ public class SwiggyMyAccountEnquiryAdapter extends RecyclerView.Adapter<SwiggyMy
     }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        ImageView ivSpeaker;
-        TextView tvSpeakerName;
-        TextView tvSpeakerQualification;
-        ProgressBar progressBar;
+    
+        TextView tvProductName;
+        TextView tvEnquiryTicketNumber;
+        TextView tvCompanyName;
+        TextView tvProductDescription;
+        TextView tvProductPrice;
+        TextView tvEnquiryStatus;
+        TextView tvEnquiryRemark;
+
         
         public ViewHolder (View view) {
             super (view);
-            ivSpeaker = (ImageView) view.findViewById (R.id.ivSpeaker);
-            tvSpeakerName = (TextView) view.findViewById (R.id.tvSpeakerName);
-            tvSpeakerQualification = (TextView) view.findViewById (R.id.tvSpeakerQualification);
-            progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
+    
+            tvProductName = (TextView) view.findViewById (R.id.tvProductName);
+            tvEnquiryTicketNumber = (TextView) view.findViewById (R.id.tvEnquiryTicketNumber);
+            tvCompanyName = (TextView) view.findViewById (R.id.tvCompanyName);
+            tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
+            tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
+            tvEnquiryStatus = (TextView) view.findViewById (R.id.tvEnquiryStatus);
+            tvEnquiryRemark = (TextView) view.findViewById (R.id.tvEnquiryRemark);
+
             
             view.setOnClickListener (this);
         }

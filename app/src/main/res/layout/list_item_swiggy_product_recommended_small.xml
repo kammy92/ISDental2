@@ -37,8 +37,9 @@
         android:maxLines="2"
         android:text="Name"
         android:textColor="@color/primary_text2"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold"/>
+        android:textSize="@dimen/text_size_medium"
+        android:textStyle="bold"
+    />
     <TextView
         android:id="@+id/tvProductDescription"
         android:layout_width="wrap_content"
@@ -88,7 +89,7 @@
             android:text="Rs 14,599/-"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_extra_small"
-            android:textStyle="bold"/>
+        />
         <RelativeLayout
             android:id="@+id/rlButton"
             android:layout_width="wrap_content"

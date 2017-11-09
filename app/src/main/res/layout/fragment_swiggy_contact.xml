@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/text_color_white">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
@@ -149,6 +150,73 @@
         android:scrollbarStyle="insideOverlay"
         android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    <RelativeLayout
+        android:id="@+id/rlNoCompanyFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/v1"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:animateLayoutChanges="true"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <ImageView
+            android:id="@+id/ivNoResult"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_service_my_requests"/>
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivNoResult"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin_small"
+            android:text="NO COMPANY"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            android:visibility="visible"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv3"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/activity_margin"
+                android:layout_marginRight="@dimen/activity_margin"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_extra_small"
+                android:text="No result found. Please check the spelling or try a different search"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_extra_small"/>
+            <ImageView
+                android:id="@+id/iv1"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_toEndOf="@+id/tv1"
+                android:layout_toRightOf="@+id/tv1"
+                android:src="@drawable/ic_favourite"
+                android:visibility="gone"/>
+            <TextView
+                android:id="@+id/tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/iv1"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_extra_small"
+                android:text="button to make a contact favorite"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="gone"/>
+        </RelativeLayout>
+    </RelativeLayout>
     <com.indiasupply.isdental.utils.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"

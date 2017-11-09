@@ -1,59 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
     <RelativeLayout
+        android:id="@+id/rlButton"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
-        <ImageView
-            android:id="@+id/ivSpeaker"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerInParent="true"
-            android:scaleType="centerCrop"/>
-        <ProgressBar
-            android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleSmall"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/button_background">
+
+        <TextView
+            android:id="@+id/tvButtonText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="visible"/>
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:paddingRight="@dimen/activity_margin_small"
+            android:text="INQUIRE"
+            android:textColor="@color/accent2"
+            android:textSize="@dimen/text_size_small"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivButtonImage"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:src="@drawable/ic_check_green"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/progressBarButton"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:paddingBottom="@dimen/activity_margin_extra_small"
+            android:paddingTop="@dimen/activity_margin_extra_small"
+            android:visibility="gone"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="@dimen/activity_margin">
+        android:layout_toLeftOf="@+id/rlButton"
+        android:layout_toStartOf="@+id/rlButton"
+        android:paddingRight="@dimen/activity_margin">
 
         <TextView
-            android:id="@+id/tvSpeakerName"
+            android:id="@+id/tvProductName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:text="Dr. ABC"
+            android:layout_alignParentTop="true"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="Name1"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            android:visibility="visible"/>
+            android:textStyle="bold"/>
+
+
         <TextView
-            android:id="@+id/tvSpeakerQualification"
+            android:id="@+id/tvEnquiryTicketNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvSpeakerName"
-            android:layout_gravity="center"
-            android:text="MBBS, MD"
+            android:layout_below="@+id/tvProductName"
+            android:text="GY8737778179"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"/>
+
+
+        <TextView
+            android:id="@+id/tvCompanyName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvEnquiryTicketNumber"
+            android:text="Unicorn Denmart"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"/>
+
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvCompanyName"
+            android:text="Description"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"/>
+
+
+        <TextView
+            android:id="@+id/tvEnquiryRemark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvProductDescription"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"/>
+
+        <TextView
+            android:id="@+id/tvProductPackaging"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvEnquiryRemark"
+            android:text="Packaging"
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tvProductPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvProductPackaging"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/activity_margin_extra_small"
+            android:text="Rs 14,599/-"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_extra_small"
+            android:textStyle="bold"/>
 
 
+        <TextView
+            android:id="@+id/tvEnquiryStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvProductPackaging"
+            android:layout_marginTop="@dimen/activity_margin_extra_small"
+            android:text="pending"
+            android:textColor="@color/primary2"
+            android:textSize="@dimen/text_size_extra_small"
+            android:textStyle="bold"
+            android:visibility="gone"/>
     </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

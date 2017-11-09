@@ -140,6 +140,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            bannerList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_FEATURED, response);
                                             JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
                                             for (int i = 0; i < jsonArrayBanners.length (); i++) {
@@ -155,6 +156,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                                             }
                                             bannerAdapter.notifyDataSetChanged ();
                                             JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                                            companyList.clear ();
                                             for (int j = 0; j < jsonArrayCompanies.length (); j++) {
                                                 JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
                                                 companyList.add (new SwiggyCompany (false,

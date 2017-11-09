@@ -11,6 +11,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,21 +108,19 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
     }
     
     private void initData () {
-        // Utils.setTypefaceToAllViews (getActivity (), tvTitle);
+        Utils.setTypefaceToAllViews (getActivity (), tvApply);
         
     }
     
     private void initListener () {
-        
-        
         ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 getDialog ().dismiss ();
             }
         });
-
-     /*   tvApply.setOnClickListener(new View.OnClickListener() {
+    
+        tvApply.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick(View view) {
                 for(CategoryFilter model :categoryFilterList){
@@ -130,9 +129,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                     }
                 }
             }
-        });*/
-        
-        
+        });
     }
     
     private void setData () {
@@ -142,7 +139,6 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                 categoryFilterList = new ArrayList<> ();
                 categoryFilterList.clear ();
                 JSONObject jsonObjectfilter = jsonArray.getJSONObject (i);
-                
                 
                 TextView tv = new TextView (getActivity ());
                 tv.setText (jsonObjectfilter.getString (AppConfigTags.SWIGGY_GROUP_NAME));
@@ -174,18 +170,13 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                 
                 llDynamic.addView (rv);
                 
-                
                 View view = new View (getActivity ());
                 view.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, (int) Utils.pxFromDp (getActivity (), 16)));
                 view.setBackgroundColor (getResources ().getColor (R.color.view_color));
                 llDynamic.addView (view);
-                
             }
-            
-            
         } catch (Exception e) {
             e.printStackTrace ();
-            
         }
     }
 }

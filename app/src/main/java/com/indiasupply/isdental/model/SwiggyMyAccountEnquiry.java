@@ -5,24 +5,23 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyMyAccountEnquiry {
-    int id, icon;
-    String name, image, qualification;
+    int id, enquiry_status;
+    String enquiry_ticket_number, enquiry_remark, company_name, product_name, product_price, product_category, product_image, product_description, product_packaging;
     
-    public SwiggyMyAccountEnquiry (int id, int icon, String name, String qualification, String image) {
+    public SwiggyMyAccountEnquiry (int id, int enquiry_status, String enquiry_ticket_number, String enquiry_remark, String company_name, String product_name, String product_price, String product_category, String product_image, String product_description, String product_packaging) {
         this.id = id;
-        this.icon = icon;
-        this.name = name;
-        this.image = image;
-        this.qualification = qualification;
+        this.enquiry_status = enquiry_status;
+        this.enquiry_ticket_number = enquiry_ticket_number;
+        this.enquiry_remark = enquiry_remark;
+        this.company_name = company_name;
+        this.product_name = product_name;
+        this.product_price = product_price;
+        this.product_category = product_category;
+        this.product_image = product_image;
+        this.product_description = product_description;
+        this.product_packaging = product_packaging;
     }
     
-    public int getIcon () {
-        return icon;
-    }
-    
-    public void setIcon (int icon) {
-        this.icon = icon;
-    }
     
     public int getId () {
         return id;
@@ -32,27 +31,83 @@ public class SwiggyMyAccountEnquiry {
         this.id = id;
     }
     
-    public String getName () {
-        return name;
+    public int getEnquiry_status () {
+        return enquiry_status;
     }
     
-    public void setName (String name) {
-        this.name = name;
+    public void setEnquiry_status (int enquiry_status) {
+        this.enquiry_status = enquiry_status;
     }
     
-    public String getImage () {
-        return image;
+    public String getEnquiry_ticket_number () {
+        return enquiry_ticket_number;
     }
     
-    public void setImage (String image) {
-        this.image = image;
+    public void setEnquiry_ticket_number (String enquiry_ticket_number) {
+        this.enquiry_ticket_number = enquiry_ticket_number;
     }
     
-    public String getQualification () {
-        return qualification;
+    public String getEnquiry_remark () {
+        return enquiry_remark;
     }
     
-    public void setQualification (String qualification) {
-        this.qualification = qualification;
+    public void setEnquiry_remark (String enquiry_remark) {
+        this.enquiry_remark = enquiry_remark;
+    }
+    
+    public String getCompany_name () {
+        return company_name;
+    }
+    
+    public void setCompany_name (String company_name) {
+        this.company_name = company_name;
+    }
+    
+    public String getProduct_name () {
+        return product_name;
+    }
+    
+    public void setProduct_name (String product_name) {
+        this.product_name = product_name;
+    }
+    
+    public String getProduct_price () {
+        return product_price;
+    }
+    
+    public void setProduct_price (String product_price) {
+        this.product_price = product_price;
+    }
+    
+    public String getProduct_category () {
+        return product_category;
+    }
+    
+    public void setProduct_category (String product_category) {
+        this.product_category = product_category;
+    }
+    
+    public String getProduct_image () {
+        return product_image;
+    }
+    
+    public void setProduct_image (String product_image) {
+        this.product_image = product_image;
+    }
+    
+    public String getProduct_description () {
+        return product_description;
+    }
+    
+    public void setProduct_description (String product_description) {
+        this.product_description = product_description;
+    }
+    
+    public String getProduct_packaging () {
+        return product_packaging;
+    }
+    
+    public void setProduct_packaging (String product_packaging) {
+        this.product_packaging = product_packaging;
     }
 }

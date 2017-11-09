@@ -5,15 +5,31 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyMyAccountFavourite {
-    int id, icon;
-    String name, image, qualification;
+    int id, icon, type;
+    String name, image, phone, location, email, website;
+    boolean is_favourite;
     
-    public SwiggyMyAccountFavourite (int id, int icon, String name, String qualification, String image) {
+    
+    public SwiggyMyAccountFavourite (int id, int icon, int type, String name, String image, String phone, String location, String email, String website, boolean is_favourite) {
         this.id = id;
         this.icon = icon;
+        this.type = type;
         this.name = name;
         this.image = image;
-        this.qualification = qualification;
+        this.phone = phone;
+        this.location = location;
+        this.email = email;
+        this.website = website;
+        this.is_favourite = is_favourite;
+    }
+    
+    
+    public int getId () {
+        return id;
+    }
+    
+    public void setId (int id) {
+        this.id = id;
     }
     
     public int getIcon () {
@@ -24,12 +40,12 @@ public class SwiggyMyAccountFavourite {
         this.icon = icon;
     }
     
-    public int getId () {
-        return id;
+    public int getType () {
+        return type;
     }
     
-    public void setId (int id) {
-        this.id = id;
+    public void setType (int type) {
+        this.type = type;
     }
     
     public String getName () {
@@ -48,11 +64,43 @@ public class SwiggyMyAccountFavourite {
         this.image = image;
     }
     
-    public String getQualification () {
-        return qualification;
+    public String getPhone () {
+        return phone;
     }
     
-    public void setQualification (String qualification) {
-        this.qualification = qualification;
+    public void setPhone (String phone) {
+        this.phone = phone;
+    }
+    
+    public String getLocation () {
+        return location;
+    }
+    
+    public void setLocation (String location) {
+        this.location = location;
+    }
+    
+    public String getEmail () {
+        return email;
+    }
+    
+    public void setEmail (String email) {
+        this.email = email;
+    }
+    
+    public String getWebsite () {
+        return website;
+    }
+    
+    public void setWebsite (String website) {
+        this.website = website;
+    }
+    
+    public boolean is_favourite () {
+        return is_favourite;
+    }
+    
+    public void setIs_favourite (boolean is_favourite) {
+        this.is_favourite = is_favourite;
     }
 }

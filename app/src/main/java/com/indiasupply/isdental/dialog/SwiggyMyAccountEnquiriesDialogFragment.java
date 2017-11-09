@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -22,6 +23,10 @@ import com.indiasupply.isdental.model.SwiggyMyAccountEnquiry;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +40,9 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
     TextView tvTitle;
     
     String myEnquiries = "";
+    
+    RelativeLayout rlNoEnquiryFound;
+    
     
     public static SwiggyMyAccountEnquiriesDialogFragment newInstance (String myEnquiries) {
         SwiggyMyAccountEnquiriesDialogFragment fragment = new SwiggyMyAccountEnquiriesDialogFragment ();
@@ -89,6 +97,7 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         rvMyEnquiries = (RecyclerView) root.findViewById (R.id.rvMyEnquiries);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
+        rlNoEnquiryFound = (RelativeLayout) root.findViewById (R.id.rlNoEnquiryFound);
     }
     
     private void initBundle () {
@@ -118,10 +127,45 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
     }
     
     private void setData () {
-        myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+        /*myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountEnquiryAdapter.notifyDataSetChanged ();
+
+*/
+    
+    
+        try {
+            JSONArray jsonArray = new JSONArray (myEnquiries);
+            rvMyEnquiries.setVisibility (View.VISIBLE);
+            rlNoEnquiryFound.setVisibility (View.GONE);
+        
+            if (jsonArray.length () > 0) {
+                for (int j = 0; j < jsonArray.length (); j++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject (j);
+                    myAccountEnquiryList.add (new SwiggyMyAccountEnquiry (
+                            jsonObject.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                            jsonObject.getInt (AppConfigTags.SWIGGY_ENQUIRY_STATUS),
+                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_TICKET_NUMBER),
+                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_REMARK),
+                            jsonObject.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING)
+                    ));
+                }
+                myAccountEnquiryAdapter.notifyDataSetChanged ();
+            } else {
+                rvMyEnquiries.setVisibility (View.GONE);
+                rlNoEnquiryFound.setVisibility (View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
 }
+

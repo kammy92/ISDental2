@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -37,6 +38,8 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
     List<SwiggyMyRequest> myRequestList = new ArrayList<> ();
     
     String myRequests;
+    RelativeLayout rlNoRequestFound;
+    
     
     public static SwiggyServiceMyRequestDialogFragment newInstance (String myRequests) {
         SwiggyServiceMyRequestDialogFragment f = new SwiggyServiceMyRequestDialogFragment ();
@@ -91,6 +94,7 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         rvRequests = (RecyclerView) root.findViewById (R.id.rvRequest);
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
+        rlNoRequestFound = (RelativeLayout) root.findViewById (R.id.rlNoRequestFound);
     }
     
     private void initBundle () {
@@ -121,18 +125,25 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
     private void setData () {
         try {
             JSONArray jsonArrayBrand = new JSONArray (myRequests);
-            for (int i = 0; i < jsonArrayBrand.length (); i++) {
-                JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
-                myRequestList.add (new SwiggyMyRequest (
-                        jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID), R.drawable.ic_person,
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE),
-                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_GENERATED_AT)
-                ));
+            rvRequests.setVisibility (View.VISIBLE);
+            rlNoRequestFound.setVisibility (View.GONE);
+            if (jsonArrayBrand.length () > 0) {
+                for (int i = 0; i < jsonArrayBrand.length (); i++) {
+                    JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
+                    myRequestList.add (new SwiggyMyRequest (
+                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID), R.drawable.ic_person,
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE),
+                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_GENERATED_AT)
+                    ));
+                }
+                myRequestAdapter.notifyDataSetChanged ();
+            } else {
+                rvRequests.setVisibility (View.GONE);
+                rlNoRequestFound.setVisibility (View.VISIBLE);
             }
-            myRequestAdapter.notifyDataSetChanged ();
         } catch (Exception e) {
             e.printStackTrace ();
         }

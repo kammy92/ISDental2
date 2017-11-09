@@ -290,5 +290,16 @@ public class AppConfigTags {
     
     public static final String SWIGGY_TYPE = "type";
     public static final String SWIGGY_TYPE_ID = "type_id";
+    
+    public static final String SWIGGY_ENQUIRY_TICKET_NUMBER = "enquiry_ticket_number";
+    public static final String SWIGGY_ENQUIRY_STATUS = "enquiry_status";
+    public static final String SWIGGY_ENQUIRY_REMARK = "enquiry_remark";
+    
+    public static final String OFFER_ID = "offer_id";
+    public static final String OFFER_TEXT = "offer_text";
+    public static final String OFFER_USER_ID = "offer_user_id";
+    public static final String OFFER_EXPIRE = "offer_expire";
+    public static final String OFFER_START = "offer_start";
+    public static final String OFFER_STATUS = "offer_status";
 }
 

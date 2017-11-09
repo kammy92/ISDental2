@@ -8,12 +8,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -22,6 +24,10 @@ import com.indiasupply.isdental.model.SwiggyMyAccountFavourite;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +41,10 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
     TextView tvTitle;
     
     String myFavourites = "";
+    RelativeLayout rlNoFavouriteFound;
     
     public static SwiggyMyAccountFavouritesDialogFragment newInstance (String myFavourites) {
+        Log.e ("jsonarray3", myFavourites);
         SwiggyMyAccountFavouritesDialogFragment fragment = new SwiggyMyAccountFavouritesDialogFragment ();
         Bundle args = new Bundle ();
         args.putString (AppConfigTags.SWIGGY_FAVOURITES, myFavourites);
@@ -89,6 +97,7 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         rvMyFavourites = (RecyclerView) root.findViewById (R.id.rvMyFavourites);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
+        rlNoFavouriteFound = (RelativeLayout) root.findViewById (R.id.rlNoFavouriteFound);
     }
     
     private void initBundle () {
@@ -118,10 +127,41 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
     
     private void setData () {
     
-        myAccountFavouriteList.add (new SwiggyMyAccountFavourite (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
+       /* myAccountFavouriteList.add (new SwiggyMyAccountFavourite (1, R.drawable.ic_person, "Dr. Mohammad Atta", "9 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (2, R.drawable.ic_person, "Dr. Zakir Nayak", "10 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (3, R.drawable.ic_person, "Dr. Abu Baghdadi", "11 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
         myAccountFavouriteList.add (new SwiggyMyAccountFavourite (4, R.drawable.ic_person, "Dr. Osama Bin Laden", "12 Fail", "http://famdent.indiasupply.com/isdental/api/images/speakers/speaker1.png"));
-        myAccountFavouriteAdapter.notifyDataSetChanged ();
+        myAccountFavouriteAdapter.notifyDataSetChanged ();*/
+    
+    
+        try {
+            JSONArray jsonArray = new JSONArray (myFavourites);
+            rvMyFavourites.setVisibility (View.VISIBLE);
+            rlNoFavouriteFound.setVisibility (View.GONE);
+        
+            if (jsonArray.length () > 0) {
+                for (int j = 0; j < jsonArray.length (); j++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject (j);
+                    myAccountFavouriteList.add (new SwiggyMyAccountFavourite (
+                            jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_ID),
+                            R.drawable.ic_person,
+                            jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_TYPE),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_PHONE),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_EMAIL),
+                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_WEBSITE),
+                            jsonObject.getBoolean (AppConfigTags.SWIGGY_CONTACT_FAVOURITE)
+                    ));
+                }
+                myAccountFavouriteAdapter.notifyDataSetChanged ();
+            } else {
+                rvMyFavourites.setVisibility (View.GONE);
+                rlNoFavouriteFound.setVisibility (View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
 }

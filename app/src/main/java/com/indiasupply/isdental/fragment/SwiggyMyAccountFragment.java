@@ -100,7 +100,6 @@ public class SwiggyMyAccountFragment extends Fragment {
         initView (rootView);
         initData ();
         initListener ();
-        setData ();
         return rootView;
     }
     
@@ -160,6 +159,16 @@ public class SwiggyMyAccountFragment extends Fragment {
         rvHelp.setHasFixedSize (true);
         rvHelp.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvHelp.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_my_account_favourites, "My Favourites", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
+        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
+    
+        myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
+//        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
+        myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_my_account_terms_of_use, "Terms of Use", "", ""));
+        myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_my_account_privacy_policy, "Privacy Policy", "", ""));
+        myAccountItemAdapter.notifyDataSetChanged ();
     }
     
     private void initListener () {
@@ -213,17 +222,6 @@ public class SwiggyMyAccountFragment extends Fragment {
     }
     
     private void setData () {
-        myAccountItemList.add (new SwiggyMyAccountItem (1, R.drawable.ic_my_account_favourites, "My Favourites", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
-        myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
-    
-        myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
-//        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_my_account_terms_of_use, "Terms of Use", "", ""));
-        myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_my_account_privacy_policy, "Privacy Policy", "", ""));
-        
-        myAccountItemAdapter.notifyDataSetChanged ();
-    
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_ACCOUNT, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_ACCOUNT,
@@ -324,6 +322,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     @Override
     public void onResume () {
         super.onResume ();
+        setData ();
         shimmerFrameLayout.startShimmerAnimation ();
     }
     

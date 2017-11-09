@@ -79,7 +79,6 @@ public class SwiggyServiceFragment extends Fragment {
         initView (root);
         initData ();
         initListener ();
-        setData ();
         return root;
     }
     
@@ -234,6 +233,7 @@ public class SwiggyServiceFragment extends Fragment {
     @Override
     public void onResume () {
         super.onResume ();
+        setData ();
         shimmerFrameLayout.startShimmerAnimation ();
     }
     
@@ -268,4 +268,5 @@ public class SwiggyServiceFragment extends Fragment {
             return false;
         }
     }
+    
 }

@@ -66,7 +66,6 @@ public class SwiggyEventFragment extends Fragment {
         initView (rootView);
         initData ();
         initListener ();
-        setData ();
         return rootView;
     }
     
@@ -94,7 +93,6 @@ public class SwiggyEventFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            eventList.clear ();
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_EVENT, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_EVENT,
                     new Response.Listener<String> () {
@@ -108,6 +106,7 @@ public class SwiggyEventFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            eventList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_EVENTS, response);
                                             JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
                                             for (int i = 0; i < jsonArrayEvents.length (); i++) {
@@ -206,6 +205,7 @@ public class SwiggyEventFragment extends Fragment {
     @Override
     public void onResume () {
         super.onResume ();
+        setData ();
         shimmerFrameLayout.startShimmerAnimation ();
     }
     
