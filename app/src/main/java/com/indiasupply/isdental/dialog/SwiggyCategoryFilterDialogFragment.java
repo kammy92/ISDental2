@@ -114,7 +114,11 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvApply);
         db = new DatabaseHandler (getActivity ());
-        
+        if (db.getAllFilters ().size () > 0) {
+            tvApply.setBackgroundColor (getResources ().getColor (R.color.primary_text2));
+        } else {
+            tvApply.setBackgroundColor (getResources ().getColor (R.color.secondary_text2));
+        }
     }
     
     private void initListener () {
@@ -136,14 +140,13 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
         tvApply.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-//
-//                Intent i = new Intent ()
-//                        .putExtra ("month", "karman")
-//                        .putExtra ("year", "2017");
-//                getTargetFragment ().onActivityResult (getTargetRequestCode (), Activity.RESULT_OK, i);
-                getDialog ().dismiss ();
+                if (db.getAllFilters ().size () > 0) {
+                    getDialog ().dismiss ();
+                }
             }
         });
+    
+    
     }
     
     private void setData () {
@@ -181,7 +184,18 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                 rv.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
                 rv.setItemAnimator (new DefaultItemAnimator ());
                 //    rv.addItemDecoration(new RecyclerViewMargin((int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
-
+    
+                swiggyCategoryFilterAdapter.SetOnItemClickListener (new SwiggyCategoryFilterAdapter.OnItemClickListener () {
+                    @Override
+                    public void onItemClick (View view, int position) {
+                        if (db.getAllFilters ().size () > 0) {
+                            tvApply.setBackgroundColor (getResources ().getColor (R.color.primary_text2));
+                        } else {
+                            tvApply.setBackgroundColor (getResources ().getColor (R.color.secondary_text2));
+                        }
+                    }
+                });
+                
 //                swiggyCategoryFilterAdapter.SetOnItemClickListener (new SwiggyCategoryFilterAdapter.OnItemClickListener () {
 //                    @Override
 //                    public void onItemClick (View view, int position) {

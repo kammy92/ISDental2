@@ -56,14 +56,11 @@
         android:layout_below="@+id/v1"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
         <LinearLayout
             android:id="@+id/llDynamic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlOffer"
-            android:layout_marginTop="@dimen/activity_margin"
             android:orientation="vertical"/>
 
     </android.support.v4.widget.NestedScrollView>
@@ -74,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/primary_text2"
+        android:background="@color/secondary_text2"
         android:gravity="center"
         android:padding="@dimen/activity_margin"
         android:text="APPLY"
