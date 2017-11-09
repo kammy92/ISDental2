@@ -146,7 +146,7 @@ public class SwiggyContactsFragment extends Fragment {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
                         if (db.getAllFilters ().size () > 0) {
-                            Utils.showToast (getActivity (), "in ondismmiss " + db.getAllFilters ().size () + " filter selected", false);
+//                            Utils.showToast (getActivity (), "in ondismmiss " + db.getAllFilters ().size () + " filter selected", false);
                             companyDisplayList.clear ();
                             for (int i = 0; i < db.getAllFilters ().size (); i++) {
                                 String item = db.getAllFilters ().get (i);
@@ -157,25 +157,26 @@ public class SwiggyContactsFragment extends Fragment {
                                         }
                                     }
                                 }
-                                companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
-                                rvContacts.setAdapter (companyAdapter);
-                                companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
-                                    @Override
-                                    public void onItemClick (View view, int position) {
-                                        SwiggyCompany2 contact = companyDisplayList.get (position);
-                                        android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                                        new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
-                                    }
-                                });
-                    
-                                if (companyDisplayList.size () == 0) {
-                                    rlNoCompanyFound.setVisibility (View.VISIBLE);
-                                    rvContacts.setVisibility (View.GONE);
-                                } else {
-                                    rvContacts.setVisibility (View.VISIBLE);
-                                    rlNoCompanyFound.setVisibility (View.GONE);
-                                }
                             }
+                            companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
+                            rvContacts.setAdapter (companyAdapter);
+                            companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                                @Override
+                                public void onItemClick (View view, int position) {
+                                    SwiggyCompany2 contact = companyDisplayList.get (position);
+                                    android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                                    new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                                }
+                            });
+    
+                            if (companyDisplayList.size () == 0) {
+                                rlNoCompanyFound.setVisibility (View.VISIBLE);
+                                rvContacts.setVisibility (View.GONE);
+                            } else {
+                                rvContacts.setVisibility (View.VISIBLE);
+                                rlNoCompanyFound.setVisibility (View.GONE);
+                            }
+    
                         } else {
                             companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyAllList);
                             rvContacts.setAdapter (companyAdapter);
@@ -189,7 +190,7 @@ public class SwiggyContactsFragment extends Fragment {
                             });
                             rlNoCompanyFound.setVisibility (View.GONE);
                             rvContacts.setVisibility (View.VISIBLE);
-                            Utils.showToast (getActivity (), "in ondismmiss no filter selected", false);
+//                            Utils.showToast (getActivity (), "in ondismmiss no filter selected", false);
                         }
                     }
                 });

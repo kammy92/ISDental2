@@ -46,30 +46,9 @@ public class SwiggyCategoryFilterAdapter extends RecyclerView.Adapter<SwiggyCate
         for (int i = 0; i < db.getAllFilters ().size (); i++) {
             if (db.getAllFilters ().get (i).equalsIgnoreCase (filter.getName ())) {
                 holder.cbCategorySelect.setChecked (true);
+                filter.setIs_selected (true);
             }
         }
-        
-       /* holder.cbCategorySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                filter.setIs_selected(isChecked);
-            }
-        });*/
-     /*   if (filter.is_selected()){
-            holder.cbCategorySelect.setChecked(true);
-        }else {
-            holder.cbCategorySelect.setChecked(false);
-        }
-*/
-       /* holder.cbCategorySelect.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Log.d("check id",filter.getName());
-
-            }
-        });
-*/
     }
     
     @Override
@@ -100,22 +79,18 @@ public class SwiggyCategoryFilterAdapter extends RecyclerView.Adapter<SwiggyCate
         @Override
         public void onClick (View v) {
             CategoryFilter categoryFilter = categoryFilters.get (getLayoutPosition ());
-            if (categoryFilter.is_selected ()) {
-                if (db.isFilterExist (categoryFilter.getName ())) {
-                    cbCategorySelect.setChecked (false);
-                    categoryFilter.setIs_selected (false);
-                    db.deleteFilter (categoryFilter.getName ());
-                    Log.e ("karman", "item removed : " + categoryFilter.getName ());
-                }
-                
+            if (db.isFilterExist (categoryFilter.getName ())) {
+                cbCategorySelect.setChecked (false);
+                categoryFilter.setIs_selected (false);
+                db.deleteFilter (categoryFilter.getName ());
+                Log.e ("karman", "item removed : " + categoryFilter.getName ());
             } else {
-                if (! db.isFilterExist (categoryFilter.getName ())) {
-                    categoryFilter.setIs_selected (true);
-                    cbCategorySelect.setChecked (true);
-                    db.insertFilter (categoryFilter.getName ());
-                    Log.e ("karman", "item added : " + categoryFilter.getName ());
-                }
+                categoryFilter.setIs_selected (true);
+                cbCategorySelect.setChecked (true);
+                db.insertFilter (categoryFilter.getName ());
+                Log.e ("karman", "item added : " + categoryFilter.getName ());
             }
+            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }
