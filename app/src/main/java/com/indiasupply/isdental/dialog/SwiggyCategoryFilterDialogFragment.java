@@ -3,6 +3,7 @@ package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +12,6 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyCategoryFilterAdapter;
+import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.model.CategoryFilter;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.SetTypeFace;
@@ -35,15 +36,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
+    SwiggyContactsFragment.MyDialogCloseListener closeListener;
     ImageView ivCancel;
     LinearLayout llDynamic;
     NestedScrollView nestedScrollView;
     SwiggyCategoryFilterAdapter swiggyCategoryFilterAdapter;
-    ArrayList<CategoryFilter> categoryFilterList;
+    ArrayList<CategoryFilter> categoryFilterList = new ArrayList<> ();
     String filter;
     TextView tvApply;
-    ArrayList<String> selecteditem = new ArrayList<String> ();
-    String selectItem;
     
     
     public SwiggyCategoryFilterDialogFragment newInstance (String filter) {
@@ -122,12 +122,13 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
     
         tvApply.setOnClickListener (new View.OnClickListener () {
             @Override
-            public void onClick(View view) {
-                for(CategoryFilter model :categoryFilterList){
-                    if(model.is_selected()){
-                        Log.e("selected",model.getName());
-                    }
-                }
+            public void onClick (View view) {
+//
+//                Intent i = new Intent ()
+//                        .putExtra ("month", "karman")
+//                        .putExtra ("year", "2017");
+//                getTargetFragment ().onActivityResult (getTargetRequestCode (), Activity.RESULT_OK, i);
+                getDialog ().dismiss ();
             }
         });
     }
@@ -167,6 +168,15 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                 rv.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
                 rv.setItemAnimator (new DefaultItemAnimator ());
                 //    rv.addItemDecoration(new RecyclerViewMargin((int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), (int) Utils.pxFromDp(getActivity(), 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+
+//                swiggyCategoryFilterAdapter.SetOnItemClickListener (new SwiggyCategoryFilterAdapter.OnItemClickListener () {
+//                    @Override
+//                    public void onItemClick (View view, int position) {
+//                        CategoryFilter categoryFilter = categoryFilterList.get (position);
+//                        Log.e ("karman", "in adapter" + categoryFilter.getName ());
+//                    }
+//                });
+//
                 
                 llDynamic.addView (rv);
                 
@@ -177,6 +187,18 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
             }
         } catch (Exception e) {
             e.printStackTrace ();
+        }
+    }
+    
+    public void setDismissListener (SwiggyContactsFragment.MyDialogCloseListener closeListener) {
+        this.closeListener = closeListener;
+    }
+    
+    @Override
+    public void onDismiss (DialogInterface dialog) {
+        super.onDismiss (dialog);
+        if (closeListener != null) {
+            closeListener.handleDialogClose (null);
         }
     }
 }

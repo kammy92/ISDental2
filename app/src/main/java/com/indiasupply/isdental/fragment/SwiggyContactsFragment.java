@@ -1,6 +1,7 @@
 package com.indiasupply.isdental.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +31,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.SwiggyMainActivity;
 import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter2;
 import com.indiasupply.isdental.dialog.SwiggyCategoryFilterDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
@@ -53,6 +55,9 @@ import java.util.List;
 import java.util.Map;
 
 public class SwiggyContactsFragment extends Fragment {
+    
+    public static final int FILTER_DIALOG = 1; // class variable
+    
     RecyclerView rvContacts;
     CoordinatorLayout clMain;
     List<SwiggyCompany2> companyAllList = new ArrayList<> ();
@@ -65,6 +70,7 @@ public class SwiggyContactsFragment extends Fragment {
     RelativeLayout rlSearch;
     RelativeLayout rlToolbar;
     EditText etSearch;
+    
     
     LinearLayoutManager linearLayoutManager;
     
@@ -114,6 +120,7 @@ public class SwiggyContactsFragment extends Fragment {
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
         appDataPref = AppDataPref.getInstance ();
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
+        SwiggyMainActivity.selectedItem.clear ();
 //        linearLayoutManager.setAutoMeasureEnabled (false);
     
         companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
@@ -130,8 +137,75 @@ public class SwiggyContactsFragment extends Fragment {
         btFilter.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                new SwiggyCategoryFilterDialogFragment ().newInstance (filters).show (ft, "Filter");
+                android.app.FragmentManager fm = getActivity ().getFragmentManager ();
+                android.app.FragmentTransaction ft = fm.beginTransaction ();
+                SwiggyCategoryFilterDialogFragment dialog = new SwiggyCategoryFilterDialogFragment ().newInstance (filters);
+                dialog.setDismissListener (new MyDialogCloseListener () {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        if (SwiggyMainActivity.selectedItem.size () > 0) {
+                            Utils.showToast (getActivity (), "in ondismmiss " + SwiggyMainActivity.selectedItem.size () + " filter selected", false);
+                            companyDisplayList.clear ();
+                            for (int i = 0; i < SwiggyMainActivity.selectedItem.size (); i++) {
+                                String item = SwiggyMainActivity.selectedItem.get (i);
+                                for (SwiggyCompany2 swiggyCompany2 : companyAllList) {
+                                    if (swiggyCompany2.getCategory ().contains (item)) {
+                                        if (! companyDisplayList.contains (swiggyCompany2)) {
+                                            companyDisplayList.add (swiggyCompany2);
+                                        }
+                                    }
+                                }
+                                companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
+                                rvContacts.setAdapter (companyAdapter);
+                                companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                                    @Override
+                                    public void onItemClick (View view, int position) {
+                                        SwiggyCompany2 contact = companyDisplayList.get (position);
+                                        android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                                        new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                                    }
+                                });
+                    
+                                if (companyDisplayList.size () == 0) {
+                                    rlNoCompanyFound.setVisibility (View.VISIBLE);
+                                    rvContacts.setVisibility (View.GONE);
+                                } else {
+                                    rvContacts.setVisibility (View.VISIBLE);
+                                    rlNoCompanyFound.setVisibility (View.GONE);
+                                }
+                            }
+                        } else {
+                            companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyAllList);
+                            rvContacts.setAdapter (companyAdapter);
+                            companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
+                                @Override
+                                public void onItemClick (View view, int position) {
+                                    SwiggyCompany2 contact = companyAllList.get (position);
+                                    android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                                    new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                                }
+                            });
+                            rlNoCompanyFound.setVisibility (View.GONE);
+                            rvContacts.setVisibility (View.VISIBLE);
+                            Utils.showToast (getActivity (), "in ondismmiss no filter selected", false);
+                        }
+                    }
+                });
+                dialog.show (ft, "MyDialog");
+//                fm.executePendingTransactions ();
+//
+//                dialog.getDialog ().setOnDismissListener (new DialogInterface.OnDismissListener () {
+//                    @Override
+//                    public void onDismiss (DialogInterface dialogInterface) {
+//                        Utils.showToast (getActivity (), "heelo karman in on dismmiss", false);
+//                    }
+//                });
+
+
+//                SwiggyCategoryFilterDialogFragment dialog = new SwiggyCategoryFilterDialogFragment ().newInstance (filters);
+//                dialog.show (fm, "category_dialog");
+                
+                
             }
         });
         companyAdapter.SetOnItemClickListener (new SwiggyCompanyAdapter2.OnItemClickListener () {
@@ -410,18 +484,21 @@ public class SwiggyContactsFragment extends Fragment {
     @Override
     public void onStart () {
         super.onStart ();
+        Log.e ("karman", "onStart");
         Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override
     public void onResume () {
         super.onResume ();
+        Log.e ("karman", "onResume");
         shimmerFrameLayout.startShimmerAnimation ();
     }
     
     @Override
     public void onPause () {
         shimmerFrameLayout.stopShimmerAnimation ();
+        Log.e ("karman", "onPause");
         super.onPause ();
     }
     
@@ -469,5 +546,25 @@ public class SwiggyContactsFragment extends Fragment {
         } else {
             return false;
         }
+    }
+//
+//    @Override
+//    public void onActivityResult (int requestCode, int resultCode, Intent data) {
+//        switch (requestCode) {
+//            case FILTER_DIALOG:
+//                if (resultCode == Activity.RESULT_OK) {
+//                    Bundle bundle = data.getExtras ();
+//                    String mMonth = bundle.getString ("month", "");
+//                    int mYear = bundle.getInt ("year");
+//                    Log.e ("karman", "Got year=" + mYear + " and month=" + mMonth + ", yay!");
+//                } else if (resultCode == Activity.RESULT_CANCELED) {
+//                }
+//                break;
+//        }
+//    }
+    
+    
+    public interface MyDialogCloseListener {
+        public void handleDialogClose (DialogInterface dialog);
     }
 }
