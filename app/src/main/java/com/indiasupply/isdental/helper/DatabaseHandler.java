@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 5;
     // Database Name
     private static final String DATABASE_NAME = "isdental";
     
@@ -28,6 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_EVENTS = "tbl_events";
     private static final String TABLE_COMPANIES = "tbl_companies";
     
+    private static final String TABLE_FILTER = "tbl_filter";
     
     // Banners Table - column names
     private static final String BNNR_ID = "bnnr_id";
@@ -46,6 +47,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     private static final String CMPNY_ID = "cmpny_id";
     private static final String CMPNY_DETAILS = "cmpny_details";
+    
+    private static final String FILTER_CATEGORY = "filter_category";
     
     
     // Notes table Create Statements
@@ -71,6 +74,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             CMPNY_DETAILS + " TEXT" + ")";
     
     
+    // Notes table Create Statements
+    private static final String CREATE_TABLE_FILTERS = "CREATE TABLE "
+            + TABLE_FILTER + "(" +
+            FILTER_CATEGORY + " TEXT" + ")";
+    
     Context mContext;
     private boolean LOG_FLAG = false;
     
@@ -84,6 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL (CREATE_TABLE_BANNERS);
         db.execSQL (CREATE_TABLE_COMPANIES);
         db.execSQL (CREATE_TABLE_EVENTS);
+        db.execSQL (CREATE_TABLE_FILTERS);
     }
     
     @Override
@@ -91,6 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL ("DROP TABLE IF EXISTS " + TABLE_BANNERS);
         db.execSQL ("DROP TABLE IF EXISTS " + TABLE_EVENTS);
         db.execSQL ("DROP TABLE IF EXISTS " + TABLE_COMPANIES);
+        db.execSQL ("DROP TABLE IF EXISTS " + TABLE_FILTER);
         onCreate (db);
     }
     
@@ -302,5 +312,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL ("DELETE FROM " + TABLE_COMPANIES + " WHERE " + CMPNY_ID + " = " + company_id);
     }
     
+    
+    public long insertFilter (String category) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Creating filter", LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (FILTER_CATEGORY, category);
+        return db.insert (TABLE_FILTER, null, values);
+    }
+    
+    public boolean isFilterExist (String category) {
+        String countQuery = "SELECT * FROM " + TABLE_FILTER + " WHERE " + FILTER_CATEGORY + " = '" + category + "'";
+        SQLiteDatabase db = this.getReadableDatabase ();
+        Cursor cursor = db.rawQuery (countQuery, null);
+        int count = cursor.getCount ();
+        cursor.close ();
+        if (count > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public ArrayList<String> getAllFilters () {
+        ArrayList<String> filterList = new ArrayList<String> ();
+        SQLiteDatabase db = this.getReadableDatabase ();
+        String selectQuery = "SELECT  * FROM " + TABLE_FILTER;
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get all filters", LOG_FLAG);
+        Cursor c = db.rawQuery (selectQuery, null);
+        if (c.moveToFirst ()) {
+            do {
+                filterList.add (c.getString ((c.getColumnIndex (FILTER_CATEGORY))));
+            } while (c.moveToNext ());
+        }
+        return filterList;
+    }
+    
+    public void deleteFilter (String category) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Delete filter where filter = " + category, LOG_FLAG);
+        db.execSQL ("DELETE FROM " + TABLE_FILTER + " WHERE " + FILTER_CATEGORY + " = '" + category + "'");
+    }
+    
+    public void deleteAllFilters () {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Delete all filters", LOG_FLAG);
+        db.execSQL ("delete from " + TABLE_FILTER);
+    }
     
 }

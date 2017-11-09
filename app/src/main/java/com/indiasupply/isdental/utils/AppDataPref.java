@@ -44,6 +44,7 @@ public class AppDataPref {
     public void putStringPref (Context context, String key, String value) {
         SharedPreferences.Editor editor = getPref (context).edit ();
         editor.putString (key, value);
+    
         editor.apply ();
     }
     

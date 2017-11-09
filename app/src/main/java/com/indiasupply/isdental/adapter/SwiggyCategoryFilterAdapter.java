@@ -10,7 +10,7 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.activity.SwiggyMainActivity;
+import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.CategoryFilter;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -19,12 +19,14 @@ import java.util.List;
 
 public class SwiggyCategoryFilterAdapter extends RecyclerView.Adapter<SwiggyCategoryFilterAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
+    DatabaseHandler db;
     private Activity activity;
     private List<CategoryFilter> categoryFilters = new ArrayList<> ();
     
     public SwiggyCategoryFilterAdapter (Activity activity, List<CategoryFilter> categoryFilters) {
         this.activity = activity;
         this.categoryFilters = categoryFilters;
+        db = new DatabaseHandler (activity);
     }
     
     @Override
@@ -41,8 +43,8 @@ public class SwiggyCategoryFilterAdapter extends RecyclerView.Adapter<SwiggyCate
         holder.tvCategoryName.setText (filter.getName ());
         holder.cbCategorySelect.setChecked (filter.is_selected ());
     
-        for (int i = 0; i < SwiggyMainActivity.selectedItem.size (); i++) {
-            if (SwiggyMainActivity.selectedItem.get (i).equalsIgnoreCase (filter.getName ())) {
+        for (int i = 0; i < db.getAllFilters ().size (); i++) {
+            if (db.getAllFilters ().get (i).equalsIgnoreCase (filter.getName ())) {
                 holder.cbCategorySelect.setChecked (true);
             }
         }
@@ -99,18 +101,18 @@ public class SwiggyCategoryFilterAdapter extends RecyclerView.Adapter<SwiggyCate
         public void onClick (View v) {
             CategoryFilter categoryFilter = categoryFilters.get (getLayoutPosition ());
             if (categoryFilter.is_selected ()) {
-                if (SwiggyMainActivity.selectedItem.contains (categoryFilter.getName ())) {
+                if (db.isFilterExist (categoryFilter.getName ())) {
                     cbCategorySelect.setChecked (false);
                     categoryFilter.setIs_selected (false);
-                    SwiggyMainActivity.selectedItem.remove (categoryFilter.getName ());
+                    db.deleteFilter (categoryFilter.getName ());
                     Log.e ("karman", "item removed : " + categoryFilter.getName ());
                 }
                 
             } else {
-                if (! SwiggyMainActivity.selectedItem.contains (categoryFilter.getName ())) {
+                if (! db.isFilterExist (categoryFilter.getName ())) {
                     categoryFilter.setIs_selected (true);
                     cbCategorySelect.setChecked (true);
-                    SwiggyMainActivity.selectedItem.add (categoryFilter.getName ());
+                    db.insertFilter (categoryFilter.getName ());
                     Log.e ("karman", "item added : " + categoryFilter.getName ());
                 }
             }

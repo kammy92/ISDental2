@@ -31,10 +31,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.activity.SwiggyMainActivity;
 import com.indiasupply.isdental.adapter.SwiggyCompanyAdapter2;
 import com.indiasupply.isdental.dialog.SwiggyCategoryFilterDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyContactDetailDialogFragment;
+import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.SwiggyCompany2;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -82,6 +82,7 @@ public class SwiggyContactsFragment extends Fragment {
     AppDataPref appDataPref;
     
     RelativeLayout rlNoCompanyFound;
+    DatabaseHandler db;
     
     public static SwiggyContactsFragment newInstance () {
         return new SwiggyContactsFragment ();
@@ -117,10 +118,11 @@ public class SwiggyContactsFragment extends Fragment {
     }
     
     private void initData () {
+        db = new DatabaseHandler (getActivity ());
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
         appDataPref = AppDataPref.getInstance ();
         linearLayoutManager = new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false);
-        SwiggyMainActivity.selectedItem.clear ();
+        db.deleteAllFilters ();
 //        linearLayoutManager.setAutoMeasureEnabled (false);
     
         companyAdapter = new SwiggyCompanyAdapter2 (getActivity (), companyDisplayList);
@@ -143,11 +145,11 @@ public class SwiggyContactsFragment extends Fragment {
                 dialog.setDismissListener (new MyDialogCloseListener () {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
-                        if (SwiggyMainActivity.selectedItem.size () > 0) {
-                            Utils.showToast (getActivity (), "in ondismmiss " + SwiggyMainActivity.selectedItem.size () + " filter selected", false);
+                        if (db.getAllFilters ().size () > 0) {
+                            Utils.showToast (getActivity (), "in ondismmiss " + db.getAllFilters ().size () + " filter selected", false);
                             companyDisplayList.clear ();
-                            for (int i = 0; i < SwiggyMainActivity.selectedItem.size (); i++) {
-                                String item = SwiggyMainActivity.selectedItem.get (i);
+                            for (int i = 0; i < db.getAllFilters ().size (); i++) {
+                                String item = db.getAllFilters ().get (i);
                                 for (SwiggyCompany2 swiggyCompany2 : companyAllList) {
                                     if (swiggyCompany2.getCategory ().contains (item)) {
                                         if (! companyDisplayList.contains (swiggyCompany2)) {

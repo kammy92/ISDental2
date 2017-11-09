@@ -39,7 +39,6 @@ import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
@@ -47,7 +46,6 @@ import java.util.Map;
 
 public class SwiggyMainActivity extends AppCompatActivity {
     public static final int REQUEST_LOGIN_SCREEN_RESULT = 2;
-    public static ArrayList<String> selectedItem = new ArrayList<> ();
     CoordinatorLayout clMain;
     BottomNavigationView bottomNavigationView;
     UserDetailsPref userDetailsPref;

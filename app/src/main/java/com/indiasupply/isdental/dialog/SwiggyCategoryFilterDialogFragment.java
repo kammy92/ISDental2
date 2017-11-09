@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyCategoryFilterAdapter;
 import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
+import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.CategoryFilter;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.SetTypeFace;
@@ -44,7 +45,9 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
     ArrayList<CategoryFilter> categoryFilterList = new ArrayList<> ();
     String filter;
     TextView tvApply;
+    TextView tvReset;
     
+    DatabaseHandler db;
     
     public SwiggyCategoryFilterDialogFragment newInstance (String filter) {
         SwiggyCategoryFilterDialogFragment f = new SwiggyCategoryFilterDialogFragment ();
@@ -100,6 +103,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
         nestedScrollView = (NestedScrollView) root.findViewById (R.id.nestedScrollView);
         llDynamic = (LinearLayout) root.findViewById (R.id.llDynamic);
         tvApply = (TextView) root.findViewById (R.id.tvApply);
+        tvReset = (TextView) root.findViewById (R.id.tvReset);
     }
     
     private void initBundle () {
@@ -109,6 +113,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvApply);
+        db = new DatabaseHandler (getActivity ());
         
     }
     
@@ -120,6 +125,14 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
             }
         });
     
+        tvReset.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                db.deleteAllFilters ();
+                getDialog ().dismiss ();
+            }
+        });
+        
         tvApply.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
