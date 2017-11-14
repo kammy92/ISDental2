@@ -66,8 +66,14 @@ public class SwiggyFeaturedFragment extends Fragment {
     
     AppDataPref appDataPref;
     
-    public static SwiggyFeaturedFragment newInstance () {
-        return new SwiggyFeaturedFragment ();
+    boolean refresh;
+    
+    public static SwiggyFeaturedFragment newInstance (boolean refresh) {
+        SwiggyFeaturedFragment fragment = new SwiggyFeaturedFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
+        return fragment;
     }
     
     @Override
@@ -79,6 +85,7 @@ public class SwiggyFeaturedFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate (R.layout.fragment_swiggy_featured, container, false);
         initView (rootView);
+        initBundle ();
         initData ();
         initListener ();
         setData ();
@@ -94,10 +101,16 @@ public class SwiggyFeaturedFragment extends Fragment {
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
     }
     
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
+    }
+    
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), btFilter);
         appDataPref = AppDataPref.getInstance ();
-        
+    
+    
         bannerAdapter = new SwiggyBannerAdapter (getActivity (), bannerList);
         rvBanners.setAdapter (bannerAdapter);
         rvBanners.setHasFixedSize (true);
@@ -115,6 +128,10 @@ public class SwiggyFeaturedFragment extends Fragment {
         rvCompany.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvCompany.setItemAnimator (new DefaultItemAnimator ());
         rvCompany.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+        if (! refresh) {
+            showOfflineData ();
+        }
     }
     
     private void initListener () {
@@ -228,7 +245,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {
@@ -271,6 +288,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
+                    bannerList.clear ();
                     JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
                     for (int i = 0; i < jsonArrayBanners.length (); i++) {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
@@ -284,6 +302,8 @@ public class SwiggyFeaturedFragment extends Fragment {
                         ));
                     }
                     bannerAdapter.notifyDataSetChanged ();
+    
+                    companyList.clear ();
                     JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                     for (int j = 0; j < jsonArrayCompanies.length (); j++) {
                         JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);

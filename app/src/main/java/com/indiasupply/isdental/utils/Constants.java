@@ -11,7 +11,6 @@ public class Constants {
     public static final int NOTIFICATION_ID = 100;
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
     public static String app_link_uri = "android-app://com.actiknow.bloodkonnect/http/host/path";
-    //    public static String font_name = "Calibri.ttf";
     public static String font_name = "AvenirNextLTPro-Regular.otf";
   
     public static double latitude = 0.0;

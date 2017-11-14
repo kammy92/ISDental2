@@ -223,7 +223,7 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
 //            ivFavourite.setImageResource (R.drawable.ic_favourite_filled);
         }

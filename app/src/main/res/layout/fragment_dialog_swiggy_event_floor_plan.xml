@@ -23,6 +23,16 @@
         android:textColor="@color/primary_text2"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/activity_margin"
+        android:visibility="gone"/>
     <View
         android:id="@+id/v1"
         android:layout_width="match_parent"
@@ -34,5 +44,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/v1"
-        android:src="@drawable/hallplan"/>
+        android:src="@drawable/hallplan"
+        android:visibility="gone"/>
 </RelativeLayout>

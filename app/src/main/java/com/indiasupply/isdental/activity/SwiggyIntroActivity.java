@@ -28,28 +28,28 @@ public class SwiggyIntroActivity extends WelcomeActivity {
                 .swipeToDismiss (false)
                 .page (new ParallaxPage (R.layout.intro_screen_1,
                         "Offers",
-                        "Offers Description")
+                        "Get Expo Offers")
                         .lastParallaxFactor (0.5f)
                         .headerColorResource (this, R.color.primary_text2)
                         .descriptionColorResource (this, R.color.primary_text2)
                         .background (R.color.intro_screen_1))
                 .page (new ParallaxPage (R.layout.intro_screen_2,
-                        "Events",
-                        "Events Description")
+                        "Upcoming Events",
+                        "Stay updated with all events")
                         .lastParallaxFactor (0.5f)
                         .headerColorResource (this, R.color.primary_text2)
                         .descriptionColorResource (this, R.color.primary_text2)
                         .background (R.color.intro_screen_2))
                 .page (new ParallaxPage (R.layout.intro_screen_3,
                         "Contacts",
-                        "Contacts Description")
+                        "Salespersons, Service Technicians & Dealers")
                         .lastParallaxFactor (0.5f)
                         .headerColorResource (this, R.color.primary_text2)
                         .descriptionColorResource (this, R.color.primary_text2)
                         .background (R.color.intro_screen_3))
                 .page (new ParallaxPage (R.layout.intro_screen_4,
                         "Service",
-                        "Service Description")
+                        "Equipment Service Request to all Brands")
                         .lastParallaxFactor (0.5f)
                         .headerColorResource (this, R.color.primary_text2)
                         .descriptionColorResource (this, R.color.primary_text2)

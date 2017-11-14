@@ -230,7 +230,7 @@ public class SwiggyMyAccountFavouriteAdapter extends RecyclerView.Adapter<Swiggy
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
 //            ivFavourite.setImageResource (R.drawable.ic_favourite_filled);
         }

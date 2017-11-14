@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     // Database Name
     private static final String DATABASE_NAME = "isdental";
     
@@ -29,6 +29,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_COMPANIES = "tbl_companies";
     
     private static final String TABLE_FILTER = "tbl_filter";
+    
     
     // Banners Table - column names
     private static final String BNNR_ID = "bnnr_id";
@@ -44,12 +45,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     
     private static final String EVNT_ID = "evnt_id";
     private static final String EVNT_DETAILS = "evnt_details";
+    private static final String EVNT_FLOOR_PLAN = "evnt_floor_plan";
     
     private static final String CMPNY_ID = "cmpny_id";
     private static final String CMPNY_DETAILS = "cmpny_details";
     
     private static final String FILTER_CATEGORY = "filter_category";
-    
     
     // Notes table Create Statements
     private static final String CREATE_TABLE_BANNERS = "CREATE TABLE "
@@ -65,7 +66,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_EVENTS = "CREATE TABLE "
             + TABLE_EVENTS + "(" +
             EVNT_ID + " INTEGER," +
-            EVNT_DETAILS + " TEXT" + ")";
+            EVNT_DETAILS + " TEXT," +
+            EVNT_FLOOR_PLAN + " TEXT" + ")";
     
     // Notes table Create Statements
     private static final String CREATE_TABLE_COMPANIES = "CREATE TABLE "
@@ -225,6 +227,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues ();
         values.put (EVNT_ID, event_id);
         values.put (EVNT_DETAILS, event_details);
+        values.put (EVNT_FLOOR_PLAN, "");
         return db.insert (TABLE_EVENTS, null, values);
     }
     
@@ -257,6 +260,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (c != null)
             c.moveToFirst ();
         return c.getString (c.getColumnIndex (EVNT_DETAILS));
+    }
+    
+    public int updateEventFloorPlan (int event_id, String floor_plan) {
+        SQLiteDatabase db = this.getWritableDatabase ();
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Update event floor plan in event id = " + event_id, LOG_FLAG);
+        ContentValues values = new ContentValues ();
+        values.put (EVNT_FLOOR_PLAN, floor_plan);
+        return db.update (TABLE_EVENTS, values, EVNT_ID + " = ?", new String[] {String.valueOf (event_id)});
+    }
+    
+    public String getEventFloorPlan (int event_id) {
+        SQLiteDatabase db = this.getReadableDatabase ();
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS + " WHERE " + EVNT_ID + " = " + event_id;
+        Utils.showLog (Log.DEBUG, AppConfigTags.DATABASE_LOG, "Get event floor plan where event ID = " + event_id, LOG_FLAG);
+        Cursor c = db.rawQuery (selectQuery, null);
+        if (c != null)
+            c.moveToFirst ();
+        return c.getString (c.getColumnIndex (EVNT_FLOOR_PLAN));
     }
     
     public void deleteEvent (int event_id) {

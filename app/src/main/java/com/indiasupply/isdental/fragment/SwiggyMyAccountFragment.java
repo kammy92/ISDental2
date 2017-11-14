@@ -84,8 +84,13 @@ public class SwiggyMyAccountFragment extends Fragment {
     
     AppDataPref appDataPref;
     
-    public static SwiggyMyAccountFragment newInstance () {
+    boolean refresh;
+    
+    public static SwiggyMyAccountFragment newInstance (boolean refresh) {
         SwiggyMyAccountFragment fragment = new SwiggyMyAccountFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
         return fragment;
     }
     
@@ -98,6 +103,7 @@ public class SwiggyMyAccountFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate (R.layout.fragment_swiggy_my_account, container, false);
         initView (rootView);
+        initBundle ();
         initData ();
         initListener ();
         return rootView;
@@ -127,6 +133,11 @@ public class SwiggyMyAccountFragment extends Fragment {
     
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
+    }
+    
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
     }
     
     private void initData () {
@@ -165,10 +176,14 @@ public class SwiggyMyAccountFragment extends Fragment {
         myAccountItemList.add (new SwiggyMyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
     
         myHelpItemList.add (new SwiggyMyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
-//        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "About Us", "", ""));
+//        myHelpItemList.add (new SwiggyMyAccountItem (6, R.drawable.ic_my_account_help_support, "FAQs", "", ""));
         myHelpItemList.add (new SwiggyMyAccountItem (7, R.drawable.ic_my_account_terms_of_use, "Terms of Use", "", ""));
         myHelpItemList.add (new SwiggyMyAccountItem (8, R.drawable.ic_my_account_privacy_policy, "Privacy Policy", "", ""));
         myAccountItemAdapter.notifyDataSetChanged ();
+    
+        if (! refresh) {
+            showOfflineData ();
+        }
     }
     
     private void initListener () {
@@ -296,7 +311,7 @@ public class SwiggyMyAccountFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {

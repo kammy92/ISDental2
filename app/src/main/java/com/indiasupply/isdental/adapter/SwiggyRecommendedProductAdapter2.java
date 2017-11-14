@@ -209,7 +209,7 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
         }
     }

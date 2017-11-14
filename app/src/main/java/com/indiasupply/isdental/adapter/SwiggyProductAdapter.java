@@ -192,7 +192,7 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
         }
     }

@@ -44,6 +44,8 @@ public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapte
     
         if (banner.getTitle ().length () > 0) {
             holder.tvBannerTitle.setVisibility (View.VISIBLE);
+        } else {
+            holder.tvBannerTitle.setVisibility (View.GONE);
         }
     
         if (banner.getImage ().length () == 0) {
@@ -70,6 +72,8 @@ public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapte
                     .error (banner.getIcon ())
                     .into (holder.ivBanner);
         }
+    
+    
     }
     
     @Override

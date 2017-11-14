@@ -3,10 +3,12 @@ package com.indiasupply.isdental.dialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +16,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
@@ -29,10 +38,16 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     SubsamplingScaleImageView ivFloorPlan;
     
     String eventFloorPlan;
+    int event_id;
+    ProgressBar progressBar;
+    Bitmap bitmap;
     
-    public static SwiggyEventFloorPlanDialogFragment newInstance (String eventFloorPlan) {
+    DatabaseHandler db;
+    
+    public static SwiggyEventFloorPlanDialogFragment newInstance (int event_id, String eventFloorPlan) {
         SwiggyEventFloorPlanDialogFragment fragment = new SwiggyEventFloorPlanDialogFragment ();
         Bundle args = new Bundle ();
+        args.putInt (AppConfigTags.SWIGGY_EVENT_ID, event_id);
         args.putString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN, eventFloorPlan);
         fragment.setArguments (args);
         return fragment;
@@ -91,7 +106,6 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_dialog_swiggy_event_floor_plan, container, false);
-    
         initBundle ();
         initView (root);
         initData ();
@@ -102,30 +116,68 @@ public class SwiggyEventFloorPlanDialogFragment extends DialogFragment {
     private void initBundle () {
         Bundle bundle = this.getArguments ();
         eventFloorPlan = bundle.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+        event_id = bundle.getInt (AppConfigTags.SWIGGY_EVENT_ID);
     }
     
     private void initView (View root) {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         ivFloorPlan = (SubsamplingScaleImageView) root.findViewById (R.id.ivFloorPlan);
+        progressBar = (ProgressBar) root.findViewById (R.id.progressBar);
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-        Log.d ("eventFloorPlan", eventFloorPlan);
-
-//        ivFloorPlan.setImage (ImageSource.bitmap (getBitmapFromURL (eventFloorPlan)));
-    
-        //        ivFloorPlan.setImage (ImageSource.uri (Uri.parse ("http://famdent.indiasupply.com/isdental/api/images/mumbai.jpg")));
-        ivFloorPlan.setImage (ImageSource.resource (R.drawable.hallplan));
+        db = new DatabaseHandler (getActivity ());
+        if (db.getEventFloorPlan (event_id).length () > 0) {
+            ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
+            ivFloorPlan.setVisibility (View.VISIBLE);
+            progressBar.setVisibility (View.GONE);
+        } else {
+            new getBitmapFromURL ().execute (eventFloorPlan);
+        }
     }
     
     private void initListener () {
         ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
-                    getDialog ().dismiss ();
+                getDialog ().dismiss ();
             }
         });
+    }
+    
+    private class getBitmapFromURL extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground (String... params) {
+            try {
+                URL url = new URL (params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
+                connection.setDoInput (true);
+                connection.connect ();
+                InputStream input = connection.getInputStream ();
+                bitmap = BitmapFactory.decodeStream (input);
+                
+            } catch (IOException e) {
+                e.printStackTrace ();
+            }
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute (String result) {
+            ivFloorPlan.setImage (ImageSource.bitmap (bitmap));
+            ivFloorPlan.setVisibility (View.VISIBLE);
+            progressBar.setVisibility (View.GONE);
+        }
+        
+        @Override
+        protected void onPreExecute () {
+            progressBar.setVisibility (View.VISIBLE);
+        }
+        
+        @Override
+        protected void onProgressUpdate (Void... values) {
+        }
     }
 }

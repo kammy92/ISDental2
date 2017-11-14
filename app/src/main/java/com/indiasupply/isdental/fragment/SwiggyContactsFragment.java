@@ -55,9 +55,6 @@ import java.util.List;
 import java.util.Map;
 
 public class SwiggyContactsFragment extends Fragment {
-    
-    public static final int FILTER_DIALOG = 1; // class variable
-    
     RecyclerView rvContacts;
     CoordinatorLayout clMain;
     List<SwiggyCompany2> companyAllList = new ArrayList<> ();
@@ -84,8 +81,14 @@ public class SwiggyContactsFragment extends Fragment {
     RelativeLayout rlNoCompanyFound;
     DatabaseHandler db;
     
-    public static SwiggyContactsFragment newInstance () {
-        return new SwiggyContactsFragment ();
+    boolean refresh;
+    
+    public static SwiggyContactsFragment newInstance (boolean refresh) {
+        SwiggyContactsFragment fragment = new SwiggyContactsFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
+        return fragment;
     }
     
     @Override
@@ -97,6 +100,7 @@ public class SwiggyContactsFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate (R.layout.fragment_swiggy_contact, container, false);
         initView (rootView);
+        initBundle ();
         initData ();
         initListener ();
         setData ();
@@ -117,6 +121,11 @@ public class SwiggyContactsFragment extends Fragment {
         rlNoCompanyFound = (RelativeLayout) rootView.findViewById (R.id.rlNoCompanyFound);
     }
     
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
+    }
+    
     private void initData () {
         db = new DatabaseHandler (getActivity ());
         Utils.setTypefaceToAllViews (getActivity (), rvContacts);
@@ -133,6 +142,10 @@ public class SwiggyContactsFragment extends Fragment {
         rvContacts.setLayoutManager (linearLayoutManager);
         rvContacts.setItemAnimator (new DefaultItemAnimator ());
         rvContacts.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+        if (! refresh) {
+            showOfflineData ();
+        }
     }
     
     private void initListener () {
@@ -467,7 +480,7 @@ public class SwiggyContactsFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {
@@ -514,6 +527,7 @@ public class SwiggyContactsFragment extends Fragment {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
+                    companyAllList.clear ();
                     JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                     filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
                     for (int i = 0; i < jsonArrayCompany.length (); i++) {

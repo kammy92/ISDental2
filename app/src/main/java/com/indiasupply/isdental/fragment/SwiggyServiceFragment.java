@@ -63,11 +63,15 @@ public class SwiggyServiceFragment extends Fragment {
     
     AppDataPref appDataPref;
     
-    public static SwiggyServiceFragment newInstance () {
+    boolean refresh;
+    
+    public static SwiggyServiceFragment newInstance (boolean refresh) {
         SwiggyServiceFragment fragment = new SwiggyServiceFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
         return fragment;
     }
-    
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -77,6 +81,7 @@ public class SwiggyServiceFragment extends Fragment {
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_swiggy_service, container, false);
         initView (root);
+        initBundle ();
         initData ();
         initListener ();
         return root;
@@ -88,6 +93,11 @@ public class SwiggyServiceFragment extends Fragment {
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
+    }
+    
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
     }
     
     private void initData () {
@@ -108,6 +118,10 @@ public class SwiggyServiceFragment extends Fragment {
         rvServiceList.setLayoutManager (new GridLayoutManager (getActivity (), 2, GridLayoutManager.VERTICAL, false));
         rvServiceList.setItemAnimator (new DefaultItemAnimator ());
         rvServiceList.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+        if (! refresh) {
+            showOfflineData ();
+        }
     }
     
     private void initListener () {
@@ -207,7 +221,7 @@ public class SwiggyServiceFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {

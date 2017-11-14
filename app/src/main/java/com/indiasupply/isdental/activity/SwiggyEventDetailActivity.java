@@ -2,6 +2,8 @@ package com.indiasupply.isdental.activity;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -47,6 +49,10 @@ import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -136,7 +142,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                         break;
                     case 4:
                         if (eventItem.isEnabled ()) {
-                            SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (eventFloorPlan);
+                            SwiggyEventFloorPlanDialogFragment frag4 = SwiggyEventFloorPlanDialogFragment.newInstance (event_id, eventFloorPlan);
                             frag4.show (ft, "4");
                         } else {
 //                            Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, "No Floor Plan available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
@@ -250,6 +256,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                         boolean flag = false;
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
                                             if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
+                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
                                                 flag = true;
                                                 break;
                                             }
@@ -336,7 +343,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 60);
+            Utils.sendRequest (strRequest, 2);
         } else {
 //            updateLayoutOnResponse (5);
             if (! showOfflineData (event_id)) {
@@ -524,6 +531,39 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    private class getBitmapFromURL extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground (String... params) {
+            try {
+                URL url = new URL (params[0]);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
+                connection.setDoInput (true);
+                connection.connect ();
+                InputStream input = connection.getInputStream ();
+                db.updateEventFloorPlan (event_id, Utils.bitmapToBase64 (BitmapFactory.decodeStream (input)));
+            } catch (IOException e) {
+                e.printStackTrace ();
+            }
+            return null;
+        }
+        
+        @Override
+        protected void onPostExecute (String result) {
+//            ivFloorPlan.setImage (ImageSource.bitmap (bitmap));
+//            ivFloorPlan.setVisibility (View.VISIBLE);
+//            progressBar.setVisibility (View.GONE);
+        }
+        
+        @Override
+        protected void onPreExecute () {
+//            progressBar.setVisibility (View.VISIBLE);
+        }
+        
+        @Override
+        protected void onProgressUpdate (Void... values) {
         }
     }
 }

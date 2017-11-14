@@ -301,5 +301,8 @@ public class AppConfigTags {
     public static final String OFFER_EXPIRE = "offer_expire";
     public static final String OFFER_START = "offer_start";
     public static final String OFFER_STATUS = "offer_status";
+    
+    
+    public static final String REFRESH_FLAG = "refresh_flag";
 }
 

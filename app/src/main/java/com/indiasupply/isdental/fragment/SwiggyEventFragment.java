@@ -51,10 +51,15 @@ public class SwiggyEventFragment extends Fragment {
     ShimmerFrameLayout shimmerFrameLayout;
     AppDataPref appDataPref;
     
-    public static SwiggyEventFragment newInstance () {
-        return new SwiggyEventFragment ();
-    }
+    boolean refresh;
     
+    public static SwiggyEventFragment newInstance (boolean refresh) {
+        SwiggyEventFragment fragment = new SwiggyEventFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
+        return fragment;
+    }
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -63,6 +68,7 @@ public class SwiggyEventFragment extends Fragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate (R.layout.fragment_swiggy_event, container, false);
+        initBundle ();
         initView (rootView);
         initData ();
         initListener ();
@@ -73,6 +79,11 @@ public class SwiggyEventFragment extends Fragment {
         rvEvents = (RecyclerView) rootView.findViewById (R.id.rvEvents);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
+    }
+    
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
     }
     
     private void initData () {
@@ -86,6 +97,10 @@ public class SwiggyEventFragment extends Fragment {
         rvEvents.setHasFixedSize (true);
         rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
         rvEvents.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+    
+        if (! refresh) {
+            showOfflineData ();
+        }
     }
     
     private void initListener () {
@@ -111,7 +126,7 @@ public class SwiggyEventFragment extends Fragment {
                                             JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
                                             for (int i = 0; i < jsonArrayEvents.length (); i++) {
                                                 JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
-                                                SwiggyEvent swiggyEvent = new SwiggyEvent (
+                                                eventList.add (new SwiggyEvent (
                                                         jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
                                                         R.drawable.expodent_mumbai,
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
@@ -120,8 +135,7 @@ public class SwiggyEventFragment extends Fragment {
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
-                                                );
-                                                eventList.add (i, swiggyEvent);
+                                                ));
                                             }
                                             eventAdapter.notifyDataSetChanged ();
                                             rvEvents.setVisibility (View.VISIBLE);
@@ -179,7 +193,7 @@ public class SwiggyEventFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 5);
+            Utils.sendRequest (strRequest, 2);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {
@@ -223,10 +237,11 @@ public class SwiggyEventFragment extends Fragment {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
+                    eventList.clear ();
                     JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
                     for (int i = 0; i < jsonArrayEvents.length (); i++) {
                         JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
-                        SwiggyEvent swiggyEvent = new SwiggyEvent (
+                        eventList.add (new SwiggyEvent (
                                 jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
                                 R.drawable.expodent_mumbai,
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
@@ -235,8 +250,7 @@ public class SwiggyEventFragment extends Fragment {
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
-                        );
-                        eventList.add (i, swiggyEvent);
+                        ));
                     }
                     eventAdapter.notifyDataSetChanged ();
                     rvEvents.setVisibility (View.VISIBLE);
