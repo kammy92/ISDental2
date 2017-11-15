@@ -377,4 +377,5 @@ public class SwiggyMyAccountFragment extends Fragment {
             return false;
         }
     }
+    
 }

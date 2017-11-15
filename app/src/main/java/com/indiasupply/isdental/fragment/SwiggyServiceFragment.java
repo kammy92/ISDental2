@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -137,6 +138,14 @@ public class SwiggyServiceFragment extends Fragment {
                         break;
                     case 2:
                         SwiggyServiceAddProductDialogFragment frag2 = new SwiggyServiceAddProductDialogFragment ().newInstance (categories, brands);
+                        frag2.setDismissListener (new MyDialogCloseListener () {
+                            @Override
+                            public void handleDialogClose (DialogInterface dialog) {
+                                shimmerFrameLayout.setVisibility (View.VISIBLE);
+                                rlMain.setVisibility (View.GONE);
+                                setData ();
+                            }
+                        });
                         frag2.show (ft, "");
                         break;
                     case 3:
@@ -145,6 +154,14 @@ public class SwiggyServiceFragment extends Fragment {
                         break;
                     case 4:
                         SwiggyServiceAddRequestDialogFragment frag4 = new SwiggyServiceAddRequestDialogFragment ().newInstance (myProducts);
+                        frag4.setDismissListener (new MyDialogCloseListener () {
+                            @Override
+                            public void handleDialogClose (DialogInterface dialog) {
+                                shimmerFrameLayout.setVisibility (View.VISIBLE);
+                                rlMain.setVisibility (View.GONE);
+                                setData ();
+                            }
+                        });
                         frag4.show (ft, "");
                         break;
                 }
@@ -283,4 +300,7 @@ public class SwiggyServiceFragment extends Fragment {
         }
     }
     
+    public interface MyDialogCloseListener {
+        public void handleDialogClose (DialogInterface dialog);
+    }
 }

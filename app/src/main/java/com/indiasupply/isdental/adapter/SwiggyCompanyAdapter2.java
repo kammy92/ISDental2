@@ -43,10 +43,6 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final SwiggyCompany2 company = companyList.get (position);
-//        if (position == companyList.size () - 1) {
-//            onBottomReachedListener.onBottomReached (position);
-//        }
-    
     
         Utils.setTypefaceToAllViews (activity, holder.tvCompanyName);
     
@@ -120,18 +116,10 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
     public void SetOnItemClickListener (final OnItemClickListener mItemClickListener) {
         this.mItemClickListener = mItemClickListener;
     }
-
-//    public void setOnBottomReachedListener (OnBottomReachedListener onBottomReachedListener) {
-//        this.onBottomReachedListener = onBottomReachedListener;
-//    }
     
     public interface OnItemClickListener {
         public void onItemClick (View view, int position);
     }
-
-//    public interface OnBottomReachedListener {
-//        public void onBottomReached (int position);
-//    }
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvCompanyName;

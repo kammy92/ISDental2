@@ -229,7 +229,14 @@ public class SwiggyContactsFragment extends Fragment {
             public void onItemClick (View view, int position) {
                 SwiggyCompany2 contact = companyDisplayList.get (position);
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
-                new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ()).show (ft, "Contacts");
+                SwiggyContactDetailDialogFragment dialog = new SwiggyContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ());
+                dialog.setDismissListener (new MyDialogCloseListener () {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        setData ();
+                    }
+                });
+                dialog.show (ft, "Contacts");
             }
         });
     
@@ -405,6 +412,7 @@ public class SwiggyContactsFragment extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             companyAllList.clear ();
+                                            companyDisplayList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_CONTACTS, response);
                                             JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                                             filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
@@ -521,13 +529,13 @@ public class SwiggyContactsFragment extends Fragment {
     private boolean showOfflineData () {
         String response = appDataPref.getStringPref (getActivity (), AppDataPref.HOME_CONTACTS);
         if (response.length () > 0) {
-            companyAllList.clear ();
             try {
                 JSONObject jsonObj = new JSONObject (response);
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
                     companyAllList.clear ();
+                    companyDisplayList.clear ();
                     JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                     filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
                     for (int i = 0; i < jsonArrayCompany.length (); i++) {
@@ -564,22 +572,6 @@ public class SwiggyContactsFragment extends Fragment {
             return false;
         }
     }
-//
-//    @Override
-//    public void onActivityResult (int requestCode, int resultCode, Intent data) {
-//        switch (requestCode) {
-//            case FILTER_DIALOG:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    Bundle bundle = data.getExtras ();
-//                    String mMonth = bundle.getString ("month", "");
-//                    int mYear = bundle.getInt ("year");
-//                    Log.e ("karman", "Got year=" + mYear + " and month=" + mMonth + ", yay!");
-//                } else if (resultCode == Activity.RESULT_CANCELED) {
-//                }
-//                break;
-//        }
-//    }
-    
     
     public interface MyDialogCloseListener {
         public void handleDialogClose (DialogInterface dialog);

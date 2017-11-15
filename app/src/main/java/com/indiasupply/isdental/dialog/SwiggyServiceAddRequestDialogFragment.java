@@ -3,6 +3,7 @@ package com.indiasupply.isdental.dialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.fragment.SwiggyServiceFragment;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -52,6 +54,7 @@ import java.util.Map;
 
 
 public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
+    SwiggyServiceFragment.MyDialogCloseListener closeListener;
     ImageView ivCancel;
     TextView tvModelNumber;
     TextView tvSerialNumber;
@@ -296,6 +299,18 @@ public class SwiggyServiceAddRequestDialogFragment extends DialogFragment {
                     startActivity (dialogIntent);
                 }
             });
+        }
+    }
+    
+    public void setDismissListener (SwiggyServiceFragment.MyDialogCloseListener closeListener) {
+        this.closeListener = closeListener;
+    }
+    
+    @Override
+    public void onDismiss (DialogInterface dialog) {
+        super.onDismiss (dialog);
+        if (closeListener != null) {
+            closeListener.handleDialogClose (null);
         }
     }
 }

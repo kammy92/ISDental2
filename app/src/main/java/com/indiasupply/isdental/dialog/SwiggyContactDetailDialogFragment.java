@@ -3,6 +3,7 @@ package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyContactDetailAdapter;
+import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.model.SwiggyContactDetail;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SwiggyContactDetailDialogFragment extends DialogFragment {
+    SwiggyContactsFragment.MyDialogCloseListener closeListener;
     RecyclerView rvContactList;
     List<SwiggyContactDetail> contactDetailList = new ArrayList<> ();
     SwiggyContactDetailAdapter contactDetailAdapter;
@@ -145,6 +148,19 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
             contactDetailAdapter.notifyDataSetChanged ();
         } catch (JSONException e) {
             e.printStackTrace ();
+        }
+    }
+    
+    public void setDismissListener (SwiggyContactsFragment.MyDialogCloseListener closeListener) {
+        this.closeListener = closeListener;
+    }
+    
+    @Override
+    public void onDismiss (DialogInterface dialog) {
+        super.onDismiss (dialog);
+        
+        if (closeListener != null) {
+            closeListener.handleDialogClose (null);
         }
     }
 }
