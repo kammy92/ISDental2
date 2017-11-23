@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout android:id="@+id/clMain"
+                                                 xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/text_color_white">
+
+        <ImageView
+            android:id="@+id/ivCancel"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:padding="@dimen/activity_margin"
+            android:src="@drawable/ic_close"/>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/ivCancel"
+            android:layout_alignTop="@+id/ivCancel"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="View Service Request"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"/>
+
+        <View
+            android:id="@+id/v1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/ivCancel"
+            android:background="@color/text_color_grey_light2"/>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tvAddNewRequest"
+            android:layout_below="@+id/v1">
+
+            <RelativeLayout
+                android:id="@+id/rlHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/activity_margin">
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:text="AIR COMPRESSOR BOSCH – 1234567SN"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/tvModelName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvName"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:text="MODEL1123"
+                    android:textSize="@dimen/text_size_small"/>
+
+                <TextView
+                    android:id="@+id/tvPurchaseDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvModelName"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:paddingBottom="5dp"
+                    android:text="OTHER DETAILS ABOUT PRODUCT"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone"/>
+
+
+                <TextView
+                    android:id="@+id/tvRequestDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvPurchaseDate"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:paddingBottom="5dp"
+                    android:text="Service Request Description"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_small"/>
+
+
+                <View
+                    android:id="@+id/v2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tvRequestDescription"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:background="@color/text_color_grey_light2"/>
+
+
+                <TextView
+                    android:id="@+id/tvImages"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/v2"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:text="IMAGES"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/scImages"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvImages"
+                    android:layout_marginLeft="@dimen/activity_margin">
+
+                    <LinearLayout
+                        android:id="@+id/llImages"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <TextView
+                            android:id="@+id/tvNoImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="No Image Found"/>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv1"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_centerInParent="true"
+                                android:scaleType="fitXY"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:visibility="visible"/>
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv2"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_centerInParent="true"
+                                android:scaleType="fitXY"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:visibility="visible"/>
+
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:id="@+id/rl3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/iv3"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:layout_centerInParent="true"
+                                android:scaleType="fitXY"/>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar3"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:visibility="visible"/>
+
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                </HorizontalScrollView>
+                <View
+                    android:id="@+id/v3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/scImages"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:background="@color/text_color_grey_light2"/>
+
+
+                <TextView
+                    android:id="@+id/tvComments"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/v3"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:text="COMMENTS"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+
+
+                <RelativeLayout
+                    android:id="@+id/rlMain"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/tvComments"
+                    android:layout_marginLeft="5dp"
+                    android:visibility="visible">
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rvCommentsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"/>
+
+
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/tvCommentsReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlMain"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:text="REPLY"
+                    android:textColor="@color/text_color_black"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+
+
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <TextView
+            android:id="@+id/tvCloseRequest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/activity_margin"
+            android:background="@color/text_color_black"
+            android:gravity="center"
+            android:padding="@dimen/edittext_padding"
+            android:text="CLOSE REQUEST"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

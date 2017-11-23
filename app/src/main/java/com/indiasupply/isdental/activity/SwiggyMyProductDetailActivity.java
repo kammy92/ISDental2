@@ -28,6 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyProductRequestAdapter;
+import com.indiasupply.isdental.dialog.SwiggyServiceRequestDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyProductRequest;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -146,9 +147,9 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
             @Override
             public void onItemClick (View view, int position) {
                 SwiggyMyProductRequest serviceRequest = swiggyServiceRequestList.get (position);
-//                android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-//                SwiggyServiceRequestDetailDialogFragment dialog = new SwiggyServiceRequestDetailDialogFragment ().newInstance(Response,serviceRequest.getRequest_id());
-//                dialog.show (ft, "Contacts");
+                android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                SwiggyServiceRequestDetailDialogFragment dialog = new SwiggyServiceRequestDetailDialogFragment ().newInstance (Response, serviceRequest.getRequest_id ());
+                dialog.show (ft, "Contacts");
             }
         });
         
