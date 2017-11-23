@@ -7,9 +7,9 @@ package com.indiasupply.isdental.model;
 public class SwiggyCompany {
     boolean is_isassured;
     int id, icon;
-    String title, description, rating, offers, category, image, total_ratings, total_contacts;
+    String title, description, rating, offers, category, image, total_ratings, total_contacts, total_products;
     
-    public SwiggyCompany (boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image, String total_ratings, String total_contacts) {
+    public SwiggyCompany (boolean is_isassured, int id, int icon, String title, String description, String rating, String offers, String category, String image, String total_ratings, String total_contacts, String total_products) {
         this.is_isassured = is_isassured;
         this.id = id;
         this.icon = icon;
@@ -21,6 +21,23 @@ public class SwiggyCompany {
         this.image = image;
         this.total_ratings = total_ratings;
         this.total_contacts = total_contacts;
+        this.total_products = total_products;
+    }
+    
+    public boolean isIs_isassured () {
+        return is_isassured;
+    }
+    
+    public void setIs_isassured (boolean is_isassured) {
+        this.is_isassured = is_isassured;
+    }
+    
+    public String getTotal_products () {
+        return total_products;
+    }
+    
+    public void setTotal_products (String total_products) {
+        this.total_products = total_products;
     }
     
     public String getTotal_ratings () {
@@ -49,10 +66,6 @@ public class SwiggyCompany {
     
     public boolean is_isassured () {
         return is_isassured;
-    }
-    
-    public void setIs_isassured (boolean is_isassured) {
-        this.is_isassured = is_isassured;
     }
     
     public int getId () {

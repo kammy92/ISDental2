@@ -263,6 +263,7 @@ public class AppConfigTags {
     public static final String SWIGGY_TOTAL_RATINGS = "total_ratings";
     public static final String SWIGGY_TOTAL_OFFERS = "total_offers";
     public static final String SWIGGY_TOTAL_CONTACTS = "total_contacts";
+    public static final String SWIGGY_TOTAL_PRODUCTS = "total_products";
     
     public static final String SWIGGY_CONTACT_ID = "contact_id";
     public static final String SWIGGY_CONTACT_NAME = "contact_name";
@@ -326,5 +327,6 @@ public class AppConfigTags {
     public static final String COMMENT_TYPE = "comment_type";
     public static final String COMMENT_CREATED_AT = "comment_created_at";
     
+    public static final String SWIGGY_COMMENT = "comment";
 }
 

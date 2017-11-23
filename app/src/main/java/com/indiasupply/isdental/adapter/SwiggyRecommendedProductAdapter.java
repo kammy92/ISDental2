@@ -2,6 +2,7 @@ package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -29,6 +32,7 @@ import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
+import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -97,7 +101,7 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
         }
     
         if (product.getEnquiry_status () > 0) {
-            holder.tvButtonText.setVisibility (View.GONE);
+            holder.tvButtonText.setVisibility (View.INVISIBLE);
             holder.ivButtonImage.setVisibility (View.VISIBLE);
             holder.ivButtonImage.setImageResource (R.drawable.ic_check_green);
         } else {
@@ -112,7 +116,32 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                 if (product.getEnquiry_status () > 0) {
                     Utils.showToast (activity, "Already enquired for this product", false);
                 } else {
-                    sendEnquiry (product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                    final MaterialDialog.Builder mBuilder = new MaterialDialog.Builder (activity)
+                            .content ("Would you like to add a comment")
+                            .contentColor (activity.getResources ().getColor (R.color.primary_text2))
+                            .positiveColor (activity.getResources ().getColor (R.color.primary_text2))
+                            .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
+                            .inputRangeRes (0, 256, R.color.primary_text2)
+                            .alwaysCallInputCallback ()
+                            .canceledOnTouchOutside (true)
+                            .cancelable (true)
+                            .positiveText (R.string.dialog_action_submit);
+    
+                    mBuilder.input (null, null, new MaterialDialog.InputCallback () {
+                        @Override
+                        public void onInput (MaterialDialog dialog, CharSequence input) {
+                        }
+                    });
+    
+                    mBuilder.onPositive (new MaterialDialog.SingleButtonCallback () {
+                        @Override
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            sendEnquiry (dialog.getInputEditText ().getText ().toString (), product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                        }
+                    });
+    
+                    MaterialDialog dialog = mBuilder.build ();
+                    dialog.show ();
                 }
             }
         });
@@ -127,9 +156,9 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
         this.mItemClickListener = mItemClickListener;
     }
     
-    private void sendEnquiry (final SwiggyProduct product, final TextView tvButtonText, final ImageView ivButtonImage, final ProgressBar progressBarButton, final int id) {
+    private void sendEnquiry (final String comment, final SwiggyProduct product, final TextView tvButtonText, final ImageView ivButtonImage, final ProgressBar progressBarButton, final int id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
-            tvButtonText.setVisibility (View.GONE);
+            tvButtonText.setVisibility (View.INVISIBLE);
             progressBarButton.setVisibility (View.VISIBLE);
             Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY, true);
             StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY,
@@ -185,6 +214,7 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (id));
+                    params.put (AppConfigTags.SWIGGY_COMMENT, comment);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

@@ -125,9 +125,6 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     
     private void initDate () {
         Utils.setTypefaceToAllViews (SwiggyMyProductDetailActivity.this, tvAddNewRequest);
-        Utils.setTypefaceToAllViews (SwiggyMyProductDetailActivity.this, tvServiceRequestName);
-        Utils.setTypefaceToAllViews (SwiggyMyProductDetailActivity.this, tvServiceRequestModelNumber);
-        Utils.setTypefaceToAllViews (SwiggyMyProductDetailActivity.this, tvServiceRequestDate);
         
         swiggyServiceRequestAdapter = new SwiggyMyProductRequestAdapter (SwiggyMyProductDetailActivity.this, swiggyServiceRequestList);
         rvServiceList.setNestedScrollingEnabled (false);

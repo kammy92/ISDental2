@@ -186,7 +186,8 @@ public class SwiggyFeaturedFragment extends Fragment {
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_PRODUCTS)
                                                 ));
                                             }
                                             companyAdapter.notifyDataSetChanged ();
@@ -317,7 +318,8 @@ public class SwiggyFeaturedFragment extends Fragment {
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS)
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS),
+                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_PRODUCTS)
                         ));
                     }
                     companyAdapter.notifyDataSetChanged ();

@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="#ffffff">
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appBar"
         android:layout_width="match_parent"
@@ -17,8 +16,8 @@
         android:visibility="visible"
         app:elevation="0dp"
         app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-        <android.support.v7.widget.Toolbar android:id="@+id/toolbar1"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar1"
                                            style="@style/Widget.MyApp.ActionBar"
                                            xmlns:android="http://schemas.android.com/apk/res/android"
                                            android:layout_width="match_parent"
@@ -51,49 +50,48 @@
                     android:textStyle="bold"/>
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
-
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_alignParentBottom="true"
             android:background="@color/text_color_grey_light2"/>
     </android.support.design.widget.AppBarLayout>
-
     <RelativeLayout
-        android:id="@+id/rlNew"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBar"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-
-        <!--   <android.support.v4.widget.NestedScrollView
-               android:id="@+id/nestedScrollView"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:descendantFocusability="blocksDescendants"
-               android:overScrollMode="never"
-               app:layout_behavior="@string/appbar_scrolling_view_behavior">
-   -->
-
         <RelativeLayout
             android:id="@+id/rlMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tvAddServiceRequest"
-            android:visibility="visible">
+            android:visibility="gone">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvServiceList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/cv1"
+                android:layout_above="@+id/tvAddServiceRequest"
+                android:layout_alignParentTop="true"
                 android:visibility="visible"/>
+            <TextView
+                android:id="@+id/tvAddServiceRequest"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_margin="@dimen/activity_margin"
+                android:background="@color/primary_text2"
+                android:gravity="center"
+                android:padding="@dimen/activity_margin_small"
+                android:text="ADD EQIUPMENT"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"/>
         </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rlNoServiceAvailable"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tvAddServiceRequest"
             android:layout_centerInParent="true"
             android:gravity="center_vertical"
             android:visibility="gone">
@@ -129,33 +127,12 @@
 
 
         </RelativeLayout>
-
-
-        <TextView
-            android:id="@+id/tvAddServiceRequest"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:layout_margin="@dimen/activity_margin"
-            android:background="@color/primary_text2"
-            android:gravity="center"
-            android:padding="@dimen/activity_margin_small"
-            android:text="ADD EQIUPMENT"
-            android:textColor="@color/text_color_white"
-            android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold"/>
-
-
-        <!--   </android.support.v4.widget.NestedScrollView>-->
-
     </RelativeLayout>
-
     <com.indiasupply.isdental.utils.ShimmerFrameLayout
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <RelativeLayout
