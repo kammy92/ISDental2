@@ -48,4 +48,6 @@ public class AppConfigURL {
     public static String URL_SWIGGY_REGISTER = BASE_URL2 + "user/register";
     public static String URL_SWIGGY_FAVOURITE = BASE_URL2 + "favourite";
     public static String URL_SWIGGY_ENQUIRY = BASE_URL2 + "enquiry";
+    
+    public static String URL_SWIGGY_MY_PRODUCT_DETAIL = BASE_URL2 + "/user/product/";
 }

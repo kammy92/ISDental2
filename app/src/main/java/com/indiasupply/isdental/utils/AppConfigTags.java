@@ -310,5 +310,21 @@ public class AppConfigTags {
     
     
     public static final String REFRESH_FLAG = "refresh_flag";
+    
+    
+    public static final String SWIGGY_REQUEST_IMAGE1 = "request_image1";
+    public static final String SWIGGY_REQUEST_IMAGE2 = "request_image2";
+    public static final String SWIGGY_REQUEST_IMAGE3 = "request_image3";
+    
+    public static final String SWIGGY_PRODUCT_IMAGE1 = "product_image1";
+    public static final String SWIGGY_PRODUCT_IMAGE2 = "product_image2";
+    public static final String SWIGGY_PRODUCT_IMAGE3 = "product_image3";
+    public static final String SWIGGY_REQUEST_COMMENTS = "request_comments";
+    public static final String COMMENT_ID = "comment_id";
+    public static final String COMMENT_FROM = "comment_from";
+    public static final String COMMENT_TEXT = "comment_text";
+    public static final String COMMENT_TYPE = "comment_type";
+    public static final String COMMENT_CREATED_AT = "comment_created_at";
+    
 }
 

@@ -1,6 +1,7 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.SwiggyMyProductDetailActivity;
 import com.indiasupply.isdental.model.SwiggyMyProduct2;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -83,6 +86,15 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
         
         @Override
         public void onClick (View v) {
+            SwiggyMyProduct2 swiggyMyProduct2 = swiggyMyProductList.get (getLayoutPosition ());
+            Intent intent = new Intent (activity, SwiggyMyProductDetailActivity.class);
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_ID, swiggyMyProduct2.getId ());
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_NAME, swiggyMyProduct2.getBrand ());
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, swiggyMyProduct2.getModel_number ());
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, swiggyMyProduct2.getSerial_number ());
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, swiggyMyProduct2.getDescription ());
+            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, swiggyMyProduct2.getPurchase_date ());
+            activity.startActivity (intent);
         }
     }
 }
