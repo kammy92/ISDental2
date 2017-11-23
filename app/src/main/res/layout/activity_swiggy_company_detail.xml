@@ -65,7 +65,7 @@
                         android:maxLines="1"
                         android:text="DURR DENTAL"
                         android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_extra_large"
+                        android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"
                         android:visibility="gone"/>
                     <TextView
@@ -125,7 +125,7 @@
                 android:layout_marginTop="@dimen/activity_margin"
                 android:text="DURR DENTAL"
                 android:textColor="@color/primary_text2"
-                android:textSize="@dimen/text_size_company_name"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tvBrandCategory"
@@ -292,7 +292,7 @@
                 android:background="@color/shimmer_bg_color"
                 android:text="DURR DENTAL"
                 android:textColor="@color/shimmer_bg_color"
-                android:textSize="@dimen/text_size_company_name"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"/>
             <TextView
                 android:id="@+id/tvBrandCategory2"
@@ -444,7 +444,7 @@
                     android:layout_marginBottom="@dimen/activity_margin"
                     android:background="@color/shimmer_bg_color"
                     android:text="                             "
-                    android:textSize="24sp"/>
+                    android:textSize="@dimen/text_size_medium"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -481,7 +481,7 @@
                             android:maxLines="2"
                             android:text="Name1      "
                             android:textColor="@color/shimmer_bg_color"
-                            android:textSize="@dimen/text_size_large"
+                            android:textSize="@dimen/text_size_medium"
                             android:textStyle="bold"/>
 
                         <TextView
@@ -561,7 +561,7 @@
                             android:maxLines="2"
                             android:text="N          "
                             android:textColor="@color/shimmer_bg_color"
-                            android:textSize="@dimen/text_size_large"
+                            android:textSize="@dimen/text_size_medium"
                             android:textStyle="bold"/>
 
                         <TextView

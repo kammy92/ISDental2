@@ -109,7 +109,7 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-        tvTitle.setText (company_name.toUpperCase ());
+        tvTitle.setText (company_name);
     
         contactDetailAdapter = new SwiggyContactDetailAdapter (getActivity (), contactDetailList);
         rvContactList.setAdapter (contactDetailAdapter);

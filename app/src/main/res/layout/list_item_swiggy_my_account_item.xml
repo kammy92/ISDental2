@@ -43,7 +43,7 @@
             android:layout_alignParentStart="true"
             android:text="Dr. ABC"
             android:textColor="@color/primary_text2"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             android:textStyle="bold"
             android:visibility="visible"/>
         <TextView

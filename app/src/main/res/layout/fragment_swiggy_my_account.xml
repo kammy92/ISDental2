@@ -160,9 +160,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="My Account"
+                    android:text="MY ACCOUNT"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/tvAccountDetails"
@@ -215,9 +215,9 @@
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:text="Help"
+                    android:text="HELP"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"
+                    android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/tvHelpDetails"

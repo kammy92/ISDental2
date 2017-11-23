@@ -28,7 +28,7 @@ import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventFragment;
 import com.indiasupply.isdental.fragment.SwiggyFeaturedFragment;
 import com.indiasupply.isdental.fragment.SwiggyMyAccountFragment;
-import com.indiasupply.isdental.fragment.SwiggyServiceFragment;
+import com.indiasupply.isdental.fragment.SwiggyServiceFragment2;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -86,6 +86,9 @@ public class SwiggyMainActivity extends AppCompatActivity {
         Utils.disableShiftMode (bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu ();
         menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
+
+//        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams ();
+//        layoutParams.setBehavior (new BottomNavigationViewBehavior ());
     }
     
     private void isLogin () {
@@ -179,9 +182,9 @@ public class SwiggyMainActivity extends AppCompatActivity {
                             case R.id.action_item4:
                                 item.setIcon (R.drawable.ic_home_services_filled);
                                 if (screenList.contains (R.id.action_item4)) {
-                                    selectedFragment = SwiggyServiceFragment.newInstance (false);
+                                    selectedFragment = SwiggyServiceFragment2.newInstance (false);
                                 } else {
-                                    selectedFragment = SwiggyServiceFragment.newInstance (true);
+                                    selectedFragment = SwiggyServiceFragment2.newInstance (true);
                                 }
                                 screenList.add (R.id.action_item4);
                                 break;

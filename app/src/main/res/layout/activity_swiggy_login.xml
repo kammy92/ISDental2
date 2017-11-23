@@ -258,6 +258,7 @@
                     android:layout_marginBottom="@dimen/activity_margin_small"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
+                    android:background="#eeffffff"
                     android:gravity="center"
                     android:text="By signing up you confirm that you have read &amp; agree to our company Privacy Policy &amp; Terms and Conditions"
                     android:textColor="@color/primary_text2"

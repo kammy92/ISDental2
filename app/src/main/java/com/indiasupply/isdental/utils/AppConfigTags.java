@@ -223,6 +223,8 @@ public class AppConfigTags {
     public static final String SWIGGY_REQUEST_IMAGE = "request_image";
     public static final String SWIGGY_REQUEST_TICKET_NUMBER = "request_ticket_number";
     public static final String SWIGGY_REQUEST_GENERATED_AT = "request_created_at";
+    public static final String SWIGGY_REQUEST_CREATED_AT = "request_created_at";
+    public static final String SWIGGY_REQUEST_STATUS = "request_status";
     
     
     public static final String SWIGGY_BRANDS = "brands";
@@ -238,6 +240,10 @@ public class AppConfigTags {
     
     
     public static final String SWIGGY_DESCRIPTION = "description";
+    
+    public static final String SWIGGY_IMAGE1 = "image1";
+    public static final String SWIGGY_IMAGE2 = "image2";
+    public static final String SWIGGY_IMAGE3 = "image3";
     
     
     public static final String SWIGGY_COMPANIES = "companies";

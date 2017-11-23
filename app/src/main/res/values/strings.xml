@@ -173,5 +173,6 @@
     <string name="dialog_select_purchase_date">Please Select Purchase Date</string>
 
     <string name="dialog_enter_request_description">Please Enter Request Description</string>
+    <string name="dialog_enter_product_description">Please Enter Product Description</string>
 
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_toLeftOf="@+id/rl2"
+        android:paddingEnd="0dp"
+        android:paddingRight="0dp">
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dr. ABC"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_small"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tvProductModelNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProductDescription"
+            android:layout_gravity="center"
+            android:text="MODEL NAME"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"
+            android:visibility="visible"/>
+
+
+        <TextView
+            android:id="@+id/tvProductRequestDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvProductModelNumber"
+            android:layout_gravity="center"
+            android:text="REQ.DATE- 20/11/2017"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/tvProductStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/tvProductModelNumber"
+            android:layout_gravity="right"
+            android:gravity="right"
+            android:text="OPEN"
+            android:textColor="@color/secondary_text2"
+            android:textSize="@dimen/text_size_extra_small"
+            android:visibility="visible"/>
+    </RelativeLayout>
+</RelativeLayout>

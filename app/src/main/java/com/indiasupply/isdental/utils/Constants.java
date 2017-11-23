@@ -1,8 +1,6 @@
 package com.indiasupply.isdental.utils;
 
-
 public class Constants {
-
     public static final String API_KEY = "AIzaSyBb5_XdM8xuzSXx1CcvuqsDWQ222bJlZug";
     // broadcast receiver intent filters
     public static final String REGISTRATION_COMPLETE = "registrationComplete";
@@ -21,9 +19,7 @@ public class Constants {
     public static String location_tagging_start_time = "08:00";
     public static String location_tagging_end_time = "20:00";
     public static String api_key = "ebaa3e8571444005cc0b609824e90dc8";
-    public static String login_key = "366dfc90284f006b25a578be3f90d3e2";
-
+    
     //        public static String sms_provider = "+917011396606";
     public static String sms_provider = "INSPLY";
-
 }

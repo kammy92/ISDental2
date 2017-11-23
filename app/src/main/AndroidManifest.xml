@@ -67,6 +67,10 @@
                   android:screenOrientation="portrait">
         </activity>
 
+        <activity android:name="com.indiasupply.isdental.activity.SwiggyServiceAddProductActivity"
+                  android:screenOrientation="portrait"/>
+
+
         <!--  <activity android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
                     android:screenOrientation="portrait">
           </activity>
@@ -84,6 +88,7 @@
 
         <activity android:name=".activity.SwiggyLoginActivity"
                   android:theme="@style/WelcomeScreenTheme"/>
+
 
         <service android:name="com.indiasupply.isdental.service.MyFirebaseMessagingService">
             <intent-filter>

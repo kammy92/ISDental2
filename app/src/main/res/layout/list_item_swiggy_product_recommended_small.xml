@@ -34,10 +34,11 @@
         android:layout_below="@+id/rl1"
         android:layout_marginTop="@dimen/activity_margin_small"
         android:ellipsize="end"
+        android:lines="2"
         android:maxLines="2"
         android:text="Name"
         android:textColor="@color/primary_text2"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_small"
         android:textStyle="bold"
     />
     <TextView
@@ -114,8 +115,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_marginRight="@dimen/activity_margin"
+                android:layout_marginLeft="@dimen/activity_margin_large"
+                android:layout_marginRight="@dimen/activity_margin_large"
                 android:src="@drawable/ic_check_green"
                 android:visibility="gone"/>
             <ProgressBar

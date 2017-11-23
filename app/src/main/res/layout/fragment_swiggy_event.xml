@@ -46,7 +46,7 @@
                     android:paddingStart="@dimen/activity_margin"
                     android:text="Events"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_title_app_name"
+                    android:textSize="@dimen/text_size_large"
                     android:textStyle="bold"/>
                 <Button
                     android:id="@+id/btFilter"

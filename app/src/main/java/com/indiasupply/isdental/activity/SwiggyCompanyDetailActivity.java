@@ -247,7 +247,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                             TextView tv = new TextView (SwiggyCompanyDetailActivity.this);
                                             tv.setText (jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE));
                                             tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                                            tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 24);
+                                            tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 18);
                                             tv.setTypeface (SetTypeFace.getTypeface (SwiggyCompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
                                             tv.setTextColor (getResources ().getColor (R.color.primary_text2));
                                             tv.setPadding ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 0);
@@ -414,7 +414,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                         TextView tv = new TextView (SwiggyCompanyDetailActivity.this);
                         tv.setText (jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE));
                         tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                        tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 24);
+                        tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 18);
                         tv.setTypeface (SetTypeFace.getTypeface (SwiggyCompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
                         tv.setTextColor (getResources ().getColor (R.color.primary_text2));
                         tv.setPadding ((int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), (int) Utils.pxFromDp (SwiggyCompanyDetailActivity.this, 16), 0);

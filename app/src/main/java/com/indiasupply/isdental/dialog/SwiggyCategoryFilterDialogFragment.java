@@ -160,7 +160,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                 TextView tv = new TextView (getActivity ());
                 tv.setText (jsonObjectfilter.getString (AppConfigTags.SWIGGY_GROUP_NAME));
                 tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 24);
+                tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 16);
                 tv.setTypeface (SetTypeFace.getTypeface (getActivity (), "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
                 tv.setTextColor (getResources ().getColor (R.color.primary_text2));
                 tv.setPadding ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0);
