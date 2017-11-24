@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -27,6 +28,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.SwiggyMyProductRequestAdapter;
+import com.indiasupply.isdental.dialog.SwiggyServiceAddNewRequestDialogFragment;
 import com.indiasupply.isdental.dialog.SwiggyServiceRequestDetailDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyProductRequest;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -67,6 +69,9 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     ImageView iv2;
     ImageView iv3;
     
+    ImageView ivCancel;
+    
+    
     CoordinatorLayout clMain;
     List<SwiggyMyProductRequest> swiggyServiceRequestList = new ArrayList<> ();
     SwiggyMyProductRequestAdapter swiggyServiceRequestAdapter;
@@ -74,27 +79,31 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     String server_response;
     
     int product_id;
+    String product_name, product_description, product_serial_number, product_model_number, product_purchase_date;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_service_product_detail);
-        initView ();
-        initDate ();
-        initListener ();
         getExtra ();
+        initView ();
+        initData ();
+        initListener ();
         setData ();
     }
     
     private void getExtra () {
         Intent intent = getIntent ();
-        tvServiceRequestName.setText ((intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND)) + " " + (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " - " + (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER))));
-        tvServiceRequestModelNumber.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-        tvServiceRequestDate.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE));
         product_id = intent.getIntExtra (AppConfigTags.SWIGGY_PRODUCT_ID, 0);
+        product_name = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND);
+        product_description = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
+        product_serial_number = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+        product_model_number = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
+        product_purchase_date = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
     }
     
     private void initView () {
+    
         tvServiceRequestName = (TextView) findViewById (R.id.tvName);
         tvServiceRequestModelNumber = (TextView) findViewById (R.id.tvModelName);
         tvServiceRequestDate = (TextView) findViewById (R.id.tvPurchaseDate);
@@ -114,10 +123,17 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
         rvServiceList = (RecyclerView) findViewById (R.id.rvServiceList);
         tvAddNewRequest = (TextView) findViewById (R.id.tvAddNewRequest);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
+        ivCancel = (ImageView) findViewById (R.id.ivCancel);
     }
     
-    private void initDate () {
+    private void initData () {
         Utils.setTypefaceToAllViews (SwiggyMyProductDetailActivity.this, tvAddNewRequest);
+        
+        
+        tvServiceRequestName.setText (product_name + " " + product_description + " - " + product_serial_number);
+        tvServiceRequestModelNumber.setText (product_model_number);
+        tvServiceRequestDate.setText (product_purchase_date);
+    
     
         swiggyServiceRequestAdapter = new SwiggyMyProductRequestAdapter (SwiggyMyProductDetailActivity.this, swiggyServiceRequestList);
         rvServiceList.setNestedScrollingEnabled (false);
@@ -137,9 +153,40 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                 SwiggyMyProductRequest serviceRequest = swiggyServiceRequestList.get (position);
                 android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 SwiggyServiceRequestDetailDialogFragment dialog = new SwiggyServiceRequestDetailDialogFragment ().newInstance (server_response, serviceRequest.getRequest_id ());
+                dialog.setDismissListener (new MyDialogCloseListener () {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        Log.e ("Return Page", "Return Page");
+                        setData ();
+                    }
+                });
                 dialog.show (ft, "Contacts");
             }
         });
+    
+        ivCancel.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                finish ();
+            }
+        });
+    
+        tvAddNewRequest.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (product_name, product_description, product_serial_number, product_model_number, product_purchase_date, String.valueOf (product_id));
+                dialog.setDismissListener (new MyDialogCloseListener () {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        Log.e ("Return Page", "Return Page");
+                        setData ();
+                    }
+                });
+                dialog.show (ft, "Contacts");
+            }
+        });
+    
     }
     
     private void setData () {
@@ -290,6 +337,10 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+    
+    public interface MyDialogCloseListener {
+        public void handleDialogClose (DialogInterface dialog);
     }
 }
 

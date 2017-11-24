@@ -90,7 +90,7 @@ public class SwiggyServiceFragment2 extends Fragment {
         initBundle ();
         initData ();
         initListener ();
-        setData ();
+//        setData ();
         return root;
     }
     

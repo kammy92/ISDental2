@@ -59,6 +59,7 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             if (product.getImage ().endsWith (ext)) {
                 Glide.with (activity)
                         .load (product.getImage ())
+                        .placeholder (product.getIcon ())
                         .listener (new RequestListener<String, GlideDrawable> () {
                             @Override
                             public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

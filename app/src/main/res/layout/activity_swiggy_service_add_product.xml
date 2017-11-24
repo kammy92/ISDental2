@@ -132,7 +132,7 @@
                     android:layout_below="@id/tv2"
                     android:layout_marginBottom="@dimen/activity_margin"
                     android:background="@drawable/swiggy_et_background"
-                    android:inputType="text"
+                    android:inputType="textCapCharacters|textVisiblePassword"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_large"
                     android:textStyle="bold"/>
@@ -153,7 +153,7 @@
                     android:layout_below="@id/tv3"
                     android:layout_marginBottom="@dimen/activity_margin"
                     android:background="@drawable/swiggy_et_background"
-                    android:inputType="text"
+                    android:inputType="textCapCharacters|textVisiblePassword"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_large"
                     android:textStyle="bold"/>

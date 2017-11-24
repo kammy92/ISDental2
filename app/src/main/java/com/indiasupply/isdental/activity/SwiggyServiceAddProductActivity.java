@@ -141,6 +141,14 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
     }
     
     private void initListener () {
+        ivCancel.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                finish ();
+            
+            }
+        });
+        
         etBrand.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {

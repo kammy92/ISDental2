@@ -195,6 +195,7 @@
                     android:layout_below="@+id/scImages"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
                     android:text="REQUESTS"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
