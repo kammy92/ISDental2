@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:id="@+id/clMain"
-                                                 xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/clMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -40,7 +41,7 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/tvAddNewRequest"
+            android:layout_above="@+id/tvCloseRequest"
             android:layout_below="@+id/v1">
 
             <RelativeLayout
@@ -239,10 +240,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tvComments"
-                    android:layout_marginLeft="5dp"
                     android:visibility="visible">
-
-
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvCommentsList"
                         android:layout_width="match_parent"
@@ -275,12 +273,12 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/activity_margin"
-            android:background="@color/text_color_black"
+            android:background="@color/primary_text2"
             android:gravity="center"
-            android:padding="@dimen/edittext_padding"
+            android:padding="@dimen/activity_margin_small"
             android:text="CLOSE REQUEST"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

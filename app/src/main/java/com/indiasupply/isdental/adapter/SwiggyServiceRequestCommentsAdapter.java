@@ -39,11 +39,9 @@ public class SwiggyServiceRequestCommentsAdapter extends RecyclerView.Adapter<Sw
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final SwiggyServiceRequestComments comments = commentsList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvCommentDate);
-        //  holder.tvProductName.setText (product.getName ());
-        holder.tvCommentDate.setText ("(" + comments.getComment_created_at () + ") :");
+        holder.tvCommentDate.setText ("(" + Utils.convertTimeFormat (comments.getComment_created_at (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm") + ") :");
         holder.tvCommentsFrom.setText (comments.getComment_from ());
         holder.tvCommentText.setText (comments.getComment_text ());
-        
     }
     
     @Override

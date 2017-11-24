@@ -172,6 +172,7 @@ public class AppConfigTags {
     public static final String SWIGGY_EVENT_TYPE = "event_type";
     public static final String SWIGGY_EVENT_START_DATE = "event_start_date";
     public static final String SWIGGY_EVENT_END_DATE = "event_end_date";
+    public static final String SWIGGY_EVENT_VENUE = "event_venue";
     public static final String SWIGGY_EVENT_CITY = "event_city";
     
     

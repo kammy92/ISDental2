@@ -42,8 +42,7 @@ public class SwiggyMyProductRequestAdapter extends RecyclerView.Adapter<SwiggyMy
         //  holder.tvProductName.setText (product.getName ());
         holder.tvProductDescription.setText (request.getDescription ());
         holder.tvProductStatus.setText (request.getStatus ());
-        holder.tvProductDate.setText (request.getCreated_at ());
-        
+        holder.tvProductDate.setText (Utils.convertTimeFormat (request.getCreated_at (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm"));
     }
     
     @Override

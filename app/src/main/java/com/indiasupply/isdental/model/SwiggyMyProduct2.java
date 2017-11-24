@@ -2,9 +2,9 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyMyProduct2 {
     int id, icon;
-    String name, description, brand, model_number, serial_number, purchase_date, request_created_at, request_status, request_ticket_number;
+    String name, description, brand, model_number, serial_number, purchase_date, request_created_at, request_status, request_ticket_number, image;
     
-    public SwiggyMyProduct2 (int id, int icon, String name, String description, String brand, String model_number, String serial_number, String purchase_date, String request_created_at, String request_status, String request_ticket_number) {
+    public SwiggyMyProduct2 (int id, int icon, String name, String description, String brand, String model_number, String serial_number, String purchase_date, String request_created_at, String request_status, String request_ticket_number, String image) {
         this.id = id;
         this.icon = icon;
         this.name = name;
@@ -16,6 +16,15 @@ public class SwiggyMyProduct2 {
         this.model_number = model_number;
         this.serial_number = serial_number;
         this.purchase_date = purchase_date;
+        this.image = image;
+    }
+    
+    public String getImage () {
+        return image;
+    }
+    
+    public void setImage (String image) {
+        this.image = image;
     }
     
     public int getId () {

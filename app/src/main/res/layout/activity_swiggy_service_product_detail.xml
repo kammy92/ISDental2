@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout android:id="@+id/clMain"
-                                                 xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/clMain"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/text_color_white">
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/text_color_white">
 
         <ImageView
             android:id="@+id/ivCancel"
@@ -24,7 +26,7 @@
             android:layout_alignTop="@+id/ivCancel"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:text="Add New Request"
+            android:text="Product Details"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>
@@ -41,32 +43,33 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/tvAddNewRequest"
             android:layout_below="@+id/v1">
-
             <RelativeLayout
-                android:id="@+id/rlHeader"
+                android:id="@+id/rlMain"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_margin">
-
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:visibility="visible">
                 <TextView
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
                     android:text="AIR COMPRESSOR BOSCH – 1234567SN"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="bold"/>
-
                 <TextView
                     android:id="@+id/tvModelName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvName"
                     android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
                     android:text="MODEL1123"
-                    android:textSize="@dimen/text_size_small"/>
-
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_extra_small"/>
                 <TextView
                     android:id="@+id/tvPurchaseDate"
                     android:layout_width="match_parent"
@@ -75,66 +78,60 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:paddingBottom="5dp"
                     android:text="OTHER DETAILS ABOUT PRODUCT"
-                    android:textSize="@dimen/text_size_small"/>
-
-
-                <View
-                    android:id="@+id/v2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@+id/tvPurchaseDate"
-                    android:layout_marginLeft="@dimen/activity_margin"
-                    android:layout_marginRight="@dimen/activity_margin"
-                    android:background="@color/text_color_grey_light2"/>
-
-
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="gone"/>
                 <TextView
                     android:id="@+id/tvImages"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvPurchaseDate"
                     android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
                     android:layout_marginTop="@dimen/activity_margin"
                     android:text="IMAGES"
-                    android:textColor="@color/text_color_black"
+                    android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="bold"/>
-
                 <HorizontalScrollView
                     android:id="@+id/scImages"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvImages"
-                    android:layout_marginLeft="@dimen/activity_margin">
-
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:overScrollMode="never"
+                    android:scrollbars="none">
                     <LinearLayout
                         android:id="@+id/llImages"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                         android:visibility="visible">
-
                         <TextView
                             android:id="@+id/tvNoImage"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:padding="10dp"
-                            android:text="No Image Found"/>
-
-
+                            android:layout_margin="@dimen/activity_margin_small"
+                            android:text="No Image Found"
+                            android:textColor="@color/secondary_text2"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="visible"/>
                         <RelativeLayout
                             android:id="@+id/rl1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:layout_marginLeft="@dimen/activity_margin"
+                            android:layout_marginRight="@dimen/activity_margin"
+                            android:layout_marginTop="@dimen/activity_margin"
                             android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/iv1"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:layout_centerInParent="true"
-                                android:scaleType="fitXY"/>
+                                android:scaleType="centerCrop"/>
 
                             <ProgressBar
                                 android:id="@+id/progressBar1"
@@ -142,48 +139,43 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:visibility="visible"/>
-
                         </RelativeLayout>
-
-
                         <RelativeLayout
                             android:id="@+id/rl2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:layout_marginRight="@dimen/activity_margin"
+                            android:layout_marginTop="@dimen/activity_margin"
                             android:visibility="gone">
-
                             <ImageView
                                 android:id="@+id/iv2"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:layout_centerInParent="true"
-                                android:scaleType="fitXY"/>
-
+                                android:scaleType="centerCrop"/>
                             <ProgressBar
                                 android:id="@+id/progressBar2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:visibility="visible"/>
-
-
                         </RelativeLayout>
-
-
                         <RelativeLayout
                             android:id="@+id/rl3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:layout_marginRight="@dimen/activity_margin"
+                            android:layout_marginTop="@dimen/activity_margin"
                             android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/iv3"
-                                android:layout_width="200dp"
-                                android:layout_height="200dp"
+                                android:layout_width="100dp"
+                                android:layout_height="100dp"
                                 android:layout_centerInParent="true"
-                                android:scaleType="fitXY"/>
+                                android:scaleType="centerCrop"/>
 
                             <ProgressBar
                                 android:id="@+id/progressBar3"
@@ -196,37 +188,25 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
-                <View
-                    android:id="@+id/v3"
+                <TextView
+                    android:id="@+id/tv2"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/scImages"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
-                    android:background="@color/text_color_grey_light2"/>
-
-
-                <RelativeLayout
-                    android:id="@+id/rlMain"
+                    android:text="REQUESTS"
+                    android:textColor="@color/primary_text2"
+                    android:textSize="@dimen/text_size_small"
+                    android:textStyle="bold"/>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rvServiceList"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/scImages"
-                    android:visibility="visible">
-
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvServiceList"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible"/>
-
-
-                </RelativeLayout>
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tv2"
+                    android:visibility="visible"/>
             </RelativeLayout>
         </android.support.v4.widget.NestedScrollView>
-
         <TextView
             android:id="@+id/tvAddNewRequest"
             android:layout_width="match_parent"
@@ -234,12 +214,12 @@
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:layout_margin="@dimen/activity_margin"
-            android:background="@color/primary"
+            android:background="@color/primary_text2"
             android:gravity="center"
-            android:padding="@dimen/edittext_padding"
+            android:padding="@dimen/activity_margin_small"
             android:text="ADD NEW REQUEST"
             android:textColor="@color/text_color_white"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

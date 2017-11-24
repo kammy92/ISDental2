@@ -50,4 +50,5 @@ public class AppConfigURL {
     public static String URL_SWIGGY_ENQUIRY = BASE_URL2 + "enquiry";
     
     public static String URL_SWIGGY_MY_PRODUCT_DETAIL = BASE_URL2 + "/user/product/";
+    public static String URL_SWIGGY_SERVICE_REQUEST_COMMENTS = BASE_URL2 + "/user/request/comment";
 }

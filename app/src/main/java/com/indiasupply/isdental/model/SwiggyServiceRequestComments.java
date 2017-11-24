@@ -5,11 +5,11 @@ package com.indiasupply.isdental.model;
  */
 
 public class SwiggyServiceRequestComments {
-    int comment_id;
-    String comment_from, comment_text, comment_type, comment_created_at;
+    int comment_id, comment_type;
+    String comment_from, comment_text, comment_created_at;
     
     
-    public SwiggyServiceRequestComments (int comment_id, String comment_from, String comment_text, String comment_type, String comment_created_at) {
+    public SwiggyServiceRequestComments (int comment_id, String comment_from, String comment_text, int comment_type, String comment_created_at) {
         this.comment_id = comment_id;
         this.comment_from = comment_from;
         this.comment_text = comment_text;
@@ -41,11 +41,11 @@ public class SwiggyServiceRequestComments {
         this.comment_text = comment_text;
     }
     
-    public String getComment_type () {
+    public int getComment_type () {
         return comment_type;
     }
     
-    public void setComment_type (String comment_type) {
+    public void setComment_type (int comment_type) {
         this.comment_type = comment_type;
     }
     
