@@ -741,11 +741,15 @@ public class SwiggyLoginActivity extends AppCompatActivity {
     public void checkPermissions () {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission (Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED ||
-                    checkSelfPermission (Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED) {
+                    checkSelfPermission (Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission (Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    checkSelfPermission (Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 
                 requestPermissions (new String[] {
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
                                 Manifest.permission.RECEIVE_SMS,
-                                Manifest.permission.READ_SMS,
+                                Manifest.permission.READ_SMS
                         },
                         PERMISSION_REQUEST_CODE);
             }

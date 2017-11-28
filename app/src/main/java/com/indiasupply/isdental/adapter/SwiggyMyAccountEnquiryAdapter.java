@@ -43,6 +43,13 @@ public class SwiggyMyAccountEnquiryAdapter extends RecyclerView.Adapter<SwiggyMy
         holder.tvProductDescription.setText (myAccountEnquiry.getProduct_description ());
         holder.tvProductPrice.setText (myAccountEnquiry.getProduct_price ());
     
+        if (myAccountEnquiry.getEnquiry_comment ().length () > 0) {
+            holder.tvEnquiryComment.setText ("Comment : " + myAccountEnquiry.getEnquiry_comment ());
+            holder.tvEnquiryComment.setVisibility (View.VISIBLE);
+        } else {
+            holder.tvEnquiryComment.setVisibility (View.GONE);
+        }
+    
     
         if (myAccountEnquiry.getEnquiry_remark ().length () > 0) {
             holder.tvEnquiryRemark.setVisibility (View.VISIBLE);
@@ -91,6 +98,7 @@ public class SwiggyMyAccountEnquiryAdapter extends RecyclerView.Adapter<SwiggyMy
         TextView tvProductPrice;
         TextView tvEnquiryStatus;
         TextView tvEnquiryRemark;
+        TextView tvEnquiryComment;
 
         
         public ViewHolder (View view) {
@@ -103,7 +111,7 @@ public class SwiggyMyAccountEnquiryAdapter extends RecyclerView.Adapter<SwiggyMy
             tvProductPrice = (TextView) view.findViewById (R.id.tvProductPrice);
             tvEnquiryStatus = (TextView) view.findViewById (R.id.tvEnquiryStatus);
             tvEnquiryRemark = (TextView) view.findViewById (R.id.tvEnquiryRemark);
-
+            tvEnquiryComment = (TextView) view.findViewById (R.id.tvEnquiryComment);
             
             view.setOnClickListener (this);
         }

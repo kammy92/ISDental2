@@ -73,7 +73,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
     EditText etBrand;
     TextView tvSubmit;
     TextView tvTitle;
-    TextView tvAddImage;
+    ImageView tvAddImage;
     LinearLayout llOtherImages;
     int brand_id;
     String date = "";
@@ -123,7 +123,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         etModelNo = (EditText) findViewById (R.id.etModelNo);
         etBrand = (EditText) findViewById (R.id.etProductBrand);
         tvSubmit = (TextView) findViewById (R.id.tvSubmit);
-        tvAddImage = (TextView) findViewById (R.id.tvAddImage);
+        tvAddImage = (ImageView) findViewById (R.id.tvAddImage);
         llOtherImages = (LinearLayout) findViewById (R.id.llOtherImages);
         tvTitle = (TextView) findViewById (R.id.tvTitle);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);

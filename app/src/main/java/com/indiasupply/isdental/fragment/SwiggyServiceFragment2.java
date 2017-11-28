@@ -1,9 +1,15 @@
 package com.indiasupply.isdental.fragment;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -18,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.Theme;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -45,6 +54,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.indiasupply.isdental.activity.SwiggyLoginActivity.PERMISSION_REQUEST_CODE;
 
 public class SwiggyServiceFragment2 extends Fragment {
     ImageView ivCancel;
@@ -90,6 +101,7 @@ public class SwiggyServiceFragment2 extends Fragment {
         initBundle ();
         initData ();
         initListener ();
+        checkPermissions ();
 //        setData ();
         return root;
     }
@@ -319,6 +331,65 @@ public class SwiggyServiceFragment2 extends Fragment {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public void checkPermissions () {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (getActivity ().checkSelfPermission (Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
+                    getActivity ().checkSelfPermission (Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions (new String[] {
+                                Manifest.permission.CAMERA,
+                                Manifest.permission.WRITE_EXTERNAL_STORAGE
+                        },
+                        PERMISSION_REQUEST_CODE);
+            }
+        }
+    }
+    
+    @Override
+    @TargetApi(23)
+    public void onRequestPermissionsResult (int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult (requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (int i = 0, len = permissions.length; i < len; i++) {
+                String permission = permissions[i];
+                if (grantResults[i] == PackageManager.PERMISSION_DENIED) {
+                    boolean showRationale = shouldShowRequestPermissionRationale (permission);
+                    if (! showRationale) {
+                        new MaterialDialog.Builder (getActivity ())
+                                .content ("Permission are required please enable them on the App Setting page")
+                                .positiveText ("OK")
+                                .theme (Theme.LIGHT)
+                                .contentColorRes (R.color.primary_text2)
+                                .positiveColorRes (R.color.primary_text2)
+                                .onPositive (new MaterialDialog.SingleButtonCallback () {
+                                    @Override
+                                    public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                                        dialog.dismiss ();
+                                        Intent intent = new Intent (Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts ("package", getActivity ().getPackageName (), null));
+                                        startActivity (intent);
+                                    }
+                                }).show ();
+                        // user denied flagging NEVER ASK AGAIN
+                        // you can either enable some fall back,
+                        // disable features of your app
+                        // or open another dialog explaining
+                        // again the permission and directing to
+                        // the app setting
+                    } else if (Manifest.permission.RECEIVE_SMS.equals (permission)) {
+//                        Utils.showToast (this, "Camera Permission is required");
+//                        showRationale (permission, R.string.permission_denied_contacts);
+                        // user denied WITHOUT never ask again
+                        // this is a good place to explain the user
+                        // why you need the permission and ask if he want
+                        // to accept it (the rationale)
+                    } else if (Manifest.permission.READ_SMS.equals (permission)) {
+                    }
+                }
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                }
+            }
         }
     }
     

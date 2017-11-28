@@ -34,14 +34,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginRight="@dimen/activity_margin"
+        android:layout_toEndOf="@+id/rl3"
+        android:layout_toLeftOf="@+id/rl4"
         android:layout_toRightOf="@+id/rl3"
-        android:paddingEnd="0dp"
-        android:paddingRight="0dp">
+        android:layout_toStartOf="@+id/rl4">
 
         <TextView
             android:id="@+id/tvProductDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
             android:text="Dr. ABC"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_small"
@@ -57,7 +61,6 @@
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
-
 
         <TextView
             android:id="@+id/tvProductRequestDate"
@@ -83,5 +86,26 @@
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/tvAddRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/primary_text2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin_small"
+            android:text="ADD\nREQUEST"
+            android:textColor="@color/text_color_white"/>
+
+
     </RelativeLayout>
 </RelativeLayout>

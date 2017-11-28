@@ -7,7 +7,6 @@ public class AppConfigURL {
     public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     public static String BASE_URL = "http://famdent.indiasupply.com/isdental/api/" + version + "/";
     
-    public static String URL_SWIGGY_SERVICE_REQUEST_CLOSE = BASE_URL2 + "/user/request/close/";
     
     public static String URL_GETOTP = BASE_URL + "user/otp";
     
@@ -43,7 +42,6 @@ public class AppConfigURL {
     public static String URL_SWIGGY_COMPANY_DETAILS = BASE_URL2 + "company";
     public static String URL_SWIGGY_FEATURED_LIST = BASE_URL2 + "home/featured";
     
-    
     public static String URL_SWIGGY_USER_EXIST = BASE_URL2 + "user/exist";
     public static String URL_SWIGGY_GETOTP = BASE_URL2 + "user/otp";
     public static String URL_SWIGGY_REGISTER = BASE_URL2 + "user/register";
@@ -52,4 +50,5 @@ public class AppConfigURL {
     
     public static String URL_SWIGGY_MY_PRODUCT_DETAIL = BASE_URL2 + "/user/product/";
     public static String URL_SWIGGY_SERVICE_REQUEST_COMMENTS = BASE_URL2 + "/user/request/comment";
+    public static String URL_SWIGGY_SERVICE_REQUEST_CLOSE = BASE_URL2 + "/user/request/close/";
 }

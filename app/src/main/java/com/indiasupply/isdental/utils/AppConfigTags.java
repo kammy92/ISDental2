@@ -302,6 +302,7 @@ public class AppConfigTags {
     public static final String SWIGGY_ENQUIRY_TICKET_NUMBER = "enquiry_ticket_number";
     public static final String SWIGGY_ENQUIRY_STATUS = "enquiry_status";
     public static final String SWIGGY_ENQUIRY_REMARK = "enquiry_remark";
+    public static final String SWIGGY_ENQUIRY_COMMENT = "enquiry_comment";
     
     public static final String OFFER_ID = "offer_id";
     public static final String OFFER_TEXT = "offer_text";

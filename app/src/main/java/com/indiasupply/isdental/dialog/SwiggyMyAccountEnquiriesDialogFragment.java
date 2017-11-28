@@ -155,7 +155,8 @@ public class SwiggyMyAccountEnquiriesDialogFragment extends DialogFragment {
                             jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
                             jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
                             jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING)
+                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
+                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_COMMENT)
                     ));
                 }
                 myAccountEnquiryAdapter.notifyDataSetChanged ();

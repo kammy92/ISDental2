@@ -62,7 +62,7 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
     ImageView ivCancel;
     TextView tvServiceRequestName;
     TextView tvServiceRequestModelNumber;
-    TextView tvAddImage;
+    ImageView tvAddImage;
     LinearLayout llOtherImages;
     TextView tvSubmit;
     CoordinatorLayout clMain;
@@ -121,7 +121,7 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
     
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_add_new_request, container, false);
+        View root = inflater.inflate (R.layout.fragment_dialog_swiggy_service_add_new_request, container, false);
         initView (root);
         initBundle ();
         initData ();
@@ -132,7 +132,7 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
     private void initView (View root) {
         tvServiceRequestName = (TextView) root.findViewById (R.id.tvName);
         tvServiceRequestModelNumber = (TextView) root.findViewById (R.id.tvModelName);
-        tvAddImage = (TextView) root.findViewById (R.id.tvAddImage);
+        tvAddImage = (ImageView) root.findViewById (R.id.tvAddImage);
         tvSubmit = (TextView) root.findViewById (R.id.tvSubmit);
         llOtherImages = (LinearLayout) root.findViewById (R.id.llOtherImages);
         clMain = (CoordinatorLayout) root.findViewById (R.id.clMain);

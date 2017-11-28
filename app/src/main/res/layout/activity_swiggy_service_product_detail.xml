@@ -59,7 +59,7 @@
                     android:text="AIR COMPRESSOR BOSCH – 1234567SN"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
-                    android:textStyle="bold"/>
+                />
                 <TextView
                     android:id="@+id/tvModelName"
                     android:layout_width="match_parent"
@@ -90,8 +90,7 @@
                     android:layout_marginTop="@dimen/activity_margin"
                     android:text="IMAGES"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"
-                    android:textStyle="bold"/>
+                    android:textSize="@dimen/text_size_small"/>
                 <HorizontalScrollView
                     android:id="@+id/scImages"
                     android:layout_width="wrap_content"
@@ -188,11 +187,23 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </HorizontalScrollView>
+
+                <View
+                    android:id="@+id/v3"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/scImages"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:background="@color/secondary_text2"
+                />
+
                 <TextView
                     android:id="@+id/tv2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/scImages"
+                    android:layout_below="@+id/v3"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:layout_marginTop="@dimen/activity_margin"

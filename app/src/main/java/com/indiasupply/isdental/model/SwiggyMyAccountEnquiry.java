@@ -6,9 +6,9 @@ package com.indiasupply.isdental.model;
 
 public class SwiggyMyAccountEnquiry {
     int id, enquiry_status;
-    String enquiry_ticket_number, enquiry_remark, company_name, product_name, product_price, product_category, product_image, product_description, product_packaging;
+    String enquiry_ticket_number, enquiry_remark, company_name, product_name, product_price, product_category, product_image, product_description, product_packaging, enquiry_comment;
     
-    public SwiggyMyAccountEnquiry (int id, int enquiry_status, String enquiry_ticket_number, String enquiry_remark, String company_name, String product_name, String product_price, String product_category, String product_image, String product_description, String product_packaging) {
+    public SwiggyMyAccountEnquiry (int id, int enquiry_status, String enquiry_ticket_number, String enquiry_remark, String company_name, String product_name, String product_price, String product_category, String product_image, String product_description, String product_packaging, String enquiry_comment) {
         this.id = id;
         this.enquiry_status = enquiry_status;
         this.enquiry_ticket_number = enquiry_ticket_number;
@@ -20,8 +20,16 @@ public class SwiggyMyAccountEnquiry {
         this.product_image = product_image;
         this.product_description = product_description;
         this.product_packaging = product_packaging;
+        this.enquiry_comment = enquiry_comment;
     }
     
+    public String getEnquiry_comment () {
+        return enquiry_comment;
+    }
+    
+    public void setEnquiry_comment (String enquiry_comment) {
+        this.enquiry_comment = enquiry_comment;
+    }
     
     public int getId () {
         return id;
