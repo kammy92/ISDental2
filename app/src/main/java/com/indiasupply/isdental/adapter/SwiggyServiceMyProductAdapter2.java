@@ -112,6 +112,9 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             holder.tvProductStatus.setText (product.getRequest_status ());
             holder.tvProductRequestDate.setVisibility (View.VISIBLE);
             holder.tvProductStatus.setVisibility (View.VISIBLE);
+            if (product.getRequest_status ().equalsIgnoreCase ("OPEN")) {
+                holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.mb_green_dark));
+            }
         }
     }
     

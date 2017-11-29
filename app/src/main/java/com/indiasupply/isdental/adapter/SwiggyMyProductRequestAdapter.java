@@ -43,6 +43,11 @@ public class SwiggyMyProductRequestAdapter extends RecyclerView.Adapter<SwiggyMy
         holder.tvProductDescription.setText (request.getDescription ());
         holder.tvProductStatus.setText (request.getStatus ());
         holder.tvProductDate.setText (Utils.convertTimeFormat (request.getCreated_at (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy HH:mm"));
+    
+        if (request.getStatus ().equalsIgnoreCase ("OPEN")) {
+            holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.mb_green_dark));
+        }
+        
     }
     
     @Override

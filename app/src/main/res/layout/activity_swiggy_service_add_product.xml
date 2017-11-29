@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/etProductBrand"
-                    android:text="PRODUCT DESCRIPTION"
+                    android:text="PRODUCT NAME"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_extra_small"/>
 
@@ -86,8 +86,10 @@
                     android:layout_below="@+id/tv0"
                     android:layout_marginBottom="@dimen/activity_margin"
                     android:background="@drawable/swiggy_et_background"
+                    android:hint="Handpieces, Chairs, ..."
                     android:inputType="text"
                     android:textColor="@color/primary_text2"
+                    android:textColorHint="#dddddd"
                     android:textSize="@dimen/text_size_large"
                     android:textStyle="bold"/>
 
@@ -199,6 +201,18 @@
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_extra_small"
                         android:visibility="visible"/>
+                    <TextView
+                        android:id="@+id/tvImage3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/tvImage2"
+                        android:text="For Example : Equipment, Warranty Card, Bill"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="10sp"
+                        android:visibility="visible"/>
+
 
                     <ImageView
                         android:id="@+id/tvAddImage"
