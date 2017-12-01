@@ -330,5 +330,6 @@ public class AppConfigTags {
     public static final String COMMENT_CREATED_AT = "comment_created_at";
     
     public static final String SWIGGY_COMMENT = "comment";
+    public static final String SWIGGY_RATING = "rating";
 }
 

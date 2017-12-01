@@ -22,8 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -94,6 +96,18 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
     ProgressDialog progressDialog;
     
     CoordinatorLayout clMain;
+    RelativeLayout rl5;
+    
+    
+    String brand_name;
+    String serial_number;
+    String model_number;
+    String description;
+    String request_description;
+    String image1;
+    String image2;
+    String image3;
+    int bread_id;
     
     List<SwiggyServiceRequestComments> serviceRequestCommentsList = new ArrayList<> ();
     SwiggyServiceRequestCommentsAdapter serviceRequestCommentsAdapter;
@@ -188,6 +202,7 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
         rl1 = (RelativeLayout) root.findViewById (R.id.rl1);
         rl2 = (RelativeLayout) root.findViewById (R.id.rl2);
         rl3 = (RelativeLayout) root.findViewById (R.id.rl3);
+        rl5 = (RelativeLayout) root.findViewById (R.id.rl5);
         
         iv1 = (ImageView) root.findViewById (R.id.iv1);
         iv2 = (ImageView) root.findViewById (R.id.iv2);
@@ -223,6 +238,12 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
             tvServiceRequestName.setText (jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND) + " " + jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " - " + jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
             tvServiceRequestModelNumber.setText (jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
             JSONArray jsonArrayRequest = jsonObject.getJSONArray (AppConfigTags.SWIGGY_REQUESTS);
+    
+            brand_name = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND);
+            description = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
+            serial_number = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+            model_number = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+            
             
             for (int i = 0; i < jsonArrayRequest.length (); i++) {
                 JSONObject jsonObjectRequest = jsonArrayRequest.getJSONObject (i);
@@ -234,7 +255,10 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                     } else {
                         tvCloseRequest.setVisibility (View.VISIBLE);
                     }
-                    
+                    request_description = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION);
+                    image1 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1);
+                    image2 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE2);
+                    image3 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3);
                     
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
                         if (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1).endsWith (ext)) {
@@ -248,7 +272,7 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                                             progressBar1.setVisibility (View.GONE);
                                             return false;
                                         }
-                
+    
                                         @Override
                                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                             progressBar1.setVisibility (View.GONE);
@@ -271,7 +295,7 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                                             progressBar2.setVisibility (View.GONE);
                                             return false;
                                         }
-                
+    
                                         @Override
                                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                             progressBar2.setVisibility (View.GONE);
@@ -295,7 +319,7 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                                             progressBar3.setVisibility (View.GONE);
                                             return false;
                                         }
-                
+    
                                         @Override
                                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                             progressBar3.setVisibility (View.GONE);
@@ -340,7 +364,7 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
         tvCloseRequest.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                CloseRequestSentToServer (Request_id);
+                ratingDialog ();
             }
         });
     
@@ -348,8 +372,16 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
             @Override
             public void onClick (View view) {
                 CommentReplyDialog ();
-            
-            
+            }
+        });
+        rl5.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ()
+                        .newInstance2 (1, Request_id, brand_name, description, serial_number, model_number, request_description, image1, image2, image3);
+                dialog.show (ft, "Contacts");
+                
             }
         });
     
@@ -394,6 +426,27 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
         
         dialog.show ();
     }
+    
+    private void ratingDialog () {
+        boolean wrapInScrollView = true;
+        final MaterialDialog.Builder mBuilder = new MaterialDialog.Builder (getActivity ())
+                .customView (R.layout.dialog_rating, wrapInScrollView)
+                .positiveText ("Submit");
+        MaterialDialog dialog = mBuilder.build ();
+        final RatingBar ratingBar = (RatingBar) dialog.getCustomView ().findViewById (R.id.ratingBar);
+        final EditText etComment = (EditText) dialog.getCustomView ().findViewById (R.id.etComment);
+        mBuilder.onPositive (new MaterialDialog.SingleButtonCallback () {
+            @Override
+            public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                CloseRequestSentToServer (Request_id, String.valueOf (ratingBar.getRating ()), etComment.getText ().toString ());
+            }
+        });
+        
+        
+        dialog.show ();
+        
+    }
+    
     
     private void ReplyCommentSentToServer (final String replyComment) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
@@ -498,11 +551,11 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
         }
     }
     
-    private void CloseRequestSentToServer (final int request_id) {
+    private void CloseRequestSentToServer (final int request_id, final String rating, final String comment) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE + request_id, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE + request_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -547,8 +600,9 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    // params.put(AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf(Request_id));
-                    //   params.put(AppConfigTags.SWIGGY_COMMENTS, replyComment);
+                    params.put (AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf (request_id));
+                    params.put (AppConfigTags.SWIGGY_COMMENT, comment);
+                    params.put (AppConfigTags.SWIGGY_RATING, rating);
                     
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;

@@ -59,6 +59,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     RelativeLayout rl1;
     RelativeLayout rl2;
     RelativeLayout rl3;
+    RelativeLayout rl5;
     RecyclerView rvServiceList;
     TextView tvAddNewRequest;
     ProgressBar progressBar1;
@@ -69,6 +70,10 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     ImageView iv2;
     ImageView iv3;
     
+    String image1;
+    String image2;
+    String image3;
+
     ImageView ivCancel;
     
     
@@ -89,8 +94,17 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
         initView ();
         initData ();
         initListener ();
-        setData ();
+    
     }
+    
+    @Override
+    public void onResume () {
+        super.onResume ();
+        setData ();
+        // put your code here...
+
+    }
+    
     
     private void getExtra () {
         Intent intent = getIntent ();
@@ -115,7 +129,8 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
         rl1 = (RelativeLayout) findViewById (R.id.rl1);
         rl2 = (RelativeLayout) findViewById (R.id.rl2);
         rl3 = (RelativeLayout) findViewById (R.id.rl3);
-        
+        rl5 = (RelativeLayout) findViewById (R.id.rl5);
+
         iv1 = (ImageView) findViewById (R.id.iv1);
         iv2 = (ImageView) findViewById (R.id.iv2);
         iv3 = (ImageView) findViewById (R.id.iv3);
@@ -147,6 +162,8 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     }
     
     private void initListener () {
+    
+    
         swiggyServiceRequestAdapter.SetOnItemClickListener (new SwiggyMyProductRequestAdapter.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
@@ -175,7 +192,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View view) {
                 android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (product_name, product_description, product_serial_number, product_model_number, product_purchase_date, String.valueOf (product_id));
+                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (0, product_name, product_description, product_serial_number, product_model_number, product_purchase_date, String.valueOf (product_id));
                 dialog.setDismissListener (new MyDialogCloseListener () {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
@@ -187,12 +204,31 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
             }
         });
     
+        rl5.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+                Intent intent2 = new Intent (SwiggyMyProductDetailActivity.this, SwiggyServiceAddProductActivity.class);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_ID, product_id);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND, product_name);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
+                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, product_purchase_date);
+                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE1, image1);
+                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE2, image2);
+                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE3, image3);
+                intent2.putExtra ("flag", 1);
+                startActivity (intent2);
+            }
+        });
+
+
     }
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (SwiggyMyProductDetailActivity.this)) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + product_id, true);
-            StringRequest strRequest = new StringRequest (com.android.volley.Request.Method.GET, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + product_id,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + "/" + product_id, true);
+            StringRequest strRequest = new StringRequest (com.android.volley.Request.Method.GET, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + "/" + product_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -206,10 +242,17 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
                                         JSONArray jsonArrayRequest = jsonObj.getJSONArray (AppConfigTags.SWIGGY_REQUESTS);
-                                        
+    
+                                        tvServiceRequestName.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND) + " " + jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " - " + jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+                                        tvServiceRequestModelNumber.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
+                                        tvServiceRequestDate.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE));
+
+
+
                                         for (int i = 0; i < jsonArrayRequest.length (); i++) {
                                             JSONObject jsonObjectBrand = jsonArrayRequest.getJSONObject (i);
-                                            
+    
+    
                                             swiggyServiceRequestList.add (i, new SwiggyMyProductRequest (
                                                     jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID),
                                                     jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
@@ -222,7 +265,10 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                                     jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3)));
                                         }
                                         swiggyServiceRequestAdapter.notifyDataSetChanged ();
-    
+                                        image1 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE1);
+                                        image2 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE2);
+                                        image3 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE3);
+
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
                                             if (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE1).endsWith (ext)) {
                                                 rl1.setVisibility (View.VISIBLE);

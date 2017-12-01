@@ -3,7 +3,7 @@ package com.indiasupply.isdental.utils;
 public class AppConfigURL {
     public static String version = "v1.1.3";
     public static String version2 = "v2.0";
-    //    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+    //      public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
     public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     public static String BASE_URL = "http://famdent.indiasupply.com/isdental/api/" + version + "/";
     
@@ -48,7 +48,9 @@ public class AppConfigURL {
     public static String URL_SWIGGY_FAVOURITE = BASE_URL2 + "favourite";
     public static String URL_SWIGGY_ENQUIRY = BASE_URL2 + "enquiry";
     
-    public static String URL_SWIGGY_MY_PRODUCT_DETAIL = BASE_URL2 + "/user/product/";
+    public static String URL_SWIGGY_MY_PRODUCT_DETAIL = BASE_URL2 + "/user/product";
     public static String URL_SWIGGY_SERVICE_REQUEST_COMMENTS = BASE_URL2 + "/user/request/comment";
-    public static String URL_SWIGGY_SERVICE_REQUEST_CLOSE = BASE_URL2 + "/user/request/close/";
+    public static String URL_SWIGGY_SERVICE_REQUEST_CLOSE = BASE_URL2 + "/user/request/close";
+    public static String URL_SWIGGY_UPDATE_PRODUCT = BASE_URL2 + "user/product";
+    public static String URL_SWIGGY_UPDATE_REQUEST = BASE_URL2 + "user/request";
 }

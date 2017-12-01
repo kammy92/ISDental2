@@ -10,12 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/text_color_white">
+
         <ImageView
             android:id="@+id/ivCancel"
             android:layout_width="?attr/actionBarSize"
             android:layout_height="?attr/actionBarSize"
             android:padding="@dimen/activity_margin"
             android:src="@drawable/ic_close"/>
+
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
@@ -28,23 +30,49 @@
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>
+
         <View
             android:id="@+id/v1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/ivCancel"
             android:background="@color/text_color_grey_light2"/>
+
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/tvAddNewRequest"
             android:layout_below="@+id/v1">
+
+
             <RelativeLayout
                 android:id="@+id/rlMain"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:animateLayoutChanges="true"
                 android:visibility="visible">
+
+
+                <RelativeLayout
+                    android:id="@+id/rl5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginBottom="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:visibility="visible">
+                    <ImageView
+                        android:id="@+id/ivEdit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_no_product"/>
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
@@ -52,10 +80,10 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:layout_marginTop="@dimen/activity_margin"
+                    android:layout_toLeftOf="@+id/rl5"
                     android:text="AIR COMPRESSOR BOSCH – 1234567SN"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"
-                />
+                    android:textSize="@dimen/text_size_small"/>
                 <TextView
                     android:id="@+id/tvModelName"
                     android:layout_width="match_parent"
@@ -192,7 +220,8 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:layout_marginTop="@dimen/activity_margin"
-                    android:background="@color/secondary_text2"/>
+                    android:background="@color/secondary_text2"
+                />
 
                 <TextView
                     android:id="@+id/tv2"
@@ -202,7 +231,7 @@
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:layout_marginTop="@dimen/activity_margin"
-                    android:text="MY SERVICE REQUESTS"
+                    android:text="REQUESTS"
                     android:textColor="@color/primary_text2"
                     android:textSize="@dimen/text_size_small"
                     android:textStyle="bold"/>
@@ -224,7 +253,7 @@
             android:background="@color/primary_text2"
             android:gravity="center"
             android:padding="@dimen/activity_margin_small"
-            android:text="NEW SERVICE REQUEST"
+            android:text="ADD NEW REQUEST"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>

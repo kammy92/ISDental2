@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/clMain"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<android.support.design.widget.CoordinatorLayout android:id="@+id/clMain"
+                                                 xmlns:android="http://schemas.android.com/apk/res/android"
+                                                 android:layout_width="match_parent"
+                                                 android:layout_height="match_parent">
 
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -50,15 +49,35 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/activity_margin">
 
+                <RelativeLayout
+                    android:id="@+id/rl5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+
+                    android:layout_marginBottom="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:visibility="visible">
+                    <ImageView
+                        android:id="@+id/ivEdit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_centerInParent="true"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_no_product"/>
+
+                </RelativeLayout>
+
                 <TextView
                     android:id="@+id/tvName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_toLeftOf="@+id/rl5"
                     android:text="AIR COMPRESSOR BOSCH – 1234567SN"
                     android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"
-                />
+                    android:textSize="@dimen/text_size_small"/>
 
                 <TextView
                     android:id="@+id/tvModelName"
@@ -102,8 +121,7 @@
                     android:layout_marginTop="@dimen/activity_margin"
                     android:text="IMAGES"
                     android:textColor="@color/text_color_black"
-                    android:textSize="@dimen/text_size_small"
-                />
+                    android:textSize="@dimen/text_size_small"/>
 
                 <HorizontalScrollView
                     android:id="@+id/scImages"
@@ -228,6 +246,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/tvComments"
                     android:visibility="visible">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/rvCommentsList"
                         android:layout_width="match_parent"
