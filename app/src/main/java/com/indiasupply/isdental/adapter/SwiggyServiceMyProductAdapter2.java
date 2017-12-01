@@ -108,7 +108,7 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             holder.tvProductRequestDate.setVisibility (View.GONE);
             holder.tvProductStatus.setVisibility (View.GONE);
         } else {
-            holder.tvProductRequestDate.setText ("REQ. DATE: " + Utils.convertTimeFormat (product.getRequest_created_at (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy"));
+            holder.tvProductRequestDate.setText (Utils.convertTimeFormat (product.getRequest_created_at (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy"));
             holder.tvProductStatus.setText (product.getRequest_status ());
             holder.tvProductRequestDate.setVisibility (View.VISIBLE);
             holder.tvProductStatus.setVisibility (View.VISIBLE);

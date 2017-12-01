@@ -83,7 +83,7 @@
                 android:background="@color/primary_text2"
                 android:gravity="center"
                 android:padding="@dimen/activity_margin_small"
-                android:text="ADD EQIUPMENT"
+                android:text="ADD EQUIPMENT"
                 android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold"/>
