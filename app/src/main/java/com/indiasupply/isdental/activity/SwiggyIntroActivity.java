@@ -26,6 +26,7 @@ public class SwiggyIntroActivity extends WelcomeActivity {
         
                 .canSkip (false)
                 .swipeToDismiss (false)
+//                .page (new FullscreenParallaxPage (R.layout.intro_screen_0))
 //                .page (new ParallaxPage (R.layout.intro_screen_0,
 //                        " ",
 //                        " ")
