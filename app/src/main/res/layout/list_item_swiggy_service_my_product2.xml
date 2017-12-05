@@ -68,24 +68,34 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvProductModelNumber"
             android:layout_gravity="center"
-            android:text="REQ.DATE- 20/11/2017"
+            android:text="20/11/2017"
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
 
-        <TextView
-            android:id="@+id/tvProductStatus"
+        <RelativeLayout
+            android:id="@+id/rlStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvProductModelNumber"
-            android:layout_gravity="right"
-            android:gravity="right"
-            android:text="OPEN"
-            android:textColor="@color/secondary_text2"
-            android:textSize="@dimen/text_size_extra_small"
-            android:visibility="visible"/>
+            android:layout_below="@+id/tvProductModelNumber">
+
+            <TextView
+                android:id="@+id/tvProductStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="OPEN"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_extra_small"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+        </RelativeLayout>
+
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -103,7 +113,7 @@
             android:background="@drawable/button_background"
             android:gravity="center"
             android:padding="@dimen/activity_margin_small"
-            android:text="SERVICE\nREQUEST"
+            android:text="REQUEST\nSERVICE"
             android:textColor="@color/accent2"/>
     </RelativeLayout>
 </RelativeLayout>

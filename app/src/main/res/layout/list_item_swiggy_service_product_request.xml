@@ -33,16 +33,23 @@
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
-        <TextView
-            android:id="@+id/tvProductStatus"
+        <RelativeLayout
+            android:id="@+id/rlStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_below="@+id/tvProductDescription"
-            android:text="OPEN"
-            android:textColor="@color/secondary_text2"
-            android:textSize="@dimen/text_size_extra_small"
-            android:visibility="visible"/>
+            android:layout_below="@+id/tvProductDescription">
+            <TextView
+                android:id="@+id/tvProductStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="OPEN"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_extra_small"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+        </RelativeLayout>
     </RelativeLayout>
 </android.support.v7.widget.CardView>

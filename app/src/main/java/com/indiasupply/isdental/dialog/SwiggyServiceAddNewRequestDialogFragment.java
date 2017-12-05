@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
@@ -155,6 +156,8 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
     @Override
     public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate (R.layout.fragment_dialog_swiggy_service_add_new_request, container, false);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder ();
+        StrictMode.setVmPolicy (builder.build ());
         initView (root);
         initBundle ();
         initData ();
@@ -188,6 +191,7 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
             tvServiceRequestName.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
             tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
             etRequestDescription.setText (bundle.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION));
+            etRequestDescription.setEnabled (false);
             request_id = Integer.parseInt (bundle.getString (AppConfigTags.SWIGGY_REQUEST_ID));
             image1 = bundle.getString (AppConfigTags.SWIGGY_IMAGE1);
             image2 = bundle.getString (AppConfigTags.SWIGGY_IMAGE2);

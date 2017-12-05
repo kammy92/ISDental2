@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
@@ -46,6 +47,10 @@ public class SwiggyMyProductRequestAdapter extends RecyclerView.Adapter<SwiggyMy
     
         if (request.getStatus ().equalsIgnoreCase ("OPEN")) {
             holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.mb_green_dark));
+//            holder.tvProductStatus.setBackgroundColor (activity.getResources ().getColor (R.color.mb_green_dark));
+        } else {
+            holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.secondary_text2));
+//            holder.tvProductStatus.setBackgroundColor (activity.getResources ().getColor (R.color.text_color_grey_dark2));
         }
         
     }
@@ -68,15 +73,16 @@ public class SwiggyMyProductRequestAdapter extends RecyclerView.Adapter<SwiggyMy
         TextView tvProductDescription;
         TextView tvProductDate;
         TextView tvProductStatus;
+        RelativeLayout rlStatus;
         
         
         public ViewHolder (View view) {
             super (view);
             //   tvProductName = (TextView) view.findViewById (R.id.tvProductName);
-            
             tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
             tvProductDate = (TextView) view.findViewById (R.id.tvProductDate);
             tvProductStatus = (TextView) view.findViewById (R.id.tvProductStatus);
+            rlStatus = (RelativeLayout) view.findViewById (R.id.rlStatus);
             view.setOnClickListener (this);
         }
         

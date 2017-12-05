@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
@@ -108,6 +109,10 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activity_swiggy_service_add_product);
+    
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder ();
+        StrictMode.setVmPolicy (builder.build ());
+        
         initView ();
         initData ();
         getExtra ();

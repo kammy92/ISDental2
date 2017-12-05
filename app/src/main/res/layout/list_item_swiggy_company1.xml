@@ -81,7 +81,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:gravity="start|left">
+                android:gravity="start|left"
+                android:visibility="invisible">
                 <ImageView
                     android:id="@+id/ivStar"
                     android:layout_width="10dp"

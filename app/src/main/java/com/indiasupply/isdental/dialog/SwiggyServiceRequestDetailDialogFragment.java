@@ -392,13 +392,12 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                 .content ("Reply Comment")
                 .contentColor (getResources ().getColor (R.color.primary_text2))
                 .positiveColor (getResources ().getColor (R.color.primary_text2))
-                .positiveText ("WRITE MESSAGE")
                 .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
                 .inputRangeRes (1, 256, R.color.primary_text2)
                 .alwaysCallInputCallback ()
                 .canceledOnTouchOutside (true)
                 .cancelable (true)
-                .positiveText (R.string.dialog_action_proceed);
+                .positiveText ("WRITE MESSAGE");
         
         
         mBuilder.input (null, null, new MaterialDialog.InputCallback () {

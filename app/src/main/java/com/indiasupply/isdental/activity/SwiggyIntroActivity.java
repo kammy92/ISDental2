@@ -26,6 +26,13 @@ public class SwiggyIntroActivity extends WelcomeActivity {
         
                 .canSkip (false)
                 .swipeToDismiss (false)
+//                .page (new ParallaxPage (R.layout.intro_screen_0,
+//                        " ",
+//                        " ")
+//                        .lastParallaxFactor (0.5f)
+//                        .headerColorResource (this, R.color.primary_text2)
+//                        .descriptionColorResource (this, R.color.primary_text2)
+//                        .background (R.color.intro_screen_2))
                 .page (new ParallaxPage (R.layout.intro_screen_1,
                         "Offers",
                         "Get Expo Offers")

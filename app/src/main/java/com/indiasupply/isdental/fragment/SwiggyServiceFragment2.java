@@ -286,6 +286,7 @@ public class SwiggyServiceFragment2 extends Fragment {
     private boolean showOfflineData () {
         String response = appDataPref.getStringPref (getActivity (), AppDataPref.HOME_SERVICE);
         if (response.length () > 0) {
+            swiggyServiceItemList.clear ();
             try {
                 JSONObject jsonObj = new JSONObject (response);
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -114,6 +115,10 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             holder.tvProductStatus.setVisibility (View.VISIBLE);
             if (product.getRequest_status ().equalsIgnoreCase ("OPEN")) {
                 holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.mb_green_dark));
+//                holder.tvProductStatus.setBackgroundColor (activity.getResources ().getColor (R.color.mb_green_dark));
+            } else {
+                holder.tvProductStatus.setTextColor (activity.getResources ().getColor (R.color.secondary_text2));
+//                holder.tvProductStatus.setBackgroundColor (activity.getResources ().getColor (R.color.secondary_text2));
             }
         }
     }
@@ -138,13 +143,15 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
         TextView tvProductStatus;
         ImageView ivProductImage;
         ProgressBar progressBar1;
-    
+        RelativeLayout rlStatus;
+        
         public ViewHolder (View view) {
             super (view);
             tvProductModelNumber = (TextView) view.findViewById (R.id.tvProductModelNumber);
             tvProductDescription = (TextView) view.findViewById (R.id.tvProductDescription);
             tvProductRequestDate = (TextView) view.findViewById (R.id.tvProductRequestDate);
             tvProductStatus = (TextView) view.findViewById (R.id.tvProductStatus);
+            rlStatus = (RelativeLayout) view.findViewById (R.id.rlStatus);
             ivProductImage = (ImageView) view.findViewById (R.id.ivProductImage);
             progressBar1 = (ProgressBar) view.findViewById (R.id.progressBar2);
             view.setOnClickListener (this);
