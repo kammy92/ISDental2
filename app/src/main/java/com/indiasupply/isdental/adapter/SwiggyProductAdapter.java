@@ -109,7 +109,7 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
                     Utils.showToast (activity, "Already enquired for this product", false);
                 } else {
                     final MaterialDialog.Builder mBuilder = new MaterialDialog.Builder (activity)
-                            .content ("Would you like to add a comment")
+                            .content ("Add Details ( Quantity, Expected Price, City etc )")
                             .contentColor (activity.getResources ().getColor (R.color.primary_text2))
                             .positiveColor (activity.getResources ().getColor (R.color.primary_text2))
                             .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
@@ -117,21 +117,29 @@ public class SwiggyProductAdapter extends RecyclerView.Adapter<SwiggyProductAdap
                             .alwaysCallInputCallback ()
                             .canceledOnTouchOutside (true)
                             .cancelable (true)
-                            .positiveText (R.string.dialog_action_submit);
-                
+                            .positiveText (R.string.dialog_action_submit)
+                            .negativeText ("NO THANKS");
+                    ;
+    
                     mBuilder.input (null, null, new MaterialDialog.InputCallback () {
                         @Override
                         public void onInput (MaterialDialog dialog, CharSequence input) {
                         }
                     });
-                
+    
                     mBuilder.onPositive (new MaterialDialog.SingleButtonCallback () {
                         @Override
                         public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                             sendEnquiry (dialog.getInputEditText ().getText ().toString (), product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
                         }
                     });
-                
+    
+                    mBuilder.onNegative (new MaterialDialog.SingleButtonCallback () {
+                        @Override
+                        public void onClick (@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                            sendEnquiry ("", product, holder.tvButtonText, holder.ivButtonImage, holder.progressBarButton, product.getId ());
+                        }
+                    });
                     MaterialDialog dialog = mBuilder.build ();
                     dialog.show ();
                 }

@@ -342,29 +342,17 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 s.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 SpannableString s2 = new SpannableString (getResources ().getString (R.string.dialog_enter_product_description));
                 s2.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                SpannableString s3 = new SpannableString (getResources ().getString (R.string.dialog_enter_model_number));
-                s3.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                SpannableString s4 = new SpannableString (getResources ().getString (R.string.dialog_enter_serial_number));
-                s4.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
                 SpannableString s5 = new SpannableString (getResources ().getString (R.string.dialog_select_purchase_date));
                 s5.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                
-                if (etBrand.getText ().toString ().trim ().length () == 0 && etProductCategory.getText ().toString ().trim ().length () == 0
-                        && etModelNo.getText ().toString ().trim ().length () == 0 && etSerialNo.getText ().toString ().trim ().length () == 0
-                        && etPurchaseDate.getText ().toString ().trim ().length () == 0) {
+    
+                if (etBrand.getText ().toString ().trim ().length () == 0 && etProductCategory.getText ().toString ().trim ().length () == 0 && etPurchaseDate.getText ().toString ().trim ().length () == 0) {
                     etBrand.setError (s);
                     etProductDescription.setError (s2);
-                    etModelNo.setError (s3);
-                    etSerialNo.setError (s4);
                     etPurchaseDate.setError (s5);
                 } else if (etBrand.getText ().toString ().trim ().length () == 0) {
                     etBrand.setError (s);
                 } else if (etProductDescription.getText ().toString ().trim ().length () == 0) {
                     etBrand.setError (s);
-                } else if (etModelNo.getText ().toString ().trim ().length () == 0) {
-                    etModelNo.setError (s);
-                } else if (etSerialNo.getText ().toString ().trim ().length () == 0) {
-                    etSerialNo.setError (s);
                 } else if (etPurchaseDate.getText ().toString ().trim ().length () == 0) {
                     etPurchaseDate.setError (s);
                 } else if (flag == 1) {

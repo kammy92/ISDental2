@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.SwiggyMyProductDetailActivity;
+import com.indiasupply.isdental.dialog.SwiggyServiceAddNewRequestDialogFragment;
 import com.indiasupply.isdental.model.SwiggyMyProduct2;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
@@ -51,11 +52,28 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
         Utils.setTypefaceToAllViews (activity, holder.tvProductDescription);
         holder.tvProductDescription.setText (product.getBrand () + " " + product.getDescription () + " - " + product.getSerial_number ());
         holder.tvProductModelNumber.setText (product.getModel_number ());
-    
-    
         holder.ivProductImage.setImageResource (product.getIcon ());
         holder.progressBar1.setVisibility (View.GONE);
     
+    
+        holder.rlRequestService.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View view) {
+            
+                android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
+                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (0, product.getBrand (), product.getDescription (), product.getSerial_number (), product.getModel_number (), product.getPurchase_date (), String.valueOf (product.getId ()));
+              /*  dialog.setDismissListener (new SwiggyMyProductDetailActivity.MyDialogCloseListener() {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        Log.e ("Return Page", "Return Page");
+                        setData ();
+                    }
+                });*/
+                dialog.show (ft, "Contacts");
+            
+            }
+        });
+        
         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
             if (product.getImage ().endsWith (ext)) {
                 Glide.with (activity)
@@ -67,7 +85,7 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
                                 holder.progressBar1.setVisibility (View.GONE);
                                 return false;
                             }
-                        
+    
                             @Override
                             public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                 holder.progressBar1.setVisibility (View.GONE);
@@ -144,6 +162,7 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
         ImageView ivProductImage;
         ProgressBar progressBar1;
         RelativeLayout rlStatus;
+        RelativeLayout rlRequestService;
         
         public ViewHolder (View view) {
             super (view);
@@ -154,6 +173,7 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             rlStatus = (RelativeLayout) view.findViewById (R.id.rlStatus);
             ivProductImage = (ImageView) view.findViewById (R.id.ivProductImage);
             progressBar1 = (ProgressBar) view.findViewById (R.id.progressBar2);
+            rlRequestService = (RelativeLayout) view.findViewById (R.id.rl4);
             view.setOnClickListener (this);
         }
         
