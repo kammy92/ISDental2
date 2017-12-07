@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bugsnag.android.Bugsnag;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventFragment;
@@ -82,6 +83,8 @@ public class SwiggyMainActivity extends AppCompatActivity {
 //            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
 //        }
+        Bugsnag.init (this);
+        
         Utils.setTypefaceToAllViews (this, clMain);
         Utils.disableShiftMode (bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu ();

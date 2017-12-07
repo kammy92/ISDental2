@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
+            android:name="com.indiasupply.isdental.activity.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -93,6 +93,9 @@
         <activity android:name=".activity.SwiggyLoginActivity"
                   android:theme="@style/WelcomeScreenTheme"/>
 
+        <activity android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
+                  android:screenOrientation="portrait"/>
+
 
         <service android:name="com.indiasupply.isdental.service.MyFirebaseMessagingService">
             <intent-filter>
@@ -114,10 +117,8 @@
         <receiver android:name="com.indiasupply.isdental.receiver.NotificationReceiver">
         </receiver>
 
-
-        <meta-data
-            android:name="com.bugsnag.android.API_KEY"
-            android:value="b2b4c756b3b88a72891033fa275309db"/>
+        <meta-data android:name="com.bugsnag.android.API_KEY"
+                   android:value="b2b4c756b3b88a72891033fa275309db "/>
 
     </application>
 

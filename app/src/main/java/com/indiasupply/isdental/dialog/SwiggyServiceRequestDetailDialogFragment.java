@@ -380,8 +380,14 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ()
                         .newInstance2 (1, Request_id, brand_name, description, serial_number, model_number, request_description, image1, image2, image3);
+    
+                dialog.setDismissListener (new SwiggyMyProductDetailActivity.MyDialogCloseListener () {
+                    @Override
+                    public void handleDialogClose (DialogInterface dialog) {
+                        getDialog ().dismiss ();
+                    }
+                });
                 dialog.show (ft, "Contacts");
-                
             }
         });
     

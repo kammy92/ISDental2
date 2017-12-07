@@ -58,7 +58,11 @@ public class WelcomeSliderActivity extends AppCompatActivity {
         initView ();
         initData ();
         initListener ();
-        
+
+//        Intent myIntent = new Intent (this, SplashScreenActivity.class);
+//        startActivity (myIntent);
+    
+    
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow ().getDecorView ().setSystemUiVisibility (View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);

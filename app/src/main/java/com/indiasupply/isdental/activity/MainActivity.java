@@ -241,6 +241,8 @@ public class MainActivity extends AppCompatActivity {
             startActivity (myIntent);
             finish ();
         } else {
+//            Intent myIntent = new Intent (this, SplashScreenActivity.class);
+//            startActivity (myIntent);
             initApplication ();
         }
     }
