@@ -453,7 +453,6 @@ public class SwiggyServiceRequestDetailDialogFragment extends DialogFragment {
         
     }
     
-    
     private void ReplyCommentSentToServer (final String replyComment) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);

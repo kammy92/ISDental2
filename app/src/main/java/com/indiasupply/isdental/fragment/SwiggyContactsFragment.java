@@ -488,7 +488,7 @@ public class SwiggyContactsFragment extends Fragment {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 2);
+            Utils.sendRequest (strRequest, 30);
         } else {
             if (getActivity () != null && isAdded ()) {
                 if (! showOfflineData ()) {
