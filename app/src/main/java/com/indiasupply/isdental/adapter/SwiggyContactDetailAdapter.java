@@ -171,22 +171,28 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                                                 progressBarButton.setVisibility (View.GONE);
                                                 ivFavourite.setVisibility (View.VISIBLE);
                                                 ivFavourite.setImageResource (R.drawable.ic_favourite_filled);
+                                                Utils.showToast (activity, "Contact added to My Favourites", false);
                                                 break;
                                             case 2:
                                                 contactDetail.setIs_favourite (false);
                                                 progressBarButton.setVisibility (View.GONE);
                                                 ivFavourite.setVisibility (View.VISIBLE);
                                                 ivFavourite.setImageResource (R.drawable.ic_favourite);
+                                                Utils.showToast (activity, "Contact removed from My Favourites", false);
                                                 break;
                                         }
                                     } else {
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
-                                    // Utils.showSnackBar(getActivity(), clMain, getResources().getString(R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources().getString(R.string.snackbar_action_dismiss), null);
+                                    ivFavourite.setVisibility (View.VISIBLE);
+                                    progressBarButton.setVisibility (View.GONE);
+                                    Utils.showToast (activity, "Unstable Internet Connection", false);
                                 }
                             } else {
-                                // Utils.showSnackBar(getActivity(), clMain, getResources().getString(R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources().getString(R.string.snackbar_action_dismiss), null);
+                                ivFavourite.setVisibility (View.VISIBLE);
+                                progressBarButton.setVisibility (View.GONE);
+                                Utils.showToast (activity, "Unstable Internet Connection", false);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                         }
@@ -199,7 +205,9 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                             }
-                            //    Utils.showSnackBar(getActivity(), clMain, getResources().getString(R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources().getString(R.string.snackbar_action_dismiss), null);
+                            ivFavourite.setVisibility (View.VISIBLE);
+                            progressBarButton.setVisibility (View.GONE);
+                            Utils.showToast (activity, "Unstable Internet Connection", false);
                         }
                     }) {
                 
@@ -223,9 +231,9 @@ public class SwiggyContactDetailAdapter extends RecyclerView.Adapter<SwiggyConta
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 2);
+            Utils.sendRequest (strRequest, 20);
         } else {
-//            ivFavourite.setImageResource (R.drawable.ic_favourite_filled);
+            Utils.showToast (activity, "Unstable Internet Connection", false);
         }
     }
     

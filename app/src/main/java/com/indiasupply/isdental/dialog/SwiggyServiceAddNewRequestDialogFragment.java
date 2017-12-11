@@ -323,6 +323,9 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
         etRequestDescription.addTextChangedListener (new TextWatcher () {
             @Override
             public void onTextChanged (CharSequence s, int start, int before, int count) {
+                if (s.length () > 0) {
+                    etRequestDescription.setError (null);
+                }
                 if (s.length () < 256) {
                     tvCounter.setTextColor (getResources ().getColor (R.color.secondary_text2));
                 } else {
@@ -344,9 +347,17 @@ public class SwiggyServiceAddNewRequestDialogFragment extends DialogFragment {
             @Override
             public void onClick (View view) {
                 if (flag == 1) {
-                    updateProductToServer (etRequestDescription.getText ().toString ());
+                    if (etRequestDescription.getText ().toString ().length () > 0) {
+                        updateProductToServer (etRequestDescription.getText ().toString ());
+                    } else {
+                        etRequestDescription.setError ("Please Enter Description");
+                    }
                 } else {
-                    addProductToServer (etRequestDescription.getText ().toString ());
+                    if (etRequestDescription.getText ().toString ().length () > 0) {
+                        addProductToServer (etRequestDescription.getText ().toString ());
+                    } else {
+                        etRequestDescription.setError ("Please Enter Description");
+                    }
                 }
 
             }

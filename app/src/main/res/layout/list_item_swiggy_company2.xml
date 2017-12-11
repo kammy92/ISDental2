@@ -85,27 +85,6 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:visibility="gone">
-                <ImageView
-                    android:id="@+id/ivCompanyEmail"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="@dimen/activity_margin_extra_small"
-                    android:paddingRight="@dimen/activity_margin_extra_small"
-                    android:src="@drawable/ic_email"/>
-                <ImageView
-                    android:id="@+id/ivCompanyWebSite"
-                    android:layout_width="40dp"
-                    android:layout_height="20dp"
-                    android:layout_marginEnd="@dimen/activity_margin_extra_small"
-                    android:layout_marginLeft="@dimen/activity_margin_small"
-                    android:layout_marginRight="@dimen/activity_margin_extra_small"
-                    android:layout_marginStart="@dimen/activity_margin_small"
-                    android:layout_toEndOf="@+id/ivCompanyEmail"
-                    android:layout_toRightOf="@+id/ivCompanyEmail"
-                    android:paddingLeft="@dimen/activity_margin_extra_small"
-                    android:paddingRight="@dimen/activity_margin_extra_small"
-                    android:src="@drawable/ic_website"/>
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>

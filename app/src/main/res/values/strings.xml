@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ISDental</string>
+    <string name="app_name">IndiaSupply</string>
 
 
     <!-- EditText Error Strings -->
@@ -132,6 +132,7 @@
     <string name="snackbar_text_no_internet_connection_available">No Internet Connection available
     </string>
     <string name="snackbar_text_error_occurred">Error Occurred</string>
+    <string name="snackbar_text_unstable_internet">Unstable Internet Connection</string>
     <string name="snackbar_text_exception_occurred">Exception Occurred</string>
     <string name="snackbar_text_invalid_access_pin">Invalid Access PIN</string>
 

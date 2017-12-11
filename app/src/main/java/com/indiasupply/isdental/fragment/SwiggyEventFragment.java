@@ -128,7 +128,7 @@ public class SwiggyEventFragment extends Fragment {
                                                 JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                                                 eventList.add (new SwiggyEvent (
                                                         jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
-                                                        R.drawable.expodent_mumbai,
+                                                        R.drawable.ic_information,
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
@@ -153,7 +153,7 @@ public class SwiggyEventFragment extends Fragment {
                                     }
                                 } else {
                                     if (! showOfflineData ()) {
-                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
                                     Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                                 }
@@ -170,7 +170,7 @@ public class SwiggyEventFragment extends Fragment {
                                     Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                                 }
                                 if (! showOfflineData ()) {
-                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 }
                             }
                         }
@@ -243,7 +243,7 @@ public class SwiggyEventFragment extends Fragment {
                         JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                         eventList.add (new SwiggyEvent (
                                 jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
-                                R.drawable.expodent_mumbai,
+                                R.drawable.ic_information,
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),

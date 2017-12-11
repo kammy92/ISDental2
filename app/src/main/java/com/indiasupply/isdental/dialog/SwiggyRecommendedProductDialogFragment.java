@@ -107,12 +107,14 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
         rv3.setLayoutManager (linearLayoutManager);
         rv3.setItemAnimator (new DefaultItemAnimator ());
         rv3.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        tvTitle.setText ("Recommended 1/" + productList.size ());
-    
+//        tvTitle.setText ("Recommended 1/" + productList.size ());
+        tvTitle.setText ("Recommended Products");
+        
         rv3.scrollToPosition (position);
     }
     
     private void initListener () {
+/*
         rv3.setOnScrollListener (new RecyclerView.OnScrollListener () {
 //            @Override
 //            public void onScrollStateChanged (RecyclerView recyclerView, int newState) {
@@ -143,6 +145,8 @@ public class SwiggyRecommendedProductDialogFragment extends DialogFragment {
                 super.onScrolled (recyclerView, dx, dy);
             }
         });
+  */
+        
         ivCancel.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {

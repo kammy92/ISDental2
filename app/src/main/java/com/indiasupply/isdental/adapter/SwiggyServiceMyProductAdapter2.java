@@ -1,8 +1,12 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +22,7 @@ import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.SwiggyMyProductDetailActivity;
 import com.indiasupply.isdental.dialog.SwiggyServiceAddNewRequestDialogFragment;
+import com.indiasupply.isdental.fragment.SwiggyServiceFragment2;
 import com.indiasupply.isdental.model.SwiggyMyProduct2;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
@@ -62,13 +67,18 @@ public class SwiggyServiceMyProductAdapter2 extends RecyclerView.Adapter<SwiggyS
             
                 android.app.FragmentTransaction ft = activity.getFragmentManager ().beginTransaction ();
                 SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (0, product.getBrand (), product.getDescription (), product.getSerial_number (), product.getModel_number (), product.getPurchase_date (), String.valueOf (product.getId ()));
-              /*  dialog.setDismissListener (new SwiggyMyProductDetailActivity.MyDialogCloseListener() {
+                dialog.setDismissListener (new SwiggyMyProductDetailActivity.MyDialogCloseListener () {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
                         Log.e ("Return Page", "Return Page");
-                        setData ();
+                        Fragment selectedFragment = null;
+                        selectedFragment = SwiggyServiceFragment2.newInstance (true);
+                        ((FragmentActivity) activity).getSupportFragmentManager ().beginTransaction ()
+                                .replace (R.id.frame_layout, selectedFragment)
+                                .commit ();
+            
                     }
-                });*/
+                });
                 dialog.show (ft, "Contacts");
             
             }

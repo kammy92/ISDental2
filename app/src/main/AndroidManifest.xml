@@ -27,46 +27,6 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="com.indiasupply.isdental.activity.LoginActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.indiasupply.isdental.activity.WelcomeSliderActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.indiasupply.isdental.activity.InformationActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.ShopOnlineActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.CompanyListActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-        <activity android:name="com.indiasupply.isdental.activity.OffersActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.CompanyDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.EventListActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.EventDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.SpecialEventDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
-
-        <activity android:name="com.indiasupply.isdental.activity.OrganiserDetailActivity"
-                  android:screenOrientation="portrait">
-        </activity>
 
         <activity android:name="com.indiasupply.isdental.activity.SwiggyServiceAddProductActivity"
                   android:screenOrientation="portrait"/>

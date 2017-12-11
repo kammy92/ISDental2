@@ -200,9 +200,14 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
-                                    
+                                    tvButtonText.setVisibility (View.VISIBLE);
+                                    progressBarButton.setVisibility (View.GONE);
+                                    Utils.showToast (activity, "Unstable Internet Connection", false);
                                 }
                             } else {
+                                tvButtonText.setVisibility (View.VISIBLE);
+                                progressBarButton.setVisibility (View.GONE);
+                                Utils.showToast (activity, "Unstable Internet Connection", false);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                         }
@@ -215,6 +220,9 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                             }
+                            tvButtonText.setVisibility (View.VISIBLE);
+                            progressBarButton.setVisibility (View.GONE);
+                            Utils.showToast (activity, "Unstable Internet Connection", false);
                         }
                     }) {
                 
@@ -237,8 +245,9 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 2);
+            Utils.sendRequest (strRequest, 20);
         } else {
+            Utils.showToast (activity, "Unstable Internet Connection", false);
         }
     }
     

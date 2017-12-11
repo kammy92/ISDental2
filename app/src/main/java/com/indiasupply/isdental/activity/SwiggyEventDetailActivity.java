@@ -312,7 +312,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                                 }
                             } else {
                                 if (! showOfflineData (event_id)) {
-                                    Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 }
 //                                updateLayoutOnResponse (3);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
@@ -329,7 +329,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                             }
 //                            updateLayoutOnResponse (4);
                             if (! showOfflineData (event_id)) {
-                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showSnackBar (SwiggyEventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
                         }
                     }) {
@@ -351,7 +351,7 @@ public class SwiggyEventDetailActivity extends AppCompatActivity {
                     return params;
                 }
             };
-            Utils.sendRequest (strRequest, 2);
+            Utils.sendRequest (strRequest, 20);
         } else {
 //            updateLayoutOnResponse (5);
             if (! showOfflineData (event_id)) {

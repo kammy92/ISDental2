@@ -1,8 +1,6 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,40 +48,6 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
         holder.tvCompanyCategory.setText (company.getCategory ());
         holder.tvCompanyContacts.setText (company.getNo_of_contacts () + " CONTACTS");
         
-        holder.ivCompanyEmail.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                if (company.getEmail ().length () > 0) {
-                    Intent email = new Intent (Intent.ACTION_SEND);
-                    email.putExtra (Intent.EXTRA_EMAIL, new String[] {company.getEmail ()});
-                    email.putExtra (Intent.EXTRA_SUBJECT, "Enquiry");
-                    email.putExtra (Intent.EXTRA_TEXT, "");
-                    email.setType ("message/rfc822");
-                    activity.startActivity (Intent.createChooser (email, "Choose an Email client :"));
-                } else {
-                    Utils.showToast (activity, "No email specified", false);
-                }
-            }
-        });
-        
-        holder.ivCompanyWebSite.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                if (company.getWebsite ().length () > 0) {
-                    Uri uri;
-                    if (company.getWebsite ().contains ("http://") || company.getWebsite ().contains ("https://")) {
-                        uri = Uri.parse (company.getWebsite ());
-                    } else {
-                        uri = Uri.parse ("http://" + company.getWebsite ());
-                    }
-                    Intent intent = new Intent (Intent.ACTION_VIEW, uri);
-                    activity.startActivity (intent);
-                } else {
-                    Utils.showToast (activity, "No website specified", false);
-                }
-            }
-        });
-        
         if (company.getImage ().length () == 0) {
             holder.ivCompanyImage.setImageResource (company.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
@@ -125,8 +89,6 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
         TextView tvCompanyName;
         TextView tvCompanyCategory;
         TextView tvCompanyContacts;
-        ImageView ivCompanyEmail;
-        ImageView ivCompanyWebSite;
         ImageView ivCompanyImage;
         ProgressBar progressBar;
         
@@ -135,9 +97,7 @@ public class SwiggyCompanyAdapter2 extends RecyclerView.Adapter<SwiggyCompanyAda
             tvCompanyName = (TextView) view.findViewById (R.id.tvCompanyName);
             tvCompanyCategory = (TextView) view.findViewById (R.id.tvCompanyCategory);
             tvCompanyContacts = (TextView) view.findViewById (R.id.tvContactContacts);
-            ivCompanyEmail = (ImageView) view.findViewById (R.id.ivCompanyEmail);
             ivCompanyImage = (ImageView) view.findViewById (R.id.ivCompanyImage);
-            ivCompanyWebSite = (ImageView) view.findViewById (R.id.ivCompanyWebSite);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
