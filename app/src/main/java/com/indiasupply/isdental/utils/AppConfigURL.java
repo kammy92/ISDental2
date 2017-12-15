@@ -53,4 +53,7 @@ public class AppConfigURL {
     public static String URL_SWIGGY_SERVICE_REQUEST_CLOSE = BASE_URL2 + "/user/request/close";
     public static String URL_SWIGGY_UPDATE_PRODUCT = BASE_URL2 + "user/product";
     public static String URL_SWIGGY_UPDATE_REQUEST = BASE_URL2 + "user/request";
+    
+    public static String URL_SWIGGY_CONTACT_CALLED = BASE_URL2 + "/contact/called";
+    public static String URL_SWIGGY_CONTACT_MAILED = BASE_URL2 + "/contact/mailed";
 }

@@ -420,7 +420,7 @@ public class SwiggyContactsFragment extends Fragment {
                                                 JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
                                                 companyAllList.add (new SwiggyCompany2 (
                                                         jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
-                                                        R.drawable.ic_person,
+                                                        R.drawable.default_company,
                                                         jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
                                                         jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
                                                         jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
@@ -542,7 +542,7 @@ public class SwiggyContactsFragment extends Fragment {
                         JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
                         companyAllList.add (new SwiggyCompany2 (
                                 jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
-                                R.drawable.ic_person,
+                                R.drawable.default_company,
                                 jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
                                 jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
                                 jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),

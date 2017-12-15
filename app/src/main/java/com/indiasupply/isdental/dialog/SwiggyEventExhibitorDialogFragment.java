@@ -225,7 +225,7 @@ public class SwiggyEventExhibitorDialogFragment extends DialogFragment {
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
                 exhibitorList.add (j, new SwiggyEventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
-                        R.drawable.ic_person,
+                        R.drawable.ic_event_exhibitor,
                         jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
                         jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
                         jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));

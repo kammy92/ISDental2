@@ -136,7 +136,7 @@ public class SwiggyContactDetailDialogFragment extends DialogFragment {
                 contactDetailList.add (new SwiggyContactDetail (
                         jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_ID),
                         jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_TYPE),
-                        R.drawable.ic_person,
+                        R.drawable.default_company,
                         jsonObject.getBoolean (AppConfigTags.SWIGGY_CONTACT_FAVOURITE),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),

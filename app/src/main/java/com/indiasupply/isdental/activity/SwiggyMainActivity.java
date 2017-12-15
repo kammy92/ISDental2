@@ -259,9 +259,9 @@ public class SwiggyMainActivity extends AppCompatActivity {
                                             if (! userDetailsPref.getBooleanPref (SwiggyMainActivity.this, UserDetailsPref.LOGGED_IN_SESSION)) {
                                                 new MaterialDialog.Builder (SwiggyMainActivity.this)
                                                         .content (R.string.dialog_text_new_version_available)
-                                                        .positiveColor (getResources ().getColor (R.color.app_text_color_dark))
-                                                        .contentColor (getResources ().getColor (R.color.app_text_color_dark))
-                                                        .negativeColor (getResources ().getColor (R.color.app_text_color_dark))
+                                                        .positiveColor (getResources ().getColor (R.color.primary_text2))
+                                                        .contentColor (getResources ().getColor (R.color.primary_text2))
+                                                        .negativeColor (getResources ().getColor (R.color.primary_text2))
                                                         .typeface (SetTypeFace.getTypeface (SwiggyMainActivity.this), SetTypeFace.getTypeface (SwiggyMainActivity.this))
                                                         .canceledOnTouchOutside (false)
                                                         .cancelable (false)

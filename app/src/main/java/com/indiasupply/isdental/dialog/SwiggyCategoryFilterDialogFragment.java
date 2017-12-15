@@ -4,6 +4,7 @@ package com.indiasupply.isdental.dialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
@@ -115,7 +116,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
         Utils.setTypefaceToAllViews (getActivity (), tvApply);
         db = new DatabaseHandler (getActivity ());
         if (db.getAllFilters ().size () > 0) {
-            tvApply.setBackgroundColor (getResources ().getColor (R.color.primary_text2));
+            tvApply.setBackgroundColor (Color.parseColor ("#2c98a5"));
         } else {
             tvApply.setBackgroundColor (getResources ().getColor (R.color.secondary_text2));
         }
@@ -189,7 +190,7 @@ public class SwiggyCategoryFilterDialogFragment extends DialogFragment {
                     @Override
                     public void onItemClick (View view, int position) {
                         if (db.getAllFilters ().size () > 0) {
-                            tvApply.setBackgroundColor (getResources ().getColor (R.color.primary_text2));
+                            tvApply.setBackgroundColor (Color.parseColor ("#2c98a5"));
                         } else {
                             tvApply.setBackgroundColor (getResources ().getColor (R.color.secondary_text2));
                         }

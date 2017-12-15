@@ -134,7 +134,7 @@ public class SwiggyMyAccountOffersDialogFragment extends DialogFragment {
                     JSONObject jsonObjectOffer = jsonArrayOffer.getJSONObject (i);
                     tempMyAccountOfferList.add (new SwiggyMyAccountOffer (
                             jsonObjectOffer.getInt (AppConfigTags.OFFER_ID),
-                            R.drawable.ic_person,
+                            R.drawable.default_company,
                             jsonObjectOffer.getInt (AppConfigTags.OFFER_USER_ID),
                             jsonObjectOffer.getInt (AppConfigTags.OFFER_STATUS),
                             jsonObjectOffer.getString (AppConfigTags.OFFER_TEXT),

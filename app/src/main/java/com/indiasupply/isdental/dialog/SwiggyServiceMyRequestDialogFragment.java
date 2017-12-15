@@ -131,7 +131,8 @@ public class SwiggyServiceMyRequestDialogFragment extends DialogFragment {
                 for (int i = 0; i < jsonArrayBrand.length (); i++) {
                     JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
                     myRequestList.add (new SwiggyMyRequest (
-                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID), R.drawable.ic_person,
+                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID),
+                            R.drawable.default_my_equipment,
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),

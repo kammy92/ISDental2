@@ -144,7 +144,7 @@ public class SwiggyMyAccountFavouritesDialogFragment extends DialogFragment {
                     JSONObject jsonObject = jsonArray.getJSONObject (j);
                     myAccountFavouriteList.add (new SwiggyMyAccountFavourite (
                             jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_ID),
-                            R.drawable.ic_person,
+                            R.drawable.default_company,
                             jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_TYPE),
                             jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
                             jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE),

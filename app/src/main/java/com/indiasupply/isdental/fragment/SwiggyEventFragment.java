@@ -128,7 +128,7 @@ public class SwiggyEventFragment extends Fragment {
                                                 JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                                                 eventList.add (new SwiggyEvent (
                                                         jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
-                                                        R.drawable.ic_information,
+                                                        R.drawable.default_event,
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
@@ -243,7 +243,7 @@ public class SwiggyEventFragment extends Fragment {
                         JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                         eventList.add (new SwiggyEvent (
                                 jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
-                                R.drawable.ic_information,
+                                R.drawable.default_event,
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),

@@ -133,7 +133,7 @@ public class SwiggyEventSpeakerDialogFragment extends DialogFragment {
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
                 eventSpeakerList.add (j, new SwiggyEventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
-                        R.drawable.ic_person,
+                        R.drawable.default_speaker,
                         jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
                         jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
                         jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));

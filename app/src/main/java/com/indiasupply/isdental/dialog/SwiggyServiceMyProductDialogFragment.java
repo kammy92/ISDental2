@@ -135,7 +135,7 @@ public class SwiggyServiceMyProductDialogFragment extends DialogFragment {
                     JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
                     myProductList.add (i, new SwiggyMyProduct (
                             jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                            R.drawable.ic_person,
+                            R.drawable.default_my_equipment,
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
                             jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),

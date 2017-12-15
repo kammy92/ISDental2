@@ -53,10 +53,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by sud on 26/9/17.
- */
-
 public class SwiggyCompanyDetailActivity extends AppCompatActivity {
     NestedScrollView nestedScrollView;
     CoordinatorLayout clMain;
@@ -257,7 +253,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                                                 JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
                                                 productList.add (new SwiggyProduct (
                                                         jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                                                        R.drawable.ic_information,
+                                                        R.drawable.default_event,
                                                         jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                                         jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
@@ -424,7 +420,7 @@ public class SwiggyCompanyDetailActivity extends AppCompatActivity {
                             JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
                             productList.add (new SwiggyProduct (
                                     jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                                    R.drawable.ic_information,
+                                    R.drawable.default_event,
                                     jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
                                     jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                     jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),

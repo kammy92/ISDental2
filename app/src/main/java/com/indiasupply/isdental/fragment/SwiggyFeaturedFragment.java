@@ -164,7 +164,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                                                 bannerList.add (new SwiggyBanner (
                                                         jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
-                                                        R.drawable.ic_information,
+                                                        R.drawable.default_event,
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
@@ -178,7 +178,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                                                 JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
                                                 companyList.add (new SwiggyCompany (false,
                                                         jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
-                                                        R.drawable.ic_person,
+                                                        R.drawable.default_company,
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
                                                         jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
@@ -295,7 +295,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                         bannerList.add (new SwiggyBanner (
                                 jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
-                                R.drawable.ic_information,
+                                R.drawable.default_event,
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
@@ -310,7 +310,7 @@ public class SwiggyFeaturedFragment extends Fragment {
                         JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
                         companyList.add (new SwiggyCompany (false,
                                 jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
-                                R.drawable.ic_person,
+                                R.drawable.default_company,
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
                                 jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),

@@ -127,7 +127,7 @@ public class SwiggyRecommendedProductAdapter2 extends RecyclerView.Adapter<Swigg
                     final MaterialDialog.Builder mBuilder = new MaterialDialog.Builder (activity)
                             .content ("Add Details ( Quantity, Expected Price, City etc )")
                             .contentColor (activity.getResources ().getColor (R.color.primary_text2))
-                            .positiveColor (activity.getResources ().getColor (R.color.primary_text2))
+                            .negativeColor (activity.getResources ().getColor (R.color.primary_text2))
                             .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
                             .inputRangeRes (0, 256, R.color.primary_text2)
                             .alwaysCallInputCallback ()

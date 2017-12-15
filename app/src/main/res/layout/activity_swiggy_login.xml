@@ -74,7 +74,7 @@
         android:id="@+id/rlMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/login_screen_bg"
+        android:background="@drawable/splash_background"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -276,10 +276,9 @@
                 android:layout_marginBottom="@dimen/activity_margin_small"
                 android:layout_marginLeft="@dimen/activity_margin"
                 android:layout_marginRight="@dimen/activity_margin"
-                android:background="#eeffffff"
                 android:gravity="center"
                 android:text="By signing up you confirm that you have read &amp; agree to our company Privacy Policy &amp; Terms and Conditions"
-                android:textColor="@color/primary_text2"
+                android:textColor="@color/text_color_white"
                 android:textSize="@dimen/text_size_extra_small"
                 android:textStyle="bold"
                 android:visibility="invisible"/>
