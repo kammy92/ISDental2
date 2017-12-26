@@ -262,7 +262,7 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/rlMain"
                     android:layout_margin="@dimen/activity_margin"
-                    android:background="@color/primary_text2"
+                    android:background="#2c98a5"
                     android:padding="@dimen/activity_margin_small"
                     android:text="WRITE MESSAGE"
                     android:textColor="@color/text_color_white"

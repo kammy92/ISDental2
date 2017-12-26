@@ -21,6 +21,11 @@
         <item name="colorControlHighlight">@color/primary_text2</item>
     </style>
 
+    <style name="LoginScreenTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+    </style>
+
     <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">-->
     <!--&lt;!&ndash; Customize your theme here. &ndash;&gt;-->
     <!--<item name="android:actionMenuTextColor">@color/text_color_grey_dark</item>-->

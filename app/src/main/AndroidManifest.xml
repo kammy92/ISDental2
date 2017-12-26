@@ -47,11 +47,14 @@
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name=".activity.SwiggyIntroActivity"
+        <activity android:name="com.indiasupply.isdental.activity.SwiggyIntroActivity"
+                  android:screenOrientation="portrait"
                   android:theme="@style/WelcomeScreenTheme"/>
 
-        <activity android:name=".activity.SwiggyLoginActivity"
-                  android:theme="@style/WelcomeScreenTheme"/>
+        <activity android:name="com.indiasupply.isdental.activity.SwiggyLoginActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/LoginScreenTheme"
+                  android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
                   android:screenOrientation="portrait"/>

@@ -126,7 +126,7 @@ public class SwiggyRecommendedProductAdapter extends RecyclerView.Adapter<Swiggy
                             .canceledOnTouchOutside (true)
                             .cancelable (true)
                             .positiveText (R.string.dialog_action_submit)
-                            .negativeText ("NO THANKS");
+                            .negativeText ("NO, THANKS");
                     ;
     
                     mBuilder.input (null, null, new MaterialDialog.InputCallback () {

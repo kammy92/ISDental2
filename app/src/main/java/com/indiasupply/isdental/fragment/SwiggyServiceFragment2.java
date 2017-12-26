@@ -177,7 +177,7 @@ public class SwiggyServiceFragment2 extends Fragment {
                                                 JSONObject jsonObjectBrand = jsonArrayProducts.getJSONObject (i);
                                                 swiggyServiceItemList.add (i, new SwiggyMyProduct2 (
                                                         jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                                                        R.drawable.ic_service_my_products,
+                                                        R.drawable.default_my_equipment,
                                                         jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
                                                         jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
                                                         jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
