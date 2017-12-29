@@ -86,8 +86,6 @@
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/rlButton"
                 android:overScrollMode="never">
-
-
                 <LinearLayout
                     android:id="@+id/llFields"
                     android:layout_width="match_parent"

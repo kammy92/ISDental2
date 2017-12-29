@@ -148,6 +148,7 @@ public class AppConfigTags {
     public static final String BANNER_IMAGE = "banner_image";
     public static final String BANNER_URL = "banner_url";
     public static final String BANNER_TYPE = "banner_type";
+    public static final String BANNER_TYPE_ID = "banner_type_id";
     
     public static final String DEVICE_DETAILS = "device_details";
     

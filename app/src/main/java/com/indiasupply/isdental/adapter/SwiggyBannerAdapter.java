@@ -1,5 +1,7 @@
 package com.indiasupply.isdental.adapter;
+
 import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +15,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.SwiggyCompanyDetailActivity;
+import com.indiasupply.isdental.activity.SwiggyEventDetailActivity;
 import com.indiasupply.isdental.model.SwiggyBanner;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Utils;
 
 import java.util.ArrayList;
@@ -104,6 +109,22 @@ public class SwiggyBannerAdapter extends RecyclerView.Adapter<SwiggyBannerAdapte
         
         @Override
         public void onClick (View v) {
+            SwiggyBanner banner = bannerList.get (getLayoutPosition ());
+            switch (banner.getType ()) {
+                case 1:
+                    Intent intent = new Intent (activity, SwiggyEventDetailActivity.class);
+                    intent.putExtra (AppConfigTags.EVENT_ID, banner.getType_id ());
+                    activity.startActivity (intent);
+                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case 2:
+                    Intent intent5 = new Intent (activity, SwiggyCompanyDetailActivity.class);
+                    intent5.putExtra (AppConfigTags.COMPANY_ID, banner.getType_id ());
+                    activity.startActivity (intent5);
+                    activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+        
+            }
         }
     }
 }

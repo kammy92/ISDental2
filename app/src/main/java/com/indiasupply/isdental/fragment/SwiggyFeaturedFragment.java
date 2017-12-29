@@ -164,10 +164,11 @@ public class SwiggyFeaturedFragment extends Fragment {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                                                 bannerList.add (new SwiggyBanner (
                                                         jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
+                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE_ID),
                                                         R.drawable.default_event,
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
-                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
+                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE),
                                                         jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
                                                 ));
                                             }
@@ -295,10 +296,11 @@ public class SwiggyFeaturedFragment extends Fragment {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                         bannerList.add (new SwiggyBanner (
                                 jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
+                                jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE_ID),
                                 R.drawable.default_event,
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
-                                jsonObjectBanners.getString (AppConfigTags.BANNER_TYPE),
+                                jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE),
                                 jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
                         ));
                     }
