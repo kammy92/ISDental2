@@ -28,6 +28,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 
 /**
@@ -35,8 +36,7 @@ import java.util.List;
  */
 public class NotificationUtils {
     private static String TAG = NotificationUtils.class.getSimpleName ();
-    int notification_id = 1;
-    int AcceptID = 5;
+    int notification_id = new Random ().nextInt ((200 - 100) + 1) + 100;
     private Context mContext;
 
     public NotificationUtils (Context mContext) {
@@ -94,8 +94,7 @@ public class NotificationUtils {
         //Check for empty push message
         if (TextUtils.isEmpty (notification.getMessage ()))
             return;
-
-
+    
         switch (notification.getNotification_type ()) {
             case 1:
                 switch (notification.getNotification_style ()) {
@@ -109,7 +108,7 @@ public class NotificationUtils {
                     case 2: // Inbox Style Notification
 
                         mBuilder.setContentTitle (notification.getMessage ())
-                                .setSmallIcon (R.mipmap.ic_launcher)
+                                .setSmallIcon (R.drawable.ic_logo)
                                 .setContentText ("A request for blood has been generated")
                                 .setContentTitle ("Title")//   \u293f")
                                 .setSubText ("Let's donate some blood. Are you free?")

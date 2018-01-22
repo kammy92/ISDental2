@@ -407,11 +407,11 @@ public class Utils {
         String types = "types=geocode";
         // Sensor enabled
         String sensor = "sensor=false";
-        // Building the parameters to the web service
+        // Building the parameters to the web ic_intro_service
         String parameters = inputc + "&" + input + "&" + types + "&" + sensor + "&" + key;
         // Output format
         String output = "json";
-        // Building the url to the web service
+        // Building the url to the web ic_intro_service
         String url = "https://maps.googleapis.com/maps/api/place/autocomplete/" + output + "?" + parameters;
         return url;
     }
@@ -423,11 +423,11 @@ public class Utils {
         String reference = "reference=" + ref;
         // Sensor enabled
         String sensor = "sensor=false";
-        // Building the parameters to the web service
+        // Building the parameters to the web ic_intro_service
         String parameters = reference + "&" + sensor + "&" + key;
         // Output format
         String output = "json";
-        // Building the url to the web service
+        // Building the url to the web ic_intro_service
         String url = "https://maps.googleapis.com/maps/api/place/details/" + output + "?" + parameters;
         Log.d ("URL", "" + url);
         return url;

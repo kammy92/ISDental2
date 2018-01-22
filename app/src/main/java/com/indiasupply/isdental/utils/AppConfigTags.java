@@ -48,7 +48,7 @@ public class AppConfigTags {
     public static final String COMPANY_INSTAGRAM = "company_instagram";
     public static final String COMPANY_GOOGLEPLUS = "company_googleplus";
     
-    public static final String CONTACTS = "contacts";
+    public static final String CONTACTS = "ic_intro_contacts";
     public static final String CONTACT_ID = "contact_id";
     public static final String CONTACT_TITLE = "contact_title";
     public static final String CONTACT_ATTENDANT = "contact_attendant";
