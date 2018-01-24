@@ -109,7 +109,7 @@ public class SwiggyLoginActivity extends AppCompatActivity {
 //            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 //            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
 //        }
-
+    
         initView ();
         initData ();
         initListener ();
@@ -218,17 +218,13 @@ public class SwiggyLoginActivity extends AppCompatActivity {
                     
                     if (etName.getText ().toString ().trim ().length () == 0) {
                         etName.setError (s);
-                    }
-                    if (etEmail.getText ().toString ().length () == 0) {
+                    } else if (etEmail.getText ().toString ().length () == 0) {
                         etEmail.setError (s2);
                     } else if (! Utils.isValidEmail1 (etEmail.getText ().toString ())) {
                         etEmail.setError (s6);
-                    }
-                    if (etType.getText ().toString ().length () == 0) {
+                    } else if (etType.getText ().toString ().length () == 0) {
                         etType.setError (s7);
-                    }
-                    
-                    if (etMobile.getText ().toString ().length () == 0) {
+                    } else if (etMobile.getText ().toString ().length () == 0) {
                         etMobile.setError (s3);
                     } else {
                         try {
