@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/shimmer_bg_color"
+    android:background="#f9f9f9"
     android:padding="@dimen/activity_margin">
 
     <RelativeLayout
@@ -26,6 +26,19 @@
             android:layout_height="80dp"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop"/>
+        <TextView
+            android:id="@+id/tvOfferPercentage"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignEnd="@+id/ivOfferImage"
+            android:layout_alignRight="@+id/ivOfferImage"
+            android:layout_alignTop="@+id/ivOfferImage"
+            android:background="@drawable/offer_perc_background"
+            android:gravity="center"
+            android:text="18%"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_extra_small"
+        />
     </RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl2"
@@ -119,38 +132,32 @@
                     android:textColor="@color/secondary_text2"
                     android:textSize="@dimen/text_size_small"/>
             </TableRow>
-
             <TableRow>
                 <TextView
-                    android:text="You Save"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_small"/>
+                    android:text="Total Savings"
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_small"
+                />
                 <TextView
                     android:id="@+id/tvOfferSaving"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:text="Rs 400"
-                    android:textColor="@color/primary_text2"
+                    android:textColor="@color/secondary_text2"
                     android:textSize="@dimen/text_size_small"/>
             </TableRow>
-
         </TableLayout>
-
         <TextView
+            android:id="@+id/tvSeeDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/button_background_2"
             android:gravity="center"
             android:padding="@dimen/activity_margin_small"
-            android:text="SEND ENQUIRY"
-            android:textColor="@color/text_color_white"
-
-        />
-
+            android:text="See Details..."
+            android:textColor="@color/accent2"/>
     </RelativeLayout>
-
     <TextView
         android:id="@+id/tvSendEnquiry"
         android:layout_width="match_parent"
@@ -163,5 +170,5 @@
         android:text="SEND ENQUIRY"
         android:textColor="@color/text_color_white"
         android:textSize="@dimen/text_size_large"
-        android:visibility="gone"/>
+        android:visibility="visible"/>
 </RelativeLayout>

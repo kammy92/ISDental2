@@ -51,12 +51,16 @@ public class SwiggyOfferAdapter extends RecyclerView.Adapter<SwiggyOfferAdapter.
         holder.tvOfferPrice.setText ("Rs. " + offer.getPrice ());
         holder.tvOfferRegularPrice.setText ("Rs. " + offer.getRegular_price ());
         holder.tvOfferMRP.setText ("Rs. " + offer.getMrp ());
-//        holder.tvOfferSavings.setText ("Total Saving\nRs. " + offer.getSaving ());
-        holder.tvOfferSavings.setText ("Rs. " + offer.getSaving ());
-        
+        holder.tvOfferSavings.setText ("Rs. " + (offer.getMrp () - offer.getPrice ()));
+    
+        holder.tvOfferPercentage.setText ((offer.getMrp () - offer.getPrice ()) / offer.getMrp () + "%");
+    
         holder.tvOfferMRP.setPaintFlags (holder.tvOfferMRP.getPaintFlags () | Paint.STRIKE_THRU_TEXT_FLAG);
         holder.tvOfferRegularPrice.setPaintFlags (holder.tvOfferRegularPrice.getPaintFlags () | Paint.STRIKE_THRU_TEXT_FLAG);
-        
+    
+        holder.tvSeeDetails.setPaintFlags (holder.tvSeeDetails.getPaintFlags () | Paint.UNDERLINE_TEXT_FLAG);
+    
+    
         if (offer.getImage ().length () == 0) {
             holder.ivOfferImage.setImageResource (offer.getIcon ());
             holder.progressBar.setVisibility (View.GONE);
@@ -103,6 +107,8 @@ public class SwiggyOfferAdapter extends RecyclerView.Adapter<SwiggyOfferAdapter.
         TextView tvOfferMRP;
         TextView tvOfferSavings;
         TextView tvSendEnquiry;
+        TextView tvSeeDetails;
+        TextView tvOfferPercentage;
         ImageView ivOfferImage;
         ProgressBar progressBar;
         
@@ -117,13 +123,15 @@ public class SwiggyOfferAdapter extends RecyclerView.Adapter<SwiggyOfferAdapter.
             tvOfferMRP = (TextView) view.findViewById (R.id.tvOfferMRP);
             tvOfferSavings = (TextView) view.findViewById (R.id.tvOfferSaving);
             tvSendEnquiry = (TextView) view.findViewById (R.id.tvSendEnquiry);
+            tvSeeDetails = (TextView) view.findViewById (R.id.tvSeeDetails);
+            tvOfferPercentage = (TextView) view.findViewById (R.id.tvOfferPercentage);
             progressBar = (ProgressBar) view.findViewById (R.id.progressBar);
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
-            mItemClickListener.onItemClick (v, getLayoutPosition ());
+//            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

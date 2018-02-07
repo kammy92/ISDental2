@@ -1,12 +1,15 @@
 package com.indiasupply.isdental.model;
 
 public class SwiggyOffers {
-    int id, icon;
-    String name, image, description, packaging, mrp, regular_price, price, saving, start_date, end_date, html_dates, html_details, html_tandc;
+    int id, icon, price, mrp, regular_price;
+    String name, image, description, packaging, start_date, end_date, html_dates, html_details, html_tandc;
     
-    public SwiggyOffers (int id, int icon, String name, String image, String description, String packaging, String mrp, String regular_price, String price, String saving, String start_date, String end_date, String html_dates, String html_details, String html_tandc) {
+    public SwiggyOffers (int id, int icon, int price, int mrp, int regular_price, String name, String image, String description, String packaging, String start_date, String end_date, String html_dates, String html_details, String html_tandc) {
         this.id = id;
         this.icon = icon;
+        this.price = price;
+        this.mrp = mrp;
+        this.regular_price = regular_price;
         this.name = name;
         this.image = image;
         this.description = description;
@@ -14,7 +17,6 @@ public class SwiggyOffers {
         this.mrp = mrp;
         this.regular_price = regular_price;
         this.price = price;
-        this.saving = saving;
         this.start_date = start_date;
         this.end_date = end_date;
         this.html_dates = html_dates;
@@ -22,11 +24,27 @@ public class SwiggyOffers {
         this.html_tandc = html_tandc;
     }
     
-    public String getRegular_price () {
+    public int getPrice () {
+        return price;
+    }
+    
+    public void setPrice (int price) {
+        this.price = price;
+    }
+    
+    public int getMrp () {
+        return mrp;
+    }
+    
+    public void setMrp (int mrp) {
+        this.mrp = mrp;
+    }
+    
+    public int getRegular_price () {
         return regular_price;
     }
     
-    public void setRegular_price (String regular_price) {
+    public void setRegular_price (int regular_price) {
         this.regular_price = regular_price;
     }
     
@@ -76,30 +94,6 @@ public class SwiggyOffers {
     
     public void setPackaging (String packaging) {
         this.packaging = packaging;
-    }
-    
-    public String getMrp () {
-        return mrp;
-    }
-    
-    public void setMrp (String mrp) {
-        this.mrp = mrp;
-    }
-    
-    public String getPrice () {
-        return price;
-    }
-    
-    public void setPrice (String price) {
-        this.price = price;
-    }
-    
-    public String getSaving () {
-        return saving;
-    }
-    
-    public void setSaving (String saving) {
-        this.saving = saving;
     }
     
     public String getStart_date () {
