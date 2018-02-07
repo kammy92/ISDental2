@@ -248,6 +248,22 @@ public class AppConfigTags {
     public static final String SWIGGY_IMAGE3 = "image3";
     
     
+    public static final String SWIGGY_OFFER_ID = "offer_id";
+    public static final String SWIGGY_OFFER_NAME = "offer_name";
+    public static final String SWIGGY_OFFER_IMAGE = "offer_image";
+    public static final String SWIGGY_OFFER_DESCRIPTION = "offer_description";
+    public static final String SWIGGY_OFFER_PACKAGING = "offer_packaging";
+    public static final String SWIGGY_OFFER_MRP = "offer_mrp";
+    public static final String SWIGGY_OFFER_PRICE = "offer_price";
+    public static final String SWIGGY_OFFER_REGULAR_PRICE = "offer_regular_price";
+    public static final String SWIGGY_OFFER_SAVING = "offer_saving";
+    public static final String SWIGGY_OFFER_START_DATE = "offer_start_date";
+    public static final String SWIGGY_OFFER_END_DATE = "offer_end_date";
+    public static final String SWIGGY_OFFER_HTML_DATES = "offer_html_dates";
+    public static final String SWIGGY_OFFER_HTML_DETAILS = "offer_html_details";
+    public static final String SWIGGY_OFFER_HTML_TANDC = "offer_html_tandc";
+    
+    
     public static final String SWIGGY_COMPANIES = "companies";
     public static final String SWIGGY_COMPANY_ID = "company_id";
     public static final String SWIGGY_COMPANY_NAME = "company_name";

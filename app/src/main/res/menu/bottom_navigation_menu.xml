@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/action_item1"
+        android:id="@+id/action_item_offers"
+        android:icon="@drawable/ic_home_featured"
+        android:title="Offers"/>
+    <item
+        android:id="@+id/action_item_featured"
         android:icon="@drawable/ic_home_featured"
         android:title="Featured"/>
     <item
-        android:id="@+id/action_item2"
+        android:id="@+id/action_item_events"
         android:icon="@drawable/ic_home_events"
         android:title="Events"/>
     <item
-        android:id="@+id/action_item3"
+        android:id="@+id/action_item_contacts"
         android:icon="@drawable/ic_home_contacts"
         android:title="Contacts"/>
     <item
-        android:id="@+id/action_item4"
-        android:icon="@drawable/ic_home_services"
-        android:title="Requests"/>
-    <item
-        android:id="@+id/action_item5"
+        android:id="@+id/action_item_account"
         android:icon="@drawable/ic_home_account"
         android:title="Account"/>
 </menu>

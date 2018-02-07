@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class AppDataPref {
+    public static String HOME_OFFERS = "home_offers";
     public static String HOME_FEATURED = "home_featured";
     public static String HOME_EVENTS = "home_events";
     public static String HOME_CONTACTS = "home_contacts";

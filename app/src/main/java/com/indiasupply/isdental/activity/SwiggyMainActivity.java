@@ -29,7 +29,7 @@ import com.indiasupply.isdental.fragment.SwiggyContactsFragment;
 import com.indiasupply.isdental.fragment.SwiggyEventFragment;
 import com.indiasupply.isdental.fragment.SwiggyFeaturedFragment;
 import com.indiasupply.isdental.fragment.SwiggyMyAccountFragment;
-import com.indiasupply.isdental.fragment.SwiggyServiceFragment2;
+import com.indiasupply.isdental.fragment.SwiggyOffersFragment;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -65,9 +65,9 @@ public class SwiggyMainActivity extends AppCompatActivity {
     }
     
     private void initFirstFragment () {
-        bottomNavigationView.getMenu ().findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured_filled);
+        bottomNavigationView.getMenu ().findItem (R.id.action_item_offers).setIcon (R.drawable.ic_home_featured_filled);
         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
-        transaction.replace (R.id.frame_layout, SwiggyFeaturedFragment.newInstance (false));
+        transaction.replace (R.id.frame_layout, SwiggyOffersFragment.newInstance (false));
         transaction.commit ();
     }
     
@@ -88,7 +88,7 @@ public class SwiggyMainActivity extends AppCompatActivity {
         Utils.setTypefaceToAllViews (this, clMain);
         Utils.disableShiftMode (bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu ();
-        menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
+        menu.findItem (R.id.action_item_offers).setIcon (R.drawable.ic_home_featured);
 
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams ();
 //        layoutParams.setBehavior (new BottomNavigationViewBehavior ());
@@ -124,19 +124,19 @@ public class SwiggyMainActivity extends AppCompatActivity {
             @Override
             public void onNavigationItemReselected (@NonNull MenuItem item) {
                 switch (item.getItemId ()) {
-                    case R.id.action_item1:
+                    case R.id.action_item_featured:
 //                        Utils.showToast (SwiggyMainActivity.this, "In reselected item 1", false);
                         break;
-                    case R.id.action_item2:
+                    case R.id.action_item_events:
 //                        Utils.showToast (SwiggyMainActivity.this, "In reselected item 2", false);
                         break;
-                    case R.id.action_item3:
+                    case R.id.action_item_contacts:
 //                        Utils.showToast (SwiggyMainActivity.this, "In reselected item 3", false);
                         break;
-                    case R.id.action_item4:
+                    case R.id.action_item_offers:
 //                        Utils.showToast (SwiggyMainActivity.this, "In reselected item 4", false);
                         break;
-                    case R.id.action_item5:
+                    case R.id.action_item_account:
 //                        Utils.showToast (SwiggyMainActivity.this, "In reselected item 5", false);
                         break;
                 }
@@ -147,58 +147,58 @@ public class SwiggyMainActivity extends AppCompatActivity {
                     @Override
                     public boolean onNavigationItemSelected (@NonNull MenuItem item) {
                         Menu menu = bottomNavigationView.getMenu ();
-                        menu.findItem (R.id.action_item1).setIcon (R.drawable.ic_home_featured);
-                        menu.findItem (R.id.action_item2).setIcon (R.drawable.ic_home_events);
-                        menu.findItem (R.id.action_item3).setIcon (R.drawable.ic_home_contacts);
-                        menu.findItem (R.id.action_item4).setIcon (R.drawable.ic_home_services);
-                        menu.findItem (R.id.action_item5).setIcon (R.drawable.ic_home_account);
+                        menu.findItem (R.id.action_item_offers).setIcon (R.drawable.ic_home_featured);
+                        menu.findItem (R.id.action_item_featured).setIcon (R.drawable.ic_home_featured);
+                        menu.findItem (R.id.action_item_events).setIcon (R.drawable.ic_home_events);
+                        menu.findItem (R.id.action_item_contacts).setIcon (R.drawable.ic_home_contacts);
+                        menu.findItem (R.id.action_item_account).setIcon (R.drawable.ic_home_account);
     
                         Fragment selectedFragment = null;
                         switch (item.getItemId ()) {
-                            case R.id.action_item1:
+                            case R.id.action_item_offers:
                                 item.setIcon (R.drawable.ic_home_featured_filled);
-                                if (screenList.contains (R.id.action_item1)) {
+                                if (screenList.contains (R.id.action_item_offers)) {
+                                    selectedFragment = SwiggyOffersFragment.newInstance (false);
+                                } else {
+                                    selectedFragment = SwiggyOffersFragment.newInstance (true);
+                                }
+                                screenList.add (R.id.action_item_offers);
+                                break;
+                            case R.id.action_item_featured:
+                                item.setIcon (R.drawable.ic_home_featured_filled);
+                                if (screenList.contains (R.id.action_item_featured)) {
                                     selectedFragment = SwiggyFeaturedFragment.newInstance (false);
                                 } else {
                                     selectedFragment = SwiggyFeaturedFragment.newInstance (true);
                                 }
-                                screenList.add (R.id.action_item1);
+                                screenList.add (R.id.action_item_featured);
                                 break;
-                            case R.id.action_item2:
+                            case R.id.action_item_events:
                                 item.setIcon (R.drawable.ic_home_events_filled);
-                                if (screenList.contains (R.id.action_item2)) {
+                                if (screenList.contains (R.id.action_item_events)) {
                                     selectedFragment = SwiggyEventFragment.newInstance (false);
                                 } else {
                                     selectedFragment = SwiggyEventFragment.newInstance (true);
                                 }
-                                screenList.add (R.id.action_item2);
+                                screenList.add (R.id.action_item_events);
                                 break;
-                            case R.id.action_item3:
+                            case R.id.action_item_contacts:
                                 item.setIcon (R.drawable.ic_home_contacts_filled);
-                                if (screenList.contains (R.id.action_item3)) {
+                                if (screenList.contains (R.id.action_item_contacts)) {
                                     selectedFragment = SwiggyContactsFragment.newInstance (false);
                                 } else {
                                     selectedFragment = SwiggyContactsFragment.newInstance (true);
                                 }
-                                screenList.add (R.id.action_item3);
+                                screenList.add (R.id.action_item_contacts);
                                 break;
-                            case R.id.action_item4:
-                                item.setIcon (R.drawable.ic_home_services_filled);
-                                if (screenList.contains (R.id.action_item4)) {
-                                    selectedFragment = SwiggyServiceFragment2.newInstance (false);
-                                } else {
-                                    selectedFragment = SwiggyServiceFragment2.newInstance (true);
-                                }
-                                screenList.add (R.id.action_item4);
-                                break;
-                            case R.id.action_item5:
+                            case R.id.action_item_account:
                                 item.setIcon (R.drawable.ic_home_account_filled);
-                                if (screenList.contains (R.id.action_item5)) {
+                                if (screenList.contains (R.id.action_item_account)) {
                                     selectedFragment = SwiggyMyAccountFragment.newInstance (false);
                                 } else {
                                     selectedFragment = SwiggyMyAccountFragment.newInstance (true);
                                 }
-                                screenList.add (R.id.action_item5);
+                                screenList.add (R.id.action_item_account);
                                 break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();

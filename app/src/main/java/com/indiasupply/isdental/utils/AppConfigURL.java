@@ -2,9 +2,9 @@ package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
     public static String version = "v1.1.3";
-    public static String version2 = "v2.0";
-    //      public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
-    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
+    public static String version2 = "v2.1";
+    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+    //public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     public static String BASE_URL = "http://famdent.indiasupply.com/isdental/api/" + version + "/";
     
     
@@ -32,6 +32,7 @@ public class AppConfigURL {
     public static String URL_SWIGGY_HOME_EVENT = BASE_URL2 + "home/events";
     public static String URL_SWIGGY_EVENT_DETAILS = BASE_URL2 + "event";
     
+    public static String URL_SWIGGY_HOME_OFFERS = BASE_URL2 + "home/offers";
     public static String URL_SWIGGY_HOME_SERVICE = BASE_URL2 + "home/service";
     public static String URL_SWIGGY_HOME_COMPANIES = BASE_URL2 + "home/companies";
     public static String URL_SWIGGY_HOME_ACCOUNT = BASE_URL2 + "home/account";
