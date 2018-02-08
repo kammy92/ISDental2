@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.indiasupply.isdental.activity.SwiggyMainActivity;
+import com.indiasupply.isdental.activity.MainActivity;
 import com.indiasupply.isdental.model.Notification;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NotificationUtils;
@@ -113,7 +113,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationUtils.showNotificationMessage(intent, notification);
         } else {
             // app is in background, show the notification in notification tray
-            Intent intent = new Intent (getApplicationContext (), SwiggyMainActivity.class);
+            Intent intent = new Intent (getApplicationContext (), MainActivity.class);
             intent.putExtra("message", notification.getMessage());
 
             notificationUtils = new NotificationUtils(getApplicationContext());

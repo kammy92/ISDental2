@@ -27,10 +27,10 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.adapter.SwiggyMyProductRequestAdapter;
-import com.indiasupply.isdental.dialog.SwiggyServiceAddNewRequestDialogFragment;
-import com.indiasupply.isdental.dialog.SwiggyServiceRequestDetailDialogFragment;
-import com.indiasupply.isdental.model.SwiggyMyProductRequest;
+import com.indiasupply.isdental.adapter.MyProductRequestAdapter;
+import com.indiasupply.isdental.dialog.ServiceAddNewRequestDialogFragment;
+import com.indiasupply.isdental.dialog.ServiceRequestDetailDialogFragment;
+import com.indiasupply.isdental.model.MyProductRequest;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -78,8 +78,8 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     
     
     CoordinatorLayout clMain;
-    List<SwiggyMyProductRequest> swiggyServiceRequestList = new ArrayList<> ();
-    SwiggyMyProductRequestAdapter swiggyServiceRequestAdapter;
+    List<MyProductRequest> swiggyServiceRequestList = new ArrayList<> ();
+    MyProductRequestAdapter swiggyServiceRequestAdapter;
     
     String server_response;
     
@@ -89,7 +89,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_swiggy_service_product_detail);
+        setContentView (R.layout.activity_service_product_detail);
         getExtra ();
         initView ();
         initData ();
@@ -150,7 +150,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
         tvServiceRequestDate.setText (product_purchase_date);
     
     
-        swiggyServiceRequestAdapter = new SwiggyMyProductRequestAdapter (SwiggyMyProductDetailActivity.this, swiggyServiceRequestList);
+        swiggyServiceRequestAdapter = new MyProductRequestAdapter (SwiggyMyProductDetailActivity.this, swiggyServiceRequestList);
         rvServiceList.setNestedScrollingEnabled (false);
         rvServiceList.setFocusable (false);
         rvServiceList.setAdapter (swiggyServiceRequestAdapter);
@@ -164,12 +164,12 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     private void initListener () {
     
     
-        swiggyServiceRequestAdapter.SetOnItemClickListener (new SwiggyMyProductRequestAdapter.OnItemClickListener () {
+        swiggyServiceRequestAdapter.SetOnItemClickListener (new MyProductRequestAdapter.OnItemClickListener () {
             @Override
             public void onItemClick (View view, int position) {
-                SwiggyMyProductRequest serviceRequest = swiggyServiceRequestList.get (position);
+                MyProductRequest serviceRequest = swiggyServiceRequestList.get (position);
                 android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-                SwiggyServiceRequestDetailDialogFragment dialog = new SwiggyServiceRequestDetailDialogFragment ().newInstance (server_response, serviceRequest.getRequest_id ());
+                ServiceRequestDetailDialogFragment dialog = new ServiceRequestDetailDialogFragment ().newInstance (server_response, serviceRequest.getRequest_id ());
                 dialog.setDismissListener (new MyDialogCloseListener () {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
@@ -192,7 +192,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View view) {
                 android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
-                SwiggyServiceAddNewRequestDialogFragment dialog = new SwiggyServiceAddNewRequestDialogFragment ().newInstance (0, product_name, product_description, product_serial_number, product_model_number, product_purchase_date, String.valueOf (product_id));
+                ServiceAddNewRequestDialogFragment dialog = new ServiceAddNewRequestDialogFragment ().newInstance (0, product_name, product_description, product_serial_number, product_model_number, product_purchase_date, String.valueOf (product_id));
                 dialog.setDismissListener (new MyDialogCloseListener () {
                     @Override
                     public void handleDialogClose (DialogInterface dialog) {
@@ -253,7 +253,7 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                             JSONObject jsonObjectBrand = jsonArrayRequest.getJSONObject (i);
     
     
-                                            swiggyServiceRequestList.add (i, new SwiggyMyProductRequest (
+                                            swiggyServiceRequestList.add (i, new MyProductRequest (
                                                     jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID),
                                                     jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
                                                     jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_STATUS),

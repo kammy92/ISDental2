@@ -1,6 +1,7 @@
-package com.indiasupply.isdental.activity;
+package com.indiasupply.isdental.dialog;
 
-import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,20 +20,19 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.text.Spannable;
-import android.text.SpannableString;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -43,17 +43,14 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.SwiggyMyProductDetailActivity;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
-import com.indiasupply.isdental.utils.SetTypeFace;
-import com.indiasupply.isdental.utils.TypefaceSpan;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -65,138 +62,162 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-
-public class SwiggyServiceAddProductActivity extends AppCompatActivity {
-    private final int PICK_IMAGE_MULTIPLE = 1;
+public class ServiceAddNewRequestDialogFragment extends DialogFragment {
+    SwiggyMyProductDetailActivity.MyDialogCloseListener closeListener;
     ImageView ivCancel;
-    EditText etProductCategory;
-    EditText etModelNo;
-    EditText etSerialNo;
-    EditText etProductDescription;
-    EditText etPurchaseDate;
-    EditText etBrand;
-    TextView tvSubmit;
-    TextView tvTitle;
+    TextView tvServiceRequestName;
+    TextView tvServiceRequestModelNumber;
     ImageView tvAddImage;
     LinearLayout llOtherImages;
-    int brand_id;
-    String date = "";
-    int[] brand_id_list;
-    ArrayList<String> brandNameList = new ArrayList<> ();
+    TextView tvSubmit;
     CoordinatorLayout clMain;
     ProgressDialog progressDialog;
-    String imageEncoded;
-    String brands;
-    String imageTemp1;
-    String imageTemp2;
-    String imageTemp3;
+    TextView tvCounter;
+    EditText etRequestDescription;
+    String product_name;
+    String product_description;
+    String product_serial_number;
+    String product_model_number;
+    String product_purchase_date;
     String image1;
     String image2;
     String image3;
-    int product_id;
+
+
+    int id = 0;
+    int request_id = 0;
     int flag = 0;
     private ArrayList<String> imagesPathList = new ArrayList<> ();
-    private ArrayList<String> updateImagesPathList = new ArrayList<> ();
-    private Bitmap yourbitmap;
-    private Bitmap resized;
     
+    public static ServiceAddNewRequestDialogFragment newInstance (int flag, String product_name, String product_description, String product_serial_number, String product_model_number, String product_purchase_date, String product_id) {
+        ServiceAddNewRequestDialogFragment f = new ServiceAddNewRequestDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString ("flag", String.valueOf (flag));
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_ID, product_id);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_NAME, product_name);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, product_purchase_date);
+        f.setArguments (args);
+        return f;
+    }
+    
+    public static ServiceAddNewRequestDialogFragment newInstance2 (int flag, int request_id, String product_name, String product_description, String product_serial_number, String product_model_number, String request_description, String image1, String image2, String image3) {
+        ServiceAddNewRequestDialogFragment f = new ServiceAddNewRequestDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString (AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf (request_id));
+        args.putString ("flag", String.valueOf (flag));
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_NAME, product_name);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
+        args.putString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
+        args.putString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION, request_description);
+        args.putString (AppConfigTags.SWIGGY_IMAGE1, image1);
+        args.putString (AppConfigTags.SWIGGY_IMAGE2, image2);
+        args.putString (AppConfigTags.SWIGGY_IMAGE3, image3);
+        f.setArguments (args);
+        return f;
+    }
+
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
-        setContentView (R.layout.activity_service_add_product);
-    
+        setStyle (DialogFragment.STYLE_NORMAL, R.style.AppTheme);
+    }
+
+    @Override
+    public void onActivityCreated (Bundle arg0) {
+        super.onActivityCreated (arg0);
+        Window window = getDialog ().getWindow ();
+        window.getAttributes ().windowAnimations = R.style.DialogAnimation;
+        if (Build.VERSION.SDK_INT >= 21) {
+            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor (ContextCompat.getColor (getActivity (), R.color.text_color_white));
+        }
+    }
+
+    @Override
+    public void onStart () {
+        super.onStart ();
+        Dialog d = getDialog ();
+        if (d != null) {
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            int height = ViewGroup.LayoutParams.MATCH_PARENT;
+            d.getWindow ().setLayout (width, height);
+        }
+    }
+
+    @Override
+    public View onCreateView (LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate (R.layout.fragment_dialog_service_add_new_request, container, false);
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder ();
         StrictMode.setVmPolicy (builder.build ());
-        
-        initView ();
+        initView (root);
+        initBundle ();
         initData ();
-        getExtra ();
         initListener ();
-        
+        return root;
     }
     
-    private void getExtra () {
-        Intent intent = getIntent ();
-        flag = intent.getIntExtra ("flag", 0);
+    private void initView (View root) {
+        tvServiceRequestName = (TextView) root.findViewById (R.id.tvName);
+        tvServiceRequestModelNumber = (TextView) root.findViewById (R.id.tvModelName);
+        tvAddImage = (ImageView) root.findViewById (R.id.tvAddImage);
+        tvSubmit = (TextView) root.findViewById (R.id.tvSubmit);
+        llOtherImages = (LinearLayout) root.findViewById (R.id.llOtherImages);
+        clMain = (CoordinatorLayout) root.findViewById (R.id.clMain);
+        etRequestDescription = (EditText) root.findViewById (R.id.etRequestDescription);
+        tvCounter = (TextView) root.findViewById (R.id.tvCounter);
+        ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
+    }
     
+    
+    private void initBundle () {
+        Bundle bundle = this.getArguments ();
+        flag = Integer.parseInt (bundle.getString ("flag"));
+        
         if (flag == 1) {
-            etBrand.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND));
-            etBrand.setClickable (false);
-            etBrand.setEnabled (false);
-            etProductDescription.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION));
-            etModelNo.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-            etSerialNo.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            etPurchaseDate.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE));
-            etPurchaseDate.setClickable (false);
-            etPurchaseDate.setEnabled (false);
-        
-            imageTemp1 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1);
-            imageTemp2 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2);
-            imageTemp3 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3);
-            product_id = intent.getIntExtra (AppConfigTags.SWIGGY_PRODUCT_ID, 0);
-        
+            product_name = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME);
+            product_description = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
+            product_serial_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+            product_model_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
+            // product_purchase_date = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
+            tvServiceRequestName.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
+            etRequestDescription.setText (bundle.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION));
+            etRequestDescription.setEnabled (false);
+            request_id = Integer.parseInt (bundle.getString (AppConfigTags.SWIGGY_REQUEST_ID));
+            image1 = bundle.getString (AppConfigTags.SWIGGY_IMAGE1);
+            image2 = bundle.getString (AppConfigTags.SWIGGY_IMAGE2);
+            image3 = bundle.getString (AppConfigTags.SWIGGY_IMAGE3);
             new MyAsync ().execute ();
-        
-        
+            
+            
             for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1).endsWith (ext)) {
-                
-                    ImageView image = new ImageView (this);
-                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
-                    vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
+                if (image1.endsWith (ext)) {
+                    ImageView image = new ImageView (getActivity ());
+                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (getActivity (), 100), (int) Utils.pxFromDp (getActivity (), 100));
+                    vp.setMargins ((int) Utils.pxFromDp (getActivity (), 16), 0, (int) Utils.pxFromDp (getActivity (), 16), 0);
                     image.setLayoutParams (vp);
                     image.setScaleType (ImageView.ScaleType.CENTER_CROP);
                     image.setMaxHeight (100);
                     image.setMaxWidth (100);
-                
-                
-                    Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1))
+                    Glide.with (getActivity ())
+                            .load (image1)
                             .listener (new RequestListener<String, GlideDrawable> () {
                                 @Override
                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                     return false;
                                 }
-                            
-                                @Override
-                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                                    return false;
-                                }
-                            })
-                            .into (image);
-                
-                    llOtherImages.addView (image);
-                    break;
-                } else {
-                
-                }
-            }
-            for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2).endsWith (ext)) {
-                    ImageView image = new ImageView (this);
-                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
-                    vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
-                    image.setLayoutParams (vp);
-                    image.setScaleType (ImageView.ScaleType.CENTER_CROP);
-                    image.setMaxHeight (100);
-                    image.setMaxWidth (100);
-                
-                    Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2))
-                            .listener (new RequestListener<String, GlideDrawable> () {
-                                @Override
-                                public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                                    return false;
-                                }
-                            
-                                @Override
-                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                 
+                                @Override
+                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                     return false;
                                 }
                             })
@@ -205,171 +226,149 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                     break;
                 }
             }
-        
-        
             for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3).endsWith (ext)) {
-                
-                    ImageView image = new ImageView (this);
-                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
-                    vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
+                if (image2.endsWith (ext)) {
+                    ImageView image = new ImageView (getActivity ());
+                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (getActivity (), 100), (int) Utils.pxFromDp (getActivity (), 100));
+                    vp.setMargins ((int) Utils.pxFromDp (getActivity (), 16), 0, (int) Utils.pxFromDp (getActivity (), 16), 0);
                     image.setLayoutParams (vp);
                     image.setScaleType (ImageView.ScaleType.CENTER_CROP);
                     image.setMaxHeight (100);
                     image.setMaxWidth (100);
-                
-                
-                    Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3))
+                    Glide.with (getActivity ())
+                            .load (image2)
                             .listener (new RequestListener<String, GlideDrawable> () {
                                 @Override
                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                     return false;
                                 }
-                            
+                                
                                 @Override
                                 public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                     return false;
                                 }
                             })
                             .into (image);
+                    llOtherImages.addView (image);
+                    break;
+                }
+            }
+            for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
+                if (image3.endsWith (ext)) {
+                    ImageView image = new ImageView (getActivity ());
+                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (getActivity (), 100), (int) Utils.pxFromDp (getActivity (), 100));
+                    vp.setMargins ((int) Utils.pxFromDp (getActivity (), 16), 0, (int) Utils.pxFromDp (getActivity (), 16), 0);
+                    image.setLayoutParams (vp);
+                    image.setScaleType (ImageView.ScaleType.CENTER_CROP);
+                    image.setMaxHeight (100);
+                    image.setMaxWidth (100);
+                    Glide.with (getActivity ())
+                            .load (image3)
+                            .listener (new RequestListener<String, GlideDrawable> () {
+                                @Override
+                                public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                    return false;
+                                }
+                                
+                                @Override
+                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                    return false;
+                                }
+                            })
+                            .into (image);
+                    
                     llOtherImages.addView (image);
                     break;
                 }
             }
         } else {
-            brands = intent.getStringExtra (AppConfigTags.SWIGGY_BRANDS);
-            try {
-                JSONArray jsonArrayBrands = new JSONArray (brands);
-                brand_id_list = new int[jsonArrayBrands.length ()];
-                for (int i = 0; i < jsonArrayBrands.length (); i++) {
-                    JSONObject jsonObjectBrands = jsonArrayBrands.getJSONObject (i);
-                    brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID);
-                    brandNameList.add (jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME));
-                }
-            } catch (JSONException e) {
-                e.printStackTrace ();
-            }
-            
+            product_name = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME);
+            product_description = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
+            product_serial_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+            product_model_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
+            product_purchase_date = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
+            tvServiceRequestName.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
+            id = Integer.parseInt (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_ID));
         }
-    }
-    
-    private void initView () {
-        ivCancel = (ImageView) findViewById (R.id.ivCancel);
-        etProductCategory = (EditText) findViewById (R.id.etProductCategory);
-        etProductDescription = (EditText) findViewById (R.id.etProductDescription);
-        etSerialNo = (EditText) findViewById (R.id.etSerialNo);
-        etPurchaseDate = (EditText) findViewById (R.id.etPurchaseDate);
-        etModelNo = (EditText) findViewById (R.id.etModelNo);
-        etBrand = (EditText) findViewById (R.id.etProductBrand);
-        tvSubmit = (TextView) findViewById (R.id.tvSubmit);
-        tvAddImage = (ImageView) findViewById (R.id.tvAddImage);
-        llOtherImages = (LinearLayout) findViewById (R.id.llOtherImages);
-        tvTitle = (TextView) findViewById (R.id.tvTitle);
-        clMain = (CoordinatorLayout) findViewById (R.id.clMain);
+        
+        
     }
     
     private void initData () {
-        progressDialog = new ProgressDialog (SwiggyServiceAddProductActivity.this);
-        Window window = getWindow ();
-        if (Build.VERSION.SDK_INT >= 21) {
-            window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
-        }
-        Utils.setTypefaceToAllViews (SwiggyServiceAddProductActivity.this, tvTitle);
+        Utils.setTypefaceToAllViews (getActivity (), tvAddImage);
+        progressDialog = new ProgressDialog (getActivity ());
     }
     
     private void initListener () {
-        ivCancel.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View view) {
-                finish ();
-    
-            }
-        });
-        
-        etBrand.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                new MaterialDialog.Builder (SwiggyServiceAddProductActivity.this)
-                        .title ("Select a Brand")
-                        .typeface (SetTypeFace.getTypeface (SwiggyServiceAddProductActivity.this), SetTypeFace.getTypeface (SwiggyServiceAddProductActivity.this))
-                        .items (brandNameList)
-                        .itemsIds (brand_id_list)
-                        .itemsCallback (new MaterialDialog.ListCallback () {
-                            @Override
-                            public void onSelection (MaterialDialog dialog, View view, int which, CharSequence text) {
-                                brand_id = view.getId ();
-                                etBrand.setText (text);
-                            }
-                        })
-                        .show ();
-            }
-        });
-        
-        etPurchaseDate.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                final Calendar c = Calendar.getInstance ();
-                DatePickerDialog datePickerDialog = new DatePickerDialog (SwiggyServiceAddProductActivity.this, new DatePickerDialog.OnDateSetListener () {
-                    @Override
-                    public void onDateSet (DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                        etPurchaseDate.setText (String.format ("%02d", dayOfMonth) + "/" + String.format ("%02d", monthOfYear + 1) + "/" + year);
-                        date = Utils.convertTimeFormat (etPurchaseDate.getText ().toString ().trim (), "dd/MM/yyyy", "yyyy-MM-dd");
-                    }
-                }, c.get (Calendar.YEAR), c.get (Calendar.MONTH), c.get (Calendar.DAY_OF_MONTH));
-                datePickerDialog.show ();
-            }
-            
-        });
-        
         tvAddImage.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
+                Utils.showLog (Log.ERROR, "ImageCount", "" + imagesPathList.size (), Constants.show_log);
                 if (imagesPathList.size () < 3) {
                     selectImage ();
                 } else {
-                    Utils.showToast (SwiggyServiceAddProductActivity.this, "A maximum of 3 images can be added", false);
+                    Utils.showToast (getActivity (), "A maximum of 3 images can be added", false);
                 }
+            }
+        });
+        
+        ivCancel.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                getDialog ().dismiss ();
+            }
+        });
+        
+        etRequestDescription.addTextChangedListener (new TextWatcher () {
+            @Override
+            public void onTextChanged (CharSequence s, int start, int before, int count) {
+                if (s.length () > 0) {
+                    etRequestDescription.setError (null);
+                }
+                if (s.length () < 256) {
+                    tvCounter.setTextColor (getResources ().getColor (R.color.secondary_text2));
+                } else {
+                    tvCounter.setTextColor (getResources ().getColor (R.color.md_edittext_error));
+                }
+                tvCounter.setText (s.length () + "/255");
+            }
+
+            @Override
+            public void beforeTextChanged (CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void afterTextChanged (Editable s) {
             }
         });
         
         tvSubmit.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                SpannableString s = new SpannableString (getResources ().getString (R.string.dialog_enter_product_brand));
-                s.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                SpannableString s2 = new SpannableString (getResources ().getString (R.string.dialog_enter_product_description));
-                s2.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                SpannableString s5 = new SpannableString (getResources ().getString (R.string.dialog_select_purchase_date));
-                s5.setSpan (new TypefaceSpan (SwiggyServiceAddProductActivity.this, Constants.font_name), 0, s.length (), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-    
-                if (etBrand.getText ().toString ().trim ().length () == 0 && etProductCategory.getText ().toString ().trim ().length () == 0 && etPurchaseDate.getText ().toString ().trim ().length () == 0) {
-                    etBrand.setError (s);
-                    etProductDescription.setError (s2);
-                    etPurchaseDate.setError (s5);
-                } else if (etBrand.getText ().toString ().trim ().length () == 0) {
-                    etBrand.setError (s);
-                } else if (etProductDescription.getText ().toString ().trim ().length () == 0) {
-                    etBrand.setError (s);
-                } else if (etPurchaseDate.getText ().toString ().trim ().length () == 0) {
-                    etPurchaseDate.setError (s);
-                } else if (flag == 1) {
-                    updateProductToServer (product_id, etProductDescription.getText ().toString ().trim (), etModelNo.getText ().toString ().trim (), etSerialNo.getText ().toString ().trim ());
+                if (flag == 1) {
+                    if (etRequestDescription.getText ().toString ().length () > 0) {
+                        updateProductToServer (etRequestDescription.getText ().toString ());
+                    } else {
+                        etRequestDescription.setError ("Please Enter Description");
+                    }
                 } else {
-                    addProductToServer (etBrand.getText ().toString ().trim (), etProductDescription.getText ().toString ().trim (), etModelNo.getText ().toString ().trim (), etSerialNo.getText ().toString ().trim (), date);
+                    if (etRequestDescription.getText ().toString ().length () > 0) {
+                        addProductToServer (etRequestDescription.getText ().toString ());
+                    } else {
+                        etRequestDescription.setError ("Please Enter Description");
+                    }
                 }
-    
-    
+
             }
         });
     }
     
+    
     private void selectImage () {
         final CharSequence[] options = {"From Camera", "From Gallery"};
         
-        AlertDialog.Builder builder = new AlertDialog.Builder (SwiggyServiceAddProductActivity.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder (getActivity ());
         builder.setItems (options, new DialogInterface.OnClickListener () {
             @Override
             public void onClick (DialogInterface dialog, int item) {
@@ -386,11 +385,11 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         });
         builder.show ();
     }
-    
+
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    public void onActivityResult (int requestCode, int resultCode, Intent data) {
         super.onActivityResult (requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
+        if (resultCode == getActivity ().RESULT_OK) {
             if (requestCode == 1) {
                 File f = new File (Environment.getExternalStorageDirectory ().toString ());
                 for (File temp : f.listFiles ()) {
@@ -402,20 +401,20 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 try {
                     Bitmap bitmap;
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options ();
-                    bitmap = Utils.compressBitmap (BitmapFactory.decodeFile (f.getAbsolutePath (), bitmapOptions), this);
-                    
-                    ImageView image = new ImageView (this);
-                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
-                    vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
+                    bitmap = Utils.compressBitmap (BitmapFactory.decodeFile (f.getAbsolutePath (), bitmapOptions), getActivity ());
+    
+                    ImageView image = new ImageView (getActivity ());
+                    LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (getActivity (), 100), (int) Utils.pxFromDp (getActivity (), 100));
+                    vp.setMargins ((int) Utils.pxFromDp (getActivity (), 16), 0, (int) Utils.pxFromDp (getActivity (), 16), 0);
                     image.setLayoutParams (vp);
                     image.setScaleType (ImageView.ScaleType.CENTER_CROP);
                     image.setMaxHeight (100);
                     image.setMaxWidth (100);
                     image.setImageBitmap (bitmap);
                     llOtherImages.addView (image);
-                    
+    
                     imagesPathList.add (Utils.bitmapToBase64 (bitmap));
-                    
+
                     String path = Environment
                             .getExternalStorageDirectory ()
                             + File.separator
@@ -441,23 +440,23 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
             } else if (requestCode == 2) {
                 Uri selectedImage = data.getData ();
                 String[] filePath = {MediaStore.Images.Media.DATA};
-                Cursor c = getContentResolver ().query (selectedImage, filePath, null, null, null);
+                Cursor c = getActivity ().getContentResolver ().query (selectedImage, filePath, null, null, null);
                 c.moveToFirst ();
                 int columnIndex = c.getColumnIndex (filePath[0]);
                 String picturePath = c.getString (columnIndex);
                 c.close ();
-                Bitmap thumbnail = Utils.compressBitmap (BitmapFactory.decodeFile (picturePath), this);
-                
-                ImageView image = new ImageView (this);
-                LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
-                vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
+                Bitmap thumbnail = Utils.compressBitmap (BitmapFactory.decodeFile (picturePath), getActivity ());
+    
+                ImageView image = new ImageView (getActivity ());
+                LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (getActivity (), 100), (int) Utils.pxFromDp (getActivity (), 100));
+                vp.setMargins ((int) Utils.pxFromDp (getActivity (), 16), 0, (int) Utils.pxFromDp (getActivity (), 16), 0);
                 image.setLayoutParams (vp);
                 image.setScaleType (ImageView.ScaleType.CENTER_CROP);
                 image.setMaxHeight (100);
                 image.setMaxWidth (100);
                 image.setImageBitmap (thumbnail);
                 llOtherImages.addView (image);
-                
+    
                 imagesPathList.add (Utils.bitmapToBase64 (thumbnail));
 
 //                imagesPathList.add (Utils.bitmapToBase64 (Utils.compressBitmap (thumbnail, this)));
@@ -465,11 +464,11 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         }
     }
     
-    private void addProductToServer (final String brand, final String description, final String model, final String serial_number, final String purchase_date) {
-        if (NetworkConnection.isNetworkAvailable (SwiggyServiceAddProductActivity.this)) {
+    private void addProductToServer (final String description) {
+        if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_PRODUCT, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_PRODUCT,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_REQUEST, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_REQUEST,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -480,19 +479,19 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
-                                        finish ();
+                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                        getDialog ().dismiss ();
                                     } else {
-                                        Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
                                     progressDialog.dismiss ();
                                 } catch (Exception e) {
                                     progressDialog.dismiss ();
-                                    Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     e.printStackTrace ();
                                 }
                             } else {
-                                Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                             progressDialog.dismiss ();
@@ -505,20 +504,16 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                             NetworkResponse response = error.networkResponse;
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
-                                
+
                             }
-                            Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             progressDialog.dismiss ();
                         }
                     }) {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_BRAND_ID, String.valueOf (brand_id));
-                    params.put (AppConfigTags.SWIGGY_BRAND_NAME, brand);
-                    params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
-                    params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);
-                    params.put (AppConfigTags.SWIGGY_PURCHASE_DATE, purchase_date);
+                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (id));
                     params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
@@ -536,20 +531,20 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-                
+
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
                     UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
                     params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
-                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (SwiggyServiceAddProductActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (getActivity (), UserDetailsPref.USER_LOGIN_KEY));
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }
             };
             Utils.sendRequest (strRequest1, 60);
         } else {
-            Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
                 @Override
                 public void onClick (View v) {
                     Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
@@ -560,11 +555,12 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         }
     }
     
-    private void updateProductToServer (int product_id, final String description, final String model, final String serial_number) {
-        if (NetworkConnection.isNetworkAvailable (SwiggyServiceAddProductActivity.this)) {
+    
+    private void updateProductToServer (final String description) {
+        if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_UPDATE_PRODUCT + "/" + product_id, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_SWIGGY_UPDATE_PRODUCT + "/" + product_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_UPDATE_REQUEST + "/" + request_id, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_SWIGGY_UPDATE_REQUEST + "/" + request_id,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -575,19 +571,19 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                                     boolean error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! error) {
-                                        Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
-                                        finish ();
+                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                        getDialog ().dismiss ();
                                     } else {
-                                        Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                        Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
                                     }
                                     progressDialog.dismiss ();
                                 } catch (Exception e) {
                                     progressDialog.dismiss ();
-                                    Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     e.printStackTrace ();
                                 }
                             } else {
-                                Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                             progressDialog.dismiss ();
@@ -602,15 +598,13 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                                 
                             }
-                            Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_error_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             progressDialog.dismiss ();
                         }
                     }) {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
-                    params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);
                     params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
@@ -634,14 +628,14 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<> ();
                     UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
                     params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
-                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (SwiggyServiceAddProductActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (getActivity (), UserDetailsPref.USER_LOGIN_KEY));
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }
             };
             Utils.sendRequest (strRequest1, 60);
         } else {
-            Utils.showSnackBar (SwiggyServiceAddProductActivity.this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
                 @Override
                 public void onClick (View v) {
                     Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
@@ -651,50 +645,66 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
             });
         }
     }
+    
+    
+    public void setDismissListener (SwiggyMyProductDetailActivity.MyDialogCloseListener closeListener) {
+        this.closeListener = closeListener;
+    }
+    
+    @Override
+    public void onDismiss (DialogInterface dialog) {
+        super.onDismiss (dialog);
+        if (closeListener != null) {
+            closeListener.handleDialogClose (null);
+        }
+    }
+    
     
     public class MyAsync extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground (Void... params) {
             try {
                 for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                    if (imageTemp1.endsWith (ext)) {
-                        URL url = new URL (imageTemp1);
+                    if (image1.endsWith (ext)) {
+                        URL url = new URL (image1);
                         HttpURLConnection connection = (HttpURLConnection) url.openConnection ();
                         connection.setDoInput (true);
                         connection.connect ();
                         InputStream input = connection.getInputStream ();
                         Bitmap myBitmap = BitmapFactory.decodeStream (input);
-                        image1 = Utils.bitmapToBase64 (myBitmap);
-                        imagesPathList.add (image1);
-                        Log.e ("Bitmap to string Image1", image1);
+                        String stringImage1 = Utils.bitmapToBase64 (myBitmap);
+                        Log.e ("Bitmap to string Image1", stringImage1);
+                        imagesPathList.add (stringImage1);
+                        
+                        
                     }
                     
                     for (String ext2 : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (imageTemp2.endsWith (ext2)) {
-                            URL url2 = new URL (imageTemp2);
+                        if (image2.endsWith (ext2)) {
+                            URL url2 = new URL (image2);
                             HttpURLConnection connection2 = (HttpURLConnection) url2.openConnection ();
                             connection2.setDoInput (true);
                             connection2.connect ();
                             InputStream input2 = connection2.getInputStream ();
                             Bitmap myBitmap2 = BitmapFactory.decodeStream (input2);
-                            image2 = Utils.bitmapToBase64 (myBitmap2);
-                            imagesPathList.add (image2);
-                            Log.e ("Bitmap to string Image2", image2);
+                            String stringImage2 = Utils.bitmapToBase64 (myBitmap2);
+                            Log.e ("Bitmap to string Image2", stringImage2);
+                            imagesPathList.add (stringImage2);
                             
                             
                         }
                     }
                     for (String ext3 : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (imageTemp3.endsWith (ext3)) {
-                            URL url3 = new URL (imageTemp3);
+                        if (image3.endsWith (ext3)) {
+                            URL url3 = new URL (image3);
                             HttpURLConnection connection3 = (HttpURLConnection) url3.openConnection ();
                             connection3.setDoInput (true);
                             connection3.connect ();
                             InputStream input3 = connection3.getInputStream ();
                             Bitmap myBitmap3 = BitmapFactory.decodeStream (input3);
-                            image3 = Utils.bitmapToBase64 (myBitmap3);
-                            imagesPathList.add (image3);
-                            Log.e ("Bitmap to string Image3", image3);
+                            String stringImage3 = Utils.bitmapToBase64 (myBitmap3);
+                            Log.e ("Bitmap to string Image3", stringImage3);
+                            imagesPathList.add (stringImage3);
                             
                             
                         }
@@ -706,8 +716,5 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
             return null;
         }
         
-        
     }
-    
-    
 }

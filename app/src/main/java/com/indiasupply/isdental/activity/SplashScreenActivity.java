@@ -31,7 +31,7 @@ public class SplashScreenActivity extends Activity {
         new Handler ().postDelayed (new Runnable () {
             @Override
             public void run () {
-                Intent intent = new Intent (SplashScreenActivity.this, SwiggyMainActivity.class);
+                Intent intent = new Intent (SplashScreenActivity.this, MainActivity.class);
                 intent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity (intent);
                 overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);

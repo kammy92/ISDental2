@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="@dimen/cardview_default_radius"
+    card_view:cardElevation="@dimen/cardview_elevation">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/activity_margin_small">
+
+        <RelativeLayout
+            android:id="@+id/rlImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical">
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="visible"/>
+            <ImageView
+                android:id="@+id/ivOfferImage"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"/>
+            <TextView
+                android:id="@+id/tvOfferPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignEnd="@+id/ivOfferImage"
+                android:layout_alignRight="@+id/ivOfferImage"
+                android:layout_alignTop="@+id/ivOfferImage"
+                android:layout_margin="@dimen/activity_margin_extra_small"
+                android:background="@drawable/offer_perc_background"
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="18% off"
+                android:textColor="@color/text_color_white"
+                android:textSize="@dimen/text_size_extreme_small"
+            />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@+id/rlImage"
+            android:layout_toStartOf="@+id/rlImage"
+        >
+            <TextView
+                android:id="@+id/tvOfferName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:text="Chesa Dental"
+                android:textColor="@color/primary_text2"
+                android:textSize="@dimen/text_size_medium"
+                android:textStyle="bold"
+                android:visibility="visible"/>
+            <TextView
+                android:id="@+id/tvOfferPackaging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvOfferName"
+                android:text="Packaging"
+                android:textColor="@color/secondary_text2"
+                android:textSize="@dimen/text_size_small"
+                android:visibility="visible"/>
+            <RelativeLayout
+                android:id="@+id/rlOfferDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvOfferPackaging"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv1"
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_offers"
+
+                />
+                <TextView
+                    android:id="@+id/tvOfferDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/iv1"
+                    android:layout_toRightOf="@+id/iv1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/activity_margin_extra_small"
+                    android:paddingStart="@dimen/activity_margin_extra_small"
+                    android:text="Description"
+                    android:textColor="#9F7A6D"
+                    android:textSize="@dimen/text_size_small"
+                    android:visibility="visible"/>
+            </RelativeLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/rl1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl2"
+            android:layout_marginTop="@dimen/activity_margin">
+            <TableLayout
+                android:id="@+id/tlPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            >
+                <TableRow>
+                    <TextView
+                        android:text="Offer Price "
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvOfferPrice"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:text="Rs 400"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_small"
+                        android:textStyle="bold"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="MRP"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"
+                    />
+                    <TextView
+                        android:id="@+id/tvOfferMRP"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:text="Rs 400"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"/>
+                </TableRow>
+
+                <TableRow>
+                    <TextView
+                        android:text="Regular Price"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"
+                    />
+                    <TextView
+                        android:id="@+id/tvOfferRegularPrice"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:text="Rs 400"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:text="Total Savings"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"
+                    />
+                    <TextView
+                        android:id="@+id/tvOfferSaving"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:text="Rs 400"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"/>
+                </TableRow>
+            </TableLayout>
+            <TextView
+                android:id="@+id/tvSeeDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="See Details"
+                android:textColor="@color/accent2"
+                android:textSize="@dimen/text_size_small"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tvSendEnquiry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl1"
+            android:layout_marginTop="@dimen/activity_margin_small"
+            android:background="@drawable/button_background_2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin_small"
+            android:text="Send Enquiry"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_medium"
+            android:visibility="visible"/>
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

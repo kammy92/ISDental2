@@ -35,28 +35,27 @@
                   android:screenOrientation="portrait"/>
 
 
-        <!--  <activity android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
-                    android:screenOrientation="portrait">
+        <!--  <activity android:nacom.indiasupply.isdental.activity.MainActivity                    android:screenOrientation="portrait">
           </activity>
   -->
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyEventDetailActivity"
+        <activity android:name="com.indiasupply.isdental.activity.EventDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyCompanyDetailActivity"
+        <activity android:name="com.indiasupply.isdental.activity.CompanyDetailActivity"
                   android:screenOrientation="portrait">
         </activity>
 
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyIntroActivity"
+        <activity android:name="com.indiasupply.isdental.activity.IntroActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/WelcomeScreenTheme"/>
 
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyLoginActivity"
+        <activity android:name="com.indiasupply.isdental.activity.LoginActivity"
                   android:screenOrientation="portrait"
                   android:theme="@style/LoginScreenTheme"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name="com.indiasupply.isdental.activity.SwiggyMainActivity"
+        <activity android:name="com.indiasupply.isdental.activity.MainActivity"
                   android:screenOrientation="portrait"/>
 
 

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_item_offers"
-        android:icon="@drawable/ic_home_featured"
+        android:icon="@drawable/ic_home_offer_filled"
         android:title="Offers"/>
     <item
         android:id="@+id/action_item_featured"
