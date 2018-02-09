@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.Editable;
 import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,7 +21,6 @@ import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -36,11 +36,12 @@ import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
-import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONObject;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+import org.xml.sax.XMLReader;
 
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -71,11 +72,11 @@ public class OfferDetailDialogFragment extends DialogFragment {
     private TextView tvOfferSaving;
     private TextView tvSendEnquiry;
     private TextView tvOfferDateText;
-    private TextView tvOfferDate;
+    private HtmlTextView tvOfferDate;
     private TextView tvDetailsText;
-    private TextView tvDetails;
+    private HtmlTextView tvDetails;
     private TextView tvTermsAndConditionsText;
-    private TextView tvTermsAndConditions;
+    private HtmlTextView tvTermsAndConditions;
     
     public static OfferDetailDialogFragment newInstance (int offer_id, String name, String packaging, String description,
                                                          String image, int price, int regular_price,
@@ -157,11 +158,11 @@ public class OfferDetailDialogFragment extends DialogFragment {
         rlOfferDescription = (RelativeLayout) root.findViewById (R.id.rlOfferDescription);
         tvSendEnquiry = (TextView) root.findViewById (R.id.tvSendEnquiry);
         tvOfferDateText = (TextView) root.findViewById (R.id.tvOfferDateText);
-        tvOfferDate = (TextView) root.findViewById (R.id.tvOfferDate);
+        tvOfferDate = (HtmlTextView) root.findViewById (R.id.tvOfferDate);
         tvDetailsText = (TextView) root.findViewById (R.id.tvDetailsText);
-        tvDetails = (TextView) root.findViewById (R.id.tvDetails);
+        tvDetails = (HtmlTextView) root.findViewById (R.id.tvDetails);
         tvTermsAndConditionsText = (TextView) root.findViewById (R.id.tvTermsAndConditionsText);
-        tvTermsAndConditions = (TextView) root.findViewById (R.id.tvTermsAndConditions);
+        tvTermsAndConditions = (HtmlTextView) root.findViewById (R.id.tvTermsAndConditions);
     }
     
     private void initBundle () {
@@ -185,14 +186,21 @@ public class OfferDetailDialogFragment extends DialogFragment {
         progressDialog = new ProgressDialog (getActivity ());
         tvOfferName.setText (name);
         tvOfferPackaging.setText (packaging);
-        
+    
         if (description.length () > 0) {
             rlOfferDescription.setVisibility (View.VISIBLE);
             tvOfferDescription.setText (description);
         } else {
             rlOfferDescription.setVisibility (View.GONE);
         }
-        
+    
+        if (packaging.length () > 0) {
+            tvOfferPackaging.setVisibility (View.VISIBLE);
+            tvOfferPackaging.setText (packaging);
+        } else {
+            tvOfferPackaging.setVisibility (View.GONE);
+        }
+    
         tvOfferPrice.setText ("Rs. " + price);
         tvOfferRegularPrice.setText ("Rs. " + regular_price);
         tvOfferMRP.setText ("Rs. " + mrp);
@@ -201,7 +209,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
         if (dates.length () > 0) {
             tvOfferDateText.setVisibility (View.VISIBLE);
             tvOfferDate.setVisibility (View.VISIBLE);
-            tvOfferDate.setText (Html.fromHtml (dates.trim ()));
+            tvOfferDate.setHtml (dates);
         } else {
             tvOfferDateText.setVisibility (View.GONE);
             tvOfferDate.setVisibility (View.GONE);
@@ -210,7 +218,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
         if (details.length () > 0) {
             tvDetailsText.setVisibility (View.VISIBLE);
             tvDetails.setVisibility (View.VISIBLE);
-            tvDetails.setText (Html.fromHtml (details.trim ()));
+            tvDetails.setHtml (details);
         } else {
             tvDetailsText.setVisibility (View.GONE);
             tvDetails.setVisibility (View.GONE);
@@ -219,7 +227,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
         if (terms_conditions.length () > 0) {
             tvTermsAndConditionsText.setVisibility (View.VISIBLE);
             tvTermsAndConditions.setVisibility (View.VISIBLE);
-            tvTermsAndConditions.setText (Html.fromHtml (terms_conditions.trim ()));
+            tvTermsAndConditions.setHtml (terms_conditions);
         } else {
             tvTermsAndConditions.setVisibility (View.GONE);
             tvTermsAndConditionsText.setVisibility (View.GONE);
@@ -292,14 +300,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
                                     JSONObject jsonObj = new JSONObject (response);
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
-                                    new MaterialDialog.Builder (getActivity ())
-                                            .content (message)
-                                            .positiveColor (getResources ().getColor (R.color.primary_text2))
-                                            .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
-                                            .canceledOnTouchOutside (true)
-                                            .cancelable (true)
-                                            .positiveText (R.string.dialog_action_ok)
-                                            .show ();
+                                    Utils.showToast (getActivity (), message, true);
                                 } catch (Exception e) {
                                     e.printStackTrace ();
                                     Utils.showToast (getActivity (), "Unstable Internet Connection", false);
@@ -361,4 +362,13 @@ public class OfferDetailDialogFragment extends DialogFragment {
             closeListener.handleDialogClose (null);
         }
     }*/
+    
+    public class UlTagHandler implements Html.TagHandler {
+        @Override
+        public void handleTag (boolean opening, String tag, Editable output,
+                               XMLReader xmlReader) {
+            if (tag.equals ("ul") && ! opening) output.append ("\n");
+            if (tag.equals ("li") && opening) output.append ("\n\t•");
+        }
+    }
 }

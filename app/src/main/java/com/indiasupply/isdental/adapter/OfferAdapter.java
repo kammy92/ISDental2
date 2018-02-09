@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -30,7 +29,6 @@ import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
-import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -69,13 +67,21 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
         Utils.setTypefaceToAllViews (activity, holder.tvOfferName);
         
         holder.tvOfferName.setText (offer.getName ());
-        holder.tvOfferPackaging.setText (offer.getPackaging ());
         if (offer.getDescription ().length () > 0) {
             holder.rlOfferDescription.setVisibility (View.VISIBLE);
             holder.tvOfferDescription.setText (offer.getDescription ());
         } else {
             holder.rlOfferDescription.setVisibility (View.GONE);
         }
+    
+        if (offer.getPackaging ().length () > 0) {
+            holder.tvOfferPackaging.setVisibility (View.VISIBLE);
+            holder.tvOfferPackaging.setText (offer.getPackaging ());
+        } else {
+            holder.tvOfferPackaging.setVisibility (View.GONE);
+        }
+        
+        
         holder.tvOfferPrice.setText ("Rs. " + offer.getPrice ());
         holder.tvOfferRegularPrice.setText ("Rs. " + offer.getRegular_price ());
         holder.tvOfferMRP.setText ("Rs. " + offer.getMrp ());
@@ -149,14 +155,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
                                     JSONObject jsonObj = new JSONObject (response);
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
-                                    new MaterialDialog.Builder (activity)
-                                            .content (message)
-                                            .positiveColor (activity.getResources ().getColor (R.color.primary_text2))
-                                            .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
-                                            .canceledOnTouchOutside (true)
-                                            .cancelable (true)
-                                            .positiveText (R.string.dialog_action_ok)
-                                            .show ();
+                                    Utils.showToast (activity, message, true);
                                 } catch (Exception e) {
                                     e.printStackTrace ();
                                     Utils.showToast (activity, "Unstable Internet Connection", false);

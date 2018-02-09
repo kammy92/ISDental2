@@ -79,165 +79,166 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:animateLayoutChanges="true"
             android:gravity="bottom">
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_above="@+id/rlButton"
                 android:overScrollMode="never">
-                <LinearLayout
-                    android:id="@+id/llFields"
-                    android:layout_width="match_parent"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_above="@+id/rlButton"
-                    android:layout_marginLeft="@dimen/activity_margin"
-                    android:layout_marginRight="@dimen/activity_margin"
-                    android:animateLayoutChanges="true"
-                    android:background="@drawable/swiggy_login_card_bg"
-                    android:orientation="vertical"
-                    android:paddingBottom="42dp"
-                    android:paddingLeft="@dimen/activity_margin"
-                    android:paddingRight="@dimen/activity_margin"
-                    android:paddingTop="@dimen/activity_margin"
-                    android:visibility="gone">
-                    <TextView
-                        android:id="@+id/tvFieldsTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/llFields"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginBottom="@dimen/activity_margin"
-                        android:gravity="center"
-                        android:padding="@dimen/activity_margin_small"
-                        android:text="Enter your details to get started"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Mobile"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_small"/>
-                    <RelativeLayout
+                    android:animateLayoutChanges="true">
+                    <LinearLayout
+                        android:id="@+id/llFields"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_margin">
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:animateLayoutChanges="true"
+                        android:background="@drawable/swiggy_login_card_bg"
+                        android:orientation="vertical"
+                        android:paddingBottom="42dp"
+                        android:paddingLeft="@dimen/activity_margin"
+                        android:paddingRight="@dimen/activity_margin"
+                        android:paddingTop="@dimen/activity_margin"
+                        android:visibility="gone">
+                        <TextView
+                            android:id="@+id/tvFieldsTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/llFields"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:gravity="center"
+                            android:padding="@dimen/activity_margin_small"
+                            android:text="Enter your details to get started"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:text="+91"
+                            android:text="Mobile"
                             android:textColor="@color/primary_text2"
-                            android:textSize="@dimen/text_size_large"
-                            android:textStyle="bold"/>
-                        <EditText
-                            android:id="@+id/etMobile"
+                            android:textSize="@dimen/text_size_small"/>
+                        <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/swiggy_et_background"
-                            android:inputType="number"
-                            android:maxLength="10"
-                            android:paddingEnd="@dimen/activity_margin"
-                            android:paddingLeft="48dp"
-                            android:paddingRight="@dimen/activity_margin"
-                            android:paddingStart="48dp"
-                            android:text=""
-                            android:textColor="@color/primary_text2"
-                            android:textSize="@dimen/text_size_large"
-                            android:textStyle="bold"/>
-                        <ProgressBar
-                            android:id="@+id/progressBar"
-                            style="?android:attr/progressBarStyleSmall"
+                            android:layout_marginBottom="@dimen/activity_margin">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_centerVertical="true"
+                                android:text="+91"
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold"/>
+                            <EditText
+                                android:id="@+id/etMobile"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/swiggy_et_background"
+                                android:inputType="number"
+                                android:maxLength="10"
+                                android:paddingEnd="@dimen/activity_margin"
+                                android:paddingLeft="48dp"
+                                android:paddingRight="@dimen/activity_margin"
+                                android:paddingStart="48dp"
+                                android:text=""
+                                android:textColor="@color/primary_text2"
+                                android:textSize="@dimen/text_size_large"
+                                android:textStyle="bold"/>
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="?android:attr/progressBarStyleSmall"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:indeterminateDuration="1000"
+                                android:indeterminateTint="@color/primary_text2"
+                                android:indeterminateTintMode="src_in"
+                                android:visibility="gone"/>
+                        </RelativeLayout>
+                        <TextView
+                            android:id="@+id/tvInternationalUser"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:indeterminateDuration="1000"
-                            android:indeterminateTint="@color/primary_text2"
-                            android:indeterminateTintMode="src_in"
+                            android:layout_gravity="end|right"
+                            android:paddingBottom="@dimen/activity_margin_extra_small"
+                            android:paddingEnd="0dp"
+                            android:paddingLeft="@dimen/activity_margin_extra_small"
+                            android:paddingRight="0dp"
+                            android:paddingStart="@dimen/activity_margin_extra_small"
+                            android:paddingTop="@dimen/activity_margin_extra_small"
+                            android:text="I am an international user"
+                            android:textColor="@color/accent2"
+                            android:textSize="@dimen/text_size_small"
                             android:visibility="gone"/>
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tvInternationalUser"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|right"
-                        android:paddingBottom="@dimen/activity_margin_extra_small"
-                        android:paddingEnd="0dp"
-                        android:paddingLeft="@dimen/activity_margin_extra_small"
-                        android:paddingRight="0dp"
-                        android:paddingStart="@dimen/activity_margin_extra_small"
-                        android:paddingTop="@dimen/activity_margin_extra_small"
-                        android:text="I am an international user"
-                        android:textColor="@color/accent2"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone"/>
-                    <TextView
-                        android:id="@+id/tvName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Full Name"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone"/>
-                    <EditText
-                        android:id="@+id/etName"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_margin"
-                        android:background="@drawable/swiggy_et_background"
-                        android:inputType="textPersonName|textCapWords"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                    <TextView
-                        android:id="@+id/tvEmail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Email Address"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone"/>
-                    <EditText
-                        android:id="@+id/etEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_margin"
-                        android:background="@drawable/swiggy_et_background"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                    <TextView
-                        android:id="@+id/tvType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="I am a ..."
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_small"
-                        android:visibility="gone"/>
-                    <EditText
-                        android:id="@+id/etType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/activity_margin"
-                        android:background="@drawable/swiggy_et_background"
-                        android:focusable="false"
-                        android:inputType="text"
-                        android:textColor="@color/primary_text2"
-                        android:textSize="@dimen/text_size_large"
-                        android:textStyle="bold"
-                        android:visibility="gone"/>
-                </LinearLayout>
+                        <TextView
+                            android:id="@+id/tvName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Full Name"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="gone"/>
+                        <EditText
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:background="@drawable/swiggy_et_background"
+                            android:inputType="textPersonName|textCapWords"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
+                        <TextView
+                            android:id="@+id/tvEmail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Email Address"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="gone"/>
+                        <EditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:background="@drawable/swiggy_et_background"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
+                        <TextView
+                            android:id="@+id/tvType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="I am a ..."
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"
+                            android:visibility="gone"/>
+                        <EditText
+                            android:id="@+id/etType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/activity_margin"
+                            android:background="@drawable/swiggy_et_background"
+                            android:focusable="false"
+                            android:inputType="text"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_large"
+                            android:textStyle="bold"
+                            android:visibility="gone"/>
+                    </LinearLayout>
+                </RelativeLayout>
 
             </ScrollView>
             <RelativeLayout

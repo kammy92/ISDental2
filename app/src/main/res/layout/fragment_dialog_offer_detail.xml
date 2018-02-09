@@ -121,6 +121,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/tvOfferPackaging"
+                            android:paddingBottom="@dimen/activity_margin_small"
+                            android:paddingTop="@dimen/activity_margin_small"
                             android:visibility="gone">
 
                             <ImageView
@@ -226,7 +228,7 @@
                         android:text="Offer Dates"
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_small"/>
-                    <TextView
+                    <org.sufficientlysecure.htmltextview.HtmlTextView
                         android:id="@+id/tvOfferDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -242,7 +244,7 @@
                         android:text="Details"
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_small"/>
-                    <TextView
+                    <org.sufficientlysecure.htmltextview.HtmlTextView
                         android:id="@+id/tvDetails"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,7 +260,7 @@
                         android:text="Terms And Conditions"
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_small"/>
-                    <TextView
+                    <org.sufficientlysecure.htmltextview.HtmlTextView
                         android:id="@+id/tvTermsAndConditions"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

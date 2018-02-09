@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.android.volley.AuthFailureError;
@@ -22,6 +23,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.BannerAdapter;
 import com.indiasupply.isdental.adapter.CompanyAdapter;
@@ -61,6 +66,7 @@ public class FeaturedFragment extends Fragment {
     CompanyAdapter companyAdapter;
     Button btFilter;
     RelativeLayout rlMain;
+    ImageView ivBanner;
     
     CoordinatorLayout clMain;
     
@@ -94,6 +100,7 @@ public class FeaturedFragment extends Fragment {
     
     private void initView (View rootView) {
         rvBanners = (RecyclerView) rootView.findViewById (R.id.rvBanners);
+        ivBanner = (ImageView) rootView.findViewById (R.id.ivBanner);
         rvCompany = (RecyclerView) rootView.findViewById (R.id.rvCompany);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
@@ -157,22 +164,30 @@ public class FeaturedFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
-                                            bannerList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_FEATURED, response);
                                             JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
                                             for (int i = 0; i < jsonArrayBanners.length (); i++) {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
-                                                bannerList.add (new Banner (
-                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
-                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE_ID),
-                                                        R.drawable.default_event,
-                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
-                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
-                                                        jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE),
-                                                        jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
-                                                ));
+                                                if (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE).length () == 0) {
+                                                    ivBanner.setImageResource (R.drawable.default_event);
+                                                } else {
+                                                    Glide.with (getActivity ())
+                                                            .load (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE))
+                                                            .listener (new RequestListener<String, GlideDrawable> () {
+                                                                @Override
+                                                                public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                                                    return false;
+                                                                }
+                    
+                                                                @Override
+                                                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                                                    return false;
+                                                                }
+                                                            })
+                                                            .error (R.drawable.default_event)
+                                                            .into (ivBanner);
+                                                }
                                             }
-                                            bannerAdapter.notifyDataSetChanged ();
                                             JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                                             companyList.clear ();
                                             for (int j = 0; j < jsonArrayCompanies.length (); j++) {
