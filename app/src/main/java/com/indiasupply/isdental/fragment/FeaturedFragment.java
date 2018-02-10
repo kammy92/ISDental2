@@ -28,9 +28,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.adapter.BannerAdapter;
 import com.indiasupply.isdental.adapter.CompanyAdapter;
-import com.indiasupply.isdental.model.Banner;
 import com.indiasupply.isdental.model.Company;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -57,12 +55,12 @@ import java.util.Map;
  */
 
 public class FeaturedFragment extends Fragment {
-    RecyclerView rvBanners;
+    //    RecyclerView rvBanners;
     RecyclerView rvCompany;
     ShimmerFrameLayout shimmerFrameLayout;
-    List<Banner> bannerList = new ArrayList<> ();
+    //    List<Banner> bannerList = new ArrayList<> ();
     List<Company> companyList = new ArrayList<> ();
-    BannerAdapter bannerAdapter;
+    //    BannerAdapter bannerAdapter;
     CompanyAdapter companyAdapter;
     Button btFilter;
     RelativeLayout rlMain;
@@ -99,7 +97,7 @@ public class FeaturedFragment extends Fragment {
     }
     
     private void initView (View rootView) {
-        rvBanners = (RecyclerView) rootView.findViewById (R.id.rvBanners);
+//        rvBanners = (RecyclerView) rootView.findViewById (R.id.rvBanners);
         ivBanner = (ImageView) rootView.findViewById (R.id.ivBanner);
         rvCompany = (RecyclerView) rootView.findViewById (R.id.rvCompany);
         btFilter = (Button) rootView.findViewById (R.id.btFilter);
@@ -116,16 +114,16 @@ public class FeaturedFragment extends Fragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), btFilter);
         appDataPref = AppDataPref.getInstance ();
-    
-    
-        bannerAdapter = new BannerAdapter (getActivity (), bannerList);
-        rvBanners.setAdapter (bannerAdapter);
-        rvBanners.setHasFixedSize (true);
-        rvBanners.setNestedScrollingEnabled (false);
-        rvBanners.setFocusable (false);
-        rvBanners.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
-        rvBanners.setItemAnimator (new DefaultItemAnimator ());
-        rvBanners.addItemDecoration (new RecyclerViewMargin (0, 0, (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
+
+
+//        bannerAdapter = new BannerAdapter (getActivity (), bannerList);
+//        rvBanners.setAdapter (bannerAdapter);
+//        rvBanners.setHasFixedSize (true);
+//        rvBanners.setNestedScrollingEnabled (false);
+//        rvBanners.setFocusable (false);
+//        rvBanners.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.HORIZONTAL, false));
+//        rvBanners.setItemAnimator (new DefaultItemAnimator ());
+//        rvBanners.addItemDecoration (new RecyclerViewMargin (0, 0, (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 0, 1, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_HORIZONTAL));
     
         companyAdapter = new CompanyAdapter (getActivity (), companyList);
         rvCompany.setAdapter (companyAdapter);
@@ -305,22 +303,31 @@ public class FeaturedFragment extends Fragment {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-                    bannerList.clear ();
+//                    bannerList.clear ();
                     JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
                     for (int i = 0; i < jsonArrayBanners.length (); i++) {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
-                        bannerList.add (new Banner (
-                                jsonObjectBanners.getInt (AppConfigTags.BANNER_ID),
-                                jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE_ID),
-                                R.drawable.default_event,
-                                jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE),
-                                jsonObjectBanners.getString (AppConfigTags.BANNER_TITLE),
-                                jsonObjectBanners.getInt (AppConfigTags.BANNER_TYPE),
-                                jsonObjectBanners.getString (AppConfigTags.BANNER_URL)
-                        ));
+                        if (jsonObjectBanners.getString(AppConfigTags.BANNER_IMAGE).length() == 0) {
+                            ivBanner.setImageResource(R.drawable.default_event);
+                        } else {
+                            Glide.with(getActivity())
+                                    .load(jsonObjectBanners.getString(AppConfigTags.BANNER_IMAGE))
+                                    .listener(new RequestListener<String, GlideDrawable>() {
+                                        @Override
+                                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                            return false;
+                                        }
+
+                                        @Override
+                                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                            return false;
+                                        }
+                                    })
+                                    .error(R.drawable.default_event)
+                                    .into(ivBanner);
+                        }
                     }
-                    bannerAdapter.notifyDataSetChanged ();
-    
+
                     companyList.clear ();
                     JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
                     for (int j = 0; j < jsonArrayCompanies.length (); j++) {
