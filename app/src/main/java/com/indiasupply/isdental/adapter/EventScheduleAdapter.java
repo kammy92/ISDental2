@@ -47,9 +47,9 @@ public class EventScheduleAdapter extends RecyclerView.Adapter<EventScheduleAdap
         Utils.setTypefaceToAllViews (activity, holder.tvEventTiming);
     
         if (eventSchedule.getEnd_time ().equalsIgnoreCase ("00:00:00")) {
-            holder.tvEventTiming.setText (Utils.convertTimeFormat (eventSchedule.getStart_time (), "HH:mm:ss", "HH:mm") + " Onwards");
+            holder.tvEventTiming.setText (Utils.convertTimeFormat (eventSchedule.getDate (), "yyyy-MM-dd", "dd MMM") + " " + Utils.convertTimeFormat (eventSchedule.getStart_time (), "HH:mm:ss", "HH:mm") + " Onwards");
         } else {
-            holder.tvEventTiming.setText (Utils.convertTimeFormat (eventSchedule.getStart_time (), "HH:mm:ss", "HH:mm") + " - " + Utils.convertTimeFormat (eventSchedule.getEnd_time (), "HH:mm:ss", "HH:mm"));
+            holder.tvEventTiming.setText (Utils.convertTimeFormat (eventSchedule.getDate (), "yyyy-MM-dd", "dd MMM") + " (" + Utils.convertTimeFormat (eventSchedule.getStart_time (), "HH:mm:ss", "HH:mm") + " - " + Utils.convertTimeFormat (eventSchedule.getEnd_time (), "HH:mm:ss", "HH:mm") + ")");
         }
         
         holder.tvEventDescription.setText (eventSchedule.getDescription ());

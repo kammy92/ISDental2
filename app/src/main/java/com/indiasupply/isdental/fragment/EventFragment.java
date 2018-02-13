@@ -133,7 +133,7 @@ public class EventFragment extends Fragment {
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
                                                 ));
                                             }
@@ -248,7 +248,7 @@ public class EventFragment extends Fragment {
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
+                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
                         ));
                     }

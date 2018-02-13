@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -11,7 +12,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -28,9 +29,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
-import com.indiasupply.isdental.adapter.EventScheduleAdapter;
+import com.indiasupply.isdental.adapter.EventItemAdapter;
+import com.indiasupply.isdental.dialog.EventExhibitorDialogFragment;
+import com.indiasupply.isdental.dialog.EventFloorPlanDialogFragment;
+import com.indiasupply.isdental.dialog.EventInformationDialogFragment;
+import com.indiasupply.isdental.dialog.EventRegistrationsDialogFragment;
+import com.indiasupply.isdental.dialog.EventScheduleDialogFragment;
+import com.indiasupply.isdental.dialog.EventSpeakerDialogFragment;
 import com.indiasupply.isdental.helper.DatabaseHandler;
-import com.indiasupply.isdental.model.EventSchedule;
+import com.indiasupply.isdental.model.EventItem;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -40,7 +47,6 @@ import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -53,11 +59,25 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivityBKP extends AppCompatActivity {
     RelativeLayout rlBack;
+    RecyclerView rvEventItems;
     CoordinatorLayout clMain;
     
+    List<EventItem> eventItemList = new ArrayList<> ();
+    EventItemAdapter eventItemAdapter;
+    
+    TextView tvTitleEventName;
+    TextView tvTitleEventDetail;
+    
     int event_id;
+    
+    String eventExhibitors = "";
+    String eventSpeakers = "";
+    String eventSchedule = "";
+    String eventFloorPlan = "";
+    String eventInformation = "";
+    String eventRegistration = "";
     
     ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
@@ -68,12 +88,7 @@ public class EventDetailActivity extends AppCompatActivity {
     TextView tvNoResultDescription;
     TextView tvNoResultButton;
     
-    EventScheduleAdapter eventScheduleAdapter;
-    RecyclerView rvSchedule;
-    
     DatabaseHandler db;
-    
-    List<EventSchedule> eventScheduleList = new ArrayList<> ();
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -95,32 +110,90 @@ public class EventDetailActivity extends AppCompatActivity {
                 
             }
         });
+        eventItemAdapter.SetOnItemClickListener (new EventItemAdapter.OnItemClickListener () {
+            @Override
+            public void onItemClick (View view, int position) {
+                EventItem eventItem = eventItemList.get (position);
+                FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                switch (eventItem.getId ()) {
+                    case 1:
+                        if (eventItem.isEnabled ()) {
+                            EventScheduleDialogFragment frag1 = EventScheduleDialogFragment.newInstance (eventSchedule);
+                            frag1.show (ft, "2");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No schedule available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                    case 2:
+                        if (eventItem.isEnabled ()) {
+                            EventSpeakerDialogFragment frag2 = EventSpeakerDialogFragment.newInstance (eventSpeakers);
+                            frag2.show (ft, "2");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No Speakers available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                    case 3:
+                        if (eventItem.isEnabled ()) {
+                            EventExhibitorDialogFragment frag3 = EventExhibitorDialogFragment.newInstance (eventExhibitors);
+                            frag3.show (ft, "3");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No Exhibitors available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                    case 4:
+                        if (eventItem.isEnabled ()) {
+                            EventFloorPlanDialogFragment frag4 = EventFloorPlanDialogFragment.newInstance (event_id, eventFloorPlan);
+                            frag4.show (ft, "4");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No Floor Plan available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                    case 5:
+                        if (eventItem.isEnabled ()) {
+                            EventInformationDialogFragment frag5 = EventInformationDialogFragment.newInstance (eventInformation);
+                            frag5.show (ft, "5");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No Information available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                    case 6:
+                        if (eventItem.isEnabled ()) {
+                            EventRegistrationsDialogFragment frag6 = EventRegistrationsDialogFragment.newInstance (eventRegistration);
+                            frag6.show (ft, "6");
+                        } else {
+//                            Utils.showSnackBar (EventDetailActivity.this, clMain, "No Registration Details available yet", Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                        }
+                        break;
+                }
+            }
+        });
     }
     
     private void initData () {
         db = new DatabaseHandler (getApplicationContext ());
         eventClicked (event_id);
-        Utils.setTypefaceToAllViews (this, tvNoResultButton);
+        Utils.setTypefaceToAllViews (this, tvTitleEventDetail);
         Window window = getWindow ();
         if (Build.VERSION.SDK_INT >= 21) {
             window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
             window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
-    
-    
-        eventScheduleAdapter = new EventScheduleAdapter (this, eventScheduleList);
-        rvSchedule.setAdapter (eventScheduleAdapter);
-        rvSchedule.setHasFixedSize (true);
-        rvSchedule.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
-        rvSchedule.setItemAnimator (new DefaultItemAnimator ());
-        rvSchedule.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        rvSchedule.setNestedScrollingEnabled (false);
+        
+        eventItemAdapter = new EventItemAdapter (EventDetailActivityBKP.this, eventItemList);
+        rvEventItems.setAdapter (eventItemAdapter);
+        rvEventItems.setHasFixedSize (true);
+        rvEventItems.setLayoutManager (new GridLayoutManager (EventDetailActivityBKP.this, 2, GridLayoutManager.VERTICAL, false));
+        rvEventItems.setItemAnimator (new DefaultItemAnimator ());
+        rvEventItems.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
     }
     
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
+        rvEventItems = (RecyclerView) findViewById (R.id.rvEventItems);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
+        tvTitleEventName = (TextView) findViewById (R.id.tvTitleEventName);
+        tvTitleEventDetail = (TextView) findViewById (R.id.tvTitleEventDetail);
         shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) findViewById (R.id.rlMain);
         rlNoResult = (RelativeLayout) findViewById (R.id.rlNoResult);
@@ -128,8 +201,6 @@ public class EventDetailActivity extends AppCompatActivity {
         tvNoResultTitle = (TextView) findViewById (R.id.tvNoResultTitle);
         tvNoResultDescription = (TextView) findViewById (R.id.tvNoResultDescription);
         tvNoResultButton = (TextView) findViewById (R.id.tvNoResultButton);
-    
-        rvSchedule = (RecyclerView) findViewById (R.id.rvSchedule);
     }
     
     private void getExtras () {
@@ -165,32 +236,12 @@ public class EventDetailActivity extends AppCompatActivity {
                                         } else {
                                             db.insertEvent (event_id, response);
                                         }
-    
                                         if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-        
-                                            JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules");
-                                            for (int j = 0; j < jsonArraySchedules.length (); j++) {
-                                                JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
-                                                eventScheduleList.add (new EventSchedule (
-                                                        jsonObjectSchedules.getInt ("schedule_id"),
-                                                        R.drawable.ic_date,
-                                                        jsonObjectSchedules.getInt ("schedule_date_id"),
-                                                        jsonObjectSchedules.getString ("schedule_date"),
-                                                        jsonObjectSchedules.getString ("schedule_start_time"),
-                                                        jsonObjectSchedules.getString ("schedule_end_time"),
-                                                        jsonObjectSchedules.getString ("schedule_description"),
-                                                        jsonObjectSchedules.getString ("schedule_location"),
-                                                        jsonObjectSchedules.getString ("schedule_image")
-                                                ));
-                                            }
-                                            eventScheduleAdapter.notifyDataSetChanged ();
+                                            eventItemList.add (new EventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
+                                            eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
                                         } else {
-
+                                            eventItemList.add (new EventItem (false, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
                                         }
-                                        
-                                        
-                                        
-/*
                                         if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
                                             eventItemList.add (new EventItem (true, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
                                             eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
@@ -229,7 +280,7 @@ public class EventDetailActivity extends AppCompatActivity {
                                         } else {
                                             eventItemList.add (new EventItem (false, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
                                         }
-
+                                        
                                         tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
                                         if (jsonObj.getString (AppConfigTags.EVENT_VENUE).length () > 0) {
                                             tvTitleEventDetail.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
@@ -242,13 +293,13 @@ public class EventDetailActivity extends AppCompatActivity {
                                         }
                                         
                                         eventItemAdapter.notifyDataSetChanged ();
-*/
+                                        
                                         shimmerFrameLayout.setVisibility (View.GONE);
                                         rlMain.setVisibility (View.VISIBLE);
 //                                       updateLayoutOnResponse (0);
                                     } else {
                                         if (! showOfflineData (event_id)) {
-                                            Utils.showSnackBar (EventDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                            Utils.showSnackBar (EventDetailActivityBKP.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                         }
 //                                        updateLayoutOnResponse (1);
                                     }
@@ -256,13 +307,13 @@ public class EventDetailActivity extends AppCompatActivity {
                                     e.printStackTrace ();
                                     Utils.showLog (Log.WARN, AppConfigTags.EXCEPTION, e.getMessage (), true);
                                     if (! showOfflineData (event_id)) {
-                                        Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        Utils.showSnackBar (EventDetailActivityBKP.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
 //                                    updateLayoutOnResponse (2);
                                 }
                             } else {
                                 if (! showOfflineData (event_id)) {
-                                    Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    Utils.showSnackBar (EventDetailActivityBKP.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 }
 //                                updateLayoutOnResponse (3);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
@@ -279,24 +330,24 @@ public class EventDetailActivity extends AppCompatActivity {
                             }
 //                            updateLayoutOnResponse (4);
                             if (! showOfflineData (event_id)) {
-                                Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                Utils.showSnackBar (EventDetailActivityBKP.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
                         }
                     }) {
-    
+                
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-    
+                
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
                     UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
                     params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
-                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (EventDetailActivityBKP.this, UserDetailsPref.USER_LOGIN_KEY));
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }
@@ -431,7 +482,6 @@ public class EventDetailActivity extends AppCompatActivity {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-/*
                     if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
                         eventItemList.add (new EventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
                         eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
@@ -483,8 +533,6 @@ public class EventDetailActivity extends AppCompatActivity {
                     
                     shimmerFrameLayout.setVisibility (View.GONE);
                     rlMain.setVisibility (View.VISIBLE);
-                    
-                    */
                 }
             } catch (Exception e) {
                 e.printStackTrace ();
@@ -543,7 +591,7 @@ public class EventDetailActivity extends AppCompatActivity {
                     Map<String, String> params = new HashMap<> ();
                     UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
                     params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
-                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (EventDetailActivityBKP.this, UserDetailsPref.USER_LOGIN_KEY));
                     Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
                     return params;
                 }
