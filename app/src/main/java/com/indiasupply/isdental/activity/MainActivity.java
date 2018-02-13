@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
                 super.onBackPressed ();
                 return;
             }
-        
             this.doubleBackToExitPressedOnce = true;
             Utils.showToast (this, "Press again to exit", false);
         
