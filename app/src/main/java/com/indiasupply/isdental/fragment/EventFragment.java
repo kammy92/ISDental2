@@ -162,7 +162,8 @@ public class EventFragment extends Fragment {
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE),
+                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY)
                                                 ));
     
                                                 if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {
@@ -286,11 +287,10 @@ public class EventFragment extends Fragment {
                     String city = citiesSelectedList.get (i);
                     for (int j = 0; j < eventList.size (); j++) {
                         Event event = eventList.get (j);
-                        if (event.getLocation ().contains (city)) {
+                        if (event.getCity ().contains (city)) {
                             eventTempList.add (event);
                         }
                     }
-                    Log.e ("karman", city);
                 }
                 
                 eventAdapter = new EventAdapter (getActivity (), eventTempList);
@@ -388,7 +388,8 @@ public class EventFragment extends Fragment {
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
+                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE),
+                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY)
                         ));
     
                         if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {

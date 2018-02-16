@@ -7,9 +7,9 @@ package com.indiasupply.isdental.model;
 public class Event {
     boolean interested;
     int id, icon;
-    String image, name, start_date, end_date, location, type;
+    String image, name, start_date, end_date, location, type, city;
     
-    public Event (boolean interested, int id, int icon, String type, String name, String start_date, String end_date, String location, String image) {
+    public Event (boolean interested, int id, int icon, String type, String name, String start_date, String end_date, String location, String image, String city) {
         this.interested = interested;
         this.id = id;
         this.icon = icon;
@@ -19,6 +19,15 @@ public class Event {
         this.end_date = end_date;
         this.location = location;
         this.type = type;
+        this.city = city;
+    }
+    
+    public String getCity () {
+        return city;
+    }
+    
+    public void setCity (String city) {
+        this.city = city;
     }
     
     public boolean isInterested () {

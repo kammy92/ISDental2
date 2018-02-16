@@ -2,8 +2,8 @@ package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
     public static String version2 = "v2.1.1";
-    //    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
-    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
+    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+//    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     
     
     public static String URL_HOME_EVENT = BASE_URL2 + "home/events";

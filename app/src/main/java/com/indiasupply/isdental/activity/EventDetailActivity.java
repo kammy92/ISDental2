@@ -1,5 +1,6 @@
 package com.indiasupply.isdental.activity;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -45,6 +46,7 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.EventExhibitorAdapter;
 import com.indiasupply.isdental.adapter.EventScheduleAdapter;
 import com.indiasupply.isdental.adapter.EventSpeakerAdapter;
+import com.indiasupply.isdental.dialog.EventFloorPlanDialogFragment;
 import com.indiasupply.isdental.helper.DatabaseHandler;
 import com.indiasupply.isdental.model.EventExhibitor;
 import com.indiasupply.isdental.model.EventSchedule;
@@ -141,6 +143,8 @@ public class EventDetailActivity extends AppCompatActivity {
     List<EventSpeaker> eventSpeakerList = new ArrayList<> ();
     List<EventExhibitor> eventExhibitorList = new ArrayList<> ();
     Bitmap bitmap;
+    
+    String eventFloorPlan = "";
     
     
     @Override
@@ -334,6 +338,16 @@ public class EventDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    
+        ivFloorPlan.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                FragmentTransaction ft = getFragmentManager ().beginTransaction ();
+                EventFloorPlanDialogFragment frag4 = EventFloorPlanDialogFragment.newInstance (event_id, eventFloorPlan);
+                frag4.show (ft, "4");
+            }
+        });
+        
     }
     
     private void initData () {
@@ -361,7 +375,7 @@ public class EventDetailActivity extends AppCompatActivity {
         rvSpeaker.setHasFixedSize (true);
         rvSpeaker.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
         rvSpeaker.setItemAnimator (new DefaultItemAnimator ());
-        rvSpeaker.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvSpeaker.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         rvSpeaker.setNestedScrollingEnabled (false);
     
         exhibitorAdapter = new EventExhibitorAdapter (this, eventExhibitorList);
@@ -369,7 +383,7 @@ public class EventDetailActivity extends AppCompatActivity {
         rvExhibitor.setHasFixedSize (true);
         rvExhibitor.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
         rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
-        rvExhibitor.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvExhibitor.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         rvExhibitor.setNestedScrollingEnabled (false);
     }
     
@@ -555,6 +569,8 @@ public class EventDetailActivity extends AppCompatActivity {
                                             }
                                         }
                                         if (flag) {
+                                            eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+    
                                             if (db.getEventFloorPlan (event_id).length () > 0) {
                                                 ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
                                             } else {

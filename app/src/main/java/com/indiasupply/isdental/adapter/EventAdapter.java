@@ -147,10 +147,14 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance ().createDynamicLink ()
                         .setLink (Uri.parse ("https://indiasupply.com/event/" + event.getId ()))
                         .setDynamicLinkDomain ("ha4qf.app.goo.gl")
-                        // Open links with this app on Android
                         .setAndroidParameters (
                                 new DynamicLink.AndroidParameters.Builder ("com.indiasupply.isdental")
-                                        .setFallbackUrl (Uri.parse ("https://indiasupply.com"))
+                                        .setFallbackUrl (Uri.parse ("https://play.google.com/store/apps/details?id=com.indiasupply.isdental"))
+                                        .build ())
+                        .setIosParameters (
+                                new DynamicLink.IosParameters.Builder ("com.actiknow.IndiaSupply")
+                                        .setAppStoreId ("1322426712")
+                                        .setFallbackUrl (Uri.parse ("https://itunes.apple.com/in/app/indiasupply-dental-app/id1322426712"))
                                         .build ())
                         .setSocialMetaTagParameters (new DynamicLink.SocialMetaTagParameters.Builder ()
                                 .setTitle (event.getName ())
@@ -162,7 +166,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                             @Override
                             public void onComplete (@NonNull Task<ShortDynamicLink> task) {
                                 if (task.isSuccessful ()) {
-                                    String shareBody = "Hi, Following event " + event.getName () + ". deep link : " + task.getResult ().getShortLink ().toString ();
+                                    String shareBody = "Hi, Checkout this event " + event.getName () + " on " + event.getStart_date () + " in " + event.getCity () + ". To view full details visit " + task.getResult ().getShortLink ().toString ();
                                     Intent sharingIntent = new Intent (android.content.Intent.ACTION_SEND);
                                     sharingIntent.setType ("text/plain");
                                     sharingIntent.putExtra (android.content.Intent.EXTRA_TEXT, shareBody);
