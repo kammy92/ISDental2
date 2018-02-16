@@ -254,6 +254,20 @@ public class EventFragment extends Fragment {
         }
     }
     
+   /*
+    @Override
+    public void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState (outState);
+        outState.putStringArrayList ("selected_cities", citiesSelectedList);
+    }
+    
+    @Override
+    public void onActivityCreated (@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated (savedInstanceState);
+        citiesSelectedList = savedInstanceState.getStringArrayList ("selected_cities");
+    }
+   */
+    
     public void showFilterDialog () {
         final MaterialDialog dialog =
                 new MaterialDialog.Builder (getActivity ())
