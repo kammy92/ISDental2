@@ -189,7 +189,6 @@ public class ContactsFragment extends Fragment {
                                 rvContacts.setVisibility (View.VISIBLE);
                                 rlNoCompanyFound.setVisibility (View.GONE);
                             }
-    
                         } else {
                             companyAdapter = new CompanyAdapter2 (getActivity (), companyAllList);
                             rvContacts.setAdapter (companyAdapter);

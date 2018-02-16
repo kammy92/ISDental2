@@ -25,6 +25,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bugsnag.android.Bugsnag;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.ContactsFragment;
 import com.indiasupply.isdental.fragment.EventFragment;
@@ -95,6 +99,49 @@ public class MainActivity extends AppCompatActivity {
 
 //        CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams ();
 //        layoutParams.setBehavior (new BottomNavigationViewBehavior ());
+    
+        FirebaseDynamicLinks.getInstance ()
+                .getDynamicLink (getIntent ())
+                .addOnSuccessListener (this, new OnSuccessListener<PendingDynamicLinkData> () {
+                    @Override
+                    public void onSuccess (PendingDynamicLinkData pendingDynamicLinkData) {
+                        // Get deep link from result (may be null if no link is found)
+                        Utils.showLog (Log.INFO, "Deep Link", "Successfull Deeplink", true);
+                        Uri deepLink = null;
+                        if (pendingDynamicLinkData != null) {
+                            deepLink = pendingDynamicLinkData.getLink ();
+                        }
+                    
+                        if (deepLink != null) {
+                            String path = deepLink.getPath ();
+                            Utils.showLog (Log.INFO, "Deep Link Path", "DeepLink Path " + path, true);
+                        
+                            String[] parts = path.split ("/");
+                            for (int i = 0; i < parts.length; i++) {
+                                Log.e ("karman", "in loop " + parts[i]);
+                            }
+                        
+                        
+                            if (parts[1].equalsIgnoreCase ("event")) {
+                                Utils.showLog (Log.INFO, "Deep Link", "in if", true);
+                                Intent intent = new Intent (MainActivity.this, EventDetailActivity.class);
+                                intent.putExtra (AppConfigTags.EVENT_ID, Integer.parseInt (parts[2]));
+                                startActivity (intent);
+                                overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+                            }
+                        
+                        } else {
+                        
+                        }
+                    
+                    }
+                })
+                .addOnFailureListener (this, new OnFailureListener () {
+                    @Override
+                    public void onFailure (@NonNull Exception e) {
+                        Utils.showLog (Log.ERROR, "Deep Link", "Error occurred " + e, true);
+                    }
+                });
     }
     
     private void isLogin () {
@@ -254,8 +301,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
             bottomNavigationView.setSelectedItemId (R.id.action_item_offers);
         }
-        
     }
+    
     
     private void initApplication () {
         PackageInfo pInfo = null;
@@ -282,7 +329,7 @@ public class MainActivity extends AppCompatActivity {
                                         if (jsonObj.getBoolean (AppConfigTags.VERSION_UPDATE)) {
                                             if (! userDetailsPref.getBooleanPref (MainActivity.this, UserDetailsPref.LOGGED_IN_SESSION)) {
                                                 new MaterialDialog.Builder (MainActivity.this)
-                                                        .content (R.string.dialog_text_new_version_available)
+                                                        .content (jsonObj.getString (AppConfigTags.UPDATE_MESSAGE))
                                                         .positiveColor (getResources ().getColor (R.color.primary_text2))
                                                         .contentColor (getResources ().getColor (R.color.primary_text2))
                                                         .negativeColor (getResources ().getColor (R.color.primary_text2))

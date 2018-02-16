@@ -86,13 +86,16 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
         holder.tvOfferRegularPrice.setText ("Rs. " + offer.getRegular_price ());
         holder.tvOfferMRP.setText ("Rs. " + offer.getMrp ());
         holder.tvOfferSavings.setText ("Rs. " + (offer.getMrp () - offer.getPrice ()));
-        
-        double percentage = ((offer.getMrp () - offer.getPrice ()) * 100) / offer.getMrp ();
-        if (percentage > 15) {
-            holder.tvOfferPercentage.setVisibility (View.VISIBLE);
-            holder.tvOfferPercentage.setText ((int) percentage + "% Off");
-        } else {
-            holder.tvOfferPercentage.setVisibility (View.GONE);
+        try {
+            double percentage = ((offer.getMrp () - offer.getPrice ()) * 100) / offer.getMrp ();
+            if (percentage > 15) {
+                holder.tvOfferPercentage.setVisibility (View.VISIBLE);
+                holder.tvOfferPercentage.setText ((int) percentage + "% Off");
+            } else {
+                holder.tvOfferPercentage.setVisibility (View.GONE);
+            }
+        } catch (Exception e) {
+            e.printStackTrace ();
         }
         
         

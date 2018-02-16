@@ -5,10 +5,12 @@ package com.indiasupply.isdental.model;
  */
 
 public class Event {
+    boolean interested;
     int id, icon;
     String image, name, start_date, end_date, location, type;
     
-    public Event (int id, int icon, String type, String name, String start_date, String end_date, String location, String image) {
+    public Event (boolean interested, int id, int icon, String type, String name, String start_date, String end_date, String location, String image) {
+        this.interested = interested;
         this.id = id;
         this.icon = icon;
         this.image = image;
@@ -17,6 +19,14 @@ public class Event {
         this.end_date = end_date;
         this.location = location;
         this.type = type;
+    }
+    
+    public boolean isInterested () {
+        return interested;
+    }
+    
+    public void setInterested (boolean interested) {
+        this.interested = interested;
     }
     
     public String getType () {

@@ -12,7 +12,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -28,6 +33,7 @@ import com.indiasupply.isdental.utils.AppDataPref;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
@@ -36,6 +42,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -45,13 +53,22 @@ import java.util.Map;
 public class EventFragment extends Fragment {
     RecyclerView rvEvents;
     List<Event> eventList = new ArrayList<> ();
+    List<Event> eventTempList = new ArrayList<> ();
     EventAdapter eventAdapter;
+    
+    RelativeLayout rlFilter;
+    TextView tvEventFilter;
     
     CoordinatorLayout clMain;
     ShimmerFrameLayout shimmerFrameLayout;
     AppDataPref appDataPref;
     
+    
     boolean refresh;
+    
+    ArrayList<String> citiesList = new ArrayList<String> ();
+    ArrayList<String> citiesSelectedList = new ArrayList<String> ();
+    ArrayList<String> citiesSelectedTempList = new ArrayList<String> ();
     
     public static EventFragment newInstance (boolean refresh) {
         EventFragment fragment = new EventFragment ();
@@ -60,6 +77,7 @@ public class EventFragment extends Fragment {
         fragment.setArguments (args);
         return fragment;
     }
+    
     @Override
     public void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -78,6 +96,8 @@ public class EventFragment extends Fragment {
     private void initView (View rootView) {
         rvEvents = (RecyclerView) rootView.findViewById (R.id.rvEvents);
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
+        rlFilter = (RelativeLayout) rootView.findViewById (R.id.rlFilter);
+        tvEventFilter = (TextView) rootView.findViewById (R.id.tvEventFilter);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
     }
     
@@ -104,6 +124,12 @@ public class EventFragment extends Fragment {
     }
     
     private void initListener () {
+        rlFilter.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                showFilterDialog ();
+            }
+        });
     }
     
     private void setData () {
@@ -121,12 +147,14 @@ public class EventFragment extends Fragment {
                                         boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
+                                            citiesList.clear ();
                                             eventList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_EVENTS, response);
                                             JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
                                             for (int i = 0; i < jsonArrayEvents.length (); i++) {
                                                 JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                                                 eventList.add (new Event (
+                                                        jsonObjectEvents.getBoolean (AppConfigTags.SWIGGY_EVENT_INTERESTED),
                                                         jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
                                                         R.drawable.default_event,
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
@@ -136,7 +164,21 @@ public class EventFragment extends Fragment {
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                                         jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
                                                 ));
+    
+                                                if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {
+                                                    citiesList.add (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                                }
                                             }
+    
+                                            Collections.sort (citiesList, new Comparator<String> () {
+                                                @Override
+                                                public int compare (String s1, String s2) {
+                                                    return s1.compareToIgnoreCase (s2);
+                                                }
+                                            });
+                                            citiesSelectedList.addAll (citiesList);
+                                            citiesSelectedTempList.addAll (citiesList);
+                                            
                                             eventAdapter.notifyDataSetChanged ();
                                             rvEvents.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
@@ -145,6 +187,7 @@ public class EventFragment extends Fragment {
                                                 Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                             }
                                         }
+    
                                     } catch (Exception e) {
                                         e.printStackTrace ();
                                         if (! showOfflineData ()) {
@@ -210,6 +253,100 @@ public class EventFragment extends Fragment {
         }
     }
     
+    public void showFilterDialog () {
+        final MaterialDialog dialog =
+                new MaterialDialog.Builder (getActivity ())
+                        .title ("Select Cities")
+                        .customView (R.layout.dialog_event_filter, true)
+                        .positiveText ("APPLY")
+                        .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
+                        .negativeText ("CANCEL")
+                        .build ();
+        
+        dialog.getActionButton (DialogAction.POSITIVE).setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedList.clear ();
+                eventTempList.clear ();
+                citiesSelectedList.addAll (citiesSelectedTempList);
+                if (citiesSelectedList.size () == citiesList.size ()) {
+                    tvEventFilter.setText ("All Cities");
+                } else if (! citiesSelectedList.isEmpty ()) {
+                    if (citiesSelectedList.size () > 1) {
+                        tvEventFilter.setText (citiesSelectedList.get (0) + " + " + (citiesSelectedList.size () - 1));
+                    } else {
+                        tvEventFilter.setText (citiesSelectedList.get (0));
+                    }
+                } else {
+                    tvEventFilter.setText ("No City");
+                }
+                
+                
+                for (int i = 0; i < citiesSelectedList.size (); i++) {
+                    String city = citiesSelectedList.get (i);
+                    for (int j = 0; j < eventList.size (); j++) {
+                        Event event = eventList.get (j);
+                        if (event.getLocation ().contains (city)) {
+                            eventTempList.add (event);
+                        }
+                    }
+                    Log.e ("karman", city);
+                }
+                
+                eventAdapter = new EventAdapter (getActivity (), eventTempList);
+                rvEvents.setAdapter (eventAdapter);
+                rvEvents.setNestedScrollingEnabled (false);
+                rvEvents.setFocusable (false);
+                rvEvents.setHasFixedSize (true);
+                rvEvents.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+                
+                
+                dialog.dismiss ();
+            }
+        });
+        
+        dialog.getActionButton (DialogAction.NEGATIVE).setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                citiesSelectedTempList.addAll (citiesSelectedList);
+                dialog.dismiss ();
+            }
+        });
+        
+        final RecyclerView rvCities = (RecyclerView) dialog.findViewById (R.id.rvCities);
+        
+        final CityAdapter cityAdapter = new CityAdapter (citiesList);
+        rvCities.setAdapter (cityAdapter);
+        rvCities.setNestedScrollingEnabled (false);
+        rvCities.setFocusable (false);
+        rvCities.setHasFixedSize (true);
+        rvCities.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        
+        Utils.setTypefaceToAllViews (getActivity (), rvCities);
+        
+        TextView tvSelectAll = (TextView) dialog.findViewById (R.id.tvSelectAll);
+        TextView tvDeselectAll = (TextView) dialog.findViewById (R.id.tvDeselectAll);
+        
+        tvSelectAll.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                citiesSelectedTempList.addAll (citiesList);
+                cityAdapter.notifyDataSetChanged ();
+            }
+        });
+        
+        tvDeselectAll.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                cityAdapter.notifyDataSetChanged ();
+            }
+        });
+        dialog.show ();
+    }
+    
     @Override
     public void onStart () {
         super.onStart ();
@@ -238,10 +375,12 @@ public class EventFragment extends Fragment {
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
                     eventList.clear ();
+                    citiesList.clear ();
                     JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
                     for (int i = 0; i < jsonArrayEvents.length (); i++) {
                         JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                         eventList.add (new Event (
+                                jsonObjectEvents.getBoolean (AppConfigTags.SWIGGY_EVENT_INTERESTED),
                                 jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
                                 R.drawable.default_event,
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
@@ -251,6 +390,10 @@ public class EventFragment extends Fragment {
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY),
                                 jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE)
                         ));
+    
+                        if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {
+                            citiesList.add (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                        }
                     }
                     eventAdapter.notifyDataSetChanged ();
                     rvEvents.setVisibility (View.VISIBLE);
@@ -262,6 +405,62 @@ public class EventFragment extends Fragment {
             return true;
         } else {
             return false;
+        }
+    }
+    
+    public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+        private List<String> citiesList = new ArrayList<> ();
+        
+        public CityAdapter (List<String> citiesList) {
+            this.citiesList = citiesList;
+        }
+        
+        @Override
+        public ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+            final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
+            final View sView = mInflater.inflate (R.layout.list_item_event_filter, parent, false);
+            return new ViewHolder (sView);
+        }
+        
+        @Override
+        public void onBindViewHolder (final ViewHolder holder, int position) {
+            final String city = citiesList.get (position);
+            Utils.setTypefaceToAllViews (getActivity (), holder.cbCity);
+            holder.cbCity.setText (city);
+            
+            
+            if (citiesSelectedTempList.contains (city)) {
+                holder.cbCity.setChecked (true);
+            } else {
+                holder.cbCity.setChecked (false);
+            }
+        }
+        
+        @Override
+        public int getItemCount () {
+            return citiesList.size ();
+        }
+        
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            CheckBox cbCity;
+            
+            public ViewHolder (View view) {
+                super (view);
+                cbCity = (CheckBox) view.findViewById (R.id.cbCity);
+                view.setOnClickListener (this);
+            }
+            
+            @Override
+            public void onClick (View v) {
+                String city = citiesList.get (getLayoutPosition ());
+                if (citiesSelectedTempList.contains (city)) {
+                    cbCity.setChecked (false);
+                    citiesSelectedTempList.remove (city);
+                } else {
+                    cbCity.setChecked (true);
+                    citiesSelectedTempList.add (city);
+                }
+            }
         }
     }
 }

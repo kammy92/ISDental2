@@ -133,6 +133,7 @@ public class AppConfigTags {
     public static final String VERSION_NAME = "version_name";
     public static final String VERSION_UPDATED_ON = "version_updated_on";
     public static final String VERSION_UPDATE = "version_update";
+    public static final String UPDATE_MESSAGE = "update_message";
     public static final String VERSION_UPDATE_CRITICAL = "version_update_critical";
     
     public static final String USER_ID = "user_id";
@@ -174,7 +175,9 @@ public class AppConfigTags {
     public static final String SWIGGY_EVENT_START_DATE = "event_start_date";
     public static final String SWIGGY_EVENT_END_DATE = "event_end_date";
     public static final String SWIGGY_EVENT_VENUE = "event_venue";
+    public static final String SWIGGY_EVENT_VENUE_FULL = "event_venue_full";
     public static final String SWIGGY_EVENT_CITY = "event_city";
+    public static final String SWIGGY_EVENT_INTERESTED = "event_interested";
     
     
     public static final String SWIGGY_EVENT_INFORMATION = "event_information";

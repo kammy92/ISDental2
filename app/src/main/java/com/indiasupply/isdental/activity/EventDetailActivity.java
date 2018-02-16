@@ -1,23 +1,31 @@
 package com.indiasupply.isdental.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableStringBuilder;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -27,10 +35,20 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.davemorrissey.labs.subscaleview.ImageSource;
+import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.adapter.EventExhibitorAdapter;
 import com.indiasupply.isdental.adapter.EventScheduleAdapter;
+import com.indiasupply.isdental.adapter.EventSpeakerAdapter;
 import com.indiasupply.isdental.helper.DatabaseHandler;
+import com.indiasupply.isdental.model.EventExhibitor;
 import com.indiasupply.isdental.model.EventSchedule;
+import com.indiasupply.isdental.model.EventSpeaker;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -68,12 +86,62 @@ public class EventDetailActivity extends AppCompatActivity {
     TextView tvNoResultDescription;
     TextView tvNoResultButton;
     
-    EventScheduleAdapter eventScheduleAdapter;
+    
+    NestedScrollView nestedScrollView;
+    
+    
+    TextView tvEventName;
+    TextView tvEventDates;
+    TextView tvEventVenue;
+    ImageView ivEventImage;
+    ProgressBar progressBar;
+    
+    
+    RelativeLayout rlSchedule;
+    RelativeLayout rlE1;
+    ImageView ivE1;
     RecyclerView rvSchedule;
+    EventScheduleAdapter eventScheduleAdapter;
+    
+    
+    RelativeLayout rlSpeaker;
+    RelativeLayout rlE2;
+    ImageView ivE2;
+    RecyclerView rvSpeaker;
+    EventSpeakerAdapter eventSpeakerAdapter;
+    
+    
+    RelativeLayout rlExhibitors;
+    RelativeLayout rlE3;
+    ImageView ivE3;
+    RecyclerView rvExhibitor;
+    EventExhibitorAdapter exhibitorAdapter;
+    
+    
+    RelativeLayout rlFloorPlan;
+    RelativeLayout rlE4;
+    ImageView ivE4;
+    SubsamplingScaleImageView ivFloorPlan;
+    
+    RelativeLayout rlInformation;
+    RelativeLayout rlE5;
+    ImageView ivE5;
+    WebView wvInformation;
+    
+    RelativeLayout rlRegistration;
+    RelativeLayout rlE6;
+    ImageView ivE6;
+    WebView wvRegistration;
+    
     
     DatabaseHandler db;
     
+    
     List<EventSchedule> eventScheduleList = new ArrayList<> ();
+    List<EventSpeaker> eventSpeakerList = new ArrayList<> ();
+    List<EventExhibitor> eventExhibitorList = new ArrayList<> ();
+    Bitmap bitmap;
+    
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -92,7 +160,178 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onClick (View v) {
                 finish ();
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
+            
+            }
+        });
+    
+        rlE1.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (rvSchedule.getVisibility () == View.VISIBLE) {
+                    rvSchedule.setVisibility (View.GONE);
+                    ivE1.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE1.setImageResource (R.drawable.ic_arrow_down);
+                            ivE1.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    rvSchedule.setVisibility (View.VISIBLE);
+                    ivE1.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE1.setImageResource (R.drawable.ic_arrow_up);
+                            ivE1.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                }
+            
+            }
+        });
+    
+        rlE2.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (rvSpeaker.getVisibility () == View.VISIBLE) {
+                    rvSpeaker.setVisibility (View.GONE);
+                    ivE2.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE2.setImageResource (R.drawable.ic_arrow_down);
+                            ivE2.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    rvSpeaker.setVisibility (View.VISIBLE);
+                    ivE2.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE2.setImageResource (R.drawable.ic_arrow_up);
+                            ivE2.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                }
+            }
+        });
+    
+        rlE3.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (rvExhibitor.getVisibility () == View.VISIBLE) {
+                    rvExhibitor.setVisibility (View.GONE);
+                    ivE3.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE3.setImageResource (R.drawable.ic_arrow_down);
+                            ivE3.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    rvExhibitor.setVisibility (View.VISIBLE);
+                    ivE3.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE3.setImageResource (R.drawable.ic_arrow_up);
+                            ivE3.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                }
+            }
+        });
+    
+        rlE4.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (ivFloorPlan.getVisibility () == View.VISIBLE) {
+                    ivFloorPlan.setVisibility (View.GONE);
+                    ivE4.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE4.setImageResource (R.drawable.ic_arrow_down);
+                            ivE4.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    ivFloorPlan.setVisibility (View.VISIBLE);
+                    ivE4.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE4.setImageResource (R.drawable.ic_arrow_up);
+                            ivE4.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                }
+            }
+        });
+        rlE5.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (wvInformation.getVisibility () == View.VISIBLE) {
+                    wvInformation.setVisibility (View.GONE);
+                    ivE5.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE5.setImageResource (R.drawable.ic_arrow_down);
+                            ivE5.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    wvInformation.setVisibility (View.VISIBLE);
+                    ivE5.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE5.setImageResource (R.drawable.ic_arrow_up);
+                            ivE5.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                }
+            }
+        });
+        rlE6.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                if (wvRegistration.getVisibility () == View.VISIBLE) {
+                    wvRegistration.setVisibility (View.GONE);
+                    ivE6.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE6.setImageResource (R.drawable.ic_arrow_down);
+                            ivE6.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
+                } else {
+                    wvRegistration.setVisibility (View.VISIBLE);
+                    ivE6.animate ().alpha (0f).setDuration (200);
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            ivE6.setImageResource (R.drawable.ic_arrow_up);
+                            ivE6.animate ().alpha (1.0f).setDuration (200);
+                        }
+                    }, 200);
                 
+                    new Handler ().postDelayed (new Runnable () {
+                        @Override
+                        public void run () {
+                            nestedScrollView.setSmoothScrollingEnabled (true);
+                            nestedScrollView.fullScroll (NestedScrollView.FOCUS_DOWN);
+                        }
+                    }, 400);
+                
+                
+                }
             }
         });
     }
@@ -116,6 +355,22 @@ public class EventDetailActivity extends AppCompatActivity {
         rvSchedule.setItemAnimator (new DefaultItemAnimator ());
         rvSchedule.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 8), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
         rvSchedule.setNestedScrollingEnabled (false);
+    
+        eventSpeakerAdapter = new EventSpeakerAdapter (this, eventSpeakerList);
+        rvSpeaker.setAdapter (eventSpeakerAdapter);
+        rvSpeaker.setHasFixedSize (true);
+        rvSpeaker.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
+        rvSpeaker.setItemAnimator (new DefaultItemAnimator ());
+        rvSpeaker.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvSpeaker.setNestedScrollingEnabled (false);
+    
+        exhibitorAdapter = new EventExhibitorAdapter (this, eventExhibitorList);
+        rvExhibitor.setAdapter (exhibitorAdapter);
+        rvExhibitor.setHasFixedSize (true);
+        rvExhibitor.setLayoutManager (new LinearLayoutManager (this, LinearLayoutManager.VERTICAL, false));
+        rvExhibitor.setItemAnimator (new DefaultItemAnimator ());
+        rvExhibitor.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), (int) Utils.pxFromDp (this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+        rvExhibitor.setNestedScrollingEnabled (false);
     }
     
     private void initView () {
@@ -128,8 +383,44 @@ public class EventDetailActivity extends AppCompatActivity {
         tvNoResultTitle = (TextView) findViewById (R.id.tvNoResultTitle);
         tvNoResultDescription = (TextView) findViewById (R.id.tvNoResultDescription);
         tvNoResultButton = (TextView) findViewById (R.id.tvNoResultButton);
+        nestedScrollView = (NestedScrollView) findViewById (R.id.nestedScrollView);
     
+        tvEventDates = (TextView) findViewById (R.id.tvEventDates);
+        tvEventName = (TextView) findViewById (R.id.tvEventName);
+        tvEventVenue = (TextView) findViewById (R.id.tvEventVenue);
+        ivEventImage = (ImageView) findViewById (R.id.ivEventImage);
+        progressBar = (ProgressBar) findViewById (R.id.progressBar);
+    
+    
+        rlSchedule = (RelativeLayout) findViewById (R.id.rlSchedule);
+        rlE1 = (RelativeLayout) findViewById (R.id.rlE1);
+        ivE1 = (ImageView) findViewById (R.id.ivE1);
         rvSchedule = (RecyclerView) findViewById (R.id.rvSchedule);
+    
+        rlSpeaker = (RelativeLayout) findViewById (R.id.rlSpeakers);
+        rlE2 = (RelativeLayout) findViewById (R.id.rlE2);
+        ivE2 = (ImageView) findViewById (R.id.ivE2);
+        rvSpeaker = (RecyclerView) findViewById (R.id.rvSpeakers);
+    
+        rlExhibitors = (RelativeLayout) findViewById (R.id.rlExhibitors);
+        rlE3 = (RelativeLayout) findViewById (R.id.rlE3);
+        ivE3 = (ImageView) findViewById (R.id.ivE3);
+        rvExhibitor = (RecyclerView) findViewById (R.id.rvExhibitors);
+    
+        rlFloorPlan = (RelativeLayout) findViewById (R.id.rlFloorPlan);
+        rlE4 = (RelativeLayout) findViewById (R.id.rlE4);
+        ivE4 = (ImageView) findViewById (R.id.ivE4);
+        ivFloorPlan = (SubsamplingScaleImageView) findViewById (R.id.ivFloorPlan);
+    
+        rlInformation = (RelativeLayout) findViewById (R.id.rlInformation);
+        rlE5 = (RelativeLayout) findViewById (R.id.rlE5);
+        ivE5 = (ImageView) findViewById (R.id.ivE5);
+        wvInformation = (WebView) findViewById (R.id.wvInformation);
+    
+        rlRegistration = (RelativeLayout) findViewById (R.id.rlRegistration);
+        rlE6 = (RelativeLayout) findViewById (R.id.rlE6);
+        ivE6 = (ImageView) findViewById (R.id.ivE6);
+        wvRegistration = (WebView) findViewById (R.id.wvRegistration);
     }
     
     private void getExtras () {
@@ -166,8 +457,42 @@ public class EventDetailActivity extends AppCompatActivity {
                                             db.insertEvent (event_id, response);
                                         }
     
+    
+                                        tvEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE))) {
+                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                                        } else {
+                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                                        }
+    
+                                        tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+    
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE).length () == 0) {
+                                            ivEventImage.setImageResource (R.drawable.default_event2);
+                                            progressBar.setVisibility (View.GONE);
+                                        } else {
+                                            progressBar.setVisibility (View.VISIBLE);
+                                            Glide.with (EventDetailActivity.this)
+                                                    .load (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE))
+                                                    .listener (new RequestListener<String, GlideDrawable> () {
+                                                        @Override
+                                                        public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                                            progressBar.setVisibility (View.GONE);
+                                                            return false;
+                                                        }
+                    
+                                                        @Override
+                                                        public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                                            progressBar.setVisibility (View.GONE);
+                                                            return false;
+                                                        }
+                                                    })
+                                                    .error (R.drawable.default_event2)
+                                                    .into (ivEventImage);
+                                        }
+                                        
+                                        
                                         if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-        
                                             JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules");
                                             for (int j = 0; j < jsonArraySchedules.length (); j++) {
                                                 JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
@@ -184,11 +509,76 @@ public class EventDetailActivity extends AppCompatActivity {
                                                 ));
                                             }
                                             eventScheduleAdapter.notifyDataSetChanged ();
+                                            rlSchedule.setVisibility (View.VISIBLE);
                                         } else {
-
+                                            rlSchedule.setVisibility (View.GONE);
                                         }
-                                        
-                                        
+    
+                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
+                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
+                                            for (int j = 0; j < jsonArray.length (); j++) {
+                                                JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
+                                                eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                                                        R.drawable.default_speaker,
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+                                            }
+                                            eventSpeakerAdapter.notifyDataSetChanged ();
+                                            rlSpeaker.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlSpeaker.setVisibility (View.GONE);
+                                        }
+    
+                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
+                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
+                                            for (int j = 0; j < jsonArray.length (); j++) {
+                                                JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
+                                                eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                                                        R.drawable.ic_event_exhibitor,
+                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
+                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
+                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+                                            }
+                                            exhibitorAdapter.notifyDataSetChanged ();
+                                            rlExhibitors.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlExhibitors.setVisibility (View.GONE);
+                                        }
+    
+                                        boolean flag = false;
+                                        for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
+                                            if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
+                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                                                flag = true;
+                                                break;
+                                            }
+                                        }
+                                        if (flag) {
+                                            if (db.getEventFloorPlan (event_id).length () > 0) {
+                                                ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
+                                            } else {
+                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                                            }
+                                            rlFloorPlan.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlFloorPlan.setVisibility (View.GONE);
+                                        }
+    
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
+                                            getWebView (wvInformation, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION));
+                                            rlInformation.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlInformation.setVisibility (View.GONE);
+                                        }
+    
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
+                                            getWebView (wvRegistration, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION));
+                                            rlRegistration.setVisibility (View.VISIBLE);
+                                        } else {
+                                            rlRegistration.setVisibility (View.GONE);
+                                        }
+
                                         
 /*
                                         if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
@@ -553,6 +943,17 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
     
+    private void getWebView (WebView webView, String html) {
+        webView.setWebViewClient (new CustomWebViewClient ());
+        WebSettings webSetting = webView.getSettings ();
+        webSetting.setJavaScriptEnabled (true);
+        webSetting.setDisplayZoomControls (true);
+        //htmlWebView.loadUrl ("https://www.indiasupply.com/");
+        SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (
+                "<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + html);
+        webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
+    }
+    
     private class getBitmapFromURL extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground (String... params) {
@@ -562,7 +963,8 @@ public class EventDetailActivity extends AppCompatActivity {
                 connection.setDoInput (true);
                 connection.connect ();
                 InputStream input = connection.getInputStream ();
-                db.updateEventFloorPlan (event_id, Utils.bitmapToBase64 (BitmapFactory.decodeStream (input)));
+                bitmap = BitmapFactory.decodeStream (input);
+                
             } catch (IOException e) {
                 e.printStackTrace ();
             }
@@ -571,18 +973,25 @@ public class EventDetailActivity extends AppCompatActivity {
         
         @Override
         protected void onPostExecute (String result) {
-//            ivFloorPlan.setImage (ImageSource.bitmap (bitmap));
-//            ivFloorPlan.setVisibility (View.VISIBLE);
-//            progressBar.setVisibility (View.GONE);
+            ivFloorPlan.setImage (ImageSource.bitmap (bitmap));
         }
         
         @Override
         protected void onPreExecute () {
-//            progressBar.setVisibility (View.VISIBLE);
         }
         
         @Override
         protected void onProgressUpdate (Void... values) {
         }
     }
+    
+    private class CustomWebViewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading (WebView view, String url) {
+            view.loadUrl (url);
+            return true;
+        }
+    }
+    
+    
 }

@@ -56,8 +56,17 @@
                   android:theme="@style/LoginScreenTheme"
                   android:windowSoftInputMode="adjustResize"/>
 
-        <activity android:name="com.indiasupply.isdental.activity.MainActivity"
-                  android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.indiasupply.isdental.activity.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:host="indiasupply.com" android:scheme="http"/>
+                <data android:host="indiasupply.com" android:scheme="https"/>
+            </intent-filter>
+        </activity>
 
 
         <service android:name="com.indiasupply.isdental.service.MyFirebaseMessagingService">
