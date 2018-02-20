@@ -61,7 +61,11 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
         Utils.setTypefaceToAllViews (activity, holder.tvContactName);
         
         holder.tvContactName.setText (contactsDetail.getName ());
-        holder.tvContactLocation.setText (contactsDetail.getLocation ());
+        if (contactsDetail.getCity ().length () > 0) {
+            holder.tvContactLocation.setText (contactsDetail.getCity () + ", " + contactsDetail.getState ());
+        } else {
+            holder.tvContactLocation.setText (contactsDetail.getState ());
+        }
         
         switch (contactsDetail.getType ()) {
             case 1:

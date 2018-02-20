@@ -42,6 +42,7 @@ import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
+import com.razorpay.Checkout;
 
 import org.json.JSONObject;
 
@@ -91,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
 //            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
 //        }
         Bugsnag.init (this);
-        
+    
+        Checkout.preload (getApplicationContext ());
+    
+    
         Utils.setTypefaceToAllViews (this, clMain);
         Utils.disableShiftMode (bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu ();

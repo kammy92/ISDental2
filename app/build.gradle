@@ -49,6 +49,8 @@ dependencies {
     compile 'com.stephentuso:welcome:1.4.1'
     compile 'com.bugsnag:bugsnag-android:3.+'
     compile 'org.sufficientlysecure:html-textview:3.5'
+
+    compile 'com.razorpay:checkout:1.4.5'
 }
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'

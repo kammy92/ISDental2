@@ -56,9 +56,10 @@ import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
-import com.indiasupply.isdental.utils.ShimmerFrameLayout;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -73,13 +74,13 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class EventDetailActivity extends AppCompatActivity {
+public class EventDetailActivity extends AppCompatActivity implements PaymentResultListener {
     RelativeLayout rlBack;
     CoordinatorLayout clMain;
     
     int event_id;
     
-    ShimmerFrameLayout shimmerFrameLayout;
+    //    ShimmerFrameLayout shimmerFrameLayout;
     RelativeLayout rlMain;
     
     RelativeLayout rlNoResult;
@@ -87,6 +88,8 @@ public class EventDetailActivity extends AppCompatActivity {
     TextView tvNoResultTitle;
     TextView tvNoResultDescription;
     TextView tvNoResultButton;
+    
+    ProgressBar progressBar2;
     
     
     NestedScrollView nestedScrollView;
@@ -164,7 +167,7 @@ public class EventDetailActivity extends AppCompatActivity {
             public void onClick (View v) {
                 finish ();
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
-            
+    
             }
         });
     
@@ -192,7 +195,7 @@ public class EventDetailActivity extends AppCompatActivity {
                         }
                     }, 200);
                 }
-            
+    
             }
         });
     
@@ -325,7 +328,7 @@ public class EventDetailActivity extends AppCompatActivity {
                             ivE6.animate ().alpha (1.0f).setDuration (200);
                         }
                     }, 200);
-                
+    
                     new Handler ().postDelayed (new Runnable () {
                         @Override
                         public void run () {
@@ -333,8 +336,8 @@ public class EventDetailActivity extends AppCompatActivity {
                             nestedScrollView.fullScroll (NestedScrollView.FOCUS_DOWN);
                         }
                     }, 400);
-                
-                
+    
+    
                 }
             }
         });
@@ -348,6 +351,14 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         });
         
+      /*
+        ivEventImage.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                startPayment ();
+            }
+        });
+      */
     }
     
     private void initData () {
@@ -390,7 +401,7 @@ public class EventDetailActivity extends AppCompatActivity {
     private void initView () {
         rlBack = (RelativeLayout) findViewById (R.id.rlBack);
         clMain = (CoordinatorLayout) findViewById (R.id.clMain);
-        shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
+//        shimmerFrameLayout = (ShimmerFrameLayout) findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) findViewById (R.id.rlMain);
         rlNoResult = (RelativeLayout) findViewById (R.id.rlNoResult);
         ivNoResult = (ImageView) findViewById (R.id.ivNoResult);
@@ -399,6 +410,9 @@ public class EventDetailActivity extends AppCompatActivity {
         tvNoResultButton = (TextView) findViewById (R.id.tvNoResultButton);
         nestedScrollView = (NestedScrollView) findViewById (R.id.nestedScrollView);
     
+        progressBar2 = (ProgressBar) findViewById (R.id.progressBar2);
+        
+        
         tvEventDates = (TextView) findViewById (R.id.tvEventDates);
         tvEventName = (TextView) findViewById (R.id.tvEventName);
         tvEventVenue = (TextView) findViewById (R.id.tvEventVenue);
@@ -449,7 +463,8 @@ public class EventDetailActivity extends AppCompatActivity {
     }
     
     private void setData () {
-        shimmerFrameLayout.setVisibility (View.VISIBLE);
+        progressBar2.setVisibility (View.VISIBLE);
+//        shimmerFrameLayout.setVisibility (View.VISIBLE);
         rlMain.setVisibility (View.GONE);
         rlNoResult.setVisibility (View.GONE);
         if (NetworkConnection.isNetworkAvailable (this)) {
@@ -470,7 +485,6 @@ public class EventDetailActivity extends AppCompatActivity {
                                         } else {
                                             db.insertEvent (event_id, response);
                                         }
-    
     
                                         tvEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
                                         if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE))) {
@@ -494,7 +508,7 @@ public class EventDetailActivity extends AppCompatActivity {
                                                             progressBar.setVisibility (View.GONE);
                                                             return false;
                                                         }
-                    
+    
                                                         @Override
                                                         public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                                             progressBar.setVisibility (View.GONE);
@@ -594,69 +608,14 @@ public class EventDetailActivity extends AppCompatActivity {
                                         } else {
                                             rlRegistration.setVisibility (View.GONE);
                                         }
-
-                                        
-/*
-                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
-                                            eventItemList.add (new EventItem (true, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
-                                            eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
-                                        } else {
-                                            eventItemList.add (new EventItem (false, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
-                                        }
-                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
-                                            eventItemList.add (new EventItem (true, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
-                                            eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
-                                        } else {
-                                            eventItemList.add (new EventItem (false, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
-                                        }
-                                        boolean flag = false;
-                                        for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                                            if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
-                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
-                                                flag = true;
-                                                break;
-                                            }
-                                        }
-                                        if (flag) {
-                                            eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
-                                            eventItemList.add (new EventItem (true, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
-                                        } else {
-                                            eventItemList.add (new EventItem (false, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
-                                        }
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
-                                            eventItemList.add (new EventItem (true, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
-                                            eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
-                                        } else {
-                                            eventItemList.add (new EventItem (false, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
-                                        }
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
-                                            eventItemList.add (new EventItem (true, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
-                                            eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
-                                        } else {
-                                            eventItemList.add (new EventItem (false, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
-                                        }
-
-                                        tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
-                                        if (jsonObj.getString (AppConfigTags.EVENT_VENUE).length () > 0) {
-                                            tvTitleEventDetail.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                                        } else {
-                                            if (jsonObj.getString (AppConfigTags.EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.EVENT_END_DATE))) {
-                                                tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                                            } else {
-                                                tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                                            }
-                                        }
-                                        
-                                        eventItemAdapter.notifyDataSetChanged ();
-*/
-                                        shimmerFrameLayout.setVisibility (View.GONE);
+    
+                                        progressBar2.setVisibility (View.GONE);
+//                                        shimmerFrameLayout.setVisibility (View.GONE);
                                         rlMain.setVisibility (View.VISIBLE);
-//                                       updateLayoutOnResponse (0);
                                     } else {
                                         if (! showOfflineData (event_id)) {
                                             Utils.showSnackBar (EventDetailActivity.this, clMain, message, Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                         }
-//                                        updateLayoutOnResponse (1);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
@@ -664,13 +623,11 @@ public class EventDetailActivity extends AppCompatActivity {
                                     if (! showOfflineData (event_id)) {
                                         Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                     }
-//                                    updateLayoutOnResponse (2);
                                 }
                             } else {
                                 if (! showOfflineData (event_id)) {
                                     Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                                 }
-//                                updateLayoutOnResponse (3);
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
                         }
@@ -683,7 +640,6 @@ public class EventDetailActivity extends AppCompatActivity {
                             if (response != null && response.data != null) {
                                 Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
                             }
-//                            updateLayoutOnResponse (4);
                             if (! showOfflineData (event_id)) {
                                 Utils.showSnackBar (EventDetailActivity.this, clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
                             }
@@ -709,7 +665,6 @@ public class EventDetailActivity extends AppCompatActivity {
             };
             Utils.sendRequest (strRequest, 20);
         } else {
-//            updateLayoutOnResponse (5);
             if (! showOfflineData (event_id)) {
                 Utils.showSnackBar (this, clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
                     @Override
@@ -723,178 +678,168 @@ public class EventDetailActivity extends AppCompatActivity {
         }
     }
     
-    /*
-    private void updateLayoutOnResponse (int type) {
-// type => 0(No error data fetched successfully)
-// type => 1(error true in server response)
-// type => 2(Exception Occurred)
-// type => 3(Blank response from server)
-// type => 4(In onError of volley)
-// type => 5(No Internet connection)
-        String title = "";
-        String description = "";
-        String button = "";
-        View.OnClickListener onClickListener = new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-            }
-        };
-        shimmerFrameLayout.setVisibility (View.GONE);
-        switch (type) {
-            case 0:
-                rlMain.setVisibility (View.VISIBLE);
-                break;
-            case 1:
-                title = "Oops.. Error Occurred!";
-                description = "There seems to be an error while processing your request";
-                button = "RETRY";
-                onClickListener = new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        setData ();
-                    }
-                };
-                rlNoResult.setVisibility (View.VISIBLE);
-                break;
-            case 2:
-                title = "Oops.. Exception Occurred!";
-                description = "An exception occurred while processing the request";
-                button = "RETRY";
-                onClickListener = new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        setData ();
-                    }
-                };
-                rlNoResult.setVisibility (View.VISIBLE);
-                break;
-            case 3:
-                title = "Oops.. Error Occurred!";
-                description = "A blank response was received from the server";
-                button = "RETRY";
-                onClickListener = new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        setData ();
-                    }
-                };
-                rlNoResult.setVisibility (View.VISIBLE);
-                break;
-            case 4:
-                title = "Oops.. Error Occurred!";
-                description = "An error occurred at the server end.\nPlease try again later";
-                button = "TRY AGAIN";
-                onClickListener = new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        setData ();
-                    }
-                };
-                rlNoResult.setVisibility (View.VISIBLE);
-                break;
-            case 5:
-                title = "Oops.. No Internet!";
-                description = "Seems to be no internet connection.\nPlease check your internet connection and try again";
-                button = "RETRY";
-                onClickListener = new View.OnClickListener () {
-                    @Override
-                    public void onClick (View v) {
-                        setData ();
-                    }
-                };
-                rlNoResult.setVisibility (View.VISIBLE);
-                break;
-        }
-        tvNoResultTitle.setText (title);
-        tvNoResultDescription.setText (description);
-        tvNoResultButton.setText (button);
-        tvNoResultButton.setOnClickListener (onClickListener);
-    }
-    */
     @Override
     public void onStart () {
         super.onStart ();
-        Utils.startShimmer (shimmerFrameLayout);
+//        Utils.startShimmer (shimmerFrameLayout);
     }
     
     @Override
     public void onResume () {
         super.onResume ();
-        shimmerFrameLayout.startShimmerAnimation ();
+//        shimmerFrameLayout.startShimmerAnimation ();
     }
     
     @Override
     public void onPause () {
-        shimmerFrameLayout.stopShimmerAnimation ();
+//        shimmerFrameLayout.stopShimmerAnimation ();
         super.onPause ();
     }
     
     private boolean showOfflineData (int event_id) {
         if (db.isEventExist (event_id)) {
+    
             String response = db.getEventDetails (event_id);
             try {
                 JSONObject jsonObj = new JSONObject (response);
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-/*
+                    if (db.isEventExist (event_id)) {
+                        db.updateEventDetails (event_id, response);
+                    } else {
+                        db.insertEvent (event_id, response);
+                    }
+                    tvEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
+                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE))) {
+                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                    } else {
+                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                    }
+    
+                    tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+    
+                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE).length () == 0) {
+                        ivEventImage.setImageResource (R.drawable.default_event2);
+                        progressBar.setVisibility (View.GONE);
+                    } else {
+                        progressBar.setVisibility (View.VISIBLE);
+                        Glide.with (EventDetailActivity.this)
+                                .load (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE))
+                                .listener (new RequestListener<String, GlideDrawable> () {
+                                    @Override
+                                    public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                        progressBar.setVisibility (View.GONE);
+                                        return false;
+                                    }
+                    
+                                    @Override
+                                    public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                        progressBar.setVisibility (View.GONE);
+                                        return false;
+                                    }
+                                })
+                                .error (R.drawable.default_event2)
+                                .into (ivEventImage);
+                    }
+                    
+                    
                     if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-                        eventItemList.add (new EventItem (true, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
-                        eventSchedule = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).toString ();
+                        JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules");
+                        for (int j = 0; j < jsonArraySchedules.length (); j++) {
+                            JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
+                            eventScheduleList.add (new EventSchedule (
+                                    jsonObjectSchedules.getInt ("schedule_id"),
+                                    R.drawable.ic_date,
+                                    jsonObjectSchedules.getInt ("schedule_date_id"),
+                                    jsonObjectSchedules.getString ("schedule_date"),
+                                    jsonObjectSchedules.getString ("schedule_start_time"),
+                                    jsonObjectSchedules.getString ("schedule_end_time"),
+                                    jsonObjectSchedules.getString ("schedule_description"),
+                                    jsonObjectSchedules.getString ("schedule_location"),
+                                    jsonObjectSchedules.getString ("schedule_image")
+                            ));
+                        }
+                        eventScheduleAdapter.notifyDataSetChanged ();
+                        rlSchedule.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 1, R.drawable.ic_event_schedule, "EVENT SCHEDULE", ""));
+                        rlSchedule.setVisibility (View.GONE);
                     }
+    
                     if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
-                        eventItemList.add (new EventItem (true, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
-                        eventSpeakers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).toString ();
+                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
+                        for (int j = 0; j < jsonArray.length (); j++) {
+                            JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
+                            eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                                    R.drawable.default_speaker,
+                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
+                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
+                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+                        }
+                        eventSpeakerAdapter.notifyDataSetChanged ();
+                        rlSpeaker.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 2, R.drawable.ic_event_speaker, "SPEAKERS", ""));
+                        rlSpeaker.setVisibility (View.GONE);
                     }
+    
                     if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
-                        eventItemList.add (new EventItem (true, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
-                        eventExhibitors = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).toString ();
+                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
+                        for (int j = 0; j < jsonArray.length (); j++) {
+                            JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
+                            eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                                    R.drawable.ic_event_exhibitor,
+                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
+                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
+                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+                        }
+                        exhibitorAdapter.notifyDataSetChanged ();
+                        rlExhibitors.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 3, R.drawable.ic_event_exhibitor, "EXHIBITORS", ""));
+                        rlExhibitors.setVisibility (View.GONE);
                     }
+    
                     boolean flag = false;
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
                         if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
+                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
                             flag = true;
                             break;
                         }
                     }
                     if (flag) {
                         eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
-                        eventItemList.add (new EventItem (true, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+    
+                        if (db.getEventFloorPlan (event_id).length () > 0) {
+                            ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
+                        } else {
+                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                        }
+                        rlFloorPlan.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 4, R.drawable.ic_event_floor_plan, "FLOOR PLAN", ""));
+                        rlFloorPlan.setVisibility (View.GONE);
                     }
+                    
                     if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
-                        eventItemList.add (new EventItem (true, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
-                        eventInformation = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
+                        getWebView (wvInformation, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION));
+                        rlInformation.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 5, R.drawable.ic_event_general_info, "GENERAL INFORMATION", ""));
+                        rlInformation.setVisibility (View.GONE);
                     }
+    
                     if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
-                        eventItemList.add (new EventItem (true, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
-                        eventRegistration = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+                        getWebView (wvRegistration, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION));
+                        rlRegistration.setVisibility (View.VISIBLE);
                     } else {
-                        eventItemList.add (new EventItem (false, 6, R.drawable.ic_event_registration, "REGISTRATIONS", ""));
+                        rlRegistration.setVisibility (View.GONE);
                     }
-                    
-                    tvTitleEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
-                    tvTitleEventDetail.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM") + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
-                    
-                    eventItemAdapter.notifyDataSetChanged ();
-                    
-                    shimmerFrameLayout.setVisibility (View.GONE);
+                    progressBar2.setVisibility (View.GONE);
+//                    shimmerFrameLayout.setVisibility (View.GONE);
                     rlMain.setVisibility (View.VISIBLE);
-                    
-                    */
                 }
             } catch (Exception e) {
                 e.printStackTrace ();
             }
+    
             return true;
         } else {
             return false;
@@ -970,6 +915,46 @@ public class EventDetailActivity extends AppCompatActivity {
         webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
     }
     
+    @Override
+    public void onPaymentSuccess (String razorpayPaymentID) {
+        /**
+         * Add your logic here for a successfull payment response
+         */
+    }
+    
+    @Override
+    public void onPaymentError (int code, String response) {
+        /**
+         * Add your logic here for a failed payment response
+         */
+    }
+    
+    public void startPayment () {
+        UserDetailsPref userDetailsPref = new UserDetailsPref ().getInstance ();
+        Checkout checkout = new Checkout ();
+        checkout.setImage (R.drawable.ic_logo);
+        try {
+            JSONObject options = new JSONObject ();
+            options.put ("name", "Merchant Name");
+            options.put ("description", "Order #123456");
+            options.put ("currency", "INR");
+            
+            options.put ("prefill.name", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_NAME));
+            options.put ("prefill.email", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_EMAIL));
+            options.put ("prefill.contact", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_MOBILE));
+            
+            /**
+             * Amount is always passed in PAISE
+             * Eg: "100" = Rs 1.00
+             */
+            options.put ("amount", "100");
+            
+            checkout.open (this, options);
+        } catch (Exception e) {
+            Log.e ("karman", "Error in starting Razorpay Checkout", e);
+        }
+    }
+    
     private class getBitmapFromURL extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground (String... params) {
@@ -1008,6 +993,4 @@ public class EventDetailActivity extends AppCompatActivity {
             return true;
         }
     }
-    
-    
 }

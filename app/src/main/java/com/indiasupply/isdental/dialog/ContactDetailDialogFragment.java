@@ -10,20 +10,26 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.ContactDetailAdapter;
 import com.indiasupply.isdental.fragment.ContactsFragment;
 import com.indiasupply.isdental.model.ContactDetail;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
+import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.Utils;
 
 import org.json.JSONArray;
@@ -31,12 +37,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContactDetailDialogFragment extends DialogFragment {
     ContactsFragment.MyDialogCloseListener closeListener;
     RecyclerView rvContactList;
     List<ContactDetail> contactDetailList = new ArrayList<> ();
+    List<ContactDetail> contactDetailTempList = new ArrayList<> ();
     ContactDetailAdapter contactDetailAdapter;
     
     ImageView ivCancel;
@@ -45,6 +54,12 @@ public class ContactDetailDialogFragment extends DialogFragment {
     String contacts;
     String company_name;
     
+    RelativeLayout rlFilter;
+    TextView tvEventFilter;
+    
+    ArrayList<String> citiesList = new ArrayList<String> ();
+    ArrayList<String> citiesSelectedList = new ArrayList<String> ();
+    ArrayList<String> citiesSelectedTempList = new ArrayList<String> ();
     
     public ContactDetailDialogFragment newInstance (String company_name, String contacts) {
         ContactDetailDialogFragment f = new ContactDetailDialogFragment ();
@@ -99,6 +114,8 @@ public class ContactDetailDialogFragment extends DialogFragment {
         rvContactList = (RecyclerView) root.findViewById (R.id.rvContactList);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
+        rlFilter = (RelativeLayout) root.findViewById (R.id.rlFilter);
+        tvEventFilter = (TextView) root.findViewById (R.id.tvEventFilter);
     }
     
     private void initBundle () {
@@ -126,10 +143,18 @@ public class ContactDetailDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+        rlFilter.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                showFilterDialog ();
+            }
+        });
+    
     }
     
     private void setData () {
         try {
+            citiesList.clear ();
             JSONArray jsonArray = new JSONArray (contacts);
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObject = jsonArray.getJSONObject (j);
@@ -140,11 +165,27 @@ public class ContactDetailDialogFragment extends DialogFragment {
                         jsonObject.getBoolean (AppConfigTags.SWIGGY_CONTACT_FAVOURITE),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),
+                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_CITY),
+                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_PHONE),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_EMAIL),
                         jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE)
                 ));
+    
+                if (! citiesList.contains (jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE))) {
+                    citiesList.add (jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE));
+                }
             }
+    
+            Collections.sort (citiesList, new Comparator<String> () {
+                @Override
+                public int compare (String s1, String s2) {
+                    return s1.compareToIgnoreCase (s2);
+                }
+            });
+            citiesSelectedList.addAll (citiesList);
+            citiesSelectedTempList.addAll (citiesList);
+            
             contactDetailAdapter.notifyDataSetChanged ();
         } catch (JSONException e) {
             e.printStackTrace ();
@@ -163,4 +204,153 @@ public class ContactDetailDialogFragment extends DialogFragment {
             closeListener.handleDialogClose (null);
         }
     }
+    
+    public void showFilterDialog () {
+        final MaterialDialog dialog =
+                new MaterialDialog.Builder (getActivity ())
+                        .title ("Select States")
+                        .customView (R.layout.dialog_event_filter, true)
+                        .positiveText ("APPLY")
+                        .typeface (SetTypeFace.getTypeface (getActivity ()), SetTypeFace.getTypeface (getActivity ()))
+                        .negativeText ("CANCEL")
+                        .build ();
+        
+        dialog.getActionButton (DialogAction.POSITIVE).setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedList.clear ();
+                contactDetailTempList.clear ();
+                citiesSelectedList.addAll (citiesSelectedTempList);
+                if (citiesSelectedList.size () == citiesList.size ()) {
+                    tvEventFilter.setText ("All States");
+                } else if (! citiesSelectedList.isEmpty ()) {
+                    if (citiesSelectedList.size () > 1) {
+                        tvEventFilter.setText (citiesSelectedList.get (0) + " + " + (citiesSelectedList.size () - 1));
+                    } else {
+                        tvEventFilter.setText (citiesSelectedList.get (0));
+                    }
+                } else {
+                    tvEventFilter.setText ("No State");
+                }
+                
+                for (int i = 0; i < citiesSelectedList.size (); i++) {
+                    String city = citiesSelectedList.get (i);
+                    for (int j = 0; j < contactDetailList.size (); j++) {
+                        ContactDetail contactDetail = contactDetailList.get (j);
+                        if (contactDetail.getState ().contains (city)) {
+                            contactDetailTempList.add (contactDetail);
+                            Log.e ("karman", "j = " + j);
+                            
+                        }
+                    }
+                }
+                
+                contactDetailAdapter = new ContactDetailAdapter (getActivity (), contactDetailTempList);
+                rvContactList.setAdapter (contactDetailAdapter);
+                rvContactList.setHasFixedSize (true);
+                rvContactList.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+                rvContactList.setItemAnimator (new DefaultItemAnimator ());
+                
+                dialog.dismiss ();
+            }
+        });
+        
+        dialog.getActionButton (DialogAction.NEGATIVE).setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                citiesSelectedTempList.addAll (citiesSelectedList);
+                dialog.dismiss ();
+            }
+        });
+        
+        final RecyclerView rvCities = (RecyclerView) dialog.findViewById (R.id.rvCities);
+        
+        final CityAdapter cityAdapter = new CityAdapter (citiesList);
+        rvCities.setAdapter (cityAdapter);
+        rvCities.setNestedScrollingEnabled (false);
+        rvCities.setFocusable (false);
+        rvCities.setHasFixedSize (true);
+        rvCities.setLayoutManager (new LinearLayoutManager (getActivity (), LinearLayoutManager.VERTICAL, false));
+        
+        Utils.setTypefaceToAllViews (getActivity (), rvCities);
+        
+        TextView tvSelectAll = (TextView) dialog.findViewById (R.id.tvSelectAll);
+        TextView tvDeselectAll = (TextView) dialog.findViewById (R.id.tvDeselectAll);
+        
+        tvSelectAll.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                citiesSelectedTempList.addAll (citiesList);
+                cityAdapter.notifyDataSetChanged ();
+            }
+        });
+        
+        tvDeselectAll.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                citiesSelectedTempList.clear ();
+                cityAdapter.notifyDataSetChanged ();
+            }
+        });
+        dialog.show ();
+    }
+    
+    public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
+        private List<String> citiesList = new ArrayList<> ();
+        
+        public CityAdapter (List<String> citiesList) {
+            this.citiesList = citiesList;
+        }
+        
+        @Override
+        public CityAdapter.ViewHolder onCreateViewHolder (ViewGroup parent, int viewType) {
+            final LayoutInflater mInflater = LayoutInflater.from (parent.getContext ());
+            final View sView = mInflater.inflate (R.layout.list_item_event_filter, parent, false);
+            return new CityAdapter.ViewHolder (sView);
+        }
+        
+        @Override
+        public void onBindViewHolder (final CityAdapter.ViewHolder holder, int position) {
+            final String city = citiesList.get (position);
+            Utils.setTypefaceToAllViews (getActivity (), holder.cbCity);
+            holder.cbCity.setText (city);
+            
+            
+            if (citiesSelectedTempList.contains (city)) {
+                holder.cbCity.setChecked (true);
+            } else {
+                holder.cbCity.setChecked (false);
+            }
+        }
+        
+        @Override
+        public int getItemCount () {
+            return citiesList.size ();
+        }
+        
+        public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            CheckBox cbCity;
+            
+            public ViewHolder (View view) {
+                super (view);
+                cbCity = (CheckBox) view.findViewById (R.id.cbCity);
+                view.setOnClickListener (this);
+            }
+            
+            @Override
+            public void onClick (View v) {
+                String city = citiesList.get (getLayoutPosition ());
+                if (citiesSelectedTempList.contains (city)) {
+                    cbCity.setChecked (false);
+                    citiesSelectedTempList.remove (city);
+                } else {
+                    cbCity.setChecked (true);
+                    citiesSelectedTempList.add (city);
+                }
+            }
+        }
+    }
+    
 }

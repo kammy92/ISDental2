@@ -291,6 +291,8 @@ public class AppConfigTags {
     public static final String SWIGGY_CONTACT_IMAGE = "contact_image";
     public static final String SWIGGY_CONTACT_PHONE = "contact_phone";
     public static final String SWIGGY_CONTACT_LOCATION = "contact_location";
+    public static final String SWIGGY_CONTACT_CITY = "contact_city";
+    public static final String SWIGGY_CONTACT_STATE = "contact_state";
     public static final String SWIGGY_CONTACT_FAVOURITE = "contact_favourite";
     public static final String SWIGGY_CONTACT_EMAIL = "contact_email";
     public static final String SWIGGY_CONTACT_WEBSITE = "contact_website";

@@ -172,7 +172,7 @@ public class MyAccountFragment extends Fragment {
         rvHelp.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), (int) Utils.pxFromDp (getActivity (), 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
     
         myAccountItemList.add (new MyAccountItem (1, R.drawable.ic_my_account_favourites, "My Favourites", "", ""));
-        myAccountItemList.add (new MyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
+//        myAccountItemList.add (new MyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
         myAccountItemList.add (new MyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
     
         myHelpItemList.add (new MyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));

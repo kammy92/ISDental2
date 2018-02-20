@@ -90,7 +90,11 @@
         </receiver>
 
         <meta-data android:name="com.bugsnag.android.API_KEY"
-                   android:value="b2b4c756b3b88a72891033fa275309db "/>
+                   android:value="b2b4c756b3b88a72891033fa275309db"/>
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_oBHRdTGwmznfmX"/>
 
     </application>
 

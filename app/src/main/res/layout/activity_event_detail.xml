@@ -76,6 +76,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/appBar"
+        android:animateLayoutChanges="true"
         android:descendantFocusability="blocksDescendants"
         android:overScrollMode="never"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -84,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            android:visibility="visible">
+            android:visibility="gone">
             <RelativeLayout
                 android:id="@+id/rl22"
                 android:layout_width="wrap_content"
@@ -510,6 +511,12 @@
             </RelativeLayout>
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
     <RelativeLayout
         android:id="@+id/rlNoResult"
         android:layout_width="match_parent"
@@ -562,7 +569,7 @@
         android:id="@+id/shimmer_view_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="visible">
+        android:visibility="gone">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
