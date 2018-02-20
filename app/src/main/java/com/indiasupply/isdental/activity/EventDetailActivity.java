@@ -493,7 +493,11 @@ public class EventDetailActivity extends AppCompatActivity implements PaymentRes
                                             tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
                                         }
     
-                                        tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL).length () > 0) {
+                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        } else {
+                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        }
     
                                         if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE).length () == 0) {
                                             ivEventImage.setImageResource (R.drawable.default_event2);

@@ -78,7 +78,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             holder.tvEventDates.setText (Utils.convertTimeFormat (event.getStart_date (), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (event.getEnd_date (), "yyyy-MM-dd", "dd MMM"));
         }
     
-        holder.tvEventVenue.setText (event.getLocation ());
+        if (event.getVenue ().length () > 0) {
+            holder.tvEventVenue.setText (event.getVenue () + ", " + event.getCity ());
+        } else {
+            holder.tvEventVenue.setText (event.getCity ());
+        }
     
     
         if (event.isInterested ()) {
