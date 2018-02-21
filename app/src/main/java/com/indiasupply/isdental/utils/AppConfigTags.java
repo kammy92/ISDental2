@@ -188,8 +188,6 @@ public class AppConfigTags {
     public static final String SWIGGY_EVENT_EXHIBITORS = "event_exhibitors";
     
     
-    
-    
     public static final String SWIGGY_EXHIBITORS = "exhibitors";
     public static final String SWIGGY_EXHIBITOR_ID = "exhibitor_id";
     public static final String SWIGGY_EXHIBITOR_NAME = "exhibitor_name";
@@ -256,6 +254,7 @@ public class AppConfigTags {
     public static final String SWIGGY_OFFER_IMAGE = "offer_image";
     public static final String SWIGGY_OFFER_DESCRIPTION = "offer_description";
     public static final String SWIGGY_OFFER_PACKAGING = "offer_packaging";
+    public static final String SWIGGY_OFFER_QTY = "offer_qty";
     public static final String SWIGGY_OFFER_MRP = "offer_mrp";
     public static final String SWIGGY_OFFER_PRICE = "offer_price";
     public static final String SWIGGY_OFFER_REGULAR_PRICE = "offer_regular_price";
@@ -353,5 +352,14 @@ public class AppConfigTags {
     
     public static final String SWIGGY_COMMENT = "comment";
     public static final String SWIGGY_RATING = "rating";
+    
+    
+    public static final String ADDRESSES = "addresses";
+    public static final String ADDRESS_ID = "address_id";
+    public static final String ADDRESS_LINE1 = "address_line1";
+    public static final String ADDRESS_CITY = "address_city";
+    public static final String ADDRESS_STATE = "address_state";
+    public static final String ADDRESS_PINCODE = "address_pincode";
+    
 }
 

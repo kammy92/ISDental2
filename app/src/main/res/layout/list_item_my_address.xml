@@ -9,83 +9,54 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"/>
-
+        android:layout_alignParentTop="true"
+        android:clickable="false"/>
     <RelativeLayout
         android:id="@+id/rl2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/rbRadio"
         android:layout_toRightOf="@+id/rbRadio">
-
-        <TextView
-            android:id="@+id/tvName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:text="Sudhanshu Sharma"
-            android:textColor="@color/primary_text2"
-            android:textStyle="bold"/>
         <TextView
             android:id="@+id/tvAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvName"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/ll2"
             android:ellipsize="end"
             android:lines="1"
-            android:text="A-49, Near Shemrock School, Second floor, Dwarka Sector 8, 110075"
+            android:paddingEnd="@dimen/activity_margin_small"
+            android:paddingLeft="@dimen/activity_margin_small"
+            android:paddingRight="@dimen/activity_margin_small"
+            android:paddingStart="@dimen/activity_margin_small"
+            android:text="A-49, Near Shemrock School, Second floor, Delhi 110075"
             android:textColor="@color/secondary_text2"/>
-        <TextView
-            android:id="@+id/tvMobile"
+        <LinearLayout
+            android:id="@+id/ll2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvAddress"
-            android:layout_marginLeft="@dimen/activity_margin"
-            android:layout_marginStart="@dimen/activity_margin"
-            android:text="9873684678"
-            android:textColor="@color/secondary_text2"
-            android:visibility="gone"/>
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_edit"/>
+
+            <ImageView
+                android:id="@+id/ivDelete"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="@dimen/activity_margin_small"
+                android:layout_marginStart="@dimen/activity_margin_small"
+                android:src="@drawable/ic_delete"/>
+        </LinearLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/ll2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rl2"
-        android:layout_marginTop="@dimen/activity_margin_small"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        android:weightSum="2">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/activity_margin_small"
-            android:layout_weight="1"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:padding="@dimen/activity_margin_small"
-            android:text="Edit"
-            android:textColor="@color/primary_text2"
-            android:textStyle="bold"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/activity_margin_small"
-            android:layout_weight="1"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:padding="@dimen/activity_margin_small"
-            android:text="Delete"
-            android:textColor="@color/primary_text2"
-            android:textStyle="bold"
-        />
-
-    </LinearLayout>
-
-
 </RelativeLayout>
+

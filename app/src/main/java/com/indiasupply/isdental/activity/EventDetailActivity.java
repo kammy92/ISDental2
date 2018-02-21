@@ -4,6 +4,7 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -993,8 +994,13 @@ public class EventDetailActivity extends AppCompatActivity implements PaymentRes
     private class CustomWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading (WebView view, String url) {
-            view.loadUrl (url);
-            return true;
+            if (url != null && (url.startsWith ("http://") || url.startsWith ("https://"))) {
+                view.getContext ().startActivity (new Intent (Intent.ACTION_VIEW, Uri.parse (url)));
+                return true;
+            } else {
+                view.loadUrl (url);
+                return false;
+            }
         }
     }
 }

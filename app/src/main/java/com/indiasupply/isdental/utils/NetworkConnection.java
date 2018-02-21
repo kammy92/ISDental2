@@ -11,17 +11,25 @@ public class NetworkConnection {
 
     public static boolean isNetworkAvailable (Context context) {
         boolean connFlag = false;
-        ConnectivityManager cm = (ConnectivityManager) context.getSystemService (Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo ();
-        if (null != activeNetwork) {
-            if (activeNetwork.getType () == ConnectivityManager.TYPE_WIFI)
-
-                connFlag = true;
-            if (activeNetwork.getType () == ConnectivityManager.TYPE_MOBILE)
-                connFlag = true;
-        }
-        if (! connFlag) {
-            //         Toast.makeText(context, "Please Check Network Connection", Toast.LENGTH_LONG).show();
+        try {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService (Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = null;
+            if (cm != null) {
+                activeNetwork = cm.getActiveNetworkInfo ();
+            }
+            if (null != activeNetwork) {
+                if (activeNetwork.getType () == ConnectivityManager.TYPE_WIFI)
+                
+                    connFlag = true;
+                if (activeNetwork.getType () == ConnectivityManager.TYPE_MOBILE)
+                    connFlag = true;
+            }
+            if (! connFlag) {
+                //         Toast.makeText(context, "Please Check Network Connection", Toast.LENGTH_LONG).show();
+            }
+        
+        } catch (NullPointerException e) {
+            e.printStackTrace ();
         }
         return connFlag;
     }

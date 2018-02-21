@@ -39,4 +39,11 @@ public class AppConfigURL {
     public static String URL_SWIGGY_CONTACT_CALLED = BASE_URL2 + "/contact/called";
     public static String URL_SWIGGY_CONTACT_MAILED = BASE_URL2 + "/contact/mailed";
     public static String URL_SWIGGY_EVENT_CLICKED = BASE_URL2 + "event/clicked";
+    
+    
+    public static String URL_CHECKOUT = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/checkout";
+    public static String URL_ADD_NEW_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
+    public static String URL_DELETE_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
+    public static String URL_EDIT_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
+    
 }

@@ -97,15 +97,19 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.rlInterested.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                updateInterested (event.getId ());
-                if (event.isInterested ()) {
-                    event.setInterested (false);
-                    holder.ivInterested.setImageResource (R.drawable.ic_like);
-                    holder.tvInterested.setTextColor (activity.getResources ().getColor (R.color.secondary_text2));
+                if (NetworkConnection.isNetworkAvailable (activity)) {
+                    updateInterested (event.getId ());
+                    if (event.isInterested ()) {
+                        event.setInterested (false);
+                        holder.ivInterested.setImageResource (R.drawable.ic_like);
+                        holder.tvInterested.setTextColor (activity.getResources ().getColor (R.color.secondary_text2));
+                    } else {
+                        event.setInterested (true);
+                        holder.ivInterested.setImageResource (R.drawable.ic_like_filled);
+                        holder.tvInterested.setTextColor (activity.getResources ().getColor (R.color.fb_colour));
+                    }
                 } else {
-                    event.setInterested (true);
-                    holder.ivInterested.setImageResource (R.drawable.ic_like_filled);
-                    holder.tvInterested.setTextColor (activity.getResources ().getColor (R.color.fb_colour));
+                    Utils.showToast (activity, "Unstable Internet Connection", false);
                 }
             }
         });
@@ -114,72 +118,46 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         holder.rlShare.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                final ProgressDialog progressDialog = new ProgressDialog (activity);
-                Utils.showProgressDialog (progressDialog, null, true);
-    /*
-                Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance ().createDynamicLink ()
-                        .setLink (Uri.parse ("https://example.com/"))
-                        .setDynamicLinkDomain ("abc123.app.goo.gl")
-                        .setAndroidParameters (
-                                new DynamicLink.AndroidParameters.Builder ("com.example.android")
-                                        .setMinimumVersion (125)
-                                        .build ())
-                        .setIosParameters (
-                                new DynamicLink.IosParameters.Builder ("com.example.ios")
-                                        .setAppStoreId ("123456789")
-                                        .setMinimumVersion ("1.0.1")
-                                        .build ())
-                        .setGoogleAnalyticsParameters (
-                                new DynamicLink.GoogleAnalyticsParameters.Builder ()
-                                        .setSource ("orkut")
-                                        .setMedium ("social")
-                                        .setCampaign ("example-promo")
-                                        .build ())
-                        .setItunesConnectAnalyticsParameters (
-                                new DynamicLink.ItunesConnectAnalyticsParameters.Builder ()
-                                        .setProviderToken ("123456")
-                                        .setCampaignToken ("example-promo")
-                                        .build ())
-                        .setSocialMetaTagParameters (
-                                new DynamicLink.SocialMetaTagParameters.Builder ()
-                                        .setTitle ("Example of a Dynamic Link")
-                                        .setDescription ("This link works whether the app is installed or not!")
-                                        .build ())
-                .buildShortDynamicLink();
-    */
-    
-                Task<ShortDynamicLink> shortLinkTask = FirebaseDynamicLinks.getInstance ().createDynamicLink ()
-                        .setLink (Uri.parse ("https://indiasupply.com/event/" + event.getId ()))
-                        .setDynamicLinkDomain ("ha4qf.app.goo.gl")
-                        .setAndroidParameters (
-                                new DynamicLink.AndroidParameters.Builder ("com.indiasupply.isdental")
-                                        .setFallbackUrl (Uri.parse ("https://play.google.com/store/apps/details?id=com.indiasupply.isdental"))
-                                        .build ())
-                        .setIosParameters (
-                                new DynamicLink.IosParameters.Builder ("com.actiknow.IndiaSupply")
-                                        .setAppStoreId ("1322426712")
-                                        .setFallbackUrl (Uri.parse ("https://itunes.apple.com/in/app/indiasupply-dental-app/id1322426712"))
-                                        .build ())
-                        .setSocialMetaTagParameters (new DynamicLink.SocialMetaTagParameters.Builder ()
-                                .setTitle (event.getName ())
-                                .setImageUrl (Uri.parse (event.getImage ()))
-                                .setDescription (holder.tvEventDates.getText ().toString () + ", " + holder.tvEventVenue.getText ().toString ())
-                                .build ())
-                        .buildShortDynamicLink ()
-                        .addOnCompleteListener (activity, new OnCompleteListener<ShortDynamicLink> () {
-                            @Override
-                            public void onComplete (@NonNull Task<ShortDynamicLink> task) {
-                                if (task.isSuccessful ()) {
-                                    String shareBody = "Hi, Checkout this event " + event.getName () + " on " + event.getStart_date () + " in " + event.getCity () + ". To view full details visit " + task.getResult ().getShortLink ().toString ();
-                                    Intent sharingIntent = new Intent (android.content.Intent.ACTION_SEND);
-                                    sharingIntent.setType ("text/plain");
-                                    sharingIntent.putExtra (android.content.Intent.EXTRA_TEXT, shareBody);
-                                    activity.startActivity (Intent.createChooser (sharingIntent, "Share Using"));
-                                } else {
+                if (NetworkConnection.isNetworkAvailable (activity)) {
+                    final ProgressDialog progressDialog = new ProgressDialog (activity);
+                    Utils.showProgressDialog (progressDialog, null, true);
+        
+                    FirebaseDynamicLinks.getInstance ().createDynamicLink ()
+                            .setLink (Uri.parse ("https://indiasupply.com/event/" + event.getId ()))
+                            .setDynamicLinkDomain ("ha4qf.app.goo.gl")
+                            .setAndroidParameters (
+                                    new DynamicLink.AndroidParameters.Builder ("com.indiasupply.isdental")
+                                            .setFallbackUrl (Uri.parse ("https://play.google.com/store/apps/details?id=com.indiasupply.isdental"))
+                                            .build ())
+                            .setIosParameters (
+                                    new DynamicLink.IosParameters.Builder ("com.actiknow.IndiaSupply")
+                                            .setAppStoreId ("1322426712")
+                                            .setFallbackUrl (Uri.parse ("https://itunes.apple.com/in/app/indiasupply-dental-app/id1322426712"))
+                                            .build ())
+                            .setSocialMetaTagParameters (new DynamicLink.SocialMetaTagParameters.Builder ()
+                                    .setTitle (event.getName ())
+                                    .setImageUrl (Uri.parse (event.getImage ()))
+                                    .setDescription (holder.tvEventDates.getText ().toString () + ", " + holder.tvEventVenue.getText ().toString ())
+                                    .build ())
+                            .buildShortDynamicLink ()
+                            .addOnCompleteListener (activity, new OnCompleteListener<ShortDynamicLink> () {
+                                @Override
+                                public void onComplete (@NonNull Task<ShortDynamicLink> task) {
+                                    if (task.isSuccessful ()) {
+                                        String shareBody = "Hi, Checkout this event " + event.getName () + " on " + event.getStart_date () + " in " + event.getCity () + ". To view full details visit " + task.getResult ().getShortLink ().toString ();
+                                        Intent sharingIntent = new Intent (android.content.Intent.ACTION_SEND);
+                                        sharingIntent.setType ("text/plain");
+                                        sharingIntent.putExtra (android.content.Intent.EXTRA_TEXT, shareBody);
+                                        activity.startActivity (Intent.createChooser (sharingIntent, "Share Using"));
+                                    } else {
+                                    }
+                                    progressDialog.dismiss ();
                                 }
-                                progressDialog.dismiss ();
-                            }
-                        });
+                            });
+                } else {
+                    Utils.showToast (activity, "Unstable Internet Connection", false);
+                }
+                
             }
         });
     

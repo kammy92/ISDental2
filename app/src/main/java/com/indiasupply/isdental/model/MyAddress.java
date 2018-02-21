@@ -6,12 +6,14 @@ package com.indiasupply.isdental.model;
 
 public class MyAddress {
     int id;
-    String name, address;
+    String address, city, state, pincode;
     
-    public MyAddress (int id, String name, String address) {
+    public MyAddress (int id, String address, String city, String state, String pincode) {
         this.id = id;
-        this.name = name;
         this.address = address;
+        this.city = city;
+        this.state = state;
+        this.pincode = pincode;
     }
     
     public int getId () {
@@ -22,19 +24,35 @@ public class MyAddress {
         this.id = id;
     }
     
-    public String getName () {
-        return name;
-    }
-    
-    public void setName (String name) {
-        this.name = name;
-    }
-    
     public String getAddress () {
         return address;
     }
     
     public void setAddress (String address) {
         this.address = address;
+    }
+    
+    public String getCity () {
+        return city;
+    }
+    
+    public void setCity (String city) {
+        this.city = city;
+    }
+    
+    public String getState () {
+        return state;
+    }
+    
+    public void setState (String state) {
+        this.state = state;
+    }
+    
+    public String getPincode () {
+        return pincode;
+    }
+    
+    public void setPincode (String pincode) {
+        this.pincode = pincode;
     }
 }

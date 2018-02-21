@@ -2,6 +2,7 @@ package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.OfferCheckoutActivity;
 import com.indiasupply.isdental.model.Offers;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -130,7 +132,12 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
         holder.tvSendEnquiry.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                sendEnquiry2 (offer.getId ());
+                Intent intent = new Intent (activity, OfferCheckoutActivity.class);
+                intent.putExtra (AppConfigTags.OFFER_ID, offer.getId ());
+                activity.startActivity (intent);
+                activity.overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+
+//                sendEnquiry2 (offer.getId ());
             }
         });
     }

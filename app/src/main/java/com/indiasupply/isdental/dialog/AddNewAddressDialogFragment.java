@@ -20,9 +20,15 @@ public class AddNewAddressDialogFragment extends DialogFragment {
     EditText etName;
     EditText etAddress;
     EditText etMobile;
+    String name;
+    String address;
     
-    public AddNewAddressDialogFragment newInstance () {
+    public AddNewAddressDialogFragment newInstance (String address, String name) {
         AddNewAddressDialogFragment f = new AddNewAddressDialogFragment ();
+        Bundle args = new Bundle ();
+        args.putString ("address", address);
+        args.putString ("name", name);
+        f.setArguments (args);
         return f;
     }
     
@@ -74,7 +80,8 @@ public class AddNewAddressDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        
+        name = bundle.getString ("name");
+        address = bundle.getString ("address");
     }
     
     private void initData () {
