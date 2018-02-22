@@ -8,11 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -25,6 +28,7 @@ import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NetworkConnection;
+import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
 
@@ -61,7 +65,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         final MyAddress address = addressList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvAddress);
         holder.tvAddress.setText (address.getAddress () + ", " + address.getCity () + ", " + address.getState () + " " + address.getPincode ());
-
+    
         if (currentSelectedPosition == position) {
             holder.ll2.setVisibility (View.VISIBLE);
             holder.tvAddress.setMaxLines (Integer.MAX_VALUE);
@@ -83,8 +87,51 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
                 deleteAddress (address.getId ());
             }
         });
-
-        
+    
+        holder.ivEdit.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                final MaterialDialog dialog =
+                        new MaterialDialog.Builder (activity)
+                                .title ("Edit Address")
+                                .customView (R.layout.dialog_add_new_address, true)
+                                .positiveText ("UPDATE")
+                                .typeface (SetTypeFace.getTypeface (activity), SetTypeFace.getTypeface (activity))
+                                .negativeText ("CANCEL")
+                                .build ();
+            
+                final EditText etLine1 = (EditText) dialog.findViewById (R.id.etLine1);
+                final EditText etCity = (EditText) dialog.findViewById (R.id.etCity);
+                final EditText etState = (EditText) dialog.findViewById (R.id.etState);
+                final EditText etPincode = (EditText) dialog.findViewById (R.id.etPincode);
+            
+                etLine1.setText (address.getAddress ());
+                etCity.setText (address.getCity ());
+                etState.setText (address.getState ());
+                etPincode.setText (address.getPincode ());
+            
+                Utils.setTypefaceToAllViews (activity, etLine1);
+            
+                dialog.getActionButton (DialogAction.POSITIVE).setOnClickListener (new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        editAddress (address.getId (), etLine1.getText ().toString (), etCity.getText ().toString (), etState.getText ().toString (), etPincode.getText ().toString ());
+                        dialog.dismiss ();
+                    }
+                });
+            
+                dialog.getActionButton (DialogAction.NEGATIVE).setOnClickListener (new View.OnClickListener () {
+                    @Override
+                    public void onClick (View v) {
+                        dialog.dismiss ();
+                    }
+                });
+            
+                dialog.show ();
+            
+            
+            }
+        });
     }
     
     @Override
@@ -170,11 +217,11 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         }
     }
     
-    private void editAddress (final String line1, final String city, final String state, final String pincode) {
+    private void editAddress (final int address_id, final String line1, final String city, final String state, final String pincode) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
             Utils.showProgressDialog (progressDialog, null, false);
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_ADD_NEW_ADDRESS, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_ADD_NEW_ADDRESS,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_EDIT_ADDRESS + "/" + address_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.PUT, AppConfigURL.URL_EDIT_ADDRESS + "/" + address_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -224,6 +271,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
+                    params.put (AppConfigTags.ADDRESS_ID, String.valueOf (address_id));
                     params.put (AppConfigTags.ADDRESS_LINE1, line1);
                     params.put (AppConfigTags.ADDRESS_CITY, city);
                     params.put (AppConfigTags.ADDRESS_STATE, state);

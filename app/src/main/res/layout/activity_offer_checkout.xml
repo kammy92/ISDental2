@@ -71,171 +71,334 @@
             android:layout_alignParentBottom="true"
             android:background="@color/text_color_grey_light2"/>
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+    />
+    <RelativeLayout
+        android:id="@+id/rlMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:visibility="gone"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tvCheckout">
             <RelativeLayout
-                android:id="@+id/rlOfferDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/activity_margin">
-                <TextView
-                    android:id="@+id/tvOfferName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_toLeftOf="@+id/ll1"
-                    android:layout_toStartOf="@+id/ll1"
-                    android:text="Offer Name akjsd kjaqwe ajskdn"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"/>
-                <TextView
-                    android:id="@+id/tvPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:text="Rs. 799"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_medium"/>
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
                 <RelativeLayout
-                    android:id="@+id/ll1"
+                    android:id="@+id/rlOfferDetail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_below="@+id/tvPrice"
-                    android:layout_marginTop="@dimen/activity_margin"
-                    android:background="@drawable/button_background"
-                    android:padding="@dimen/activity_margin_extra_small">
-                    <ImageView
-                        android:id="@+id/ivMinus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_horizontal"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_minus"/>
+                    android:layout_margin="@dimen/activity_margin">
                     <TextView
-                        android:id="@+id/tvQty"
+                        android:id="@+id/tvOfferName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/activity_margin_small"
-                        android:layout_marginLeft="@dimen/activity_margin_small"
-                        android:layout_marginRight="@dimen/activity_margin_small"
-                        android:layout_marginStart="@dimen/activity_margin_small"
-                        android:layout_toEndOf="@+id/ivMinus"
-                        android:layout_toRightOf="@+id/ivMinus"
-                        android:text="1"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginEnd="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_toLeftOf="@+id/ll1"
+                        android:layout_toStartOf="@+id/ll1"
+                        android:text="Offer Name akjsd kjaqwe ajskdn"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/tvOfferDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/tvOfferName"
+                        android:layout_marginEnd="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_toLeftOf="@+id/ll1"
+                        android:layout_toStartOf="@+id/ll1"
+                        android:text="Offer Name akjsd kjaqwe ajskdn"
+                        android:textColor="@color/secondary_text2"
+                        android:textSize="@dimen/text_size_small"/>
+                    <TextView
+                        android:id="@+id/tvPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="20dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:text="Rs. 799"
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_medium"/>
-                    <ImageView
-                        android:id="@+id/ivPlus"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_toEndOf="@+id/tvQty"
-                        android:layout_toRightOf="@+id/tvQty"
-                        android:padding="4dp"
-                        android:src="@drawable/ic_plus"/>
+                    <RelativeLayout
+                        android:id="@+id/ll1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@+id/tvPrice"
+                        android:layout_marginTop="@dimen/activity_margin"
+                        android:background="@drawable/button_background"
+                        android:padding="@dimen/activity_margin_extra_small">
+                        <ImageView
+                            android:id="@+id/ivMinus"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_gravity="center_horizontal"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_minus"/>
+                        <TextView
+                            android:id="@+id/tvQty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/activity_margin_small"
+                            android:layout_marginLeft="@dimen/activity_margin_small"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:layout_marginStart="@dimen/activity_margin_small"
+                            android:layout_toEndOf="@+id/ivMinus"
+                            android:layout_toRightOf="@+id/ivMinus"
+                            android:text="1"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_medium"/>
+                        <ImageView
+                            android:id="@+id/ivPlus"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:layout_toEndOf="@+id/tvQty"
+                            android:layout_toRightOf="@+id/tvQty"
+                            android:padding="4dp"
+                            android:src="@drawable/ic_plus"/>
+                    </RelativeLayout>
                 </RelativeLayout>
-            </RelativeLayout>
-            <TextView
-                android:id="@+id/tvChooseAddress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlOfferDetail"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_marginStart="@dimen/activity_margin"
-                android:layout_marginTop="@dimen/activity_margin_small"
-                android:text="Choose Delivery Address"
-                android:textColor="@color/secondary_text2"
-                android:textSize="@dimen/text_size_medium"/>
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvChooseAddress"
-                android:layout_marginBottom="@dimen/activity_margin"
-                android:layout_marginLeft="@dimen/activity_margin"
-                android:layout_marginRight="@dimen/activity_margin"
-                android:layout_marginTop="@dimen/activity_margin_small"
-                android:background="@drawable/button_background_3">
-                <RelativeLayout
-                    android:id="@+id/rl1"
+                <TextView
+                    android:id="@+id/tvChooseAddress"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rvDeliveryAddress"
-                        android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlOfferDetail"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginStart="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin_small"
+                    android:text="Choose Delivery Address"
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_medium"/>
+                <RelativeLayout
+                    android:id="@+id/rl11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvChooseAddress"
+                    android:layout_marginBottom="@dimen/activity_margin"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:layout_marginTop="@dimen/activity_margin_small"
+                    android:background="@drawable/button_background_3">
+                    <RelativeLayout
+                        android:id="@+id/rl1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clipToPadding="false"
-                        android:fillViewport="true"
-                        android:overScrollMode="never"
-                        android:scrollbarStyle="insideOverlay"
-                        android:visibility="gone"
-                        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-                    <TextView
-                        android:id="@+id/tvNoAddressFound"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/activity_margin"
-                        android:gravity="center"
+                        android:animateLayoutChanges="true">
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rvDeliveryAddress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:fillViewport="true"
+                            android:overScrollMode="never"
+                            android:scrollbarStyle="insideOverlay"
+                            android:visibility="gone"
+                            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+                        <TextView
+                            android:id="@+id/tvNoAddressFound"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/activity_margin"
+                            android:gravity="center"
+                            android:text="NO ADDRESS FOUND"
+                            android:textColor="@color/secondary_text2"
+                            android:textSize="@dimen/text_size_medium"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
 
-                        android:text="NO ADDRESS FOUND"
-                        android:textColor="@color/secondary_text2"
-                        android:textSize="@dimen/text_size_medium"
-                        android:visibility="gone"/>
+                    <View android:layout_width="match_parent"
+                          android:layout_height="1dp"
+                          android:layout_below="@+id/rl1"
+                          android:background="@color/tertiary_text2"
+                    />
+                    <RelativeLayout
+                        android:id="@+id/rlAddNewAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rl1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="@dimen/activity_margin_small"
+                            android:text="Add a New Address"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_medium"
+                            android:textStyle="bold"/>
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:layout_height="15dp"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/activity_margin_small"
+                            android:src="@drawable/ic_next2"/>
+
+                    </RelativeLayout>
                 </RelativeLayout>
 
-                <View android:layout_width="match_parent"
-                      android:layout_height="1dp"
-                      android:layout_below="@+id/rl1"
-                      android:background="@color/primary_text2"
-                />
-                <RelativeLayout
-                    android:id="@+id/rlAddNewAddress"
+                <EditText
+                    android:id="@+id/etGSTNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl1">
+                    android:layout_below="@+id/rl11"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginRight="@dimen/activity_margin"
+                    android:background="@drawable/et_background2"
+                    android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:hint="GST Number (Optional)"
+                    android:inputType="textCapCharacters"
+                    android:padding="@dimen/activity_margin_small"
+                    android:textSize="@dimen/text_size_medium"/>
+
+                <View
+                    android:id="@+id/v1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/activity_margin"
+                    android:layout_below="@+id/etGSTNumber"
+                    android:layout_marginTop="@dimen/activity_margin"
+                    android:background="@color/tertiary_text2"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/v1"
+                    android:orientation="vertical">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/activity_margin_small"
-                        android:text="Add a New Address"
+                        android:layout_marginBottom="@dimen/activity_margin_small"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin"
+                        android:text="Bill Details"
                         android:textColor="@color/primary_text2"
                         android:textSize="@dimen/text_size_medium"
                         android:textStyle="bold"/>
-                    <ImageView
-                        android:layout_width="15dp"
-                        android:layout_height="15dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/activity_margin_small"
-                        android:src="@drawable/ic_next2"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:text="Item Total"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                        <TextView
+                            android:id="@+id/tvItemTotal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:text="Rs. 717.00"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin_small">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:text="Offer Discount"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                        <TextView
+                            android:id="@+id/tvOfferDiscount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:text="Rs. 717.00"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                    </RelativeLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin_small"
+                        android:background="@color/tertiary_text2"/>
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/activity_margin"
+                        android:layout_marginRight="@dimen/activity_margin"
+                        android:layout_marginTop="@dimen/activity_margin_small">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:text="To Pay"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                        <TextView
+                            android:id="@+id/tvToPay"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:text="Rs. 717.00"
+                            android:textColor="@color/primary_text2"
+                            android:textSize="@dimen/text_size_small"/>
+                    </RelativeLayout>
+                    <TextView
+                        android:id="@+id/tvSavings"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/activity_margin"
+                        android:background="@drawable/button_background_4"
+                        android:paddingBottom="@dimen/activity_margin_small"
+                        android:paddingLeft="@dimen/activity_margin"
+                        android:paddingRight="@dimen/activity_margin"
+                        android:paddingTop="@dimen/activity_margin_small"
+                        android:text="You have saved Rs. 12 on the bill"
+                        android:textColor="@color/accent2"
 
-                </RelativeLayout>
+                    />
+
+                </LinearLayout>
+
+
             </RelativeLayout>
-        </RelativeLayout>
-    </android.support.v4.widget.NestedScrollView>
-    <TextView
-        android:id="@+id/tvCheckout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@drawable/button_background_2"
-        android:gravity="center"
-        android:padding="@dimen/activity_margin_small"
-        android:text="Confirm and Pay Rs. 1234"
-        android:textColor="@color/text_color_white"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold"/>
+        </android.support.v4.widget.NestedScrollView>
+        <TextView
+            android:id="@+id/tvCheckout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@drawable/button_background_2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin"
+            android:text="Confirm and Pay Rs. 1454"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"/>
+    </RelativeLayout>
 
 
 </android.support.design.widget.CoordinatorLayout>

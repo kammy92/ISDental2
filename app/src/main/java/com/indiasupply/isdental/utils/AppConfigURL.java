@@ -1,7 +1,7 @@
 package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
-    public static String version2 = "v2.1.1";
+    public static String version2 = "v2.1.2";
     //    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
     public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
     
@@ -41,9 +41,8 @@ public class AppConfigURL {
     public static String URL_SWIGGY_EVENT_CLICKED = BASE_URL2 + "event/clicked";
     
     
-    public static String URL_CHECKOUT = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/checkout";
-    public static String URL_ADD_NEW_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
-    public static String URL_DELETE_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
-    public static String URL_EDIT_ADDRESS = "https://project-isdental-cammy92.c9users.io/api/v2.1.1/user/address";
-    
+    public static String URL_CHECKOUT = BASE_URL2 + "checkout";
+    public static String URL_ADD_NEW_ADDRESS = BASE_URL2 + "user/address";
+    public static String URL_DELETE_ADDRESS = BASE_URL2 + "user/address";
+    public static String URL_EDIT_ADDRESS = BASE_URL2 + "user/address";
 }

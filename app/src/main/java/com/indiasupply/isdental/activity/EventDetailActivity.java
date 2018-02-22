@@ -59,8 +59,6 @@ import com.indiasupply.isdental.utils.NetworkConnection;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
-import com.razorpay.Checkout;
-import com.razorpay.PaymentResultListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -75,7 +73,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
-public class EventDetailActivity extends AppCompatActivity implements PaymentResultListener {
+public class EventDetailActivity extends AppCompatActivity {
     RelativeLayout rlBack;
     CoordinatorLayout clMain;
     
@@ -352,14 +350,6 @@ public class EventDetailActivity extends AppCompatActivity implements PaymentRes
             }
         });
         
-      /*
-        ivEventImage.setOnClickListener (new View.OnClickListener () {
-            @Override
-            public void onClick (View v) {
-                startPayment ();
-            }
-        });
-      */
     }
     
     private void initData () {
@@ -918,46 +908,6 @@ public class EventDetailActivity extends AppCompatActivity implements PaymentRes
         SpannableStringBuilder spannableStringBuilder = new SpannableStringBuilder (
                 "<style>@font-face{font-family: myFont; src: url(file:///android_asset/" + Constants.font_name + ");}</style>" + html);
         webView.loadDataWithBaseURL ("", spannableStringBuilder.toString (), "text/html", "UTF-8", "");
-    }
-    
-    @Override
-    public void onPaymentSuccess (String razorpayPaymentID) {
-        /**
-         * Add your logic here for a successfull payment response
-         */
-    }
-    
-    @Override
-    public void onPaymentError (int code, String response) {
-        /**
-         * Add your logic here for a failed payment response
-         */
-    }
-    
-    public void startPayment () {
-        UserDetailsPref userDetailsPref = new UserDetailsPref ().getInstance ();
-        Checkout checkout = new Checkout ();
-        checkout.setImage (R.drawable.ic_logo);
-        try {
-            JSONObject options = new JSONObject ();
-            options.put ("name", "Merchant Name");
-            options.put ("description", "Order #123456");
-            options.put ("currency", "INR");
-            
-            options.put ("prefill.name", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_NAME));
-            options.put ("prefill.email", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_EMAIL));
-            options.put ("prefill.contact", userDetailsPref.getStringPref (EventDetailActivity.this, UserDetailsPref.USER_MOBILE));
-            
-            /**
-             * Amount is always passed in PAISE
-             * Eg: "100" = Rs 1.00
-             */
-            options.put ("amount", "100");
-            
-            checkout.open (this, options);
-        } catch (Exception e) {
-            Log.e ("karman", "Error in starting Razorpay Checkout", e);
-        }
     }
     
     private class getBitmapFromURL extends AsyncTask<String, Void, String> {

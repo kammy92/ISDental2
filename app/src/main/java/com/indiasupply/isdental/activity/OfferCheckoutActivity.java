@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,8 @@ import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.SetTypeFace;
 import com.indiasupply.isdental.utils.UserDetailsPref;
 import com.indiasupply.isdental.utils.Utils;
+import com.razorpay.Checkout;
+import com.razorpay.PaymentResultListener;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,7 +45,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class OfferCheckoutActivity extends AppCompatActivity {
+public class OfferCheckoutActivity extends AppCompatActivity implements PaymentResultListener {
     RecyclerView rvDeliveryAddress;
     MyAddressAdapter addressAdapter;
     ArrayList<MyAddress> addressList = new ArrayList<> ();
@@ -50,17 +53,32 @@ public class OfferCheckoutActivity extends AppCompatActivity {
     int offer_id;
     
     TextView tvOfferName;
+    TextView tvOfferDescription;
     ImageView ivMinus;
     ImageView ivPlus;
     TextView tvQty;
     TextView tvPrice;
+    
+    TextView tvItemTotal;
+    TextView tvOfferDiscount;
+    TextView tvToPay;
+    TextView tvSavings;
+    
+    EditText etGSTNumber;
     
     TextView tvCheckout;
     TextView tvNoAddressFound;
     
     RelativeLayout rlAddNewAddress;
     
+    RelativeLayout rlBack;
+    RelativeLayout rlMain;
+    
+    ProgressBar progressBar;
+    
     int price;
+    int mrp;
+    int discount;
     int qty = 1;
     
     ProgressDialog progressDialog;
@@ -77,16 +95,15 @@ public class OfferCheckoutActivity extends AppCompatActivity {
     }
     
     private void initListener () {
-//        tvAddNewAddress.setOnClickListener (new View.OnClickListener () {
-//            @Override
-//            public void onClick (View v) {
-//                android.app.FragmentManager fm = OfferCheckoutActivity.this.getFragmentManager ();
-//                android.app.FragmentTransaction ft = fm.beginTransaction ();
-//                AddNewAddressDialogFragment dialog = new AddNewAddressDialogFragment ().newInstance ("","");
-//                dialog.show (ft, "MyDialog");
-//            }
-//        });
-    
+        rlBack.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                finish ();
+                overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
+            
+            }
+        });
+        
         ivPlus.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -94,6 +111,11 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                 tvQty.setText ("" + qty);
                 tvPrice.setText ("Rs. " + (price * qty));
                 tvCheckout.setText ("Confirm and Pay Rs. " + (price * qty));
+    
+                tvItemTotal.setText ("Rs. " + (mrp * qty));
+                tvOfferDiscount.setText ("Rs. " + (discount * qty));
+                tvToPay.setText ("Rs. " + (price * qty));
+                tvSavings.setText ("You have saved Rs. " + (discount * qty) + " on the bill");
             }
         });
         ivMinus.setOnClickListener (new View.OnClickListener () {
@@ -104,6 +126,11 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                     tvQty.setText ("" + qty);
                     tvPrice.setText ("Rs. " + price * qty);
                     tvCheckout.setText ("Confirm and Pay Rs. " + (price * qty));
+    
+                    tvItemTotal.setText ("Rs. " + (mrp * qty));
+                    tvOfferDiscount.setText ("Rs. " + (discount * qty));
+                    tvToPay.setText ("Rs. " + (price * qty));
+                    tvSavings.setText ("You have saved Rs. " + (discount * qty) + " on the bill");
                 }
             }
         });
@@ -119,14 +146,14 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                                 .typeface (SetTypeFace.getTypeface (OfferCheckoutActivity.this), SetTypeFace.getTypeface (OfferCheckoutActivity.this))
                                 .negativeText ("CANCEL")
                                 .build ();
-            
+    
                 final EditText etLine1 = (EditText) dialog.findViewById (R.id.etLine1);
                 final EditText etCity = (EditText) dialog.findViewById (R.id.etCity);
                 final EditText etState = (EditText) dialog.findViewById (R.id.etState);
                 final EditText etPincode = (EditText) dialog.findViewById (R.id.etPincode);
-            
+    
                 Utils.setTypefaceToAllViews (OfferCheckoutActivity.this, etLine1);
-            
+    
                 dialog.getActionButton (DialogAction.POSITIVE).setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick (View v) {
@@ -134,19 +161,24 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                         dialog.dismiss ();
                     }
                 });
-            
+    
                 dialog.getActionButton (DialogAction.NEGATIVE).setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick (View v) {
                         dialog.dismiss ();
                     }
                 });
-            
+    
                 dialog.show ();
-                
-                
             }
         });
+        tvCheckout.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                startPayment ("IndiaSupply", tvOfferName.getText ().toString (), String.valueOf (price * qty * 100));
+            }
+        });
+        
     }
     
     private void initData () {
@@ -165,6 +197,7 @@ public class OfferCheckoutActivity extends AppCompatActivity {
         rvDeliveryAddress = (RecyclerView) findViewById (R.id.rvDeliveryAddress);
     
         tvOfferName = (TextView) findViewById (R.id.tvOfferName);
+        tvOfferDescription = (TextView) findViewById (R.id.tvOfferDescription);
         tvPrice = (TextView) findViewById (R.id.tvPrice);
         tvQty = (TextView) findViewById (R.id.tvQty);
         ivMinus = (ImageView) findViewById (R.id.ivMinus);
@@ -172,12 +205,23 @@ public class OfferCheckoutActivity extends AppCompatActivity {
         tvCheckout = (TextView) findViewById (R.id.tvCheckout);
         tvNoAddressFound = (TextView) findViewById (R.id.tvNoAddressFound);
         rlAddNewAddress = (RelativeLayout) findViewById (R.id.rlAddNewAddress);
+        rlBack = (RelativeLayout) findViewById (R.id.rlBack);
+    
+        rlMain = (RelativeLayout) findViewById (R.id.rlMain);
+    
+        tvItemTotal = (TextView) findViewById (R.id.tvItemTotal);
+        tvOfferDiscount = (TextView) findViewById (R.id.tvOfferDiscount);
+        tvToPay = (TextView) findViewById (R.id.tvToPay);
+        tvSavings = (TextView) findViewById (R.id.tvSavings);
+        etGSTNumber = (EditText) findViewById (R.id.etGSTNumber);
+    
+        progressBar = (ProgressBar) findViewById (R.id.progressBar);
     }
     
     private void getExtras () {
         Intent intent = getIntent ();
-        offer_id = 1;
-//        offer_id = intent.getIntExtra (AppConfigTags.OFFER_ID, 0);
+//        offer_id = 1;
+        offer_id = intent.getIntExtra (AppConfigTags.OFFER_ID, 0);
     }
     
     
@@ -196,10 +240,17 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
                                         tvOfferName.setText (jsonObj.getString (AppConfigTags.SWIGGY_OFFER_NAME));
+                                        tvOfferDescription.setText (jsonObj.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING));
                                         price = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE);
-                                        tvPrice.setText ("Rs. " + price);
+                                        mrp = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP);
+                                        discount = ((jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP)) - jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE));
                                         
+                                        tvPrice.setText ("Rs. " + price);
                                         tvCheckout.setText ("Confirm and Pay Rs. " + (price * qty));
+                                        tvItemTotal.setText ("Rs. " + mrp);
+                                        tvOfferDiscount.setText ("Rs. " + discount);
+                                        tvToPay.setText ("Rs. " + price);
+                                        tvSavings.setText ("You have saved Rs. " + discount + " on the bill");
                                         
                                         JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.ADDRESSES);
                                         
@@ -221,6 +272,9 @@ public class OfferCheckoutActivity extends AppCompatActivity {
                                                     jsonObject.getString (AppConfigTags.ADDRESS_PINCODE)));
                                         }
                                         addressAdapter.notifyDataSetChanged ();
+    
+                                        progressBar.setVisibility (View.GONE);
+                                        rlMain.setVisibility (View.VISIBLE);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
@@ -264,7 +318,6 @@ public class OfferCheckoutActivity extends AppCompatActivity {
         } else {
         }
     }
-    
     
     private void addNewAddress (final String line1, final String city, final String state, final String pincode) {
         if (NetworkConnection.isNetworkAvailable (this)) {
@@ -348,6 +401,49 @@ public class OfferCheckoutActivity extends AppCompatActivity {
             };
             Utils.sendRequest (strRequest, 20);
         } else {
+        }
+    }
+    
+    @Override
+    public void onPaymentSuccess (String razorpayPaymentID) {
+        
+        Log.e ("karman", razorpayPaymentID);
+        
+        Utils.showToast (OfferCheckoutActivity.this, "Payment Success", false);
+        finish ();
+    }
+    
+    @Override
+    public void onPaymentError (int code, String response) {
+        Utils.showToast (OfferCheckoutActivity.this, "Payment Failed", false);
+        /**
+         * Add your logic here for a failed payment response
+         */
+    }
+    
+    public void startPayment (String merchant_name, String description, String amount) {
+        UserDetailsPref userDetailsPref = new UserDetailsPref ().getInstance ();
+        Checkout checkout = new Checkout ();
+        checkout.setImage (R.drawable.ic_logo);
+        try {
+            JSONObject options = new JSONObject ();
+            options.put ("name", merchant_name);
+            options.put ("description", description);
+            options.put ("currency", "INR");
+            
+            options.put ("prefill.name", userDetailsPref.getStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_NAME));
+            options.put ("prefill.email", userDetailsPref.getStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_EMAIL));
+            options.put ("prefill.contact", userDetailsPref.getStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_MOBILE));
+            
+            /**
+             * Amount is always passed in PAISE
+             * Eg: "100" = Rs 1.00
+             */
+            options.put ("amount", amount);
+            
+            checkout.open (this, options);
+        } catch (Exception e) {
+            Log.e ("karman", "Error in starting Razorpay Checkout", e);
         }
     }
 }
