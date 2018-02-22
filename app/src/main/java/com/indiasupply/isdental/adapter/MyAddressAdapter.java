@@ -322,6 +322,7 @@ public class MyAddressAdapter extends RecyclerView.Adapter<MyAddressAdapter.View
         public void onClick (View v) {
             currentSelectedPosition = getLayoutPosition ();
             notifyDataSetChanged ();
+            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

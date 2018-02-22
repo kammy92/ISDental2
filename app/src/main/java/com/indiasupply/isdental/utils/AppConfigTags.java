@@ -361,5 +361,11 @@ public class AppConfigTags {
     public static final String ADDRESS_STATE = "address_state";
     public static final String ADDRESS_PINCODE = "address_pincode";
     
+    public static final String QTY = "qty";
+    public static final String TOTAL_AMOUNT = "total_amount";
+    public static final String GST_NUMBER = "gst_number";
+    public static final String TRANSACTION_ID = "transaction_id";
+    
+    
 }
 
