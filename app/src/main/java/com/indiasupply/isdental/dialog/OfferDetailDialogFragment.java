@@ -3,6 +3,7 @@ package com.indiasupply.isdental.dialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.OfferCheckoutActivity;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
 import com.indiasupply.isdental.utils.Constants;
@@ -52,7 +54,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
     RelativeLayout rlOfferDescription;
     int offer_id;
     String name, packaging, description, image, dates, details, terms_conditions;
-    int price, regular_price, mrp, icon;
+    int price, regular_price, mrp, icon, qty;
     ProgressDialog progressDialog;
     // OffersFragment.MyDialogCloseListener closeListener;
     private ImageView ivCancel;
@@ -80,7 +82,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
     
     public static OfferDetailDialogFragment newInstance (int offer_id, String name, String packaging, String description,
                                                          String image, int price, int regular_price,
-                                                         int mrp, String offer_dates, String offer_details,
+                                                         int mrp, int qty, String offer_dates, String offer_details,
                                                          String offer_terms_conditions, int icon) {
         OfferDetailDialogFragment f = new OfferDetailDialogFragment ();
         Bundle args = new Bundle ();
@@ -92,6 +94,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
         args.putInt (AppConfigTags.SWIGGY_OFFER_PRICE, price);
         args.putInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE, regular_price);
         args.putInt (AppConfigTags.SWIGGY_OFFER_MRP, mrp);
+        args.putInt (AppConfigTags.SWIGGY_OFFER_QTY, qty);
         args.putInt ("icon", icon);
         args.putString (AppConfigTags.SWIGGY_OFFER_HTML_DATES, offer_dates);
         args.putString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS, offer_details);
@@ -175,6 +178,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
         price = bundle.getInt (AppConfigTags.SWIGGY_OFFER_PRICE, 0);
         regular_price = bundle.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE, 0);
         mrp = bundle.getInt (AppConfigTags.SWIGGY_OFFER_MRP, 0);
+        qty = bundle.getInt (AppConfigTags.SWIGGY_OFFER_QTY, 0);
         icon = bundle.getInt ("icon", 0);
         dates = bundle.getString (AppConfigTags.SWIGGY_OFFER_HTML_DATES);
         details = bundle.getString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS);
@@ -266,7 +270,12 @@ public class OfferDetailDialogFragment extends DialogFragment {
                     .error (icon)
                     .into (ivOfferImage);
         }
-        
+    
+        if (qty > 1) {
+            tvSendEnquiry.setText (description);
+        } else {
+            tvSendEnquiry.setText ("Buy Now");
+        }
         
     }
     
@@ -281,7 +290,12 @@ public class OfferDetailDialogFragment extends DialogFragment {
         tvSendEnquiry.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
-                sendEnquiry2 (offer_id);
+                Intent intent = new Intent (getActivity (), OfferCheckoutActivity.class);
+                intent.putExtra (AppConfigTags.OFFER_ID, offer_id);
+                getActivity ().startActivity (intent);
+                getActivity ().overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+
+//                sendEnquiry2 (offer_id);
             }
         });
     }

@@ -74,8 +74,12 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     
     RelativeLayout rlBack;
     RelativeLayout rlMain;
+    
     RelativeLayout rlSuccess;
-    TextView tvBack;
+    RelativeLayout rlFailure;
+    
+    TextView tvSuccess;
+    TextView tvFailure;
     
     
     ProgressBar progressBar;
@@ -89,6 +93,12 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     
     UserDetailsPref userDetailsPref;
     
+    int order_id = 0;
+    String order_unique_id;
+    String offer_name;
+    int total_amount = 0;
+    
+    
     @Override
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
@@ -97,7 +107,15 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         initView ();
         initData ();
         initListener ();
-        setData ();
+    
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getInt (AppConfigTags.ORDER_ID) == 0) {
+                setData ();
+            }
+        } else {
+            setData ();
+        }
+        
     }
     
     private void initListener () {
@@ -109,11 +127,19 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
             }
         });
     
-        tvBack.setOnClickListener (new View.OnClickListener () {
+        tvSuccess.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 finish ();
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+    
+        tvFailure.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                rlFailure.setVisibility (View.GONE);
+                startPayment ("IndiaSupply", offer_name + "\nOrder ID : " + order_unique_id, String.valueOf (total_amount * 100));
             }
         });
         
@@ -131,6 +157,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                 tvSavings.setText ("You have saved Rs. " + (discount * qty) + " on the bill");
             }
         });
+    
         ivMinus.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
@@ -159,14 +186,11 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                 .typeface (SetTypeFace.getTypeface (OfferCheckoutActivity.this), SetTypeFace.getTypeface (OfferCheckoutActivity.this))
                                 .negativeText ("CANCEL")
                                 .build ();
-    
                 final EditText etLine1 = (EditText) dialog.findViewById (R.id.etLine1);
                 final EditText etCity = (EditText) dialog.findViewById (R.id.etCity);
                 final EditText etState = (EditText) dialog.findViewById (R.id.etState);
                 final EditText etPincode = (EditText) dialog.findViewById (R.id.etPincode);
-    
                 Utils.setTypefaceToAllViews (OfferCheckoutActivity.this, etLine1);
-    
                 dialog.getActionButton (DialogAction.POSITIVE).setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick (View v) {
@@ -174,29 +198,33 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                         dialog.dismiss ();
                     }
                 });
-    
                 dialog.getActionButton (DialogAction.NEGATIVE).setOnClickListener (new View.OnClickListener () {
                     @Override
                     public void onClick (View v) {
                         dialog.dismiss ();
                     }
                 });
-    
                 dialog.show ();
             }
         });
+    
         tvCheckout.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
                 if (address_id != 0) {
-                    if (etGSTNumber.getText ().toString ().length () > 0) {
-                        userDetailsPref.putStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_GST_NUMBER, etGSTNumber.getText ().toString ());
+                    if (order_id == 0) {
+                        if (etGSTNumber.getText ().toString ().length () > 0) {
+                            userDetailsPref.putStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_GST_NUMBER, etGSTNumber.getText ().toString ());
+                        }
+                        total_amount = price * qty;
+                        generateOrder (offer_id, address_id, qty, (price * qty), etGSTNumber.getText ().toString ());
+                    } else {
+        
                     }
-                    startPayment ("IndiaSupply", tvOfferName.getText ().toString (), String.valueOf (price * qty * 100));
+                    
                 } else {
                     Utils.showToast (OfferCheckoutActivity.this, "Please select a shipping address", false);
                 }
-                
             }
         });
     
@@ -249,7 +277,10 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         progressBar = (ProgressBar) findViewById (R.id.progressBar);
     
         rlSuccess = (RelativeLayout) findViewById (R.id.rlSuccess);
-        tvBack = (TextView) findViewById (R.id.tvBack);
+        tvSuccess = (TextView) findViewById (R.id.tvSuccess);
+    
+        rlFailure = (RelativeLayout) findViewById (R.id.rlFailure);
+        tvFailure = (TextView) findViewById (R.id.tvFailure);
     }
     
     private void getExtras () {
@@ -272,12 +303,15 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        tvOfferName.setText (jsonObj.getString (AppConfigTags.SWIGGY_OFFER_NAME));
+                                        offer_name = jsonObj.getString (AppConfigTags.SWIGGY_OFFER_NAME);
+    
+                                        tvOfferName.setText (offer_name);
                                         tvOfferDescription.setText (jsonObj.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING));
                                         price = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE);
                                         mrp = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP);
                                         discount = ((jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP)) - jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE));
-                                        
+    
+    
                                         tvPrice.setText ("Rs. " + price);
                                         tvCheckout.setText ("Confirm and Pay Rs. " + (price * qty));
                                         tvItemTotal.setText ("Rs. " + mrp);
@@ -439,18 +473,24 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     
     @Override
     public void onPaymentSuccess (String razorpayPaymentID) {
-        generateOrder (offer_id, address_id, qty, (price * qty), razorpayPaymentID, etGSTNumber.getText ().toString ());
+        rlMain.setVisibility (View.GONE);
+        progressBar.setVisibility (View.GONE);
+        editOrder (order_id, 1, razorpayPaymentID, "Success");
     }
     
     @Override
     public void onPaymentError (int code, String response) {
-        Utils.showToast (OfferCheckoutActivity.this, "Payment Failed", false);
+        rlSuccess.setVisibility (View.GONE);
+        rlFailure.setVisibility (View.VISIBLE);
+        rlMain.setVisibility (View.GONE);
+        progressBar.setVisibility (View.GONE);
+        editOrder (order_id, 4, "", "Error Code : " + code + "\nError Response : " + response);
     }
     
     public void startPayment (String merchant_name, String description, String amount) {
         UserDetailsPref userDetailsPref = new UserDetailsPref ().getInstance ();
         Checkout checkout = new Checkout ();
-        checkout.setImage (R.drawable.ic_logo);
+//        checkout.setImage (R.drawable.default_company);
         try {
             JSONObject options = new JSONObject ();
             options.put ("name", merchant_name);
@@ -473,10 +513,9 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         }
     }
     
-    public void generateOrder (final int offer_id, final int address_id, final int qty, final int total_amount, final String transaction_id, final String gst_number) {
+    public void generateOrder (final int offer_id, final int address_id, final int qty, final int total_amount, final String gst_number) {
         if (NetworkConnection.isNetworkAvailable (this)) {
             Utils.showProgressDialog (progressDialog, null, false);
-            rlMain.setVisibility (View.GONE);
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_INSERT_ORDER, true);
             StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_INSERT_ORDER,
                     new Response.Listener<String> () {
@@ -489,9 +528,14 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        rlSuccess.setVisibility (View.VISIBLE);
-                                        rlMain.setVisibility (View.GONE);
-                                        progressBar.setVisibility (View.GONE);
+//                                        rlSuccess.setVisibility (View.VISIBLE);
+//                                        rlMain.setVisibility (View.GONE);
+//                                        progressBar.setVisibility (View.GONE);
+                                        
+                                        order_id = jsonObj.getInt (AppConfigTags.ORDER_ID);
+                                        order_unique_id = jsonObj.getString (AppConfigTags.ORDER_UNIQUE_ID);
+                                        
+                                        startPayment ("IndiaSupply", tvOfferName.getText ().toString () + "\nOrder ID : " + order_unique_id, String.valueOf (price * qty * 100));
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();
@@ -520,11 +564,10 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                     Map<String, String> params = new Hashtable<String, String> ();
                     params.put (AppConfigTags.OFFER_ID, String.valueOf (offer_id));
                     params.put (AppConfigTags.ADDRESS_ID, String.valueOf (address_id));
-                    params.put (AppConfigTags.STATUS, String.valueOf (1));
+                    params.put (AppConfigTags.STATUS, String.valueOf (0));
                     params.put (AppConfigTags.QTY, String.valueOf (qty));
                     params.put (AppConfigTags.TOTAL_AMOUNT, String.valueOf (total_amount));
                     params.put (AppConfigTags.GST_NUMBER, gst_number);
-                    params.put (AppConfigTags.TRANSACTION_ID, transaction_id);
                     
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
@@ -543,5 +586,92 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
             Utils.sendRequest (strRequest, 20);
         } else {
         }
+    }
+    
+    private void editOrder (final int order_id, final int status, final String transaction_id, final String gateway_response) {
+        if (NetworkConnection.isNetworkAvailable (this)) {
+            Utils.showProgressDialog (progressDialog, null, false);
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_EDIT_ORDER + "/" + order_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.PUT, AppConfigURL.URL_EDIT_ORDER + "/" + order_id,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (response != null) {
+                                try {
+                                    JSONObject jsonObj = new JSONObject (response);
+                                    boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                    String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                    if (! is_error) {
+                                        switch (status) {
+                                            case 1:
+                                                rlSuccess.setVisibility (View.VISIBLE);
+                                                break;
+                                        }
+                                        
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace ();
+                                    Utils.showLog (Log.WARN, AppConfigTags.EXCEPTION, e.getMessage (), true);
+                                }
+                            } else {
+                                Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                            }
+                            progressDialog.dismiss ();
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            NetworkResponse response = error.networkResponse;
+                            if (response != null && response.data != null) {
+                                Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                            }
+                            progressDialog.dismiss ();
+                        }
+                    }) {
+                
+                @Override
+                protected Map<String, String> getParams () throws AuthFailureError {
+                    Map<String, String> params = new Hashtable<String, String> ();
+                    params.put (AppConfigTags.STATUS, String.valueOf (status));
+                    params.put (AppConfigTags.TRANSACTION_ID, transaction_id);
+                    params.put (AppConfigTags.GATEWAY_RESPONSE, gateway_response);
+                    Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
+                    return params;
+                }
+                
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 20);
+        } else {
+        }
+    }
+    
+    @Override
+    protected void onSaveInstanceState (Bundle outState) {
+        super.onSaveInstanceState (outState);
+        outState.putInt (AppConfigTags.ORDER_ID, order_id);
+        outState.putString (AppConfigTags.ORDER_UNIQUE_ID, order_unique_id);
+        outState.putString (AppConfigTags.SWIGGY_OFFER_NAME, offer_name);
+        outState.putInt (AppConfigTags.TOTAL_AMOUNT, total_amount);
+    }
+    
+    @Override
+    protected void onRestoreInstanceState (Bundle savedInstanceState) {
+        super.onRestoreInstanceState (savedInstanceState);
+        order_id = savedInstanceState.getInt (AppConfigTags.ORDER_ID);
+        order_unique_id = savedInstanceState.getString (AppConfigTags.ORDER_UNIQUE_ID);
+        offer_name = savedInstanceState.getString (AppConfigTags.SWIGGY_OFFER_NAME);
+        total_amount = savedInstanceState.getInt (AppConfigTags.TOTAL_AMOUNT);
     }
 }

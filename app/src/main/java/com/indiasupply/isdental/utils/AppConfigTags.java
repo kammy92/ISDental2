@@ -365,7 +365,10 @@ public class AppConfigTags {
     public static final String TOTAL_AMOUNT = "total_amount";
     public static final String GST_NUMBER = "gst_number";
     public static final String TRANSACTION_ID = "transaction_id";
+    public static final String GATEWAY_RESPONSE = "gateway_response";
     
     
+    public static final String ORDER_ID = "order_id";
+    public static final String ORDER_UNIQUE_ID = "order_unique_id";
 }
 

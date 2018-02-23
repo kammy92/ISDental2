@@ -192,7 +192,7 @@
                     android:layout_marginBottom="@dimen/activity_margin"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
-                    android:layout_marginTop="@dimen/activity_margin_small"
+                    android:layout_marginTop="@dimen/activity_margin_extra_small"
                     android:background="@drawable/button_background_3">
                     <RelativeLayout
                         android:id="@+id/rl1"
@@ -251,16 +251,29 @@
                     </RelativeLayout>
                 </RelativeLayout>
 
+                <TextView
+                    android:id="@+id/tv11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rl11"
+                    android:layout_marginBottom="@dimen/activity_margin_extra_small"
+                    android:layout_marginLeft="@dimen/activity_margin"
+                    android:layout_marginStart="@dimen/activity_margin"
+                    android:text="GST Number (Optional)"
+                    android:textColor="@color/secondary_text2"
+                    android:textSize="@dimen/text_size_small"
+
+                />
+
                 <EditText
                     android:id="@+id/etGSTNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/rl11"
+                    android:layout_below="@+id/tv11"
                     android:layout_marginLeft="@dimen/activity_margin"
                     android:layout_marginRight="@dimen/activity_margin"
                     android:background="@drawable/et_background2"
                     android:digits="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                    android:hint="GST Number (Optional)"
                     android:inputType="textCapCharacters"
                     android:padding="@dimen/activity_margin_small"
                     android:textSize="@dimen/text_size_medium"/>
@@ -419,7 +432,7 @@
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"/>
         <TextView
-            android:id="@+id/tvBack"
+            android:id="@+id/tvSuccess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv1"
@@ -429,6 +442,41 @@
             android:gravity="center"
             android:padding="@dimen/activity_margin"
             android:text="Take me back to offers"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlFailure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ImageView
+            android:id="@+id/iv2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/ic_check"/>
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv2"
+            android:layout_centerHorizontal="true"
+            android:text="Order failed to complete"
+            android:textColor="@color/primary_text2"
+            android:textSize="@dimen/text_size_large"/>
+        <TextView
+            android:id="@+id/tvFailure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:background="@drawable/button_background_2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin"
+            android:text="Retry Payment"
             android:textColor="@color/text_color_white"
             android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>

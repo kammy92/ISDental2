@@ -137,7 +137,7 @@ public class OffersFragment extends Fragment {
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 OfferDetailDialogFragment dialog = new OfferDetailDialogFragment ().newInstance (offers.getId (), offers.getName (), offers.getPackaging (),
                         offers.getDescription (), offers.getImage (), offers.getPrice (), offers.getRegular_price (),
-                        offers.getMrp (), offers.getHtml_dates (), offers.getHtml_details (),
+                        offers.getMrp (), offers.getQty (), offers.getHtml_dates (), offers.getHtml_details (),
                         offers.getHtml_tandc (), offers.getIcon ());
                 dialog.show (ft, "Contacts");
             }
@@ -194,6 +194,7 @@ public class OffersFragment extends Fragment {
                                                         jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_PRICE),
                                                         jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_MRP),
                                                         jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE),
+                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_QTY),
                                                         jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_NAME),
                                                         jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_IMAGE),
                                                         jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION),
@@ -339,6 +340,7 @@ public class OffersFragment extends Fragment {
                                 jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_PRICE),
                                 jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_MRP),
                                 jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE),
+                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_QTY),
                                 jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_NAME),
                                 jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_IMAGE),
                                 jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION),

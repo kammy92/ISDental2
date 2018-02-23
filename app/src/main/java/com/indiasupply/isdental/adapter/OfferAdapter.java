@@ -129,6 +129,13 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
                     .error (offer.getIcon ())
                     .into (holder.ivOfferImage);
         }
+    
+        if (offer.getQty () > 1) {
+            holder.tvSendEnquiry.setText (offer.getDescription ());
+        } else {
+            holder.tvSendEnquiry.setText ("Buy Now");
+        }
+        
         holder.tvSendEnquiry.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {

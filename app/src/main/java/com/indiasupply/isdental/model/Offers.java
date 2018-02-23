@@ -1,10 +1,10 @@
 package com.indiasupply.isdental.model;
 
 public class Offers {
-    int id, icon, price, mrp, regular_price;
+    int id, icon, price, mrp, regular_price, qty;
     String name, image, description, packaging, start_date, end_date, html_dates, html_details, html_tandc;
     
-    public Offers (int id, int icon, int price, int mrp, int regular_price, String name, String image, String description, String packaging, String start_date, String end_date, String html_dates, String html_details, String html_tandc) {
+    public Offers (int id, int icon, int price, int mrp, int regular_price, int qty, String name, String image, String description, String packaging, String start_date, String end_date, String html_dates, String html_details, String html_tandc) {
         this.id = id;
         this.icon = icon;
         this.price = price;
@@ -17,6 +17,7 @@ public class Offers {
         this.mrp = mrp;
         this.regular_price = regular_price;
         this.price = price;
+        this.qty = qty;
         this.start_date = start_date;
         this.end_date = end_date;
         this.html_dates = html_dates;
@@ -46,6 +47,14 @@ public class Offers {
     
     public void setRegular_price (int regular_price) {
         this.regular_price = regular_price;
+    }
+    
+    public int getQty () {
+        return qty;
+    }
+    
+    public void setQty (int qty) {
+        this.qty = qty;
     }
     
     public int getId () {
