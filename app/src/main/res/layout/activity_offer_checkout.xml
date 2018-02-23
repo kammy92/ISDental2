@@ -403,7 +403,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-
         <ImageView
             android:id="@+id/iv1"
             android:layout_width="100dp"
@@ -411,6 +410,7 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_check"/>
         <TextView
+            android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/iv1"
@@ -418,5 +418,19 @@
             android:text="Order Successfully Placed"
             android:textColor="@color/primary_text2"
             android:textSize="@dimen/text_size_large"/>
+        <TextView
+            android:id="@+id/tvBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:background="@drawable/button_background_2"
+            android:gravity="center"
+            android:padding="@dimen/activity_margin"
+            android:text="Take me back to offers"
+            android:textColor="@color/text_color_white"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="bold"/>
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

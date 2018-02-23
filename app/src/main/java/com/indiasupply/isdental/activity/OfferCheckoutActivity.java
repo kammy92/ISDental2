@@ -75,6 +75,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     RelativeLayout rlBack;
     RelativeLayout rlMain;
     RelativeLayout rlSuccess;
+    TextView tvBack;
     
     
     ProgressBar progressBar;
@@ -85,6 +86,8 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     int qty = 1;
     
     ProgressDialog progressDialog;
+    
+    UserDetailsPref userDetailsPref;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -103,7 +106,14 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
             public void onClick (View v) {
                 finish ();
                 overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
-            
+            }
+        });
+    
+        tvBack.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                finish ();
+                overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
         
@@ -179,6 +189,9 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
             @Override
             public void onClick (View v) {
                 if (address_id != 0) {
+                    if (etGSTNumber.getText ().toString ().length () > 0) {
+                        userDetailsPref.putStringPref (OfferCheckoutActivity.this, UserDetailsPref.USER_GST_NUMBER, etGSTNumber.getText ().toString ());
+                    }
                     startPayment ("IndiaSupply", tvOfferName.getText ().toString (), String.valueOf (price * qty * 100));
                 } else {
                     Utils.showToast (OfferCheckoutActivity.this, "Please select a shipping address", false);
@@ -206,6 +219,9 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     
         Utils.setTypefaceToAllViews (this, tvOfferName);
         progressDialog = new ProgressDialog (this);
+        userDetailsPref = UserDetailsPref.getInstance ();
+    
+        etGSTNumber.setText (userDetailsPref.getStringPref (this, UserDetailsPref.USER_GST_NUMBER));
     }
     
     public void initView () {
@@ -233,6 +249,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         progressBar = (ProgressBar) findViewById (R.id.progressBar);
     
         rlSuccess = (RelativeLayout) findViewById (R.id.rlSuccess);
+        tvBack = (TextView) findViewById (R.id.tvBack);
     }
     
     private void getExtras () {
@@ -428,9 +445,6 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     @Override
     public void onPaymentError (int code, String response) {
         Utils.showToast (OfferCheckoutActivity.this, "Payment Failed", false);
-        /**
-         * Add your logic here for a failed payment response
-         */
     }
     
     public void startPayment (String merchant_name, String description, String amount) {
@@ -462,6 +476,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
     public void generateOrder (final int offer_id, final int address_id, final int qty, final int total_amount, final String transaction_id, final String gst_number) {
         if (NetworkConnection.isNetworkAvailable (this)) {
             Utils.showProgressDialog (progressDialog, null, false);
+            rlMain.setVisibility (View.GONE);
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_INSERT_ORDER, true);
             StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_INSERT_ORDER,
                     new Response.Listener<String> () {
@@ -477,7 +492,6 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                         rlSuccess.setVisibility (View.VISIBLE);
                                         rlMain.setVisibility (View.GONE);
                                         progressBar.setVisibility (View.GONE);
-                                        Utils.showToast (OfferCheckoutActivity.this, "Payment Success", false);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace ();

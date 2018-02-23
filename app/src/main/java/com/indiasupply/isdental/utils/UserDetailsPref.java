@@ -13,6 +13,7 @@ public class UserDetailsPref {
     public static String USER_LOGIN_KEY = "user_login_key";
     public static String USER_LOGIN_KEY_2 = "user_login_key_2";
     public static String USER_FIREBASE_ID = "user_firebase_id";
+    public static String USER_GST_NUMBER = "user_gst_number";
     public static String LOGGED_IN_SESSION = "logged_in_session";
     private static UserDetailsPref userDetailsPref;
     private String USER_DETAILS = "USER_DETAILS";
