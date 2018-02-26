@@ -27,6 +27,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.MyAccountActivity;
 import com.indiasupply.isdental.adapter.OfferAdapter;
 import com.indiasupply.isdental.dialog.OfferDetailDialogFragment;
 import com.indiasupply.isdental.model.Banner;
@@ -62,6 +63,8 @@ public class OffersFragment extends Fragment {
     List<Offers> offerList = new ArrayList<> ();
     OfferAdapter offerAdapter;
     RelativeLayout rlMain;
+    
+    ImageView ivMyAccount;
     
     CoordinatorLayout clMain;
     
@@ -99,6 +102,7 @@ public class OffersFragment extends Fragment {
         clMain = (CoordinatorLayout) rootView.findViewById (R.id.clMain);
         shimmerFrameLayout = (ShimmerFrameLayout) rootView.findViewById (R.id.shimmer_view_container);
         rlMain = (RelativeLayout) rootView.findViewById (R.id.rlMain);
+        ivMyAccount = (ImageView) rootView.findViewById (R.id.ivMyAccount);
     }
     
     private void initBundle () {
@@ -140,6 +144,14 @@ public class OffersFragment extends Fragment {
                         offers.getMrp (), offers.getQty (), offers.getHtml_dates (), offers.getHtml_details (),
                         offers.getHtml_tandc (), offers.getIcon ());
                 dialog.show (ft, "Contacts");
+            }
+        });
+        ivMyAccount.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent intent = new Intent (getActivity (), MyAccountActivity.class);
+                getActivity ().startActivity (intent);
+                getActivity ().overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
     }

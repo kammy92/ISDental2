@@ -28,45 +28,59 @@
             app:contentInsetRight="0dp"
             app:contentInsetStart="0dp"
             app:layout_collapseMode="parallax">
-
             <RelativeLayout
                 android:id="@+id/toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
                 android:gravity="center_vertical">
-
-                <ImageView
-                    android:id="@+id/ivAppLogo"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="10dp"
-                    android:src="@mipmap/ic_launcher"/>
-
-                <TextView
-                    android:id="@+id/tvSearch"
+                <RelativeLayout
+                    android:id="@+id/rlToolbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_alignBottom="@+id/ivAppLogo"
-                    android:layout_alignTop="@+id/ivAppLogo"
-                    android:layout_toRightOf="@+id/ivAppLogo"
+                    android:layout_centerVertical="true"
                     android:gravity="center_vertical"
-                    android:paddingLeft="10dp"
-                    android:text="IndiaSupply Dental App"
-                    android:textColor="@color/primary_text2"
-                    android:textSize="@dimen/text_size_large"
-                    android:textStyle="bold"/>
-                <Button
-                    android:id="@+id/btFilter"
+                    android:visibility="visible">
+                    <ImageView
+                        android:id="@+id/ivAppLogo"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="@dimen/activity_margin_small"
+                        android:src="@mipmap/ic_launcher"/>
+                    <TextView
+                        android:id="@+id/tvSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_alignBottom="@+id/ivAppLogo"
+                        android:layout_alignTop="@+id/ivAppLogo"
+                        android:layout_toRightOf="@+id/ivAppLogo"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:text="IndiaSupply Dental App"
+                        android:textColor="@color/primary_text2"
+                        android:textSize="@dimen/text_size_large"
+                        android:textStyle="bold"/>
+                </RelativeLayout>
+                <LinearLayout
+                    android:id="@+id/llButtons"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@android:color/transparent"
-                    android:padding="@dimen/activity_margin"
-                    android:text="FILTER"
-                    android:textColor="@color/text_color_black"
-                    android:textStyle="bold"
-                    android:visibility="gone"/>
+                    android:animateLayoutChanges="true">
+                    <ImageView
+                        android:id="@+id/ivMyAccount"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/activity_margin_small"
+                        android:paddingLeft="@dimen/activity_margin"
+                        android:paddingRight="@dimen/activity_margin"
+                        android:paddingTop="@dimen/activity_margin_small"
+                        android:src="@drawable/ic_home_account_filled"
+                        android:visibility="visible"/>
+                </LinearLayout>
+
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
         <View

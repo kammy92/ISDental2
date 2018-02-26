@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:background="@color/text_color_white">
+    <ImageView
+        android:id="@+id/ivCancel"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_close"/>
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ivCancel"
+        android:layout_alignTop="@+id/ivCancel"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="My Saving"
+        android:textColor="@color/primary_text2"
+        android:textSize="@dimen/text_size_large"
+        android:textStyle="bold"/>
+    <ImageView
+        android:id="@+id/ivDate"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/activity_margin"
+        android:src="@drawable/ic_date"
+        android:visibility="gone"/>
+    <RelativeLayout
+        android:id="@+id/rlOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivCancel"
+        android:visibility="visible">
+
+        <TextView
+            android:id="@+id/tvTotalSavingsombol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/activity_margin"
+            android:text="Rs"
+            android:textSize="@dimen/activity_margin_extra_large"/>
+
+
+        <TextView
+            android:id="@+id/tvTotalSaving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:layout_toRightOf="@+id/tvTotalSavingsombol"
+            android:text="2000"
+            android:textSize="@dimen/activity_margin_extra_large"/>
+
+
+        <TextView
+            android:id="@+id/tvRecentOrder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvTotalSaving"
+            android:layout_marginLeft="@dimen/activity_margin"
+            android:layout_marginRight="@dimen/activity_margin"
+            android:text="Total Saving"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvSavingList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvRecentOrder"
+            android:layout_marginTop="@dimen/activity_margin"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:overScrollMode="never"
+            android:scrollbarStyle="insideOverlay"/>
+    </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tvSendEnquiry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/activity_margin"
+        android:layout_marginTop="@dimen/activity_margin_small"
+        android:background="@drawable/button_background_2"
+        android:gravity="center"
+        android:padding="@dimen/activity_margin_small"
+        android:text="Claim More Offer"
+        android:textColor="@color/text_color_white"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="visible"/>
+
+</RelativeLayout>
