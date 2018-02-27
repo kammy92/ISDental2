@@ -13,6 +13,9 @@
     <string name="please_enter_otp"></string>
 
 
+    <string name="Rs">\u20B9</string>
+
+
     <string name="activity_login_hint_full_name">Full Name</string>
     <string name="activity_login_hint_email">Email Address</string>
     <string name="activity_login_hint_mobile">Mobile</string>

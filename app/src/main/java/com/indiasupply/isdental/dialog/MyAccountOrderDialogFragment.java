@@ -2,6 +2,7 @@ package com.indiasupply.isdental.dialog;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -14,13 +15,20 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.MainActivity;
 import com.indiasupply.isdental.adapter.MyAccountOrderAdapter;
 import com.indiasupply.isdental.model.MyAccountOrder;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.RecyclerViewMargin;
 import com.indiasupply.isdental.utils.Utils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +40,15 @@ public class MyAccountOrderDialogFragment extends DialogFragment {
     ImageView ivCancel;
     TextView tvTitle;
     String myOrder;
+    RelativeLayout rlMain;
+    RelativeLayout rlNoOrderFound;
+    
+    TextView tvClaimOffers;
     
     public static MyAccountOrderDialogFragment newInstance (String myOrder) {
         MyAccountOrderDialogFragment fragment = new MyAccountOrderDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString ("myOrder", myOrder);
+        args.putString (AppConfigTags.ORDERS, myOrder);
         fragment.setArguments (args);
         return fragment;
     }
@@ -84,18 +96,20 @@ public class MyAccountOrderDialogFragment extends DialogFragment {
     private void initView (View root) {
         tvTitle = (TextView) root.findViewById (R.id.tvTitle);
         ivCancel = (ImageView) root.findViewById (R.id.ivCancel);
-        rvMyOrders = (RecyclerView) root.findViewById (R.id.rvOrderList);
+        rvMyOrders = (RecyclerView) root.findViewById (R.id.rvOrders);
+        rlMain = (RelativeLayout) root.findViewById (R.id.rlMain);
+        rlNoOrderFound = (RelativeLayout) root.findViewById (R.id.rlNoOrdersFound);
+        tvClaimOffers = (TextView) root.findViewById (R.id.tvClaimOffers);
     }
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myOrder = bundle.getString (myOrder);
+        myOrder = bundle.getString (AppConfigTags.ORDERS);
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
-        myAccountOrderList.add (new MyAccountOrder (1, "Offer Name 1", "21/02/2018", "Pending"));
-        myAccountOrderList.add (new MyAccountOrder (2, "Offer Name 2", "22/02/2018", "Pending"));
+    
         orderAdapter = new MyAccountOrderAdapter (getActivity (), myAccountOrderList);
         rvMyOrders.setAdapter (orderAdapter);
         rvMyOrders.setHasFixedSize (true);
@@ -111,8 +125,49 @@ public class MyAccountOrderDialogFragment extends DialogFragment {
                 getDialog ().dismiss ();
             }
         });
+        tvClaimOffers.setOnClickListener (new View.OnClickListener () {
+            @Override
+            public void onClick (View v) {
+                Intent intent = new Intent (getActivity (), MainActivity.class);
+                intent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags (Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getActivity ().startActivity (intent);
+                getActivity ().overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
     }
     
     private void setData () {
+        myAccountOrderList.clear ();
+        try {
+            JSONArray jsonArray = new JSONArray (myOrder);
+            rlMain.setVisibility (View.VISIBLE);
+            rlNoOrderFound.setVisibility (View.GONE);
+        
+            if (jsonArray.length () > 0) {
+                for (int j = 0; j < jsonArray.length (); j++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject (j);
+                    myAccountOrderList.add (new MyAccountOrder (
+                            jsonObject.getInt (AppConfigTags.ORDER_ID),
+                            jsonObject.getInt (AppConfigTags.ORDER_STATUS),
+                            jsonObject.getInt (AppConfigTags.ORDER_QTY),
+                            jsonObject.getInt (AppConfigTags.ORDER_PRICE),
+                            jsonObject.getInt (AppConfigTags.ORDER_MRP),
+                            jsonObject.getInt (AppConfigTags.OFFER_QTY),
+                            jsonObject.getString (AppConfigTags.ORDER_UNIQUE_ID),
+                            jsonObject.getString (AppConfigTags.SWIGGY_OFFER_NAME),
+                            jsonObject.getString (AppConfigTags.ORDER_CREATED_AT)
+                    ));
+                }
+                orderAdapter.notifyDataSetChanged ();
+            } else {
+                rlMain.setVisibility (View.GONE);
+                rlNoOrderFound.setVisibility (View.VISIBLE);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace ();
+        }
     }
 }
+

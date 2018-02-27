@@ -39,11 +39,11 @@ public class MyAccountSavingAdapter extends RecyclerView.Adapter<MyAccountSaving
     public void onBindViewHolder (final ViewHolder holder, int position) {
         final MyAccountSaving saving = orderList.get (position);
         holder.tvOfferName.setText (saving.getOffer_name ());
-        holder.tvOfferName.setText (saving.getPlace_date ());
-        holder.tvStatus.setText (saving.getStatus ());
+        holder.tvClaimedDate.setText ("Claimed On :" + Utils.convertTimeFormat (saving.getClaimed_date (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy"));
+        holder.tvSavings.setText (activity.getResources ().getString (R.string.Rs) + saving.getSavings ());
+    
+
         Utils.setTypefaceToAllViews (activity, holder.tvOfferName);
-        
-        
     }
     
     @Override
@@ -62,22 +62,21 @@ public class MyAccountSavingAdapter extends RecyclerView.Adapter<MyAccountSaving
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvOfferName;
-        TextView tvOfferDescription;
-        TextView tvStatus;
-        
+        TextView tvClaimedDate;
+        TextView tvSavings;
         
         public ViewHolder (View view) {
             super (view);
             tvOfferName = (TextView) view.findViewById (R.id.tvOfferName);
-            tvOfferDescription = (TextView) view.findViewById (R.id.tvOfferDescription);
-            tvStatus = (TextView) view.findViewById (R.id.tvStatus);
+            tvClaimedDate = (TextView) view.findViewById (R.id.tvClaimedDate);
+            tvSavings = (TextView) view.findViewById (R.id.tvSavings);
             
             view.setOnClickListener (this);
         }
         
         @Override
         public void onClick (View v) {
-            mItemClickListener.onItemClick (v, getLayoutPosition ());
+//            mItemClickListener.onItemClick (v, getLayoutPosition ());
         }
     }
 }

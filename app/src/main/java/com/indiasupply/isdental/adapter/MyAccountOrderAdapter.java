@@ -37,9 +37,32 @@ public class MyAccountOrderAdapter extends RecyclerView.Adapter<MyAccountOrderAd
     
     @Override
     public void onBindViewHolder (final ViewHolder holder, int position) {
-        final MyAccountOrder offer = orderList.get (position);
+        final MyAccountOrder order = orderList.get (position);
         Utils.setTypefaceToAllViews (activity, holder.tvOfferName);
-        
+    
+        holder.tvOfferName.setText (order.getOffer_name ());
+        holder.tvClaimedDate.setText ("Claimed On :" + Utils.convertTimeFormat (order.getClaimed_date (), "yyyy-MM-dd HH:mm:ss", "dd/MM/yyyy"));
+    
+        switch (order.getStatus ()) {
+            case 0:
+                holder.tvOrderStatus.setText ("Pending");
+                break;
+            case 1:
+                holder.tvOrderStatus.setText ("Processing");
+                break;
+            case 2:
+                holder.tvOrderStatus.setText ("Dispatched");
+                break;
+            case 3:
+                holder.tvOrderStatus.setText ("Delivered");
+                break;
+            case 4:
+                holder.tvOrderStatus.setText ("Failed");
+                break;
+            case 5:
+                holder.tvOrderStatus.setText ("Cancelled");
+                break;
+        }
         
     }
     
@@ -59,13 +82,14 @@ public class MyAccountOrderAdapter extends RecyclerView.Adapter<MyAccountOrderAd
     
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvOfferName;
-        TextView tvOfferDescription;
-        
+        TextView tvClaimedDate;
+        TextView tvOrderStatus;
         
         public ViewHolder (View view) {
             super (view);
             tvOfferName = (TextView) view.findViewById (R.id.tvOfferName);
-            tvOfferDescription = (TextView) view.findViewById (R.id.tvOfferDescription);
+            tvClaimedDate = (TextView) view.findViewById (R.id.tvClaimedDate);
+            tvOrderStatus = (TextView) view.findViewById (R.id.tvOrderStatus);
             
             view.setOnClickListener (this);
         }

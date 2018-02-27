@@ -370,5 +370,15 @@ public class AppConfigTags {
     
     public static final String ORDER_ID = "order_id";
     public static final String ORDER_UNIQUE_ID = "order_unique_id";
+    
+    public static final String ORDERS = "orders";
+    public static final String ORDER_CREATED_AT = "order_created_at";
+    public static final String ORDER_STATUS = "order_status";
+    public static final String ORDER_QTY = "order_qty";
+    public static final String ORDER_PRICE = "order_price";
+    public static final String ORDER_MRP = "order_mrp";
+    public static final String ORDER_REGULAR_PRICE = "order_regular_price";
+    public static final String OFFER_QTY = "offer_qty";
+    
 }
 

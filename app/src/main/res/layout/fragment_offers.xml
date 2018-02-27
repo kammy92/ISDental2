@@ -77,10 +77,9 @@
                         android:paddingLeft="@dimen/activity_margin"
                         android:paddingRight="@dimen/activity_margin"
                         android:paddingTop="@dimen/activity_margin_small"
-                        android:src="@drawable/ic_home_account_filled"
+                        android:src="@drawable/ic_my_account"
                         android:visibility="visible"/>
                 </LinearLayout>
-
             </RelativeLayout>
         </android.support.v7.widget.Toolbar>
         <View

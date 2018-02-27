@@ -1,61 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/activity_margin"
+        android:layout_marginEnd="@dimen/activity_margin"
         android:layout_marginRight="@dimen/activity_margin"
-        android:layout_toLeftOf="@+id/rl4"
-        android:layout_toStartOf="@+id/rl4">
-
+        android:layout_toLeftOf="@+id/tvSavings"
+        android:layout_toStartOf="@+id/tvSavings">
         <TextView
-            android:id="@+id/tvOrderName"
+            android:id="@+id/tvOfferName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:lines="1"
             android:text="Offer Name"
             android:textColor="@color/primary_text2"
-            android:textSize="@dimen/text_size_small"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold"/>
-
-
         <TextView
-            android:id="@+id/tvOrderDate"
+            android:id="@+id/tvClaimedDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvOrderName"
+            android:layout_below="@+id/tvOfferName"
             android:layout_gravity="center"
             android:text="20/11/2017"
             android:textColor="@color/secondary_text2"
             android:textSize="@dimen/text_size_extra_small"
             android:visibility="visible"/>
-
-
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl4"
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/tvSavings"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_centerInParent="true">
-
-        <TextView
-            android:id="@+id/tvStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_background"
-            android:gravity="center"
-            android:padding="@dimen/activity_margin_small"
-            android:text="Status"
-            android:textColor="@color/secondary_text2"/>
-    </RelativeLayout>
+        android:layout_centerVertical="true"
+        android:background="@drawable/button_background"
+        android:gravity="center"
+        android:padding="@dimen/activity_margin_small"
+        android:text="Rs. 123"
+        android:textColor="@color/secondary_text2"
+        android:textSize="@dimen/text_size_small"
+        android:textStyle="bold"/>
 </RelativeLayout>

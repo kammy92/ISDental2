@@ -1,15 +1,15 @@
 package com.indiasupply.isdental.model;
 
 public class MyAccountSaving {
-    int id;
-    String offer_name, place_date, status, saving_amount;
+    int id, status, savings;
+    String offer_name, claimed_date;
     
-    public MyAccountSaving (int id, String offer_name, String place_date, String status) {
+    public MyAccountSaving (int id, int status, int savings, String offer_name, String claimed_date) {
         this.id = id;
+        this.status = status;
+        this.savings = savings;
         this.offer_name = offer_name;
-        this.place_date = place_date;
-        
-        this.saving_amount = saving_amount;
+        this.claimed_date = claimed_date;
     }
     
     public int getId () {
@@ -20,6 +20,22 @@ public class MyAccountSaving {
         this.id = id;
     }
     
+    public int getStatus () {
+        return status;
+    }
+    
+    public void setStatus (int status) {
+        this.status = status;
+    }
+    
+    public int getSavings () {
+        return savings;
+    }
+    
+    public void setSavings (int savings) {
+        this.savings = savings;
+    }
+    
     public String getOffer_name () {
         return offer_name;
     }
@@ -28,21 +44,11 @@ public class MyAccountSaving {
         this.offer_name = offer_name;
     }
     
-    public String getPlace_date () {
-        return place_date;
+    public String getClaimed_date () {
+        return claimed_date;
     }
     
-    public void setPlace_date (String place_date) {
-        this.place_date = place_date;
+    public void setClaimed_date (String claimed_date) {
+        this.claimed_date = claimed_date;
     }
-    
-    public String getStatus () {
-        return status;
-    }
-    
-    public void setStatus (String status) {
-        this.status = status;
-    }
-    
-    
 }

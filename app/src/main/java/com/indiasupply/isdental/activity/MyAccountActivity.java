@@ -28,9 +28,9 @@ import com.indiasupply.isdental.dialog.MyAccountAboutUsDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountEnquiriesDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountFavouritesDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountHelpSupportDialogFragment;
-import com.indiasupply.isdental.dialog.MyAccountOffersDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountOrderDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountPrivacyPolicyDialogFragment;
+import com.indiasupply.isdental.dialog.MyAccountSavingDialogFragment;
 import com.indiasupply.isdental.dialog.MyAccountTermsofUseDialogFragment;
 import com.indiasupply.isdental.model.MyAccountItem;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -159,12 +159,13 @@ public class MyAccountActivity extends AppCompatActivity {
         rvHelp.setHasFixedSize (true);
         rvHelp.setLayoutManager (new LinearLayoutManager (MyAccountActivity.this, LinearLayoutManager.VERTICAL, false));
         rvHelp.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (MyAccountActivity.this, 16), (int) Utils.pxFromDp (MyAccountActivity.this, 16), (int) Utils.pxFromDp (MyAccountActivity.this, 16), (int) Utils.pxFromDp (MyAccountActivity.this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
-        
+    
+    
         myAccountItemList.add (new MyAccountItem (1, R.drawable.ic_my_account_favourites, "My Favourites", "", ""));
-//        myAccountItemList.add (new MyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
-        myAccountItemList.add (new MyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
-        
-        myAccountItemList.add (new MyAccountItem (4, R.drawable.ic_my_account_inquiries, "My Order", "", ""));
+// myAccountItemList.add (new MyAccountItem (2, R.drawable.ic_my_account_offers, "My Offers", "", ""));
+        myAccountItemList.add (new MyAccountItem (2, R.drawable.ic_my_account_inquiries, "My Enquiries", "", ""));
+        myAccountItemList.add (new MyAccountItem (3, R.drawable.ic_my_account_inquiries, "My Orders", "", ""));
+        myAccountItemList.add (new MyAccountItem (4, R.drawable.ic_my_account_inquiries, "My Savings", "", ""));
         
         myHelpItemList.add (new MyAccountItem (5, R.drawable.ic_my_account_help_support, "Help & Support", "", ""));
 //        myHelpItemList.add (new MyAccountItem (6, R.drawable.ic_my_account_help_support, "FAQs", "", ""));
@@ -189,16 +190,16 @@ public class MyAccountActivity extends AppCompatActivity {
                         frag1.show (ft, "2");
                         break;
                     case 2:
-                        MyAccountOffersDialogFragment frag2 = MyAccountOffersDialogFragment.newInstance (myOffers);
-                        frag2.show (ft, "2");
-                        break;
-                    case 3:
                         MyAccountEnquiriesDialogFragment frag3 = MyAccountEnquiriesDialogFragment.newInstance (myEnquiries);
                         frag3.show (ft, "2");
                         break;
-                    case 4:
+                    case 3:
                         MyAccountOrderDialogFragment frag4 = MyAccountOrderDialogFragment.newInstance (myOrder);
-                        frag4.show (ft, "2");
+                        frag4.show (ft, "3");
+                        break;
+                    case 4:
+                        MyAccountSavingDialogFragment frag5 = MyAccountSavingDialogFragment.newInstance (myOrder);
+                        frag5.show (ft, "4");
                         break;
                 }
             }
@@ -255,6 +256,8 @@ public class MyAccountActivity extends AppCompatActivity {
                                         myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
                                         myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
                                         myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
+                                        myOrder = jsonObj.getJSONArray (AppConfigTags.ORDERS).toString ();
+                                        
                                         htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
                                         htmlAboutUs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
                                         htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
