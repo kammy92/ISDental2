@@ -152,11 +152,11 @@ public class MyAccountOrderDialogFragment extends DialogFragment {
                             jsonObject.getInt (AppConfigTags.ORDER_ID),
                             jsonObject.getInt (AppConfigTags.ORDER_STATUS),
                             jsonObject.getInt (AppConfigTags.ORDER_QTY),
-                            jsonObject.getInt (AppConfigTags.ORDER_PRICE),
-                            jsonObject.getInt (AppConfigTags.ORDER_MRP),
+                            jsonObject.getInt (AppConfigTags.OFFER_PRICE),
+                            jsonObject.getInt (AppConfigTags.OFFER_MRP),
                             jsonObject.getInt (AppConfigTags.OFFER_QTY),
                             jsonObject.getString (AppConfigTags.ORDER_UNIQUE_ID),
-                            jsonObject.getString (AppConfigTags.SWIGGY_OFFER_NAME),
+                            jsonObject.getString (AppConfigTags.OFFER_NAME),
                             jsonObject.getString (AppConfigTags.ORDER_CREATED_AT)
                     ));
                 }

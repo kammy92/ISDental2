@@ -194,8 +194,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (this)) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/" + company_id, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_COMPANY_DETAILS + "/" + company_id,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_COMPANY_DETAILS + "/" + company_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_COMPANY_DETAILS + "/" + company_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -211,27 +211,27 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                         } else {
                                             db.insertCompany (company_id, response);
                                         }
-                                        tvBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
-                                        company_name = jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME);
-                                        tvBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
-                                        tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
-                                        tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
-                                        tvRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_RATING));
-                                        if (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) > 0) {
-                                            tvTotalRating.setText (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) + " Ratings");
+                                        tvBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                                        company_name = jsonObj.getString (AppConfigTags.COMPANY_NAME);
+                                        tvBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                                        tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                                        tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                                        tvRating.setText (jsonObj.getString (AppConfigTags.COMPANY_RATING));
+                                        if (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) > 0) {
+                                            tvTotalRating.setText (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) + " Ratings");
                                         } else {
                                             tvTotalRating.setText ("0 Ratings");
                                         }
-                                        tvContacts.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_CONTACTS));
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS).length () > 0) {
-                                            tvOffer.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS));
+                                        tvContacts.setText (jsonObj.getString (AppConfigTags.COMPANY_TOTAL_CONTACTS));
+                                        if (jsonObj.getString (AppConfigTags.COMPANY_OFFERS).length () > 0) {
+                                            tvOffer.setText (jsonObj.getString (AppConfigTags.COMPANY_OFFERS));
                                             rlOffer.setVisibility (View.VISIBLE);
                                         } else {
                                             rlOffer.setVisibility (View.GONE);
                                         }
-                                        company_contacts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ();
+                                        company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
     
-                                        JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_PRODUCT_GROUPS);
+                                        JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.COMPANY_PRODUCT_GROUPS);
                                         for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
                                             ArrayList<Product> productList = new ArrayList<> ();
                                             productList.clear ();
@@ -241,32 +241,32 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                             view.setBackgroundColor (getResources ().getColor (R.color.view_color));
                                             llDynamic.addView (view);
                                             TextView tv = new TextView (CompanyDetailActivity.this);
-                                            tv.setText (jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE));
+                                            tv.setText (jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE));
                                             tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                                             tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 18);
                                             tv.setTypeface (SetTypeFace.getTypeface (CompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
                                             tv.setTextColor (getResources ().getColor (R.color.primary_text2));
                                             tv.setPadding ((int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), 0);
                                             llDynamic.addView (tv);
-                                            JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS);
+                                            JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.PRODUCTS);
                                             for (int j = 0; j < jsonArrayProduct.length (); j++) {
                                                 JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
                                                 productList.add (new Product (
-                                                        jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                                                        jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ID),
                                                         R.drawable.default_event,
-                                                        jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
-                                                        jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE),
-                                                        jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE),
-                                                        jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
+                                                        jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ENQUIRY),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_NAME),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_PACKAGING),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_CATEGORY),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_PRICE),
+                                                        jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE),
+                                                        jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE),
+                                                        jsonObjectProduct.getString (AppConfigTags.PRODUCT_IMAGE)
                                                 ));
                                             }
     
-                                            if (jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE) == 1) {
+                                            if (jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE) == 1) {
                                                 RecyclerView rv = new RecyclerView (CompanyDetailActivity.this);
                                                 recommendedProductAdapter = new RecommendedProductAdapter (CompanyDetailActivity.this, productList);
                                                 rv.setAdapter (recommendedProductAdapter);
@@ -378,27 +378,27 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-                    tvBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
-                    company_name = jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME);
-                    tvBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
-                    tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_NAME));
-                    tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES));
-                    tvRating.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_RATING));
-                    if (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) > 0) {
-                        tvTotalRating.setText (jsonObj.getInt (AppConfigTags.SWIGGY_COMPANY_TOTAL_RATINGS) + " Ratings");
+                    tvBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                    company_name = jsonObj.getString (AppConfigTags.COMPANY_NAME);
+                    tvBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                    tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                    tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                    tvRating.setText (jsonObj.getString (AppConfigTags.COMPANY_RATING));
+                    if (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) > 0) {
+                        tvTotalRating.setText (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) + " Ratings");
                     } else {
                         tvTotalRating.setText ("0 Ratings");
                     }
-                    tvContacts.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_TOTAL_CONTACTS));
-                    if (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS).length () > 0) {
-                        tvOffer.setText (jsonObj.getString (AppConfigTags.SWIGGY_COMPANY_OFFERS));
+                    tvContacts.setText (jsonObj.getString (AppConfigTags.COMPANY_TOTAL_CONTACTS));
+                    if (jsonObj.getString (AppConfigTags.COMPANY_OFFERS).length () > 0) {
+                        tvOffer.setText (jsonObj.getString (AppConfigTags.COMPANY_OFFERS));
                         rlOffer.setVisibility (View.VISIBLE);
                     } else {
                         rlOffer.setVisibility (View.GONE);
                     }
-                    company_contacts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ();
-                    
-                    JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANY_PRODUCT_GROUPS);
+                    company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
+    
+                    JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.COMPANY_PRODUCT_GROUPS);
                     for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
                         ArrayList<Product> productList = new ArrayList<> ();
                         productList.clear ();
@@ -408,32 +408,32 @@ public class CompanyDetailActivity extends AppCompatActivity {
                         view.setBackgroundColor (getResources ().getColor (R.color.view_color));
                         llDynamic.addView (view);
                         TextView tv = new TextView (CompanyDetailActivity.this);
-                        tv.setText (jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE));
+                        tv.setText (jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE));
                         tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 18);
                         tv.setTypeface (SetTypeFace.getTypeface (CompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
                         tv.setTextColor (getResources ().getColor (R.color.primary_text2));
                         tv.setPadding ((int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), 0);
                         llDynamic.addView (tv);
-                        JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS);
+                        JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.PRODUCTS);
                         for (int j = 0; j < jsonArrayProduct.length (); j++) {
                             JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
                             productList.add (new Product (
-                                    jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                                    jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ID),
                                     R.drawable.default_event,
-                                    jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ENQUIRY),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
-                                    jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE),
-                                    jsonObjectProductGroup.getString (AppConfigTags.SWIGGY_GROUP_TITLE),
-                                    jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
+                                    jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ENQUIRY),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_NAME),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_PACKAGING),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_CATEGORY),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_PRICE),
+                                    jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE),
+                                    jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_IMAGE)
                             ));
                         }
-                        
-                        if (jsonObjectProductGroup.getInt (AppConfigTags.SWIGGY_GROUP_TYPE) == 1) {
+    
+                        if (jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE) == 1) {
                             RecyclerView rv = new RecyclerView (CompanyDetailActivity.this);
                             recommendedProductAdapter = new RecommendedProductAdapter (CompanyDetailActivity.this, productList);
                             rv.setAdapter (recommendedProductAdapter);

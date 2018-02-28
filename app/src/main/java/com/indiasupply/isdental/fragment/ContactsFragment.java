@@ -397,8 +397,8 @@ public class ContactsFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_COMPANIES, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_COMPANIES,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_COMPANIES, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_COMPANIES,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -413,21 +413,21 @@ public class ContactsFragment extends Fragment {
                                             companyAllList.clear ();
                                             companyDisplayList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_CONTACTS, response);
-                                            JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
-                                            filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
+                                            JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.COMPANIES);
+                                            filters = jsonObj.getJSONArray (AppConfigTags.CATEGORY_FILTERS).toString ();
                                             for (int i = 0; i < jsonArrayCompany.length (); i++) {
                                                 JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
                                                 companyAllList.add (new Company2 (
-                                                        jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                                        jsonObjectCompany.getInt (AppConfigTags.COMPANY_ID),
                                                         R.drawable.default_company,
-                                                        jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_EMAIL),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_WEBSITE),
-                                                        jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
-                                                        jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
+                                                        jsonObjectCompany.getJSONArray (AppConfigTags.COMPANY_CONTACTS).length (),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_NAME),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_DESCRIPTION),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_CATEGORIES),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_EMAIL),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_WEBSITE),
+                                                        jsonObjectCompany.getString (AppConfigTags.COMPANY_IMAGE),
+                                                        jsonObjectCompany.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ()));
                                             }
 //                                            onScrolledToBottom ();
                                             companyDisplayList.addAll (companyAllList);
@@ -535,21 +535,21 @@ public class ContactsFragment extends Fragment {
                 if (! is_error) {
                     companyAllList.clear ();
                     companyDisplayList.clear ();
-                    JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
-                    filters = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORY_FILTERS).toString ();
+                    JSONArray jsonArrayCompany = jsonObj.getJSONArray (AppConfigTags.COMPANIES);
+                    filters = jsonObj.getJSONArray (AppConfigTags.CATEGORY_FILTERS).toString ();
                     for (int i = 0; i < jsonArrayCompany.length (); i++) {
                         JSONObject jsonObjectCompany = jsonArrayCompany.getJSONObject (i);
                         companyAllList.add (new Company2 (
-                                jsonObjectCompany.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                jsonObjectCompany.getInt (AppConfigTags.COMPANY_ID),
                                 R.drawable.default_company,
-                                jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).length (),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_EMAIL),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_WEBSITE),
-                                jsonObjectCompany.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
-                                jsonObjectCompany.getJSONArray (AppConfigTags.SWIGGY_COMPANY_CONTACTS).toString ()));
+                                jsonObjectCompany.getJSONArray (AppConfigTags.COMPANY_CONTACTS).length (),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_NAME),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_DESCRIPTION),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_CATEGORIES),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_EMAIL),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_WEBSITE),
+                                jsonObjectCompany.getString (AppConfigTags.COMPANY_IMAGE),
+                                jsonObjectCompany.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ()));
                     }
                     companyDisplayList.addAll (companyAllList);
                     companyAdapter.notifyDataSetChanged ();

@@ -191,12 +191,12 @@ public class ServiceMyProductAdapter2 extends RecyclerView.Adapter<ServiceMyProd
         public void onClick (View v) {
             MyProduct2 myProduct2 = swiggyMyProductList.get (getLayoutPosition ());
             Intent intent = new Intent (activity, SwiggyMyProductDetailActivity.class);
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_ID, myProduct2.getId ());
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND, myProduct2.getBrand ());
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, myProduct2.getModel_number ());
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, myProduct2.getSerial_number ());
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, myProduct2.getDescription ());
-            intent.putExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, myProduct2.getPurchase_date ());
+            intent.putExtra (AppConfigTags.PRODUCT_ID, myProduct2.getId ());
+            intent.putExtra (AppConfigTags.PRODUCT_BRAND, myProduct2.getBrand ());
+            intent.putExtra (AppConfigTags.PRODUCT_MODEL_NUMBER, myProduct2.getModel_number ());
+            intent.putExtra (AppConfigTags.PRODUCT_SERIAL_NUMBER, myProduct2.getSerial_number ());
+            intent.putExtra (AppConfigTags.PRODUCT_DESCRIPTION, myProduct2.getDescription ());
+            intent.putExtra (AppConfigTags.PRODUCT_PURCHASE_DATE, myProduct2.getPurchase_date ());
             activity.startActivity (intent);
         }
     }

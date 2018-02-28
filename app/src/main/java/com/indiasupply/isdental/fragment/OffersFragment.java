@@ -158,8 +158,8 @@ public class OffersFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_OFFERS, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_OFFERS,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_OFFERS, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_OFFERS,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -172,7 +172,7 @@ public class OffersFragment extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_OFFERS, response);
-                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                                             for (int i = 0; i < jsonArrayBanners.length (); i++) {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                                                 if (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE).length () == 0) {
@@ -195,27 +195,27 @@ public class OffersFragment extends Fragment {
                                                             .into (ivBanner);
                                                 }
                                             }
-                                            
-                                            JSONArray jsonArrayOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS);
+    
+                                            JSONArray jsonArrayOffers = jsonObj.getJSONArray (AppConfigTags.OFFERS);
                                             offerList.clear ();
                                             for (int j = 0; j < jsonArrayOffers.length (); j++) {
                                                 JSONObject jsonObjectOffer = jsonArrayOffers.getJSONObject (j);
                                                 offerList.add (new Offers (
-                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_ID),
+                                                        jsonObjectOffer.getInt (AppConfigTags.OFFER_ID),
                                                         R.drawable.default_company,
-                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_PRICE),
-                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_MRP),
-                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE),
-                                                        jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_QTY),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_NAME),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_IMAGE),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_START_DATE),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_END_DATE),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_DATES),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS),
-                                                        jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_TANDC)
+                                                        jsonObjectOffer.getInt (AppConfigTags.OFFER_PRICE),
+                                                        jsonObjectOffer.getInt (AppConfigTags.OFFER_MRP),
+                                                        jsonObjectOffer.getInt (AppConfigTags.OFFER_REGULAR_PRICE),
+                                                        jsonObjectOffer.getInt (AppConfigTags.OFFER_QTY),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_NAME),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_IMAGE),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_DESCRIPTION),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_PACKAGING),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_START_DATE),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_END_DATE),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_DATES),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_DETAILS),
+                                                        jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_TANDC)
                                                 ));
                                             }
                                             offerAdapter.notifyDataSetChanged ();
@@ -318,7 +318,7 @@ public class OffersFragment extends Fragment {
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
                     appDataPref.putStringPref (getActivity (), AppDataPref.HOME_OFFERS, response);
-                    JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                    JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                     for (int i = 0; i < jsonArrayBanners.length (); i++) {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                         if (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE).length () == 0) {
@@ -341,27 +341,27 @@ public class OffersFragment extends Fragment {
                                     .into (ivBanner);
                         }
                     }
-                    
-                    JSONArray jsonArrayOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS);
+    
+                    JSONArray jsonArrayOffers = jsonObj.getJSONArray (AppConfigTags.OFFERS);
                     offerList.clear ();
                     for (int j = 0; j < jsonArrayOffers.length (); j++) {
                         JSONObject jsonObjectOffer = jsonArrayOffers.getJSONObject (j);
                         offerList.add (new Offers (
-                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_ID),
+                                jsonObjectOffer.getInt (AppConfigTags.OFFER_ID),
                                 R.drawable.default_company,
-                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_PRICE),
-                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_MRP),
-                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE),
-                                jsonObjectOffer.getInt (AppConfigTags.SWIGGY_OFFER_QTY),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_NAME),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_IMAGE),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_START_DATE),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_END_DATE),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_DATES),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS),
-                                jsonObjectOffer.getString (AppConfigTags.SWIGGY_OFFER_HTML_TANDC)
+                                jsonObjectOffer.getInt (AppConfigTags.OFFER_PRICE),
+                                jsonObjectOffer.getInt (AppConfigTags.OFFER_MRP),
+                                jsonObjectOffer.getInt (AppConfigTags.OFFER_REGULAR_PRICE),
+                                jsonObjectOffer.getInt (AppConfigTags.OFFER_QTY),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_NAME),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_IMAGE),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_DESCRIPTION),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_PACKAGING),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_START_DATE),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_END_DATE),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_DATES),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_DETAILS),
+                                jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_TANDC)
                         ));
                     }
                     offerAdapter.notifyDataSetChanged ();

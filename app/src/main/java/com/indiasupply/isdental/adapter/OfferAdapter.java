@@ -161,8 +161,8 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
     private void sendEnquiry2 (final int id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
             Utils.showProgressDialog (progressDialog, null, true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY2, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY2,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ENQUIRY2, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_ENQUIRY2,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (final String response) {
@@ -200,7 +200,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_OFFER_ID, String.valueOf (id));
+                    params.put (AppConfigTags.OFFER_ID, String.valueOf (id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

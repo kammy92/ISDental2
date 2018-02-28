@@ -161,8 +161,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         if (NetworkConnection.isNetworkAvailable (activity)) {
             tvButtonText.setVisibility (View.INVISIBLE);
             progressBarButton.setVisibility (View.VISIBLE);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ENQUIRY, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_ENQUIRY,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (final String response) {
@@ -222,8 +222,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (id));
-                    params.put (AppConfigTags.SWIGGY_COMMENT, comment);
+                    params.put (AppConfigTags.PRODUCT_ID, String.valueOf (id));
+                    params.put (AppConfigTags.COMMENT, comment);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

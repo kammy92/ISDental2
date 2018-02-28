@@ -477,26 +477,26 @@ public class EventDetailActivity extends AppCompatActivity {
                                             db.insertEvent (event_id, response);
                                         }
     
-                                        tvEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE))) {
-                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                                        tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
+                                        if (jsonObj.getString (AppConfigTags.EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.EVENT_END_DATE))) {
+                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
                                         } else {
-                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                                            tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
                                         }
     
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL).length () > 0) {
-                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                        if (jsonObj.getString (AppConfigTags.EVENT_VENUE_FULL).length () > 0) {
+                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.EVENT_CITY));
                                         } else {
-                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                            tvEventVenue.setText (jsonObj.getString (AppConfigTags.EVENT_CITY));
                                         }
     
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE).length () == 0) {
+                                        if (jsonObj.getString (AppConfigTags.EVENT_IMAGE).length () == 0) {
                                             ivEventImage.setImageResource (R.drawable.default_event2);
                                             progressBar.setVisibility (View.GONE);
                                         } else {
                                             progressBar.setVisibility (View.VISIBLE);
                                             Glide.with (EventDetailActivity.this)
-                                                    .load (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE))
+                                                    .load (jsonObj.getString (AppConfigTags.EVENT_IMAGE))
                                                     .listener (new RequestListener<String, GlideDrawable> () {
                                                         @Override
                                                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -513,10 +513,10 @@ public class EventDetailActivity extends AppCompatActivity {
                                                     .error (R.drawable.default_event2)
                                                     .into (ivEventImage);
                                         }
-                                        
-                                        
-                                        if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-                                            JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules");
+    
+    
+                                        if (jsonObj.getJSONObject (AppConfigTags.EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
+                                            JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.EVENT_SCHEDULE).getJSONArray ("schedules");
                                             for (int j = 0; j < jsonArraySchedules.length (); j++) {
                                                 JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
                                                 eventScheduleList.add (new EventSchedule (
@@ -537,15 +537,15 @@ public class EventDetailActivity extends AppCompatActivity {
                                             rlSchedule.setVisibility (View.GONE);
                                         }
     
-                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
-                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
+                                        if (jsonObj.getJSONArray (AppConfigTags.EVENT_SPEAKERS).length () > 0) {
+                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.EVENT_SPEAKERS);
                                             for (int j = 0; j < jsonArray.length (); j++) {
                                                 JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
-                                                eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                                                eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SPEAKER_ID),
                                                         R.drawable.default_speaker,
-                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
-                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
-                                                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_NAME),
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_DESCRIPTION),
+                                                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_IMAGE)));
                                             }
                                             eventSpeakerAdapter.notifyDataSetChanged ();
                                             rlSpeaker.setVisibility (View.VISIBLE);
@@ -553,15 +553,15 @@ public class EventDetailActivity extends AppCompatActivity {
                                             rlSpeaker.setVisibility (View.GONE);
                                         }
     
-                                        if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
-                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
+                                        if (jsonObj.getJSONArray (AppConfigTags.EVENT_EXHIBITORS).length () > 0) {
+                                            JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.EVENT_EXHIBITORS);
                                             for (int j = 0; j < jsonArray.length (); j++) {
                                                 JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
-                                                eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                                                eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.EXHIBITOR_ID),
                                                         R.drawable.ic_event_exhibitor,
-                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
-                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
-                                                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+                                                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_NAME),
+                                                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_DESCRIPTION),
+                                                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_IMAGE)));
                                             }
                                             exhibitorAdapter.notifyDataSetChanged ();
                                             rlExhibitors.setVisibility (View.VISIBLE);
@@ -571,34 +571,34 @@ public class EventDetailActivity extends AppCompatActivity {
     
                                         boolean flag = false;
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                                            if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
-                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                                            if (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN).endsWith (ext)) {
+                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN));
                                                 flag = true;
                                                 break;
                                             }
                                         }
                                         if (flag) {
-                                            eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+                                            eventFloorPlan = jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN);
     
                                             if (db.getEventFloorPlan (event_id).length () > 0) {
                                                 ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
                                             } else {
-                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                                                new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN));
                                             }
                                             rlFloorPlan.setVisibility (View.VISIBLE);
                                         } else {
                                             rlFloorPlan.setVisibility (View.GONE);
                                         }
     
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
-                                            getWebView (wvInformation, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION));
+                                        if (jsonObj.getString (AppConfigTags.EVENT_INFORMATION).length () > 0) {
+                                            getWebView (wvInformation, jsonObj.getString (AppConfigTags.EVENT_INFORMATION));
                                             rlInformation.setVisibility (View.VISIBLE);
                                         } else {
                                             rlInformation.setVisibility (View.GONE);
                                         }
     
-                                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
-                                            getWebView (wvRegistration, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION));
+                                        if (jsonObj.getString (AppConfigTags.EVENT_REGISTRATION).length () > 0) {
+                                            getWebView (wvRegistration, jsonObj.getString (AppConfigTags.EVENT_REGISTRATION));
                                             rlRegistration.setVisibility (View.VISIBLE);
                                         } else {
                                             rlRegistration.setVisibility (View.GONE);
@@ -705,22 +705,22 @@ public class EventDetailActivity extends AppCompatActivity {
                     } else {
                         db.insertEvent (event_id, response);
                     }
-                    tvEventName.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_NAME));
-                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE))) {
-                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                    tvEventName.setText (jsonObj.getString (AppConfigTags.EVENT_NAME));
+                    if (jsonObj.getString (AppConfigTags.EVENT_START_DATE).equalsIgnoreCase (jsonObj.getString (AppConfigTags.EVENT_END_DATE))) {
+                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
                     } else {
-                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
+                        tvEventDates.setText (Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_START_DATE), "yyyy-MM-dd", "dd MMM") + " - " + Utils.convertTimeFormat (jsonObj.getString (AppConfigTags.EVENT_END_DATE), "yyyy-MM-dd", "dd MMM"));
                     }
     
-                    tvEventVenue.setText (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                    tvEventVenue.setText (jsonObj.getString (AppConfigTags.EVENT_VENUE_FULL) + ", " + jsonObj.getString (AppConfigTags.EVENT_CITY));
     
-                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE).length () == 0) {
+                    if (jsonObj.getString (AppConfigTags.EVENT_IMAGE).length () == 0) {
                         ivEventImage.setImageResource (R.drawable.default_event2);
                         progressBar.setVisibility (View.GONE);
                     } else {
                         progressBar.setVisibility (View.VISIBLE);
                         Glide.with (EventDetailActivity.this)
-                                .load (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_IMAGE))
+                                .load (jsonObj.getString (AppConfigTags.EVENT_IMAGE))
                                 .listener (new RequestListener<String, GlideDrawable> () {
                                     @Override
                                     public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -737,10 +737,10 @@ public class EventDetailActivity extends AppCompatActivity {
                                 .error (R.drawable.default_event2)
                                 .into (ivEventImage);
                     }
-                    
-                    
-                    if (jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
-                        JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.SWIGGY_EVENT_SCHEDULE).getJSONArray ("schedules");
+    
+    
+                    if (jsonObj.getJSONObject (AppConfigTags.EVENT_SCHEDULE).getJSONArray ("schedules").length () > 0) {
+                        JSONArray jsonArraySchedules = jsonObj.getJSONObject (AppConfigTags.EVENT_SCHEDULE).getJSONArray ("schedules");
                         for (int j = 0; j < jsonArraySchedules.length (); j++) {
                             JSONObject jsonObjectSchedules = jsonArraySchedules.getJSONObject (j);
                             eventScheduleList.add (new EventSchedule (
@@ -761,15 +761,15 @@ public class EventDetailActivity extends AppCompatActivity {
                         rlSchedule.setVisibility (View.GONE);
                     }
     
-                    if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS).length () > 0) {
-                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
+                    if (jsonObj.getJSONArray (AppConfigTags.EVENT_SPEAKERS).length () > 0) {
+                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.EVENT_SPEAKERS);
                         for (int j = 0; j < jsonArray.length (); j++) {
                             JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
-                            eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                            eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SPEAKER_ID),
                                     R.drawable.default_speaker,
-                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
-                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
-                                    jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+                                    jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_NAME),
+                                    jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_DESCRIPTION),
+                                    jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_IMAGE)));
                         }
                         eventSpeakerAdapter.notifyDataSetChanged ();
                         rlSpeaker.setVisibility (View.VISIBLE);
@@ -777,15 +777,15 @@ public class EventDetailActivity extends AppCompatActivity {
                         rlSpeaker.setVisibility (View.GONE);
                     }
     
-                    if (jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS).length () > 0) {
-                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
+                    if (jsonObj.getJSONArray (AppConfigTags.EVENT_EXHIBITORS).length () > 0) {
+                        JSONArray jsonArray = jsonObj.getJSONArray (AppConfigTags.EVENT_EXHIBITORS);
                         for (int j = 0; j < jsonArray.length (); j++) {
                             JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
-                            eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                            eventExhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.EXHIBITOR_ID),
                                     R.drawable.ic_event_exhibitor,
-                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
-                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
-                                    jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+                                    jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_NAME),
+                                    jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_DESCRIPTION),
+                                    jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_IMAGE)));
                         }
                         exhibitorAdapter.notifyDataSetChanged ();
                         rlExhibitors.setVisibility (View.VISIBLE);
@@ -795,34 +795,34 @@ public class EventDetailActivity extends AppCompatActivity {
     
                     boolean flag = false;
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN).endsWith (ext)) {
-                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                        if (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN).endsWith (ext)) {
+                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN));
                             flag = true;
                             break;
                         }
                     }
                     if (flag) {
-                        eventFloorPlan = jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
+                        eventFloorPlan = jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN);
     
                         if (db.getEventFloorPlan (event_id).length () > 0) {
                             ivFloorPlan.setImage (ImageSource.bitmap (Utils.base64ToBitmap (db.getEventFloorPlan (event_id))));
                         } else {
-                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN));
+                            new getBitmapFromURL ().execute (jsonObj.getString (AppConfigTags.EVENT_FLOOR_PLAN));
                         }
                         rlFloorPlan.setVisibility (View.VISIBLE);
                     } else {
                         rlFloorPlan.setVisibility (View.GONE);
                     }
-                    
-                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION).length () > 0) {
-                        getWebView (wvInformation, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION));
+    
+                    if (jsonObj.getString (AppConfigTags.EVENT_INFORMATION).length () > 0) {
+                        getWebView (wvInformation, jsonObj.getString (AppConfigTags.EVENT_INFORMATION));
                         rlInformation.setVisibility (View.VISIBLE);
                     } else {
                         rlInformation.setVisibility (View.GONE);
                     }
     
-                    if (jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION).length () > 0) {
-                        getWebView (wvRegistration, jsonObj.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION));
+                    if (jsonObj.getString (AppConfigTags.EVENT_REGISTRATION).length () > 0) {
+                        getWebView (wvRegistration, jsonObj.getString (AppConfigTags.EVENT_REGISTRATION));
                         rlRegistration.setVisibility (View.VISIBLE);
                     } else {
                         rlRegistration.setVisibility (View.GONE);
@@ -843,8 +843,8 @@ public class EventDetailActivity extends AppCompatActivity {
     
     private void eventClicked (int event_id) {
         if (NetworkConnection.isNetworkAvailable (this)) {
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT_CLICKED + "/" + event_id, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_EVENT_CLICKED + "/" + event_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_EVENT_CLICKED + "/" + event_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_EVENT_CLICKED + "/" + event_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {

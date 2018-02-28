@@ -101,9 +101,14 @@
         <meta-data android:name="com.bugsnag.android.API_KEY"
                    android:value="b2b4c756b3b88a72891033fa275309db"/>
 
+
+        <!--
+            Test API key : rzp_test_oBHRdTGwmznfmX
+            Live API key : rzp_live_es7lznyiksIodz
+        -->
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_live_es7lznyiksIodz"/>
+            android:value="rzp_test_oBHRdTGwmznfmX"/>
 
     </application>
 

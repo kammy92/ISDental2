@@ -75,7 +75,7 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
     public static ServiceAddRequestDialogFragment newInstance (String myProducts) {
         ServiceAddRequestDialogFragment f = new ServiceAddRequestDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_PRODUCTS, myProducts);
+        args.putString (AppConfigTags.PRODUCTS, myProducts);
         f.setArguments (args);
         return f;
     }
@@ -133,7 +133,7 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myProducts = bundle.getString (AppConfigTags.SWIGGY_PRODUCTS);
+        myProducts = bundle.getString (AppConfigTags.PRODUCTS);
     }
     
     private void initData () {
@@ -144,8 +144,8 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
             product_id_list = new int[jsonArrayProducts.length ()];
             for (int i = 0; i < jsonArrayProducts.length (); i++) {
                 JSONObject jsonObjectProduct = jsonArrayProducts.getJSONObject (i);
-                product_id_list[i] = jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID);
-                productNameList.add (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + "\nSR : " + jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+                product_id_list[i] = jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ID);
+                productNameList.add (jsonObjectProduct.getString (AppConfigTags.PRODUCT_NAME) + "\nSR : " + jsonObjectProduct.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
             }
         } catch (JSONException e) {
             e.printStackTrace ();
@@ -189,9 +189,9 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
                                     JSONArray jsonArrayProducts = new JSONArray (myProducts);
                                     for (int i = 0; i < jsonArrayProducts.length (); i++) {
                                         JSONObject jsonObjectProduct = jsonArrayProducts.getJSONObject (i);
-                                        if (jsonObjectProduct.getInt (AppConfigTags.SWIGGY_PRODUCT_ID) == view.getId ()) {
-                                            tvModelNumber.setText (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-                                            tvSerialNumber.setText (jsonObjectProduct.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
+                                        if (jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ID) == view.getId ()) {
+                                            tvModelNumber.setText (jsonObjectProduct.getString (AppConfigTags.PRODUCT_MODEL_NUMBER));
+                                            tvSerialNumber.setText (jsonObjectProduct.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
                                             cv1.setVisibility (View.VISIBLE);
                                         }
                                     }
@@ -228,8 +228,8 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
     private void addRequestToServer (final String request) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_REQUEST, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_REQUEST,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ADD_REQUEST, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_ADD_REQUEST,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -273,8 +273,8 @@ public class ServiceAddRequestDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (product_id));
-                    params.put (AppConfigTags.SWIGGY_DESCRIPTION, request);
+                    params.put (AppConfigTags.PRODUCT_ID, String.valueOf (product_id));
+                    params.put (AppConfigTags.DESCRIPTION, request);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

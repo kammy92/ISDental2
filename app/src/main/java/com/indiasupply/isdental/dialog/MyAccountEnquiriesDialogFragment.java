@@ -47,7 +47,7 @@ public class MyAccountEnquiriesDialogFragment extends DialogFragment {
     public static MyAccountEnquiriesDialogFragment newInstance (String myEnquiries) {
         MyAccountEnquiriesDialogFragment fragment = new MyAccountEnquiriesDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_ENQUIRIES, myEnquiries);
+        args.putString (AppConfigTags.ENQUIRIES, myEnquiries);
         fragment.setArguments (args);
         return fragment;
     }
@@ -102,7 +102,7 @@ public class MyAccountEnquiriesDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myEnquiries = bundle.getString (AppConfigTags.SWIGGY_ENQUIRIES);
+        myEnquiries = bundle.getString (AppConfigTags.ENQUIRIES);
     }
     
     private void initData () {
@@ -145,18 +145,18 @@ public class MyAccountEnquiriesDialogFragment extends DialogFragment {
                 for (int j = 0; j < jsonArray.length (); j++) {
                     JSONObject jsonObject = jsonArray.getJSONObject (j);
                     myAccountEnquiryList.add (new MyAccountEnquiry (
-                            jsonObject.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
-                            jsonObject.getInt (AppConfigTags.SWIGGY_ENQUIRY_STATUS),
-                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_TICKET_NUMBER),
-                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_REMARK),
-                            jsonObject.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PRICE),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                            jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_PACKAGING),
-                            jsonObject.getString (AppConfigTags.SWIGGY_ENQUIRY_COMMENT)
+                            jsonObject.getInt (AppConfigTags.PRODUCT_ID),
+                            jsonObject.getInt (AppConfigTags.ENQUIRY_STATUS),
+                            jsonObject.getString (AppConfigTags.ENQUIRY_TICKET_NUMBER),
+                            jsonObject.getString (AppConfigTags.ENQUIRY_REMARK),
+                            jsonObject.getString (AppConfigTags.COMPANY_NAME),
+                            jsonObject.getString (AppConfigTags.PRODUCT_NAME),
+                            jsonObject.getString (AppConfigTags.PRODUCT_PRICE),
+                            jsonObject.getString (AppConfigTags.PRODUCT_CATEGORY),
+                            jsonObject.getString (AppConfigTags.PRODUCT_IMAGE),
+                            jsonObject.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                            jsonObject.getString (AppConfigTags.PRODUCT_PACKAGING),
+                            jsonObject.getString (AppConfigTags.ENQUIRY_COMMENT)
                     ));
                 }
                 myAccountEnquiryAdapter.notifyDataSetChanged ();

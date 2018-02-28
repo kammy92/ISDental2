@@ -80,8 +80,8 @@ public class ServiceAddProductDialogFragment extends DialogFragment {
     public ServiceAddProductDialogFragment newInstance (String categories, String brands) {
         ServiceAddProductDialogFragment f = new ServiceAddProductDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_CATEGORIES, categories);
-        args.putString (AppConfigTags.SWIGGY_BRANDS, brands);
+        args.putString (AppConfigTags.CATEGORIES, categories);
+        args.putString (AppConfigTags.BRANDS, brands);
         f.setArguments (args);
         return f;
     }
@@ -139,8 +139,8 @@ public class ServiceAddProductDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        categories = bundle.getString (AppConfigTags.SWIGGY_CATEGORIES);
-        brands = bundle.getString (AppConfigTags.SWIGGY_BRANDS);
+        categories = bundle.getString (AppConfigTags.CATEGORIES);
+        brands = bundle.getString (AppConfigTags.BRANDS);
     }
     
     private void initData () {
@@ -151,8 +151,8 @@ public class ServiceAddProductDialogFragment extends DialogFragment {
             brand_id_list = new int[jsonArrayBrands.length ()];
             for (int i = 0; i < jsonArrayBrands.length (); i++) {
                 JSONObject jsonObjectBrands = jsonArrayBrands.getJSONObject (i);
-                brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID);
-                brandNameList.add (jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME));
+                brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.BRAND_ID);
+                brandNameList.add (jsonObjectBrands.getString (AppConfigTags.BRAND_NAME));
             }
     
             JSONArray jsonArrayCategory = new JSONArray (categories);
@@ -271,8 +271,8 @@ public class ServiceAddProductDialogFragment extends DialogFragment {
     private void addProductToServer (final String brand, final String category, final String model, final String serial_number, final String purchase_date) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_PRODUCT, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_PRODUCT,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ADD_PRODUCT, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_ADD_PRODUCT,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -316,13 +316,13 @@ public class ServiceAddProductDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_BRAND_ID, String.valueOf (brand_id));
-                    params.put (AppConfigTags.SWIGGY_BRAND_NAME, brand);
-                    params.put (AppConfigTags.SWIGGY_CATEGORY_ID, String.valueOf (category_id));
-                    params.put (AppConfigTags.SWIGGY_CATEGORY_NAME, category);
-                    params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
-                    params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);
-                    params.put (AppConfigTags.SWIGGY_PURCHASE_DATE, purchase_date);
+                    params.put (AppConfigTags.BRAND_ID, String.valueOf (brand_id));
+                    params.put (AppConfigTags.BRAND_NAME, brand);
+                    params.put (AppConfigTags.CATEGORY_ID, String.valueOf (category_id));
+                    params.put (AppConfigTags.CATEGORY_NAME, category);
+                    params.put (AppConfigTags.MODEL_NUMBER, model);
+                    params.put (AppConfigTags.SERIAL_NUMBER, serial_number);
+                    params.put (AppConfigTags.PURCHASE_DATE, purchase_date);
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

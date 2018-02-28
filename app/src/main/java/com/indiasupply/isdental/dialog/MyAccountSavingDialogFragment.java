@@ -157,10 +157,10 @@ public class MyAccountSavingDialogFragment extends DialogFragment {
                         mySavingList.add (new MyAccountSaving (
                                 jsonObject.getInt (AppConfigTags.ORDER_ID),
                                 jsonObject.getInt (AppConfigTags.ORDER_STATUS),
-                                (jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_MRP) - jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_PRICE)) * jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObject.getInt (AppConfigTags.ORDER_QTY),
-                                jsonObject.getString (AppConfigTags.SWIGGY_OFFER_NAME),
+                                (jsonObject.getInt (AppConfigTags.OFFER_MRP) - jsonObject.getInt (AppConfigTags.OFFER_PRICE)) * jsonObject.getInt (AppConfigTags.OFFER_QTY) * jsonObject.getInt (AppConfigTags.ORDER_QTY),
+                                jsonObject.getString (AppConfigTags.OFFER_NAME),
                                 jsonObject.getString (AppConfigTags.ORDER_CREATED_AT)));
-                        total_saving = total_saving + ((jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_MRP) - jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_PRICE)) * jsonObject.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObject.getInt (AppConfigTags.ORDER_QTY));
+                        total_saving = total_saving + ((jsonObject.getInt (AppConfigTags.OFFER_MRP) - jsonObject.getInt (AppConfigTags.OFFER_PRICE)) * jsonObject.getInt (AppConfigTags.OFFER_QTY) * jsonObject.getInt (AppConfigTags.ORDER_QTY));
                     }
                 }
                 tvTotalSaving.setText (getResources ().getString (R.string.Rs) + total_saving);

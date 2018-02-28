@@ -159,8 +159,8 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
         if (NetworkConnection.isNetworkAvailable (activity)) {
             ivFavourite.setVisibility (View.GONE);
             progressBarButton.setVisibility (View.VISIBLE);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_FAVOURITE, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_FAVOURITE,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_FAVOURITE, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_FAVOURITE,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -221,8 +221,8 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_TYPE, String.valueOf (3));
-                    params.put (AppConfigTags.SWIGGY_TYPE_ID, String.valueOf (id));
+                    params.put (AppConfigTags.TYPE, String.valueOf (3));
+                    params.put (AppConfigTags.TYPE_ID, String.valueOf (id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
@@ -245,8 +245,8 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
     
     private void contactCalled (int contact_id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_CONTACT_CALLED + "/" + contact_id, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_CONTACT_CALLED + "/" + contact_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_CONTACT_CALLED + "/" + contact_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_CONTACT_CALLED + "/" + contact_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -303,8 +303,8 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
     
     private void contactMailed (int contact_id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_CONTACT_MAILED + "/" + contact_id, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_CONTACT_MAILED + "/" + contact_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_CONTACT_MAILED + "/" + contact_id, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_CONTACT_MAILED + "/" + contact_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {

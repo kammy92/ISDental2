@@ -25,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.indiasupply.isdental.R;
+import com.indiasupply.isdental.activity.EventDetailActivity;
 import com.indiasupply.isdental.adapter.EventAdapter;
 import com.indiasupply.isdental.model.Event;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -63,7 +64,6 @@ public class EventFragment extends Fragment {
     ShimmerFrameLayout shimmerFrameLayout;
     AppDataPref appDataPref;
     
-    
     boolean refresh;
     
     ArrayList<String> citiesList = new ArrayList<String> ();
@@ -74,6 +74,15 @@ public class EventFragment extends Fragment {
         EventFragment fragment = new EventFragment ();
         Bundle args = new Bundle ();
         args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
+    public static EventFragment newInstance2 (boolean refresh, int event_id) {
+        EventFragment fragment = new EventFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        args.putInt (AppConfigTags.EVENT_ID, event_id);
         fragment.setArguments (args);
         return fragment;
     }
@@ -103,7 +112,17 @@ public class EventFragment extends Fragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
+        try {
+            refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
+            if (bundle.getInt (AppConfigTags.EVENT_ID, 0) > 0) {
+                Intent intent = new Intent (getActivity (), EventDetailActivity.class);
+                intent.putExtra (AppConfigTags.EVENT_ID, bundle.getInt (AppConfigTags.EVENT_ID, 0));
+                getActivity ().startActivity (intent);
+                getActivity ().overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        } catch (Exception e) {
+            e.printStackTrace ();
+        }
     }
     
     private void initData () {
@@ -150,24 +169,24 @@ public class EventFragment extends Fragment {
                                             citiesList.clear ();
                                             eventList.clear ();
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_EVENTS, response);
-                                            JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
+                                            JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.EVENTS);
                                             for (int i = 0; i < jsonArrayEvents.length (); i++) {
                                                 JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                                                 eventList.add (new Event (
-                                                        jsonObjectEvents.getBoolean (AppConfigTags.SWIGGY_EVENT_INTERESTED),
-                                                        jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
+                                                        jsonObjectEvents.getBoolean (AppConfigTags.EVENT_INTERESTED),
+                                                        jsonObjectEvents.getInt (AppConfigTags.EVENT_ID),
                                                         R.drawable.default_event,
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE),
-                                                        jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY)
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_TYPE),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_NAME),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_START_DATE),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_END_DATE),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_VENUE),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_IMAGE),
+                                                        jsonObjectEvents.getString (AppConfigTags.EVENT_CITY)
                                                 ));
     
-                                                if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {
-                                                    citiesList.add (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                                                if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.EVENT_CITY))) {
+                                                    citiesList.add (jsonObjectEvents.getString (AppConfigTags.EVENT_CITY));
                                                 }
                                             }
     
@@ -390,24 +409,24 @@ public class EventFragment extends Fragment {
                 if (! is_error) {
                     eventList.clear ();
                     citiesList.clear ();
-                    JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.SWIGGY_EVENTS);
+                    JSONArray jsonArrayEvents = jsonObj.getJSONArray (AppConfigTags.EVENTS);
                     for (int i = 0; i < jsonArrayEvents.length (); i++) {
                         JSONObject jsonObjectEvents = jsonArrayEvents.getJSONObject (i);
                         eventList.add (new Event (
-                                jsonObjectEvents.getBoolean (AppConfigTags.SWIGGY_EVENT_INTERESTED),
-                                jsonObjectEvents.getInt (AppConfigTags.SWIGGY_EVENT_ID),
+                                jsonObjectEvents.getBoolean (AppConfigTags.EVENT_INTERESTED),
+                                jsonObjectEvents.getInt (AppConfigTags.EVENT_ID),
                                 R.drawable.default_event,
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_TYPE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_NAME),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_START_DATE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_END_DATE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_VENUE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_IMAGE),
-                                jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY)
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_TYPE),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_NAME),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_START_DATE),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_END_DATE),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_VENUE),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_IMAGE),
+                                jsonObjectEvents.getString (AppConfigTags.EVENT_CITY)
                         ));
     
-                        if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY))) {
-                            citiesList.add (jsonObjectEvents.getString (AppConfigTags.SWIGGY_EVENT_CITY));
+                        if (! citiesList.contains (jsonObjectEvents.getString (AppConfigTags.EVENT_CITY))) {
+                            citiesList.add (jsonObjectEvents.getString (AppConfigTags.EVENT_CITY));
                         }
                     }
                     eventAdapter.notifyDataSetChanged ();

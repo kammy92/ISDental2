@@ -47,7 +47,7 @@ public class MyAccountFavouritesDialogFragment extends DialogFragment {
         Log.e ("jsonarray3", myFavourites);
         MyAccountFavouritesDialogFragment fragment = new MyAccountFavouritesDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_FAVOURITES, myFavourites);
+        args.putString (AppConfigTags.FAVOURITES, myFavourites);
         fragment.setArguments (args);
         return fragment;
     }
@@ -102,7 +102,7 @@ public class MyAccountFavouritesDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myFavourites = bundle.getString (AppConfigTags.SWIGGY_FAVOURITES);
+        myFavourites = bundle.getString (AppConfigTags.FAVOURITES);
     }
     
     private void initData () {
@@ -143,16 +143,16 @@ public class MyAccountFavouritesDialogFragment extends DialogFragment {
                 for (int j = 0; j < jsonArray.length (); j++) {
                     JSONObject jsonObject = jsonArray.getJSONObject (j);
                     myAccountFavouriteList.add (new MyAccountFavourite (
-                            jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_ID),
+                            jsonObject.getInt (AppConfigTags.CONTACT_ID),
                             R.drawable.default_company,
-                            jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_TYPE),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_PHONE),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_EMAIL),
-                            jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_WEBSITE),
-                            jsonObject.getBoolean (AppConfigTags.SWIGGY_CONTACT_FAVOURITE)
+                            jsonObject.getInt (AppConfigTags.CONTACT_TYPE),
+                            jsonObject.getString (AppConfigTags.CONTACT_NAME),
+                            jsonObject.getString (AppConfigTags.CONTACT_IMAGE),
+                            jsonObject.getString (AppConfigTags.CONTACT_PHONE),
+                            jsonObject.getString (AppConfigTags.CONTACT_LOCATION),
+                            jsonObject.getString (AppConfigTags.CONTACT_EMAIL),
+                            jsonObject.getString (AppConfigTags.CONTACT_WEBSITE),
+                            jsonObject.getBoolean (AppConfigTags.CONTACT_FAVOURITE)
                     ));
                 }
                 myAccountFavouriteAdapter.notifyDataSetChanged ();

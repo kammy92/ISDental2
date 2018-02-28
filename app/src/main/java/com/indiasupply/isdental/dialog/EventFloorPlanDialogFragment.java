@@ -47,8 +47,8 @@ public class EventFloorPlanDialogFragment extends DialogFragment {
     public static EventFloorPlanDialogFragment newInstance (int event_id, String eventFloorPlan) {
         EventFloorPlanDialogFragment fragment = new EventFloorPlanDialogFragment ();
         Bundle args = new Bundle ();
-        args.putInt (AppConfigTags.SWIGGY_EVENT_ID, event_id);
-        args.putString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN, eventFloorPlan);
+        args.putInt (AppConfigTags.EVENT_ID, event_id);
+        args.putString (AppConfigTags.EVENT_FLOOR_PLAN, eventFloorPlan);
         fragment.setArguments (args);
         return fragment;
     }
@@ -115,8 +115,8 @@ public class EventFloorPlanDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventFloorPlan = bundle.getString (AppConfigTags.SWIGGY_EVENT_FLOOR_PLAN);
-        event_id = bundle.getInt (AppConfigTags.SWIGGY_EVENT_ID);
+        eventFloorPlan = bundle.getString (AppConfigTags.EVENT_FLOOR_PLAN);
+        event_id = bundle.getInt (AppConfigTags.EVENT_ID);
     }
     
     private void initView (View root) {

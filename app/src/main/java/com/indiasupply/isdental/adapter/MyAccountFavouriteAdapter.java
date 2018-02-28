@@ -160,8 +160,8 @@ public class MyAccountFavouriteAdapter extends RecyclerView.Adapter<MyAccountFav
         if (NetworkConnection.isNetworkAvailable (activity)) {
             ivFavourite.setVisibility (View.GONE);
             progressBarButton.setVisibility (View.VISIBLE);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_FAVOURITE, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_FAVOURITE,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_FAVOURITE, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_FAVOURITE,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -214,8 +214,8 @@ public class MyAccountFavouriteAdapter extends RecyclerView.Adapter<MyAccountFav
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_TYPE, String.valueOf (3));
-                    params.put (AppConfigTags.SWIGGY_TYPE_ID, String.valueOf (id));
+                    params.put (AppConfigTags.TYPE, String.valueOf (3));
+                    params.put (AppConfigTags.TYPE_ID, String.valueOf (id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

@@ -97,12 +97,12 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
         ServiceAddNewRequestDialogFragment f = new ServiceAddNewRequestDialogFragment ();
         Bundle args = new Bundle ();
         args.putString ("flag", String.valueOf (flag));
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_ID, product_id);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_NAME, product_name);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, product_purchase_date);
+        args.putString (AppConfigTags.PRODUCT_ID, product_id);
+        args.putString (AppConfigTags.PRODUCT_NAME, product_name);
+        args.putString (AppConfigTags.PRODUCT_DESCRIPTION, product_description);
+        args.putString (AppConfigTags.PRODUCT_SERIAL_NUMBER, product_serial_number);
+        args.putString (AppConfigTags.PRODUCT_MODEL_NUMBER, product_model_number);
+        args.putString (AppConfigTags.PRODUCT_PURCHASE_DATE, product_purchase_date);
         f.setArguments (args);
         return f;
     }
@@ -110,16 +110,16 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
     public static ServiceAddNewRequestDialogFragment newInstance2 (int flag, int request_id, String product_name, String product_description, String product_serial_number, String product_model_number, String request_description, String image1, String image2, String image3) {
         ServiceAddNewRequestDialogFragment f = new ServiceAddNewRequestDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf (request_id));
+        args.putString (AppConfigTags.REQUEST_ID, String.valueOf (request_id));
         args.putString ("flag", String.valueOf (flag));
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_NAME, product_name);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
-        args.putString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
-        args.putString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION, request_description);
-        args.putString (AppConfigTags.SWIGGY_IMAGE1, image1);
-        args.putString (AppConfigTags.SWIGGY_IMAGE2, image2);
-        args.putString (AppConfigTags.SWIGGY_IMAGE3, image3);
+        args.putString (AppConfigTags.PRODUCT_NAME, product_name);
+        args.putString (AppConfigTags.PRODUCT_DESCRIPTION, product_description);
+        args.putString (AppConfigTags.PRODUCT_SERIAL_NUMBER, product_serial_number);
+        args.putString (AppConfigTags.PRODUCT_MODEL_NUMBER, product_model_number);
+        args.putString (AppConfigTags.REQUEST_DESCRIPTION, request_description);
+        args.putString (AppConfigTags.IMAGE1, image1);
+        args.putString (AppConfigTags.IMAGE2, image2);
+        args.putString (AppConfigTags.IMAGE3, image3);
         f.setArguments (args);
         return f;
     }
@@ -183,19 +183,19 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
         flag = Integer.parseInt (bundle.getString ("flag"));
         
         if (flag == 1) {
-            product_name = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME);
-            product_description = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
-            product_serial_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
-            product_model_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
+            product_name = bundle.getString (AppConfigTags.PRODUCT_NAME);
+            product_description = bundle.getString (AppConfigTags.PRODUCT_DESCRIPTION);
+            product_serial_number = bundle.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER);
+            product_model_number = bundle.getString (AppConfigTags.PRODUCT_MODEL_NUMBER);
             // product_purchase_date = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
-            tvServiceRequestName.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-            etRequestDescription.setText (bundle.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION));
+            tvServiceRequestName.setText (bundle.getString (AppConfigTags.PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.PRODUCT_MODEL_NUMBER));
+            etRequestDescription.setText (bundle.getString (AppConfigTags.REQUEST_DESCRIPTION));
             etRequestDescription.setEnabled (false);
-            request_id = Integer.parseInt (bundle.getString (AppConfigTags.SWIGGY_REQUEST_ID));
-            image1 = bundle.getString (AppConfigTags.SWIGGY_IMAGE1);
-            image2 = bundle.getString (AppConfigTags.SWIGGY_IMAGE2);
-            image3 = bundle.getString (AppConfigTags.SWIGGY_IMAGE3);
+            request_id = Integer.parseInt (bundle.getString (AppConfigTags.REQUEST_ID));
+            image1 = bundle.getString (AppConfigTags.IMAGE1);
+            image2 = bundle.getString (AppConfigTags.IMAGE2);
+            image3 = bundle.getString (AppConfigTags.IMAGE3);
             new MyAsync ().execute ();
             
             
@@ -282,14 +282,14 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
                 }
             }
         } else {
-            product_name = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME);
-            product_description = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
-            product_serial_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
-            product_model_number = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
-            product_purchase_date = bundle.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
-            tvServiceRequestName.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-            id = Integer.parseInt (bundle.getString (AppConfigTags.SWIGGY_PRODUCT_ID));
+            product_name = bundle.getString (AppConfigTags.PRODUCT_NAME);
+            product_description = bundle.getString (AppConfigTags.PRODUCT_DESCRIPTION);
+            product_serial_number = bundle.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER);
+            product_model_number = bundle.getString (AppConfigTags.PRODUCT_MODEL_NUMBER);
+            product_purchase_date = bundle.getString (AppConfigTags.PRODUCT_PURCHASE_DATE);
+            tvServiceRequestName.setText (bundle.getString (AppConfigTags.PRODUCT_NAME) + " " + bundle.getString (AppConfigTags.PRODUCT_DESCRIPTION) + " " + bundle.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+            tvServiceRequestModelNumber.setText (bundle.getString (AppConfigTags.PRODUCT_MODEL_NUMBER));
+            id = Integer.parseInt (bundle.getString (AppConfigTags.PRODUCT_ID));
         }
         
         
@@ -467,8 +467,8 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
     private void addProductToServer (final String description) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_REQUEST, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_REQUEST,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ADD_REQUEST, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_ADD_REQUEST,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -513,18 +513,18 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_PRODUCT_ID, String.valueOf (id));
-                    params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
+                    params.put (AppConfigTags.PRODUCT_ID, String.valueOf (id));
+                    params.put (AppConfigTags.DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
                             case 0:
-                                params.put (AppConfigTags.SWIGGY_IMAGE1, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE1, imagesPathList.get (i));
                                 break;
                             case 1:
-                                params.put (AppConfigTags.SWIGGY_IMAGE2, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE2, imagesPathList.get (i));
                                 break;
                             case 2:
-                                params.put (AppConfigTags.SWIGGY_IMAGE3, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE3, imagesPathList.get (i));
                                 break;
                         }
                     }
@@ -555,12 +555,11 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
         }
     }
     
-    
     private void updateProductToServer (final String description) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_UPDATE_REQUEST + "/" + request_id, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_SWIGGY_UPDATE_REQUEST + "/" + request_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_UPDATE_REQUEST + "/" + request_id, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_UPDATE_REQUEST + "/" + request_id,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -605,17 +604,17 @@ public class ServiceAddNewRequestDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
+                    params.put (AppConfigTags.DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
                             case 0:
-                                params.put (AppConfigTags.SWIGGY_IMAGE1, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE1, imagesPathList.get (i));
                                 break;
                             case 1:
-                                params.put (AppConfigTags.SWIGGY_IMAGE2, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE2, imagesPathList.get (i));
                                 break;
                             case 2:
-                                params.put (AppConfigTags.SWIGGY_IMAGE3, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE3, imagesPathList.get (i));
                                 break;
                         }
                     }

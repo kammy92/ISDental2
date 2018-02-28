@@ -108,12 +108,12 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     
     private void getExtra () {
         Intent intent = getIntent ();
-        product_id = intent.getIntExtra (AppConfigTags.SWIGGY_PRODUCT_ID, 0);
-        product_name = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND);
-        product_description = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
-        product_serial_number = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
-        product_model_number = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER);
-        product_purchase_date = intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE);
+        product_id = intent.getIntExtra (AppConfigTags.PRODUCT_ID, 0);
+        product_name = intent.getStringExtra (AppConfigTags.PRODUCT_BRAND);
+        product_description = intent.getStringExtra (AppConfigTags.PRODUCT_DESCRIPTION);
+        product_serial_number = intent.getStringExtra (AppConfigTags.PRODUCT_SERIAL_NUMBER);
+        product_model_number = intent.getStringExtra (AppConfigTags.PRODUCT_MODEL_NUMBER);
+        product_purchase_date = intent.getStringExtra (AppConfigTags.PRODUCT_PURCHASE_DATE);
     }
     
     private void initView () {
@@ -208,15 +208,15 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
             @Override
             public void onClick (View view) {
                 Intent intent2 = new Intent (SwiggyMyProductDetailActivity.this, SwiggyServiceAddProductActivity.class);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_ID, product_id);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND, product_name);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER, product_model_number);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER, product_serial_number);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION, product_description);
-                intent2.putExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE, product_purchase_date);
-                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE1, image1);
-                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE2, image2);
-                intent2.putExtra (AppConfigTags.SWIGGY_IMAGE3, image3);
+                intent2.putExtra (AppConfigTags.PRODUCT_ID, product_id);
+                intent2.putExtra (AppConfigTags.PRODUCT_BRAND, product_name);
+                intent2.putExtra (AppConfigTags.PRODUCT_MODEL_NUMBER, product_model_number);
+                intent2.putExtra (AppConfigTags.PRODUCT_SERIAL_NUMBER, product_serial_number);
+                intent2.putExtra (AppConfigTags.PRODUCT_DESCRIPTION, product_description);
+                intent2.putExtra (AppConfigTags.PRODUCT_PURCHASE_DATE, product_purchase_date);
+                intent2.putExtra (AppConfigTags.IMAGE1, image1);
+                intent2.putExtra (AppConfigTags.IMAGE2, image2);
+                intent2.putExtra (AppConfigTags.IMAGE3, image3);
                 intent2.putExtra ("flag", 1);
                 startActivity (intent2);
             }
@@ -227,8 +227,8 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (SwiggyMyProductDetailActivity.this)) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + "/" + product_id, true);
-            StringRequest strRequest = new StringRequest (com.android.volley.Request.Method.GET, AppConfigURL.URL_SWIGGY_MY_PRODUCT_DETAIL + "/" + product_id,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_MY_PRODUCT_DETAIL + "/" + product_id, true);
+            StringRequest strRequest = new StringRequest (com.android.volley.Request.Method.GET, AppConfigURL.URL_MY_PRODUCT_DETAIL + "/" + product_id,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -241,11 +241,11 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        JSONArray jsonArrayRequest = jsonObj.getJSONArray (AppConfigTags.SWIGGY_REQUESTS);
+                                        JSONArray jsonArrayRequest = jsonObj.getJSONArray (AppConfigTags.REQUESTS);
     
-                                        tvServiceRequestName.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND) + " " + jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " - " + jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-                                        tvServiceRequestModelNumber.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-                                        tvServiceRequestDate.setText (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE));
+                                        tvServiceRequestName.setText (jsonObj.getString (AppConfigTags.PRODUCT_BRAND) + " " + jsonObj.getString (AppConfigTags.PRODUCT_DESCRIPTION) + " - " + jsonObj.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+                                        tvServiceRequestModelNumber.setText (jsonObj.getString (AppConfigTags.PRODUCT_MODEL_NUMBER));
+                                        tvServiceRequestDate.setText (jsonObj.getString (AppConfigTags.PRODUCT_PURCHASE_DATE));
 
 
 
@@ -254,27 +254,27 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
     
     
                                             swiggyServiceRequestList.add (i, new MyProductRequest (
-                                                    jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_STATUS),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_CREATED_AT),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
-                                                    jsonObjectBrand.getJSONArray (AppConfigTags.SWIGGY_REQUEST_COMMENTS).toString (),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE2),
-                                                    jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3)));
+                                                    jsonObjectBrand.getInt (AppConfigTags.REQUEST_ID),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_DESCRIPTION),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_STATUS),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_CREATED_AT),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_TICKET_NUMBER),
+                                                    jsonObjectBrand.getJSONArray (AppConfigTags.REQUEST_COMMENTS).toString (),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_IMAGE1),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_IMAGE2),
+                                                    jsonObjectBrand.getString (AppConfigTags.REQUEST_IMAGE3)));
                                         }
                                         swiggyServiceRequestAdapter.notifyDataSetChanged ();
-                                        image1 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE1);
-                                        image2 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE2);
-                                        image3 = jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE3);
+                                        image1 = jsonObj.getString (AppConfigTags.PRODUCT_IMAGE1);
+                                        image2 = jsonObj.getString (AppConfigTags.PRODUCT_IMAGE2);
+                                        image3 = jsonObj.getString (AppConfigTags.PRODUCT_IMAGE3);
 
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                                            if (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE1).endsWith (ext)) {
+                                            if (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE1).endsWith (ext)) {
                                                 rl1.setVisibility (View.VISIBLE);
                                                 tvNoImage.setVisibility (View.GONE);
                                                 Glide.with (SwiggyMyProductDetailActivity.this)
-                                                        .load (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE1))
+                                                        .load (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE1))
                                                         .listener (new RequestListener<String, GlideDrawable> () {
                                                             @Override
                                                             public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -294,11 +294,11 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                         }
                                         
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                                            if (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE2).endsWith (ext)) {
+                                            if (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE2).endsWith (ext)) {
                                                 rl2.setVisibility (View.VISIBLE);
                                                 tvNoImage.setVisibility (View.GONE);
                                                 Glide.with (SwiggyMyProductDetailActivity.this)
-                                                        .load (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE2))
+                                                        .load (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE2))
                                                         .listener (new RequestListener<String, GlideDrawable> () {
                                                             @Override
                                                             public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -318,11 +318,11 @@ public class SwiggyMyProductDetailActivity extends AppCompatActivity {
                                         }
                                         
                                         for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                                            if (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE3).endsWith (ext)) {
+                                            if (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE3).endsWith (ext)) {
                                                 rl3.setVisibility (View.VISIBLE);
                                                 tvNoImage.setVisibility (View.GONE);
                                                 Glide.with (SwiggyMyProductDetailActivity.this)
-                                                        .load (jsonObj.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE3))
+                                                        .load (jsonObj.getString (AppConfigTags.PRODUCT_IMAGE3))
                                                         .listener (new RequestListener<String, GlideDrawable> () {
                                                             @Override
                                                             public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

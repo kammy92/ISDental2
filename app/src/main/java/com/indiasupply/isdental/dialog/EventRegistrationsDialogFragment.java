@@ -39,7 +39,7 @@ public class EventRegistrationsDialogFragment extends DialogFragment {
     public static EventRegistrationsDialogFragment newInstance (String eventRegistration) {
         EventRegistrationsDialogFragment fragment = new EventRegistrationsDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_REGISTRATION, eventRegistration);
+        args.putString (AppConfigTags.EVENT_REGISTRATION, eventRegistration);
         fragment.setArguments (args);
         return fragment;
     }
@@ -94,7 +94,7 @@ public class EventRegistrationsDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventRegistration = bundle.getString (AppConfigTags.SWIGGY_EVENT_REGISTRATION);
+        eventRegistration = bundle.getString (AppConfigTags.EVENT_REGISTRATION);
     }
     
     private void initData () {

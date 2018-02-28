@@ -40,7 +40,7 @@ public class RecommendedProductDialogFragment extends DialogFragment {
     public RecommendedProductDialogFragment newInstance (ArrayList<Product> product_list, int position) {
         RecommendedProductDialogFragment f = new RecommendedProductDialogFragment ();
         Bundle args = new Bundle ();
-        args.putParcelableArrayList (AppConfigTags.SWIGGY_PRODUCTS, product_list);
+        args.putParcelableArrayList (AppConfigTags.PRODUCTS, product_list);
         args.putInt ("position", position);
         f.setArguments (args);
         return f;
@@ -93,7 +93,7 @@ public class RecommendedProductDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        productList = bundle.getParcelableArrayList (AppConfigTags.SWIGGY_PRODUCTS);
+        productList = bundle.getParcelableArrayList (AppConfigTags.PRODUCTS);
         position = bundle.getInt ("position");
     }
     

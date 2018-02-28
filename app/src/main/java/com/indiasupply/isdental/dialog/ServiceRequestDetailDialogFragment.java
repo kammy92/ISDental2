@@ -235,37 +235,37 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
         
         try {
             JSONObject jsonObject = new JSONObject (Response);
-            tvServiceRequestName.setText (jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND) + " " + jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION) + " - " + jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            tvServiceRequestModelNumber.setText (jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            JSONArray jsonArrayRequest = jsonObject.getJSONArray (AppConfigTags.SWIGGY_REQUESTS);
+            tvServiceRequestName.setText (jsonObject.getString (AppConfigTags.PRODUCT_BRAND) + " " + jsonObject.getString (AppConfigTags.PRODUCT_DESCRIPTION) + " - " + jsonObject.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+            tvServiceRequestModelNumber.setText (jsonObject.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+            JSONArray jsonArrayRequest = jsonObject.getJSONArray (AppConfigTags.REQUESTS);
     
-            brand_name = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND);
-            description = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION);
-            serial_number = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
-            model_number = jsonObject.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER);
+            brand_name = jsonObject.getString (AppConfigTags.PRODUCT_BRAND);
+            description = jsonObject.getString (AppConfigTags.PRODUCT_DESCRIPTION);
+            serial_number = jsonObject.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER);
+            model_number = jsonObject.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER);
             
             
             for (int i = 0; i < jsonArrayRequest.length (); i++) {
                 JSONObject jsonObjectRequest = jsonArrayRequest.getJSONObject (i);
-                if (jsonObjectRequest.getInt (AppConfigTags.SWIGGY_REQUEST_ID) == Request_id) {
-                    tvRequestDescription.setText ("Request Description : " + jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION));
-    
-                    if (! jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_STATUS).equalsIgnoreCase ("OPEN")) {
+                if (jsonObjectRequest.getInt (AppConfigTags.REQUEST_ID) == Request_id) {
+                    tvRequestDescription.setText ("Request Description : " + jsonObjectRequest.getString (AppConfigTags.REQUEST_DESCRIPTION));
+        
+                    if (! jsonObjectRequest.getString (AppConfigTags.REQUEST_STATUS).equalsIgnoreCase ("OPEN")) {
                         tvCloseRequest.setVisibility (View.GONE);
                     } else {
                         tvCloseRequest.setVisibility (View.VISIBLE);
                     }
-                    request_description = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION);
-                    image1 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1);
-                    image2 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE2);
-                    image3 = jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3);
+                    request_description = jsonObjectRequest.getString (AppConfigTags.REQUEST_DESCRIPTION);
+                    image1 = jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE1);
+                    image2 = jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE2);
+                    image3 = jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE3);
                     
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1).endsWith (ext)) {
+                        if (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE1).endsWith (ext)) {
                             rl1.setVisibility (View.VISIBLE);
                             tvNoImage.setVisibility (View.GONE);
                             Glide.with (getActivity ())
-                                    .load (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE1))
+                                    .load (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE1))
                                     .listener (new RequestListener<String, GlideDrawable> () {
                                         @Override
                                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -284,11 +284,11 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
                         }
                     }
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE2).endsWith (ext)) {
+                        if (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE2).endsWith (ext)) {
                             rl2.setVisibility (View.VISIBLE);
                             tvNoImage.setVisibility (View.GONE);
                             Glide.with (getActivity ())
-                                    .load (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE2))
+                                    .load (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE2))
                                     .listener (new RequestListener<String, GlideDrawable> () {
                                         @Override
                                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -308,11 +308,11 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
                     }
                     
                     for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                        if (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3).endsWith (ext)) {
+                        if (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE3).endsWith (ext)) {
                             rl3.setVisibility (View.VISIBLE);
                             tvNoImage.setVisibility (View.GONE);
                             Glide.with (getActivity ())
-                                    .load (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE3))
+                                    .load (jsonObjectRequest.getString (AppConfigTags.REQUEST_IMAGE3))
                                     .listener (new RequestListener<String, GlideDrawable> () {
                                         @Override
                                         public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -330,8 +330,8 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
                             break;
                         }
                     }
-    
-                    JSONArray jsonArrayComments = new JSONArray (jsonObjectRequest.getString (AppConfigTags.SWIGGY_REQUEST_COMMENTS));
+        
+                    JSONArray jsonArrayComments = new JSONArray (jsonObjectRequest.getString (AppConfigTags.REQUEST_COMMENTS));
                     
                     for (int j = 0; j < jsonArrayComments.length (); j++) {
                         JSONObject jsonObjectComments = jsonArrayComments.getJSONObject (j);
@@ -456,8 +456,8 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
     private void ReplyCommentSentToServer (final String replyComment) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_COMMENTS, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_COMMENTS,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SERVICE_REQUEST_COMMENTS, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SERVICE_REQUEST_COMMENTS,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -514,8 +514,8 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf (Request_id));
-                    params.put (AppConfigTags.SWIGGY_COMMENT, replyComment);
+                    params.put (AppConfigTags.REQUEST_ID, String.valueOf (Request_id));
+                    params.put (AppConfigTags.COMMENT, replyComment);
                     
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
@@ -559,8 +559,8 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
     private void CloseRequestSentToServer (final int request_id, final String rating, final String comment) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_SERVICE_REQUEST_CLOSE,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SERVICE_REQUEST_CLOSE, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SERVICE_REQUEST_CLOSE,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -605,9 +605,9 @@ public class ServiceRequestDetailDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_REQUEST_ID, String.valueOf (request_id));
-                    params.put (AppConfigTags.SWIGGY_COMMENT, comment);
-                    params.put (AppConfigTags.SWIGGY_RATING, rating);
+                    params.put (AppConfigTags.REQUEST_ID, String.valueOf (request_id));
+                    params.put (AppConfigTags.COMMENT, comment);
+                    params.put (AppConfigTags.RATING, rating);
                     
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;

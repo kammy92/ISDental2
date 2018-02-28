@@ -44,7 +44,7 @@ public class ServiceMyRequestDialogFragment extends DialogFragment {
     public static ServiceMyRequestDialogFragment newInstance (String myRequests) {
         ServiceMyRequestDialogFragment f = new ServiceMyRequestDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_REQUESTS, myRequests);
+        args.putString (AppConfigTags.REQUESTS, myRequests);
         f.setArguments (args);
         return f;
     }
@@ -99,7 +99,7 @@ public class ServiceMyRequestDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myRequests = bundle.getString (AppConfigTags.SWIGGY_REQUESTS);
+        myRequests = bundle.getString (AppConfigTags.REQUESTS);
     }
     
     private void initData () {
@@ -131,13 +131,13 @@ public class ServiceMyRequestDialogFragment extends DialogFragment {
                 for (int i = 0; i < jsonArrayBrand.length (); i++) {
                     JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
                     myRequestList.add (new MyRequest (
-                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_REQUEST_ID),
+                            jsonObjectBrand.getInt (AppConfigTags.REQUEST_ID),
                             R.drawable.default_my_equipment,
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_DESCRIPTION),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_IMAGE),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_GENERATED_AT)
+                            jsonObjectBrand.getString (AppConfigTags.REQUEST_TICKET_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.REQUEST_DESCRIPTION),
+                            jsonObjectBrand.getString (AppConfigTags.REQUEST_IMAGE),
+                            jsonObjectBrand.getString (AppConfigTags.REQUEST_GENERATED_AT)
                     ));
                 }
                 myRequestAdapter.notifyDataSetChanged ();

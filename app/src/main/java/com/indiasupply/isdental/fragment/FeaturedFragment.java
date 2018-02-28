@@ -149,8 +149,8 @@ public class FeaturedFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_FEATURED_LIST, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_FEATURED_LIST,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_FEATURED_LIST, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_FEATURED_LIST,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -163,7 +163,7 @@ public class FeaturedFragment extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_FEATURED, response);
-                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                                             for (int i = 0; i < jsonArrayBanners.length (); i++) {
                                                 JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                                                 if (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE).length () == 0) {
@@ -186,22 +186,22 @@ public class FeaturedFragment extends Fragment {
                                                             .into (ivBanner);
                                                 }
                                             }
-                                            JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                                            JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.COMPANIES);
                                             companyList.clear ();
                                             for (int j = 0; j < jsonArrayCompanies.length (); j++) {
                                                 JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
                                                 companyList.add (new Company (false,
-                                                        jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                                        jsonObjectCompanies.getInt (AppConfigTags.COMPANY_ID),
                                                         R.drawable.default_company,
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_OFFERS),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS),
-                                                        jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_PRODUCTS)
+                                                        jsonObjectCompanies.getString (AppConfigTags.COMPANY_NAME),
+                                                        jsonObjectCompanies.getString (AppConfigTags.COMPANY_DESCRIPTION),
+                                                        jsonObjectCompanies.getString (AppConfigTags.COMPANY_RATING),
+                                                        jsonObjectCompanies.getString (AppConfigTags.TOTAL_OFFERS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.COMPANY_CATEGORIES),
+                                                        jsonObjectCompanies.getString (AppConfigTags.COMPANY_IMAGE),
+                                                        jsonObjectCompanies.getString (AppConfigTags.TOTAL_RATINGS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.TOTAL_CONTACTS),
+                                                        jsonObjectCompanies.getString (AppConfigTags.TOTAL_PRODUCTS)
                                                 ));
                                             }
                                             companyAdapter.notifyDataSetChanged ();
@@ -304,7 +304,7 @@ public class FeaturedFragment extends Fragment {
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
 //                    bannerList.clear ();
-                    JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BANNERS);
+                    JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.BANNERS);
                     for (int i = 0; i < jsonArrayBanners.length (); i++) {
                         JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
                         if (jsonObjectBanners.getString(AppConfigTags.BANNER_IMAGE).length() == 0) {
@@ -329,21 +329,21 @@ public class FeaturedFragment extends Fragment {
                     }
 
                     companyList.clear ();
-                    JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.SWIGGY_COMPANIES);
+                    JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.COMPANIES);
                     for (int j = 0; j < jsonArrayCompanies.length (); j++) {
                         JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
                         companyList.add (new Company (false,
-                                jsonObjectCompanies.getInt (AppConfigTags.SWIGGY_COMPANY_ID),
+                                jsonObjectCompanies.getInt (AppConfigTags.COMPANY_ID),
                                 R.drawable.default_company,
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_NAME),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_DESCRIPTION),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_RATING),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_OFFERS),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_CATEGORIES),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_COMPANY_IMAGE),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_RATINGS),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_CONTACTS),
-                                jsonObjectCompanies.getString (AppConfigTags.SWIGGY_TOTAL_PRODUCTS)
+                                jsonObjectCompanies.getString (AppConfigTags.COMPANY_NAME),
+                                jsonObjectCompanies.getString (AppConfigTags.COMPANY_DESCRIPTION),
+                                jsonObjectCompanies.getString (AppConfigTags.COMPANY_RATING),
+                                jsonObjectCompanies.getString (AppConfigTags.TOTAL_OFFERS),
+                                jsonObjectCompanies.getString (AppConfigTags.COMPANY_CATEGORIES),
+                                jsonObjectCompanies.getString (AppConfigTags.COMPANY_IMAGE),
+                                jsonObjectCompanies.getString (AppConfigTags.TOTAL_RATINGS),
+                                jsonObjectCompanies.getString (AppConfigTags.TOTAL_CONTACTS),
+                                jsonObjectCompanies.getString (AppConfigTags.TOTAL_PRODUCTS)
                         ));
                     }
                     companyAdapter.notifyDataSetChanged ();

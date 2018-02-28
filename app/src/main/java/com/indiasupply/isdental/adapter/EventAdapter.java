@@ -214,8 +214,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     
     private void updateInterested (final int event_id) {
         if (NetworkConnection.isNetworkAvailable (activity)) {
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_EVENT_INTERESTED, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_EVENT_INTERESTED,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_EVENT_INTERESTED, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_EVENT_INTERESTED,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -262,7 +262,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_EVENT_ID, String.valueOf (event_id));
+                    params.put (AppConfigTags.EVENT_ID, String.valueOf (event_id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

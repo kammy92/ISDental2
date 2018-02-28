@@ -303,13 +303,13 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                     boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                                     String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                     if (! is_error) {
-                                        offer_name = jsonObj.getString (AppConfigTags.SWIGGY_OFFER_NAME);
+                                        offer_name = jsonObj.getString (AppConfigTags.OFFER_NAME);
     
                                         tvOfferName.setText (offer_name);
-                                        tvOfferDescription.setText (jsonObj.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING));
-                                        price = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE);
-                                        mrp = jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP);
-                                        discount = ((jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_QTY) * jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_MRP)) - jsonObj.getInt (AppConfigTags.SWIGGY_OFFER_PRICE));
+                                        tvOfferDescription.setText (jsonObj.getString (AppConfigTags.OFFER_PACKAGING));
+                                        price = jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_PRICE);
+                                        mrp = jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_MRP);
+                                        discount = ((jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_MRP)) - jsonObj.getInt (AppConfigTags.OFFER_PRICE));
     
     
                                         tvPrice.setText ("Rs. " + price);
@@ -662,7 +662,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         super.onSaveInstanceState (outState);
         outState.putInt (AppConfigTags.ORDER_ID, order_id);
         outState.putString (AppConfigTags.ORDER_UNIQUE_ID, order_unique_id);
-        outState.putString (AppConfigTags.SWIGGY_OFFER_NAME, offer_name);
+        outState.putString (AppConfigTags.OFFER_NAME, offer_name);
         outState.putInt (AppConfigTags.TOTAL_AMOUNT, total_amount);
     }
     
@@ -671,7 +671,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
         super.onRestoreInstanceState (savedInstanceState);
         order_id = savedInstanceState.getInt (AppConfigTags.ORDER_ID);
         order_unique_id = savedInstanceState.getString (AppConfigTags.ORDER_UNIQUE_ID);
-        offer_name = savedInstanceState.getString (AppConfigTags.SWIGGY_OFFER_NAME);
+        offer_name = savedInstanceState.getString (AppConfigTags.OFFER_NAME);
         total_amount = savedInstanceState.getInt (AppConfigTags.TOTAL_AMOUNT);
     }
 }

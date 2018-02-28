@@ -55,7 +55,7 @@ public class EventExhibitorDialogFragment extends DialogFragment {
     public static EventExhibitorDialogFragment newInstance (String eventExhibitor) {
         EventExhibitorDialogFragment fragment = new EventExhibitorDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_EXHIBITORS, eventExhibitor);
+        args.putString (AppConfigTags.EVENT_EXHIBITORS, eventExhibitor);
         fragment.setArguments (args);
         return fragment;
     }
@@ -152,7 +152,7 @@ public class EventExhibitorDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventExhibitor = bundle.getString (AppConfigTags.SWIGGY_EVENT_EXHIBITORS);
+        eventExhibitor = bundle.getString (AppConfigTags.EVENT_EXHIBITORS);
     }
     
     private void initData () {
@@ -224,11 +224,11 @@ public class EventExhibitorDialogFragment extends DialogFragment {
             JSONArray jsonArray = new JSONArray (eventExhibitor);
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObjectExhibitor = jsonArray.getJSONObject (j);
-                exhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.SWIGGY_EXHIBITOR_ID),
+                exhibitorList.add (j, new EventExhibitor (jsonObjectExhibitor.getInt (AppConfigTags.EXHIBITOR_ID),
                         R.drawable.ic_event_exhibitor,
-                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_NAME),
-                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_DESCRIPTION),
-                        jsonObjectExhibitor.getString (AppConfigTags.SWIGGY_EXHIBITOR_IMAGE)));
+                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_NAME),
+                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_DESCRIPTION),
+                        jsonObjectExhibitor.getString (AppConfigTags.EXHIBITOR_IMAGE)));
             }
             exhibitorAdapter.notifyDataSetChanged ();
         } catch (JSONException e) {

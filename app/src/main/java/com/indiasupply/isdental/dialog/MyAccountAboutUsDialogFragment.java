@@ -39,7 +39,7 @@ public class MyAccountAboutUsDialogFragment extends DialogFragment {
     public static MyAccountAboutUsDialogFragment newInstance (String htmlFaq) {
         MyAccountAboutUsDialogFragment fragment = new MyAccountAboutUsDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_HTML_ABOUT_US, htmlFaq);
+        args.putString (AppConfigTags.HTML_ABOUT_US, htmlFaq);
         fragment.setArguments (args);
         return fragment;
     }
@@ -95,7 +95,7 @@ public class MyAccountAboutUsDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        htmlFaq = bundle.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
+        htmlFaq = bundle.getString (AppConfigTags.HTML_ABOUT_US);
     }
     
     private void initData () {

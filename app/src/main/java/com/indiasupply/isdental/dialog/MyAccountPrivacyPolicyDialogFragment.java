@@ -39,7 +39,7 @@ public class MyAccountPrivacyPolicyDialogFragment extends DialogFragment {
     public static MyAccountPrivacyPolicyDialogFragment newInstance (String htmlPrivacyPolicy) {
         MyAccountPrivacyPolicyDialogFragment fragment = new MyAccountPrivacyPolicyDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY, htmlPrivacyPolicy);
+        args.putString (AppConfigTags.HTML_PRIVACY_POLICY, htmlPrivacyPolicy);
         fragment.setArguments (args);
         return fragment;
     }
@@ -95,7 +95,7 @@ public class MyAccountPrivacyPolicyDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        htmlPrivacyPolicy = bundle.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
+        htmlPrivacyPolicy = bundle.getString (AppConfigTags.HTML_PRIVACY_POLICY);
     }
     
     private void initData () {

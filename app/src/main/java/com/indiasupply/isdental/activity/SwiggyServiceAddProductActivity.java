@@ -125,26 +125,26 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         flag = intent.getIntExtra ("flag", 0);
     
         if (flag == 1) {
-            etBrand.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_BRAND));
+            etBrand.setText (intent.getStringExtra (AppConfigTags.PRODUCT_BRAND));
             etBrand.setClickable (false);
             etBrand.setEnabled (false);
-            etProductDescription.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION));
-            etModelNo.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER));
-            etSerialNo.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER));
-            etPurchaseDate.setText (intent.getStringExtra (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE));
+            etProductDescription.setText (intent.getStringExtra (AppConfigTags.PRODUCT_DESCRIPTION));
+            etModelNo.setText (intent.getStringExtra (AppConfigTags.PRODUCT_MODEL_NUMBER));
+            etSerialNo.setText (intent.getStringExtra (AppConfigTags.PRODUCT_SERIAL_NUMBER));
+            etPurchaseDate.setText (intent.getStringExtra (AppConfigTags.PRODUCT_PURCHASE_DATE));
             etPurchaseDate.setClickable (false);
             etPurchaseDate.setEnabled (false);
-        
-            imageTemp1 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1);
-            imageTemp2 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2);
-            imageTemp3 = intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3);
-            product_id = intent.getIntExtra (AppConfigTags.SWIGGY_PRODUCT_ID, 0);
+    
+            imageTemp1 = intent.getStringExtra (AppConfigTags.IMAGE1);
+            imageTemp2 = intent.getStringExtra (AppConfigTags.IMAGE2);
+            imageTemp3 = intent.getStringExtra (AppConfigTags.IMAGE3);
+            product_id = intent.getIntExtra (AppConfigTags.PRODUCT_ID, 0);
         
             new MyAsync ().execute ();
         
         
             for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1).endsWith (ext)) {
+                if (intent.getStringExtra (AppConfigTags.IMAGE1).endsWith (ext)) {
                 
                     ImageView image = new ImageView (this);
                     LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
@@ -156,7 +156,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 
                 
                     Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE1))
+                            .load (intent.getStringExtra (AppConfigTags.IMAGE1))
                             .listener (new RequestListener<String, GlideDrawable> () {
                                 @Override
                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -177,7 +177,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 }
             }
             for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2).endsWith (ext)) {
+                if (intent.getStringExtra (AppConfigTags.IMAGE2).endsWith (ext)) {
                     ImageView image = new ImageView (this);
                     LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
                     vp.setMargins ((int) Utils.pxFromDp (this, 16), 0, (int) Utils.pxFromDp (this, 16), 0);
@@ -187,7 +187,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                     image.setMaxWidth (100);
                 
                     Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE2))
+                            .load (intent.getStringExtra (AppConfigTags.IMAGE2))
                             .listener (new RequestListener<String, GlideDrawable> () {
                                 @Override
                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -208,7 +208,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
         
         
             for (String ext : new String[] {".png", ".jpg", ".jpeg"}) {
-                if (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3).endsWith (ext)) {
+                if (intent.getStringExtra (AppConfigTags.IMAGE3).endsWith (ext)) {
                 
                     ImageView image = new ImageView (this);
                     LinearLayout.LayoutParams vp = new LinearLayout.LayoutParams ((int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100), (int) Utils.pxFromDp (SwiggyServiceAddProductActivity.this, 100));
@@ -220,7 +220,7 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 
                 
                     Glide.with (SwiggyServiceAddProductActivity.this)
-                            .load (intent.getStringExtra (AppConfigTags.SWIGGY_IMAGE3))
+                            .load (intent.getStringExtra (AppConfigTags.IMAGE3))
                             .listener (new RequestListener<String, GlideDrawable> () {
                                 @Override
                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -238,14 +238,14 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 }
             }
         } else {
-            brands = intent.getStringExtra (AppConfigTags.SWIGGY_BRANDS);
+            brands = intent.getStringExtra (AppConfigTags.BRANDS);
             try {
                 JSONArray jsonArrayBrands = new JSONArray (brands);
                 brand_id_list = new int[jsonArrayBrands.length ()];
                 for (int i = 0; i < jsonArrayBrands.length (); i++) {
                     JSONObject jsonObjectBrands = jsonArrayBrands.getJSONObject (i);
-                    brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.SWIGGY_BRAND_ID);
-                    brandNameList.add (jsonObjectBrands.getString (AppConfigTags.SWIGGY_BRAND_NAME));
+                    brand_id_list[i] = jsonObjectBrands.getInt (AppConfigTags.BRAND_ID);
+                    brandNameList.add (jsonObjectBrands.getString (AppConfigTags.BRAND_NAME));
                 }
             } catch (JSONException e) {
                 e.printStackTrace ();
@@ -468,8 +468,8 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
     private void addProductToServer (final String brand, final String description, final String model, final String serial_number, final String purchase_date) {
         if (NetworkConnection.isNetworkAvailable (SwiggyServiceAddProductActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ADD_PRODUCT, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ADD_PRODUCT,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ADD_PRODUCT, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_ADD_PRODUCT,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -514,22 +514,22 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_BRAND_ID, String.valueOf (brand_id));
-                    params.put (AppConfigTags.SWIGGY_BRAND_NAME, brand);
-                    params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
-                    params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);
-                    params.put (AppConfigTags.SWIGGY_PURCHASE_DATE, purchase_date);
-                    params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
+                    params.put (AppConfigTags.BRAND_ID, String.valueOf (brand_id));
+                    params.put (AppConfigTags.BRAND_NAME, brand);
+                    params.put (AppConfigTags.MODEL_NUMBER, model);
+                    params.put (AppConfigTags.SERIAL_NUMBER, serial_number);
+                    params.put (AppConfigTags.PURCHASE_DATE, purchase_date);
+                    params.put (AppConfigTags.DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
                             case 0:
-                                params.put (AppConfigTags.SWIGGY_IMAGE1, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE1, imagesPathList.get (i));
                                 break;
                             case 1:
-                                params.put (AppConfigTags.SWIGGY_IMAGE2, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE2, imagesPathList.get (i));
                                 break;
                             case 2:
-                                params.put (AppConfigTags.SWIGGY_IMAGE3, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE3, imagesPathList.get (i));
                                 break;
                         }
                     }
@@ -563,8 +563,8 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
     private void updateProductToServer (int product_id, final String description, final String model, final String serial_number) {
         if (NetworkConnection.isNetworkAvailable (SwiggyServiceAddProductActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_UPDATE_PRODUCT + "/" + product_id, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_SWIGGY_UPDATE_PRODUCT + "/" + product_id,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_UPDATE_PRODUCT + "/" + product_id, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.PUT, AppConfigURL.URL_UPDATE_PRODUCT + "/" + product_id,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -609,19 +609,19 @@ public class SwiggyServiceAddProductActivity extends AppCompatActivity {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_MODEL_NUMBER, model);
-                    params.put (AppConfigTags.SWIGGY_SERIAL_NUMBER, serial_number);
-                    params.put (AppConfigTags.SWIGGY_DESCRIPTION, description);
+                    params.put (AppConfigTags.MODEL_NUMBER, model);
+                    params.put (AppConfigTags.SERIAL_NUMBER, serial_number);
+                    params.put (AppConfigTags.DESCRIPTION, description);
                     for (int i = 0; i < imagesPathList.size (); i++) {
                         switch (i) {
                             case 0:
-                                params.put (AppConfigTags.SWIGGY_IMAGE1, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE1, imagesPathList.get (i));
                                 break;
                             case 1:
-                                params.put (AppConfigTags.SWIGGY_IMAGE2, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE2, imagesPathList.get (i));
                                 break;
                             case 2:
-                                params.put (AppConfigTags.SWIGGY_IMAGE3, imagesPathList.get (i));
+                                params.put (AppConfigTags.IMAGE3, imagesPathList.get (i));
                                 break;
                         }
                     }

@@ -46,7 +46,7 @@ public class ServiceMyProductDialogFragment extends DialogFragment {
     public ServiceMyProductDialogFragment newInstance (String products) {
         ServiceMyProductDialogFragment f = new ServiceMyProductDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_PRODUCTS, products);
+        args.putString (AppConfigTags.PRODUCTS, products);
         f.setArguments (args);
         return f;
     }
@@ -101,7 +101,7 @@ public class ServiceMyProductDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myProducts = bundle.getString (AppConfigTags.SWIGGY_PRODUCTS);
+        myProducts = bundle.getString (AppConfigTags.PRODUCTS);
     }
     
     private void initData () {
@@ -134,16 +134,16 @@ public class ServiceMyProductDialogFragment extends DialogFragment {
                 for (int i = 0; i < jsonArrayBrand.length (); i++) {
                     JSONObject jsonObjectBrand = jsonArrayBrand.getJSONObject (i);
                     myProductList.add (i, new MyProduct (
-                            jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                            jsonObjectBrand.getInt (AppConfigTags.PRODUCT_ID),
                             R.drawable.default_my_equipment,
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_CATEGORY),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                            jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE)
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_NAME),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_IMAGE),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_CATEGORY),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_BRAND),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_MODEL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER),
+                            jsonObjectBrand.getString (AppConfigTags.PRODUCT_PURCHASE_DATE)
                     ));
                 }
                 productAdapter.notifyDataSetChanged ();

@@ -238,8 +238,8 @@ public class MyAccountFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_ACCOUNT, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_ACCOUNT,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_ACCOUNT, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_ACCOUNT,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -256,13 +256,13 @@ public class MyAccountFragment extends Fragment {
                                             tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
                                             tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
     
-                                            myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
-                                            myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
-                                            myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
-                                            htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
-                                            htmlAboutUs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
-                                            htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
-                                            htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
+                                            myFavourites = jsonObj.getJSONArray (AppConfigTags.FAVOURITES).toString ();
+                                            myOffers = jsonObj.getJSONArray (AppConfigTags.OFFERS).toString ();
+                                            myEnquiries = jsonObj.getJSONArray (AppConfigTags.ENQUIRIES).toString ();
+                                            htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.HTML_PRIVACY_POLICY);
+                                            htmlAboutUs = jsonObj.getString (AppConfigTags.HTML_ABOUT_US);
+                                            htmlTermsOfUse = jsonObj.getString (AppConfigTags.HTML_TERMS_OF_USE);
+                                            htmlHelpSupport = jsonObj.getString (AppConfigTags.HTML_HELP_AND_SUPPORT);
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
@@ -358,14 +358,14 @@ public class MyAccountFragment extends Fragment {
                     tvUserName.setText (jsonObj.getString (AppConfigTags.USER_NAME).toUpperCase ());
                     tvUserEmail.setText (jsonObj.getString (AppConfigTags.USER_EMAIL));
                     tvUserMobile.setText (jsonObj.getString (AppConfigTags.USER_MOBILE));
-                    
-                    myFavourites = jsonObj.getJSONArray (AppConfigTags.SWIGGY_FAVOURITES).toString ();
-                    myOffers = jsonObj.getJSONArray (AppConfigTags.SWIGGY_OFFERS).toString ();
-                    myEnquiries = jsonObj.getJSONArray (AppConfigTags.SWIGGY_ENQUIRIES).toString ();
-                    htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.SWIGGY_HTML_PRIVACY_POLICY);
-                    htmlAboutUs = jsonObj.getString (AppConfigTags.SWIGGY_HTML_ABOUT_US);
-                    htmlTermsOfUse = jsonObj.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
-                    htmlHelpSupport = jsonObj.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
+    
+                    myFavourites = jsonObj.getJSONArray (AppConfigTags.FAVOURITES).toString ();
+                    myOffers = jsonObj.getJSONArray (AppConfigTags.OFFERS).toString ();
+                    myEnquiries = jsonObj.getJSONArray (AppConfigTags.ENQUIRIES).toString ();
+                    htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.HTML_PRIVACY_POLICY);
+                    htmlAboutUs = jsonObj.getString (AppConfigTags.HTML_ABOUT_US);
+                    htmlTermsOfUse = jsonObj.getString (AppConfigTags.HTML_TERMS_OF_USE);
+                    htmlHelpSupport = jsonObj.getString (AppConfigTags.HTML_HELP_AND_SUPPORT);
                     rlMain.setVisibility (View.VISIBLE);
                     shimmerFrameLayout.setVisibility (View.GONE);
                 }

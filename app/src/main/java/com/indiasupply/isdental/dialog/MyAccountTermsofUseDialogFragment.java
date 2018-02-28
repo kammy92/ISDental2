@@ -39,7 +39,7 @@ public class MyAccountTermsofUseDialogFragment extends DialogFragment {
     public static MyAccountTermsofUseDialogFragment newInstance (String htmlTermsOfUse) {
         MyAccountTermsofUseDialogFragment fragment = new MyAccountTermsofUseDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE, htmlTermsOfUse);
+        args.putString (AppConfigTags.HTML_TERMS_OF_USE, htmlTermsOfUse);
         fragment.setArguments (args);
         return fragment;
     }
@@ -94,7 +94,7 @@ public class MyAccountTermsofUseDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        htmlTermsOfUse = bundle.getString (AppConfigTags.SWIGGY_HTML_TERMS_OF_USE);
+        htmlTermsOfUse = bundle.getString (AppConfigTags.HTML_TERMS_OF_USE);
     }
     
     private void initData () {

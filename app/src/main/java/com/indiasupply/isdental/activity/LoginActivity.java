@@ -351,8 +351,8 @@ public class LoginActivity extends AppCompatActivity {
     private void userExist (final String mobile) {
         if (NetworkConnection.isNetworkAvailable (LoginActivity.this)) {
             progressBar.setVisibility (View.VISIBLE);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_USER_EXIST, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_USER_EXIST,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_USER_EXIST, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_USER_EXIST,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -447,8 +447,8 @@ public class LoginActivity extends AppCompatActivity {
     private void getOTP (final String mobile) {
         if (NetworkConnection.isNetworkAvailable (LoginActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_GETOTP, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_GETOTP,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_GETOTP, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_GETOTP,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -643,8 +643,8 @@ public class LoginActivity extends AppCompatActivity {
     private void sendSignUpDetailsToServer (final String name, final String email, final String mobile, final String visitor_type, final int otp, final String device_details) {
         if (NetworkConnection.isNetworkAvailable (LoginActivity.this)) {
             Utils.showProgressDialog (progressDialog, getResources ().getString (R.string.progress_dialog_text_please_wait), true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_REGISTER, true);
-            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_REGISTER,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_REGISTER, true);
+            StringRequest strRequest1 = new StringRequest (Request.Method.POST, AppConfigURL.URL_REGISTER,
                     new com.android.volley.Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {

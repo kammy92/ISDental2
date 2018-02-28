@@ -7,6 +7,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.indiasupply.isdental.activity.MainActivity;
 import com.indiasupply.isdental.model.Notification;
+import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.Constants;
 import com.indiasupply.isdental.utils.NotificationUtils;
 import com.indiasupply.isdental.utils.Utils;
@@ -67,55 +68,33 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Notification notification = new Notification();
         try {
             JSONObject data = notificationData.getJSONObject("data");
-            notification.setBackground(data.getBoolean("is_background"));
-            notification.setTitle(data.getString("title"));
-            notification.setMessage(data.getString("message"));
-            notification.setImage_url(data.getString("image"));
-            notification.setTimestamp(data.getString("timestamp"));
-            notification.setPayload(data.getJSONObject("payload"));
-
-
-            JSONObject payload = data.getJSONObject("payload");
-
-            notification.setNotification_style(payload.getInt("notification_style"));
-            notification.setNotification_type(payload.getInt("notification_type"));
-            notification.setNotification_priority(payload.getInt("notification_priority"));
-
-            switch (payload.getInt("notification_type")) {
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    Log.e("karman", "in notification type 3");
-                    notification.setPromotion_id(payload.getInt("notification_promotion_id"));
-                    notification.setPromotion_status(payload.getInt("notification_promotion_status"));
-                    break;
-            }
-
+            notification.setBackground (data.getBoolean (AppConfigTags.NOTIFICATION_IS_BACKGROUND));
+            notification.setTitle (data.getString (AppConfigTags.NOTIFICATION_TITLE));
+            notification.setMessage (data.getString (AppConfigTags.NOTIFICATION_MESSAGE));
+            notification.setImage_url (data.getString (AppConfigTags.NOTIFICATION_IMAGE));
+            notification.setTimestamp (data.getString (AppConfigTags.NOTIFICATION_TIMESTAMP));
+            notification.setPayload (data.getJSONObject (AppConfigTags.NOTIFICATION_PAYLOAD));
+    
+            JSONObject payload = data.getJSONObject (AppConfigTags.NOTIFICATION_PAYLOAD);
+    
+            notification.setNotification_type (payload.getInt (AppConfigTags.NOTIFICATION_TYPE));
+            notification.setNotification_priority (payload.getInt (AppConfigTags.NOTIFICATION_PRIORITY));
         } catch (JSONException e) {
-            Log.e(TAG, "Json Exception: " + e.getMessage());
+            Log.e (TAG, "JSON Exception: " + e.getMessage ());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
         }
 
         if (!NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            // app is in foreground, broadcast the push message
             Intent intent = new Intent(Constants.PUSH_NOTIFICATION);
-            intent.putExtra("message", notification.getMessage());
-//            LocalBroadcastManager.getInstance (this).sendBroadcast (intent);
-            // play notification sound
-//            NotificationUtils notificationUtils = new NotificationUtils (getApplicationContext ());
-//            notificationUtils.playNotificationSound ();
-
+            intent.putExtra (AppConfigTags.NOTIFICATION_MESSAGE, notification.getMessage ());
             notificationUtils = new NotificationUtils(getApplicationContext());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             notificationUtils.showNotificationMessage(intent, notification);
         } else {
             // app is in background, show the notification in notification tray
             Intent intent = new Intent (getApplicationContext (), MainActivity.class);
-            intent.putExtra("message", notification.getMessage());
-
+            intent.putExtra (AppConfigTags.NOTIFICATION_MESSAGE, notification.getMessage ());
             notificationUtils = new NotificationUtils(getApplicationContext());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             notificationUtils.showNotificationMessage(intent, notification);

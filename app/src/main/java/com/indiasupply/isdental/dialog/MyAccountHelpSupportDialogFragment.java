@@ -39,7 +39,7 @@ public class MyAccountHelpSupportDialogFragment extends DialogFragment {
     public static MyAccountHelpSupportDialogFragment newInstance (String htmlHelpSupport) {
         MyAccountHelpSupportDialogFragment fragment = new MyAccountHelpSupportDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT, htmlHelpSupport);
+        args.putString (AppConfigTags.HTML_HELP_AND_SUPPORT, htmlHelpSupport);
         fragment.setArguments (args);
         return fragment;
     }
@@ -94,7 +94,7 @@ public class MyAccountHelpSupportDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        htmlHelpSupport = bundle.getString (AppConfigTags.SWIGGY_HTML_HELP_AND_SUPPORT);
+        htmlHelpSupport = bundle.getString (AppConfigTags.HTML_HELP_AND_SUPPORT);
     }
     
     private void initData () {

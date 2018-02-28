@@ -86,19 +86,19 @@ public class OfferDetailDialogFragment extends DialogFragment {
                                                          String offer_terms_conditions, int icon) {
         OfferDetailDialogFragment f = new OfferDetailDialogFragment ();
         Bundle args = new Bundle ();
-        args.putInt (AppConfigTags.SWIGGY_OFFER_ID, offer_id);
-        args.putString (AppConfigTags.SWIGGY_OFFER_NAME, name);
-        args.putString (AppConfigTags.SWIGGY_OFFER_PACKAGING, packaging);
-        args.putString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION, description);
-        args.putString (AppConfigTags.SWIGGY_OFFER_IMAGE, image);
-        args.putInt (AppConfigTags.SWIGGY_OFFER_PRICE, price);
-        args.putInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE, regular_price);
-        args.putInt (AppConfigTags.SWIGGY_OFFER_MRP, mrp);
-        args.putInt (AppConfigTags.SWIGGY_OFFER_QTY, qty);
+        args.putInt (AppConfigTags.OFFER_ID, offer_id);
+        args.putString (AppConfigTags.OFFER_NAME, name);
+        args.putString (AppConfigTags.OFFER_PACKAGING, packaging);
+        args.putString (AppConfigTags.OFFER_DESCRIPTION, description);
+        args.putString (AppConfigTags.OFFER_IMAGE, image);
+        args.putInt (AppConfigTags.OFFER_PRICE, price);
+        args.putInt (AppConfigTags.OFFER_REGULAR_PRICE, regular_price);
+        args.putInt (AppConfigTags.OFFER_MRP, mrp);
+        args.putInt (AppConfigTags.OFFER_QTY, qty);
         args.putInt ("icon", icon);
-        args.putString (AppConfigTags.SWIGGY_OFFER_HTML_DATES, offer_dates);
-        args.putString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS, offer_details);
-        args.putString (AppConfigTags.SWIGGY_OFFER_HTML_TANDC, offer_terms_conditions);
+        args.putString (AppConfigTags.OFFER_HTML_DATES, offer_dates);
+        args.putString (AppConfigTags.OFFER_HTML_DETAILS, offer_details);
+        args.putString (AppConfigTags.OFFER_HTML_TANDC, offer_terms_conditions);
         f.setArguments (args);
         return f;
     }
@@ -170,19 +170,19 @@ public class OfferDetailDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        offer_id = bundle.getInt (AppConfigTags.SWIGGY_OFFER_ID);
-        name = bundle.getString (AppConfigTags.SWIGGY_OFFER_NAME);
-        packaging = bundle.getString (AppConfigTags.SWIGGY_OFFER_PACKAGING);
-        description = bundle.getString (AppConfigTags.SWIGGY_OFFER_DESCRIPTION);
-        image = bundle.getString (AppConfigTags.SWIGGY_OFFER_IMAGE);
-        price = bundle.getInt (AppConfigTags.SWIGGY_OFFER_PRICE, 0);
-        regular_price = bundle.getInt (AppConfigTags.SWIGGY_OFFER_REGULAR_PRICE, 0);
-        mrp = bundle.getInt (AppConfigTags.SWIGGY_OFFER_MRP, 0);
-        qty = bundle.getInt (AppConfigTags.SWIGGY_OFFER_QTY, 0);
+        offer_id = bundle.getInt (AppConfigTags.OFFER_ID);
+        name = bundle.getString (AppConfigTags.OFFER_NAME);
+        packaging = bundle.getString (AppConfigTags.OFFER_PACKAGING);
+        description = bundle.getString (AppConfigTags.OFFER_DESCRIPTION);
+        image = bundle.getString (AppConfigTags.OFFER_IMAGE);
+        price = bundle.getInt (AppConfigTags.OFFER_PRICE, 0);
+        regular_price = bundle.getInt (AppConfigTags.OFFER_REGULAR_PRICE, 0);
+        mrp = bundle.getInt (AppConfigTags.OFFER_MRP, 0);
+        qty = bundle.getInt (AppConfigTags.OFFER_QTY, 0);
         icon = bundle.getInt ("icon", 0);
-        dates = bundle.getString (AppConfigTags.SWIGGY_OFFER_HTML_DATES);
-        details = bundle.getString (AppConfigTags.SWIGGY_OFFER_HTML_DETAILS);
-        terms_conditions = bundle.getString (AppConfigTags.SWIGGY_OFFER_HTML_TANDC);
+        dates = bundle.getString (AppConfigTags.OFFER_HTML_DATES);
+        details = bundle.getString (AppConfigTags.OFFER_HTML_DETAILS);
+        terms_conditions = bundle.getString (AppConfigTags.OFFER_HTML_TANDC);
     }
     
     private void initData () {
@@ -303,8 +303,8 @@ public class OfferDetailDialogFragment extends DialogFragment {
     private void sendEnquiry2 (final int id) {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showProgressDialog (progressDialog, null, true);
-            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_SWIGGY_ENQUIRY2, true);
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_ENQUIRY2,
+            Utils.showLog (Log.INFO, "" + AppConfigTags.URL, AppConfigURL.URL_ENQUIRY2, true);
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_ENQUIRY2,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (final String response) {
@@ -342,7 +342,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
-                    params.put (AppConfigTags.SWIGGY_OFFER_ID, String.valueOf (id));
+                    params.put (AppConfigTags.OFFER_ID, String.valueOf (id));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

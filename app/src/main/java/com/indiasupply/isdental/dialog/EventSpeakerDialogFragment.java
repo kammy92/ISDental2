@@ -43,7 +43,7 @@ public class EventSpeakerDialogFragment extends DialogFragment {
     public static EventSpeakerDialogFragment newInstance (String eventSpeakers) {
         EventSpeakerDialogFragment fragment = new EventSpeakerDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_SPEAKERS, eventSpeakers);
+        args.putString (AppConfigTags.EVENT_SPEAKERS, eventSpeakers);
         fragment.setArguments (args);
         return fragment;
     }
@@ -97,7 +97,7 @@ public class EventSpeakerDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventSpeakers = bundle.getString (AppConfigTags.SWIGGY_EVENT_SPEAKERS);
+        eventSpeakers = bundle.getString (AppConfigTags.EVENT_SPEAKERS);
     }
     
     private void initData () {
@@ -132,11 +132,11 @@ public class EventSpeakerDialogFragment extends DialogFragment {
             JSONArray jsonArray = new JSONArray (eventSpeakers);
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObjectSpeaker = jsonArray.getJSONObject (j);
-                eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SWIGGY_SPEAKER_ID),
+                eventSpeakerList.add (j, new EventSpeaker (jsonObjectSpeaker.getInt (AppConfigTags.SPEAKER_ID),
                         R.drawable.default_speaker,
-                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_NAME),
-                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_DESCRIPTION),
-                        jsonObjectSpeaker.getString (AppConfigTags.SWIGGY_SPEAKERS_IMAGE)));
+                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_NAME),
+                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_DESCRIPTION),
+                        jsonObjectSpeaker.getString (AppConfigTags.SPEAKERS_IMAGE)));
             }
             eventSpeakerAdapter.notifyDataSetChanged ();
         } catch (JSONException e) {

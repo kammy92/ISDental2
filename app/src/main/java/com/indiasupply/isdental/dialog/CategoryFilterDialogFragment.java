@@ -53,7 +53,7 @@ public class CategoryFilterDialogFragment extends DialogFragment {
     public CategoryFilterDialogFragment newInstance (String filter) {
         CategoryFilterDialogFragment f = new CategoryFilterDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_CATEGORY_FILTERS, filter);
+        args.putString (AppConfigTags.CATEGORY_FILTERS, filter);
         f.setArguments (args);
         return f;
     }
@@ -109,7 +109,7 @@ public class CategoryFilterDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        filter = bundle.getString (AppConfigTags.SWIGGY_CATEGORY_FILTERS);
+        filter = bundle.getString (AppConfigTags.CATEGORY_FILTERS);
     }
     
     private void initData () {
@@ -159,7 +159,7 @@ public class CategoryFilterDialogFragment extends DialogFragment {
                 JSONObject jsonObjectfilter = jsonArray.getJSONObject (i);
                 
                 TextView tv = new TextView (getActivity ());
-                tv.setText (jsonObjectfilter.getString (AppConfigTags.SWIGGY_GROUP_NAME));
+                tv.setText (jsonObjectfilter.getString (AppConfigTags.GROUP_NAME));
                 tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 16);
                 tv.setTypeface (SetTypeFace.getTypeface (getActivity (), "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
@@ -171,9 +171,9 @@ public class CategoryFilterDialogFragment extends DialogFragment {
                 for (int j = 0; j < jsonArrayCategory.length (); j++) {
                     JSONObject jsonObjectCategory = jsonArrayCategory.getJSONObject (j);
                     categoryFilterList.add (new CategoryFilter (
-                            jsonObjectCategory.getInt (AppConfigTags.SWIGGY_CATEGORY_ID),
+                            jsonObjectCategory.getInt (AppConfigTags.CATEGORY_ID),
                             "",
-                            jsonObjectCategory.getString (AppConfigTags.SWIGGY_CATEGORY_NAME)
+                            jsonObjectCategory.getString (AppConfigTags.CATEGORY_NAME)
                     ));
                 }
                 RecyclerView rv = new RecyclerView (getActivity ());

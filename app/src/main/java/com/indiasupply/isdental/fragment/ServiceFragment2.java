@@ -146,7 +146,7 @@ public class ServiceFragment2 extends Fragment {
             @Override
             public void onClick (View view) {
                 Intent intent = new Intent (getActivity (), SwiggyServiceAddProductActivity.class);
-                intent.putExtra (AppConfigTags.SWIGGY_BRANDS, brands);
+                intent.putExtra (AppConfigTags.BRANDS, brands);
                 getActivity ().startActivity (intent);
             }
         });
@@ -154,8 +154,8 @@ public class ServiceFragment2 extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_SERVICE, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_SERVICE,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_SERVICE, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_SERVICE,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -169,25 +169,25 @@ public class ServiceFragment2 extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_SERVICE, response);
-                                            categories = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORIES).toString ();
-                                            brands = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BRANDS).toString ();
-                                            JSONArray jsonArrayProducts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS);
+                                            categories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES).toString ();
+                                            brands = jsonObj.getJSONArray (AppConfigTags.BRANDS).toString ();
+                                            JSONArray jsonArrayProducts = jsonObj.getJSONArray (AppConfigTags.PRODUCTS);
                                             
                                             for (int i = 0; i < jsonArrayProducts.length (); i++) {
                                                 JSONObject jsonObjectBrand = jsonArrayProducts.getJSONObject (i);
                                                 swiggyServiceItemList.add (i, new MyProduct2 (
-                                                        jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                                                        jsonObjectBrand.getInt (AppConfigTags.PRODUCT_ID),
                                                         R.drawable.default_my_equipment,
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_CREATED_AT),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_STATUS),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
-                                                        jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_NAME),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_BRAND),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_MODEL_NUMBER),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_PURCHASE_DATE),
+                                                        jsonObjectBrand.getString (AppConfigTags.REQUEST_CREATED_AT),
+                                                        jsonObjectBrand.getString (AppConfigTags.REQUEST_STATUS),
+                                                        jsonObjectBrand.getString (AppConfigTags.REQUEST_TICKET_NUMBER),
+                                                        jsonObjectBrand.getString (AppConfigTags.PRODUCT_IMAGE)
                                                 ));
                                             }
                                             serviceMyProductAdapter2.notifyDataSetChanged ();
@@ -292,25 +292,25 @@ public class ServiceFragment2 extends Fragment {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-                    categories = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORIES).toString ();
-                    brands = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BRANDS).toString ();
-                    JSONArray jsonArrayProducts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS);
+                    categories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES).toString ();
+                    brands = jsonObj.getJSONArray (AppConfigTags.BRANDS).toString ();
+                    JSONArray jsonArrayProducts = jsonObj.getJSONArray (AppConfigTags.PRODUCTS);
     
                     for (int i = 0; i < jsonArrayProducts.length (); i++) {
                         JSONObject jsonObjectBrand = jsonArrayProducts.getJSONObject (i);
                         swiggyServiceItemList.add (i, new MyProduct2 (
-                                jsonObjectBrand.getInt (AppConfigTags.SWIGGY_PRODUCT_ID),
+                                jsonObjectBrand.getInt (AppConfigTags.PRODUCT_ID),
                                 R.drawable.ic_service_my_products,
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_NAME),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_DESCRIPTION),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_BRAND),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_MODEL_NUMBER),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_SERIAL_NUMBER),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_PURCHASE_DATE),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_CREATED_AT),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_STATUS),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_REQUEST_TICKET_NUMBER),
-                                jsonObjectBrand.getString (AppConfigTags.SWIGGY_PRODUCT_IMAGE)
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_NAME),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_BRAND),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_MODEL_NUMBER),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_SERIAL_NUMBER),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_PURCHASE_DATE),
+                                jsonObjectBrand.getString (AppConfigTags.REQUEST_CREATED_AT),
+                                jsonObjectBrand.getString (AppConfigTags.REQUEST_STATUS),
+                                jsonObjectBrand.getString (AppConfigTags.REQUEST_TICKET_NUMBER),
+                                jsonObjectBrand.getString (AppConfigTags.PRODUCT_IMAGE)
                         ));
                     }
                     serviceMyProductAdapter2.notifyDataSetChanged ();

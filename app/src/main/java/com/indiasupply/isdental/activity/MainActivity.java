@@ -27,6 +27,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.bugsnag.android.Bugsnag;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.indiasupply.isdental.R;
@@ -60,7 +61,12 @@ public class MainActivity extends AppCompatActivity {
     
     boolean doubleBackToExitPressedOnce = false;
     
+    int notification_type = 0;
+    int event_id = 0;
+    
     ArrayList<Integer> screenList = new ArrayList<> ();
+    
+    private FirebaseAnalytics mFirebaseAnalytics;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -70,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         initData ();
         initListener ();
         isLogin ();
+        initExtras ();
     }
     
     private void initFirstFragment () {
@@ -92,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
 //            window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
 //        }
         Bugsnag.init (this);
-    
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (this);
+        
         Checkout.preload (getApplicationContext ());
     
     
@@ -115,17 +123,17 @@ public class MainActivity extends AppCompatActivity {
                         if (pendingDynamicLinkData != null) {
                             deepLink = pendingDynamicLinkData.getLink ();
                         }
-                    
+    
                         if (deepLink != null) {
                             String path = deepLink.getPath ();
                             Utils.showLog (Log.INFO, "Deep Link Path", "DeepLink Path " + path, true);
-                        
+        
                             String[] parts = path.split ("/");
                             for (int i = 0; i < parts.length; i++) {
                                 Log.e ("karman", "in loop " + parts[i]);
                             }
-                        
-                        
+        
+        
                             if (parts[1].equalsIgnoreCase ("event")) {
                                 Utils.showLog (Log.INFO, "Deep Link", "in if", true);
                                 Intent intent = new Intent (MainActivity.this, EventDetailActivity.class);
@@ -133,11 +141,11 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity (intent);
                                 overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                             }
-                        
+        
                         } else {
                         
                         }
-                    
+    
                     }
                 })
                 .addOnFailureListener (this, new OnFailureListener () {
@@ -155,8 +163,35 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult (intent, REQUEST_LOGIN_SCREEN_RESULT);
             overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
         } else {
-            initFirstFragment ();
-            initApplication ();
+            if (notification_type > 0) {
+                switch (notification_type) {
+                    case 2:
+                        initApplication ();
+                        bottomNavigationView.getMenu ().findItem (R.id.action_item_events).setChecked (true).setIcon (R.drawable.ic_home_events_filled);
+                        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
+                        transaction.replace (R.id.frame_layout, EventFragment.newInstance2 (false, event_id));
+                        transaction.commit ();
+                        break;
+                }
+            } else {
+                initApplication ();
+                initFirstFragment ();
+            }
+        }
+    }
+    
+    private void initExtras () {
+        Intent intent = getIntent ();
+        Bundle extras = intent.getExtras ();
+        if (extras != null) {
+            if (extras.containsKey (AppConfigTags.NOTIFICATION_TYPE)) {
+                notification_type = intent.getIntExtra (AppConfigTags.NOTIFICATION_TYPE, 0);
+                switch (notification_type) {
+                    case 2:
+                        event_id = intent.getIntExtra (AppConfigTags.EVENT_ID, 0);
+                        break;
+                }
+            }
         }
     }
     
@@ -307,7 +342,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     
-    
     private void initApplication () {
         PackageInfo pInfo = null;
         try {
@@ -317,9 +351,9 @@ public class MainActivity extends AppCompatActivity {
         }
         
         if (NetworkConnection.isNetworkAvailable (this)) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_INIT, true);
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_INIT, true);
             final PackageInfo finalPInfo = pInfo;
-            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_SWIGGY_INIT,
+            StringRequest strRequest = new StringRequest (Request.Method.POST, AppConfigURL.URL_INIT,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -382,6 +416,7 @@ public class MainActivity extends AppCompatActivity {
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<> ();
                     params.put ("app_version", String.valueOf (finalPInfo.versionCode));
+                    params.put (AppConfigTags.FIREBASE_ID, userDetailsPref.getStringPref (MainActivity.this, UserDetailsPref.USER_FIREBASE_ID));
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }

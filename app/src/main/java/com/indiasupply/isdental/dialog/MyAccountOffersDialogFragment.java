@@ -46,7 +46,7 @@ public class MyAccountOffersDialogFragment extends DialogFragment {
     public static MyAccountOffersDialogFragment newInstance (String myOffers) {
         MyAccountOffersDialogFragment fragment = new MyAccountOffersDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_OFFERS, myOffers);
+        args.putString (AppConfigTags.OFFERS, myOffers);
         fragment.setArguments (args);
         return fragment;
     }
@@ -100,7 +100,7 @@ public class MyAccountOffersDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        myOffers = bundle.getString (AppConfigTags.SWIGGY_OFFERS);
+        myOffers = bundle.getString (AppConfigTags.OFFERS);
     }
     
     private void initData () {

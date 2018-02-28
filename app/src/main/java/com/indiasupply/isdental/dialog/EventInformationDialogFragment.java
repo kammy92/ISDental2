@@ -39,7 +39,7 @@ public class EventInformationDialogFragment extends DialogFragment {
     public static EventInformationDialogFragment newInstance (String eventInformation) {
         EventInformationDialogFragment fragment = new EventInformationDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_INFORMATION, eventInformation);
+        args.putString (AppConfigTags.EVENT_INFORMATION, eventInformation);
         fragment.setArguments (args);
         return fragment;
     }
@@ -94,7 +94,7 @@ public class EventInformationDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventInformation = bundle.getString (AppConfigTags.SWIGGY_EVENT_INFORMATION);
+        eventInformation = bundle.getString (AppConfigTags.EVENT_INFORMATION);
     }
     
     private void initData () {

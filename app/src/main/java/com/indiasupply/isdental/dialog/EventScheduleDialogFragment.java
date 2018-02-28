@@ -61,7 +61,7 @@ public class EventScheduleDialogFragment extends DialogFragment {
     public static EventScheduleDialogFragment newInstance (String eventSchedule) {
         EventScheduleDialogFragment f = new EventScheduleDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_EVENT_SCHEDULE, eventSchedule);
+        args.putString (AppConfigTags.EVENT_SCHEDULE, eventSchedule);
         f.setArguments (args);
         return f;
     }
@@ -119,7 +119,7 @@ public class EventScheduleDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        eventSchedule = bundle.getString (AppConfigTags.SWIGGY_EVENT_SCHEDULE);
+        eventSchedule = bundle.getString (AppConfigTags.EVENT_SCHEDULE);
     }
     
     private void initData () {

@@ -171,8 +171,8 @@ public class ServiceFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
-            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_SWIGGY_HOME_SERVICE, true);
-            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_SWIGGY_HOME_SERVICE,
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_SERVICE, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_SERVICE,
                     new Response.Listener<String> () {
                         @Override
                         public void onResponse (String response) {
@@ -185,10 +185,10 @@ public class ServiceFragment extends Fragment {
                                         String message = jsonObj.getString (AppConfigTags.MESSAGE);
                                         if (! is_error) {
                                             appDataPref.putStringPref (getActivity (), AppDataPref.HOME_SERVICE, response);
-                                            myRequests = jsonObj.getJSONArray (AppConfigTags.SWIGGY_REQUESTS).toString ();
-                                            myProducts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS).toString ();
-                                            categories = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORIES).toString ();
-                                            brands = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BRANDS).toString ();
+                                            myRequests = jsonObj.getJSONArray (AppConfigTags.REQUESTS).toString ();
+                                            myProducts = jsonObj.getJSONArray (AppConfigTags.PRODUCTS).toString ();
+                                            categories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES).toString ();
+                                            brands = jsonObj.getJSONArray (AppConfigTags.BRANDS).toString ();
     
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
@@ -283,10 +283,10 @@ public class ServiceFragment extends Fragment {
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
                     appDataPref.putStringPref (getActivity (), AppDataPref.HOME_SERVICE, response);
-                    myRequests = jsonObj.getJSONArray (AppConfigTags.SWIGGY_REQUESTS).toString ();
-                    myProducts = jsonObj.getJSONArray (AppConfigTags.SWIGGY_PRODUCTS).toString ();
-                    categories = jsonObj.getJSONArray (AppConfigTags.SWIGGY_CATEGORIES).toString ();
-                    brands = jsonObj.getJSONArray (AppConfigTags.SWIGGY_BRANDS).toString ();
+                    myRequests = jsonObj.getJSONArray (AppConfigTags.REQUESTS).toString ();
+                    myProducts = jsonObj.getJSONArray (AppConfigTags.PRODUCTS).toString ();
+                    categories = jsonObj.getJSONArray (AppConfigTags.CATEGORIES).toString ();
+                    brands = jsonObj.getJSONArray (AppConfigTags.BRANDS).toString ();
                     
                     rlMain.setVisibility (View.VISIBLE);
                     shimmerFrameLayout.setVisibility (View.GONE);

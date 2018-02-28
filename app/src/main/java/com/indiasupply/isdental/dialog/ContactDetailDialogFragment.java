@@ -64,8 +64,8 @@ public class ContactDetailDialogFragment extends DialogFragment {
     public ContactDetailDialogFragment newInstance (String company_name, String contacts) {
         ContactDetailDialogFragment f = new ContactDetailDialogFragment ();
         Bundle args = new Bundle ();
-        args.putString (AppConfigTags.SWIGGY_COMPANY_NAME, company_name);
-        args.putString (AppConfigTags.SWIGGY_COMPANY_CONTACTS, contacts);
+        args.putString (AppConfigTags.COMPANY_NAME, company_name);
+        args.putString (AppConfigTags.COMPANY_CONTACTS, contacts);
         f.setArguments (args);
         return f;
     }
@@ -120,8 +120,8 @@ public class ContactDetailDialogFragment extends DialogFragment {
     
     private void initBundle () {
         Bundle bundle = this.getArguments ();
-        company_name = bundle.getString (AppConfigTags.SWIGGY_COMPANY_NAME);
-        contacts = bundle.getString (AppConfigTags.SWIGGY_COMPANY_CONTACTS);
+        company_name = bundle.getString (AppConfigTags.COMPANY_NAME);
+        contacts = bundle.getString (AppConfigTags.COMPANY_CONTACTS);
     }
     
     private void initData () {
@@ -159,21 +159,21 @@ public class ContactDetailDialogFragment extends DialogFragment {
             for (int j = 0; j < jsonArray.length (); j++) {
                 JSONObject jsonObject = jsonArray.getJSONObject (j);
                 contactDetailList.add (new ContactDetail (
-                        jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_ID),
-                        jsonObject.getInt (AppConfigTags.SWIGGY_CONTACT_TYPE),
+                        jsonObject.getInt (AppConfigTags.CONTACT_ID),
+                        jsonObject.getInt (AppConfigTags.CONTACT_TYPE),
                         R.drawable.default_company,
-                        jsonObject.getBoolean (AppConfigTags.SWIGGY_CONTACT_FAVOURITE),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_NAME),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_LOCATION),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_CITY),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_PHONE),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_EMAIL),
-                        jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_IMAGE)
+                        jsonObject.getBoolean (AppConfigTags.CONTACT_FAVOURITE),
+                        jsonObject.getString (AppConfigTags.CONTACT_NAME),
+                        jsonObject.getString (AppConfigTags.CONTACT_LOCATION),
+                        jsonObject.getString (AppConfigTags.CONTACT_CITY),
+                        jsonObject.getString (AppConfigTags.CONTACT_STATE),
+                        jsonObject.getString (AppConfigTags.CONTACT_PHONE),
+                        jsonObject.getString (AppConfigTags.CONTACT_EMAIL),
+                        jsonObject.getString (AppConfigTags.CONTACT_IMAGE)
                 ));
     
-                if (! citiesList.contains (jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE))) {
-                    citiesList.add (jsonObject.getString (AppConfigTags.SWIGGY_CONTACT_STATE));
+                if (! citiesList.contains (jsonObject.getString (AppConfigTags.CONTACT_STATE))) {
+                    citiesList.add (jsonObject.getString (AppConfigTags.CONTACT_STATE));
                 }
             }
     
