@@ -30,6 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.ProductAdapter;
 import com.indiasupply.isdental.adapter.RecommendedProductAdapter;
@@ -83,6 +84,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     int company_id;
     
     DatabaseHandler db;
+    
+    FirebaseAnalytics mFirebaseAnalytics;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -144,6 +147,14 @@ public class CompanyDetailActivity extends AppCompatActivity {
         llContacts.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("company_id", company_id);
+                mFirebaseAnalytics.logEvent ("company_details_contacts", params);
+                // [END custom_event]
+    
+                
                 android.app.FragmentTransaction ft = getFragmentManager ().beginTransaction ();
                 new ContactDetailDialogFragment ().newInstance (company_name, company_contacts).show (ft, "Contacts");
             }
@@ -177,6 +188,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
     
     private void initData () {
         db = new DatabaseHandler (getApplicationContext ());
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (this);
+    
         Window window = getWindow ();
         if (Build.VERSION.SDK_INT >= 21) {
             window.clearFlags (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

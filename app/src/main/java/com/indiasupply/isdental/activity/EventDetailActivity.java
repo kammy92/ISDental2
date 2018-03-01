@@ -43,6 +43,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.davemorrissey.labs.subscaleview.ImageSource;
 import com.davemorrissey.labs.subscaleview.SubsamplingScaleImageView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.EventExhibitorAdapter;
 import com.indiasupply.isdental.adapter.EventScheduleAdapter;
@@ -148,6 +149,7 @@ public class EventDetailActivity extends AppCompatActivity {
     
     String eventFloorPlan = "";
     
+    FirebaseAnalytics mFirebaseAnalytics;
     
     @Override
     protected void onCreate (Bundle savedInstanceState) {
@@ -173,6 +175,15 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE1.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "schedule");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+    
+                
                 if (rvSchedule.getVisibility () == View.VISIBLE) {
                     rvSchedule.setVisibility (View.GONE);
                     ivE1.animate ().alpha (0f).setDuration (200);
@@ -201,6 +212,14 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE2.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "speaker");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+
                 if (rvSpeaker.getVisibility () == View.VISIBLE) {
                     rvSpeaker.setVisibility (View.GONE);
                     ivE2.animate ().alpha (0f).setDuration (200);
@@ -228,6 +247,14 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE3.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "exhibitor");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+
                 if (rvExhibitor.getVisibility () == View.VISIBLE) {
                     rvExhibitor.setVisibility (View.GONE);
                     ivE3.animate ().alpha (0f).setDuration (200);
@@ -255,6 +282,14 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE4.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "floor_plan");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+
                 if (ivFloorPlan.getVisibility () == View.VISIBLE) {
                     ivFloorPlan.setVisibility (View.GONE);
                     ivE4.animate ().alpha (0f).setDuration (200);
@@ -281,6 +316,14 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE5.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "information");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+    
                 if (wvInformation.getVisibility () == View.VISIBLE) {
                     wvInformation.setVisibility (View.GONE);
                     ivE5.animate ().alpha (0f).setDuration (200);
@@ -307,6 +350,14 @@ public class EventDetailActivity extends AppCompatActivity {
         rlE6.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("event_id", event_id);
+                params.putString ("item", "registration");
+                mFirebaseAnalytics.logEvent ("event_item", params);
+                // [END custom_event]
+    
                 if (wvRegistration.getVisibility () == View.VISIBLE) {
                     wvRegistration.setVisibility (View.GONE);
                     ivE6.animate ().alpha (0f).setDuration (200);
@@ -362,6 +413,15 @@ public class EventDetailActivity extends AppCompatActivity {
             window.addFlags (WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
+    
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (this);
+    
+        // [START custom_event]
+        Bundle params = new Bundle ();
+        params.putBoolean ("clicked", true);
+        params.putInt ("event_id", event_id);
+        mFirebaseAnalytics.logEvent ("event_detail", params);
+        // [END custom_event]
     
     
         eventScheduleAdapter = new EventScheduleAdapter (this, eventScheduleList);

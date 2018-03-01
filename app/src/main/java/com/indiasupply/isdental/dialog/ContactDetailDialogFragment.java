@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.ContactDetailAdapter;
 import com.indiasupply.isdental.fragment.ContactsFragment;
@@ -60,6 +61,8 @@ public class ContactDetailDialogFragment extends DialogFragment {
     ArrayList<String> citiesList = new ArrayList<String> ();
     ArrayList<String> citiesSelectedList = new ArrayList<String> ();
     ArrayList<String> citiesSelectedTempList = new ArrayList<String> ();
+    
+    FirebaseAnalytics mFirebaseAnalytics;
     
     public ContactDetailDialogFragment newInstance (String company_name, String contacts) {
         ContactDetailDialogFragment f = new ContactDetailDialogFragment ();
@@ -128,6 +131,9 @@ public class ContactDetailDialogFragment extends DialogFragment {
         Utils.setTypefaceToAllViews (getActivity (), tvTitle);
         tvTitle.setText (company_name);
     
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (getActivity ());
+        
+    
         contactDetailAdapter = new ContactDetailAdapter (getActivity (), contactDetailList);
         rvContactList.setAdapter (contactDetailAdapter);
         rvContactList.setHasFixedSize (true);
@@ -171,6 +177,7 @@ public class ContactDetailDialogFragment extends DialogFragment {
                         jsonObject.getString (AppConfigTags.CONTACT_EMAIL),
                         jsonObject.getString (AppConfigTags.CONTACT_IMAGE)
                 ));
+    
     
                 if (! citiesList.contains (jsonObject.getString (AppConfigTags.CONTACT_STATE))) {
                     citiesList.add (jsonObject.getString (AppConfigTags.CONTACT_STATE));

@@ -150,7 +150,7 @@ public class MyAccountSavingDialogFragment extends DialogFragment {
             if (jsonArray.length () > 0) {
                 for (int j = 0; j < jsonArray.length (); j++) {
                     JSONObject jsonObject = jsonArray.getJSONObject (j);
-                
+    
                     if (jsonObject.getInt (AppConfigTags.ORDER_STATUS) == 1 ||
                             jsonObject.getInt (AppConfigTags.ORDER_STATUS) == 2 ||
                             jsonObject.getInt (AppConfigTags.ORDER_STATUS) == 3) {

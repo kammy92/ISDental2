@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
@@ -54,9 +56,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     private Activity activity;
     private List<Event> eventList = new ArrayList<> ();
     
+    private FirebaseAnalytics mFirebaseAnalytics;
+    
     public EventAdapter (Activity activity, List<Event> eventList) {
         this.activity = activity;
         this.eventList = eventList;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (activity);
     }
     
     @Override
@@ -121,7 +126,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
                 if (NetworkConnection.isNetworkAvailable (activity)) {
                     final ProgressDialog progressDialog = new ProgressDialog (activity);
                     Utils.showProgressDialog (progressDialog, null, true);
-        
+    
+                    // [START custom_event]
+                    Bundle params = new Bundle ();
+                    params.putBoolean ("clicked", true);
+                    params.putInt ("event_id", event.getId ());
+                    mFirebaseAnalytics.logEvent ("event_share", params);
+                    // [END custom_event]
+    
+    
                     FirebaseDynamicLinks.getInstance ().createDynamicLink ()
                             .setLink (Uri.parse ("https://indiasupply.com/event/" + event.getId ()))
                             .setDynamicLinkDomain ("ha4qf.app.goo.gl")

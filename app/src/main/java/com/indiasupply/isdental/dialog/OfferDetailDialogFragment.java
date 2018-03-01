@@ -32,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.OfferCheckoutActivity;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -56,6 +57,7 @@ public class OfferDetailDialogFragment extends DialogFragment {
     String name, packaging, description, image, dates, details, terms_conditions;
     int price, regular_price, mrp, icon, qty;
     ProgressDialog progressDialog;
+    FirebaseAnalytics mFirebaseAnalytics;
     // OffersFragment.MyDialogCloseListener closeListener;
     private ImageView ivCancel;
     private TextView tvTitle;
@@ -188,6 +190,16 @@ public class OfferDetailDialogFragment extends DialogFragment {
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), tvOfferName);
         progressDialog = new ProgressDialog (getActivity ());
+    
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (getActivity ());
+    
+        // [START custom_event]
+        Bundle params3 = new Bundle ();
+        params3.putBoolean ("open", true);
+        mFirebaseAnalytics.logEvent ("offer_detail_screen", params3);
+        // [END custom_event]
+    
+    
         tvOfferName.setText (name);
         tvOfferPackaging.setText (packaging);
     

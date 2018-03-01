@@ -1,6 +1,7 @@
 package com.indiasupply.isdental.adapter;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.model.ContactDetail;
 import com.indiasupply.isdental.utils.AppConfigTags;
@@ -39,12 +41,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdapter.ViewHolder> {
+    FirebaseAnalytics mFirebaseAnalytics;
     private Activity activity;
     private List<ContactDetail> contactDetailList = new ArrayList<> ();
     
     public ContactDetailAdapter (Activity activity, List<ContactDetail> contactDetailList) {
         this.activity = activity;
         this.contactDetailList = contactDetailList;
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (activity);
     }
     
     @Override
@@ -103,6 +107,13 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
         holder.rlCall.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("contact_id", contactsDetail.getId ());
+                mFirebaseAnalytics.logEvent ("contact_called", params);
+                // [END custom_event]
+                
                 if (contactsDetail.getContact_number ().length () > 0) {
                     contactCalled (contactsDetail.getId ());
                     Utils.callPhone (activity, contactsDetail.getContact_number ());
@@ -116,6 +127,13 @@ public class ContactDetailAdapter extends RecyclerView.Adapter<ContactDetailAdap
         holder.rlMail.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putInt ("contact_id", contactsDetail.getId ());
+                mFirebaseAnalytics.logEvent ("contact_mailed", params);
+                // [END custom_event]
+                
                 if (contactsDetail.getEmail ().length () > 0) {
                     contactMailed (contactsDetail.getId ());
                     Utils.shareToGmail (activity, new String[] {contactsDetail.getEmail ()}, "Enquiry", "");

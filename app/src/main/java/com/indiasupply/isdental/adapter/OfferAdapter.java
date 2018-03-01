@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.OfferCheckoutActivity;
 import com.indiasupply.isdental.model.Offers;
@@ -45,6 +47,7 @@ import java.util.Map;
 public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> {
     OnItemClickListener mItemClickListener;
     ProgressDialog progressDialog;
+    FirebaseAnalytics mFirebaseAnalytics;
     //    OnBottomReachedListener onBottomReachedListener;
     private Activity activity;
     private List<Offers> offerList = new ArrayList<> ();
@@ -53,6 +56,7 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
         this.activity = activity;
         this.offerList = offerList;
         progressDialog = new ProgressDialog (activity);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (activity);
     }
     
     @Override
@@ -139,6 +143,13 @@ public class OfferAdapter extends RecyclerView.Adapter<OfferAdapter.ViewHolder> 
         holder.tvSendEnquiry.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View view) {
+                // [START custom_event]
+                Bundle params3 = new Bundle ();
+                params3.putBoolean ("clicked", true);
+                params3.putString ("source", "from listing screen");
+                mFirebaseAnalytics.logEvent ("offer_enquiry", params3);
+                // [END custom_event]
+    
                 Intent intent = new Intent (activity, OfferCheckoutActivity.class);
                 intent.putExtra (AppConfigTags.OFFER_ID, offer.getId ());
                 activity.startActivity (intent);

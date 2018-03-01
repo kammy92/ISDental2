@@ -24,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.EventDetailActivity;
 import com.indiasupply.isdental.adapter.EventAdapter;
@@ -69,6 +70,8 @@ public class EventFragment extends Fragment {
     ArrayList<String> citiesList = new ArrayList<String> ();
     ArrayList<String> citiesSelectedList = new ArrayList<String> ();
     ArrayList<String> citiesSelectedTempList = new ArrayList<String> ();
+    
+    private FirebaseAnalytics mFirebaseAnalytics;
     
     public static EventFragment newInstance (boolean refresh) {
         EventFragment fragment = new EventFragment ();
@@ -129,6 +132,8 @@ public class EventFragment extends Fragment {
         Utils.setTypefaceToAllViews (getActivity (), rvEvents);
         appDataPref = AppDataPref.getInstance ();
     
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (getActivity ());
+    
         eventAdapter = new EventAdapter (getActivity (), eventList);
         rvEvents.setAdapter (eventAdapter);
         rvEvents.setNestedScrollingEnabled (false);
@@ -146,6 +151,12 @@ public class EventFragment extends Fragment {
         rlFilter.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                mFirebaseAnalytics.logEvent ("event_filter", params);
+                // [END custom_event]
+    
                 showFilterDialog ();
             }
         });

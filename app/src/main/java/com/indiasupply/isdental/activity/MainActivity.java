@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     
     int notification_type = 0;
     int event_id = 0;
+    int offer_id = 0;
     
     ArrayList<Integer> screenList = new ArrayList<> ();
     
@@ -72,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate (savedInstanceState);
         setContentView (R.layout.activtiy_main);
+        initExtras ();
         initView ();
         initData ();
         initListener ();
         isLogin ();
-        initExtras ();
     }
     
     private void initFirstFragment () {
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
         
                             String[] parts = path.split ("/");
                             for (int i = 0; i < parts.length; i++) {
-                                Log.e ("karman", "in loop " + parts[i]);
+//                                Log.e ("karman", "in loop " + parts[i]);
                             }
         
         
@@ -163,18 +164,26 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult (intent, REQUEST_LOGIN_SCREEN_RESULT);
             overridePendingTransition (R.anim.slide_in_left, R.anim.slide_out_right);
         } else {
+            initApplication ();
+    
+            FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
             if (notification_type > 0) {
                 switch (notification_type) {
                     case 2:
-                        initApplication ();
                         bottomNavigationView.getMenu ().findItem (R.id.action_item_events).setChecked (true).setIcon (R.drawable.ic_home_events_filled);
-                        FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
                         transaction.replace (R.id.frame_layout, EventFragment.newInstance2 (false, event_id));
                         transaction.commit ();
                         break;
+                    case 3:
+                        bottomNavigationView.getMenu ().findItem (R.id.action_item_offers).setChecked (true).setIcon (R.drawable.ic_home_offer_filled);
+                        transaction.replace (R.id.frame_layout, OffersFragment.newInstance2 (false, offer_id));
+                        transaction.commit ();
+                        break;
+                    default:
+                        initFirstFragment ();
+                        break;
                 }
             } else {
-                initApplication ();
                 initFirstFragment ();
             }
         }
@@ -189,6 +198,9 @@ public class MainActivity extends AppCompatActivity {
                 switch (notification_type) {
                     case 2:
                         event_id = intent.getIntExtra (AppConfigTags.EVENT_ID, 0);
+                        break;
+                    case 3:
+                        offer_id = intent.getIntExtra (AppConfigTags.OFFER_ID, 0);
                         break;
                 }
             }
@@ -254,6 +266,12 @@ public class MainActivity extends AppCompatActivity {
                                 screenList.add (R.id.action_item_offers);
                                 break;
                             case R.id.action_item_featured:
+                                // [START custom_event]
+                                Bundle params3 = new Bundle ();
+                                params3.putBoolean ("clicked", true);
+                                mFirebaseAnalytics.logEvent ("home_featured", params3);
+                                // [END custom_event]
+                        
                                 item.setIcon (R.drawable.ic_home_featured_filled);
                                 if (screenList.contains (R.id.action_item_featured)) {
                                     selectedFragment = FeaturedFragment.newInstance (false);
@@ -263,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
                                 screenList.add (R.id.action_item_featured);
                                 break;
                             case R.id.action_item_events:
+                                // [START custom_event]
+                                Bundle params = new Bundle ();
+                                params.putBoolean ("clicked", true);
+                                mFirebaseAnalytics.logEvent ("home_events", params);
+                                // [END custom_event]
+                                
                                 item.setIcon (R.drawable.ic_home_events_filled);
                                 if (screenList.contains (R.id.action_item_events)) {
                                     selectedFragment = EventFragment.newInstance (false);
@@ -272,6 +296,12 @@ public class MainActivity extends AppCompatActivity {
                                 screenList.add (R.id.action_item_events);
                                 break;
                             case R.id.action_item_contacts:
+                                // [START custom_event]
+                                Bundle params2 = new Bundle ();
+                                params2.putBoolean ("clicked", true);
+                                mFirebaseAnalytics.logEvent ("home_contacts", params2);
+                                // [END custom_event]
+                              
                                 item.setIcon (R.drawable.ic_home_contacts_filled);
                                 if (screenList.contains (R.id.action_item_contacts)) {
                                     selectedFragment = ContactsFragment.newInstance (false);

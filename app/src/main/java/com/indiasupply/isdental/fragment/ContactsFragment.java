@@ -30,6 +30,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.adapter.CompanyAdapter2;
 import com.indiasupply.isdental.dialog.CategoryFilterDialogFragment;
@@ -83,6 +84,8 @@ public class ContactsFragment extends Fragment {
     
     boolean refresh;
     
+    FirebaseAnalytics mFirebaseAnalytics;
+    
     public static ContactsFragment newInstance (boolean refresh) {
         ContactsFragment fragment = new ContactsFragment ();
         Bundle args = new Bundle ();
@@ -134,6 +137,8 @@ public class ContactsFragment extends Fragment {
         db.deleteAllFilters ();
 //        linearLayoutManager.setAutoMeasureEnabled (false);
     
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (getActivity ());
+    
         companyAdapter = new CompanyAdapter2 (getActivity (), companyDisplayList);
         rvContacts.setAdapter (companyAdapter);
         rvContacts.setNestedScrollingEnabled (false);
@@ -152,6 +157,12 @@ public class ContactsFragment extends Fragment {
         btFilter.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                mFirebaseAnalytics.logEvent ("contacts_filter", params);
+                // [END custom_event]
+                
                 android.app.FragmentManager fm = getActivity ().getFragmentManager ();
                 android.app.FragmentTransaction ft = fm.beginTransaction ();
                 CategoryFilterDialogFragment dialog = new CategoryFilterDialogFragment ().newInstance (filters);
@@ -227,6 +238,14 @@ public class ContactsFragment extends Fragment {
             @Override
             public void onItemClick (View view, int position) {
                 Company2 contact = companyDisplayList.get (position);
+    
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                params.putString ("contact_name", contact.getName ());
+                mFirebaseAnalytics.logEvent ("contact_detail_open", params);
+                // [END custom_event]
+    
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 ContactDetailDialogFragment dialog = new ContactDetailDialogFragment ().newInstance (contact.getName (), contact.getContacts ());
                 dialog.setDismissListener (new MyDialogCloseListener () {
@@ -369,6 +388,12 @@ public class ContactsFragment extends Fragment {
         btSearch.setOnClickListener (new View.OnClickListener () {
             @Override
             public void onClick (View v) {
+                // [START custom_event]
+                Bundle params = new Bundle ();
+                params.putBoolean ("clicked", true);
+                mFirebaseAnalytics.logEvent ("contacts_search", params);
+                // [END custom_event]
+    
                 new Handler ().postDelayed (new Runnable () {
                     @Override
                     public void run () {

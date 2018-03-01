@@ -361,7 +361,11 @@ public class MyAccountActivity extends AppCompatActivity {
     
                     myFavourites = jsonObj.getJSONArray (AppConfigTags.FAVOURITES).toString ();
                     myOffers = jsonObj.getJSONArray (AppConfigTags.OFFERS).toString ();
+    
                     myEnquiries = jsonObj.getJSONArray (AppConfigTags.ENQUIRIES).toString ();
+                    myOrder = jsonObj.getJSONArray (AppConfigTags.ORDERS).toString ();
+    
+    
                     htmlPrivacyPolicy = jsonObj.getString (AppConfigTags.HTML_PRIVACY_POLICY);
                     htmlAboutUs = jsonObj.getString (AppConfigTags.HTML_ABOUT_US);
                     htmlTermsOfUse = jsonObj.getString (AppConfigTags.HTML_TERMS_OF_USE);

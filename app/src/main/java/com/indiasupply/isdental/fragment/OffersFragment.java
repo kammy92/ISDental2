@@ -26,6 +26,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.activity.MyAccountActivity;
 import com.indiasupply.isdental.adapter.OfferAdapter;
@@ -66,16 +67,29 @@ public class OffersFragment extends Fragment {
     
     ImageView ivMyAccount;
     
+    FirebaseAnalytics mFirebaseAnalytics;
+    
     CoordinatorLayout clMain;
     
     AppDataPref appDataPref;
     
     boolean refresh;
     
+    int offer_id = 0;
+    
     public static OffersFragment newInstance (boolean refresh) {
         OffersFragment fragment = new OffersFragment ();
         Bundle args = new Bundle ();
         args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        fragment.setArguments (args);
+        return fragment;
+    }
+    
+    public static OffersFragment newInstance2 (boolean refresh, int offer_id) {
+        OffersFragment fragment = new OffersFragment ();
+        Bundle args = new Bundle ();
+        args.putBoolean (AppConfigTags.REFRESH_FLAG, refresh);
+        args.putInt (AppConfigTags.OFFER_ID, offer_id);
         fragment.setArguments (args);
         return fragment;
     }
@@ -108,12 +122,15 @@ public class OffersFragment extends Fragment {
     private void initBundle () {
         Bundle bundle = this.getArguments ();
         refresh = bundle.getBoolean (AppConfigTags.REFRESH_FLAG);
+        offer_id = bundle.getInt (AppConfigTags.OFFER_ID, 0);
     }
     
     private void initData () {
         Utils.setTypefaceToAllViews (getActivity (), clMain);
         appDataPref = AppDataPref.getInstance ();
     
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance (getActivity ());
+        
         offerAdapter = new OfferAdapter (getActivity (), offerList);
         rvOffers.setAdapter (offerAdapter);
         rvOffers.setNestedScrollingEnabled (false);
@@ -138,6 +155,13 @@ public class OffersFragment extends Fragment {
             @Override
             public void onItemClick (View view, int position) {
                 Offers offers = offerList.get (position);
+                // [START custom_event]
+                Bundle params3 = new Bundle ();
+                params3.putBoolean ("clicked", true);
+                mFirebaseAnalytics.logEvent ("offer_card", params3);
+                // [END custom_event]
+    
+    
                 android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
                 OfferDetailDialogFragment dialog = new OfferDetailDialogFragment ().newInstance (offers.getId (), offers.getName (), offers.getPackaging (),
                         offers.getDescription (), offers.getImage (), offers.getPrice (), offers.getRegular_price (),
@@ -219,6 +243,27 @@ public class OffersFragment extends Fragment {
                                                 ));
                                             }
                                             offerAdapter.notifyDataSetChanged ();
+    
+    
+                                            if (offer_id > 0) {
+                                                boolean flag = true;
+                                                for (int j = 0; j < offerList.size (); j++) {
+                                                    Offers offers = offerList.get (j);
+                                                    if (offers.getId () == offer_id) {
+                                                        flag = false;
+                                                        android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+                                                        OfferDetailDialogFragment dialog = new OfferDetailDialogFragment ().newInstance (offers.getId (), offers.getName (), offers.getPackaging (),
+                                                                offers.getDescription (), offers.getImage (), offers.getPrice (), offers.getRegular_price (),
+                                                                offers.getMrp (), offers.getQty (), offers.getHtml_dates (), offers.getHtml_details (),
+                                                                offers.getHtml_tandc (), offers.getIcon ());
+                                                        dialog.show (ft, "Contacts");
+                                                    }
+                                                }
+                                                if (flag) {
+                                                    Utils.showToast (getActivity (), "Offer has expired", false);
+                                                }
+                                            }
+                                            
                                             rlMain.setVisibility (View.VISIBLE);
                                             shimmerFrameLayout.setVisibility (View.GONE);
                                         } else {
@@ -364,6 +409,28 @@ public class OffersFragment extends Fragment {
                                 jsonObjectOffer.getString (AppConfigTags.OFFER_HTML_TANDC)
                         ));
                     }
+
+
+//                    if (offer_id > 0) {
+//                        boolean flag = true;
+//                        for (int j = 0; j < offerList.size (); j++) {
+//                            Offers offers = offerList.get (j);
+//                            if (offers.getId () == offer_id) {
+//                                flag = false;
+//                                android.app.FragmentTransaction ft = getActivity ().getFragmentManager ().beginTransaction ();
+//                                OfferDetailDialogFragment dialog = new OfferDetailDialogFragment ().newInstance (offers.getId (), offers.getName (), offers.getPackaging (),
+//                                        offers.getDescription (), offers.getImage (), offers.getPrice (), offers.getRegular_price (),
+//                                        offers.getMrp (), offers.getQty (), offers.getHtml_dates (), offers.getHtml_details (),
+//                                        offers.getHtml_tandc (), offers.getIcon ());
+//                                dialog.show (ft, "Contacts");
+//                            }
+//                        }
+//                        if (flag) {
+//                            Utils.showToast (getActivity (), "Offer has expired", false);
+//                        }
+//                    }
+                    
+                    
                     offerAdapter.notifyDataSetChanged ();
                     rlMain.setVisibility (View.VISIBLE);
                     shimmerFrameLayout.setVisibility (View.GONE);

@@ -93,12 +93,19 @@ public class NotificationUtils {
         
         //Check for empty push message
         PendingIntent pendingIntent = null;
+        PendingIntent pendingIntent2 = null;
         if (TextUtils.isEmpty (notification.getMessage ()))
             return;
         
         Bitmap largeIcon = BitmapFactory.decodeResource (mContext.getResources (), R.mipmap.ic_launcher);
-        
-        
+    
+    
+        Intent intent2 = new Intent (mContext, MainActivity.class);
+        intent2.putExtra (AppConfigTags.NOTIFICATION_TYPE, notification.getNotification_type ());
+        intent2.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        pendingIntent2 = PendingIntent.getActivity (mContext, 0, intent2, PendingIntent.FLAG_UPDATE_CURRENT);
+    
+    
         switch (notification.getNotification_type ()) {
             case 1:
                 break;
@@ -118,8 +125,8 @@ public class NotificationUtils {
                         bitmap = getBitmapFromURL ("http://bloodondemand.com/img/02.jpg");
                     }
                     NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle ();
-                    bigPictureStyle.setSummaryText (notification.getMessage ());
                     bigPictureStyle.setBigContentTitle (notification.getTitle ());
+                    bigPictureStyle.setSummaryText (notification.getMessage ());
                     bigPictureStyle.bigPicture (bitmap);
             
                     mBuilder
@@ -129,17 +136,58 @@ public class NotificationUtils {
                             .setLargeIcon (largeIcon)
                             .setPriority (jsonObject.getInt (AppConfigTags.NOTIFICATION_PRIORITY))
                             .setStyle (bigPictureStyle)
+                            .setAutoCancel (true)
                             .setContentIntent (pendingIntent);
-            
+    
                     if (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT).length () > 0) {
+//                        bigPictureStyle.setSummaryText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
                         mBuilder.setSubText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
                     }
+    
+                    mBuilder.setStyle (bigPictureStyle);
             
                 } catch (JSONException e) {
                     e.printStackTrace ();
                 }
                 break;
             case 3:
+                try {
+                    JSONObject jsonObject = notification.getPayload ();
+                    Intent notificationIntent = new Intent (mContext, MainActivity.class);
+                    notificationIntent.putExtra (AppConfigTags.NOTIFICATION_TYPE, notification.getNotification_type ());
+                    notificationIntent.putExtra (AppConfigTags.OFFER_ID, jsonObject.getInt (AppConfigTags.OFFER_ID));
+                    notificationIntent.setFlags (Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    pendingIntent = PendingIntent.getActivity (mContext, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        
+                    Bitmap bitmap = null;
+                    if (notification.getImage_url () != null && notification.getImage_url ().length () > 4 && Patterns.WEB_URL.matcher (notification.getImage_url ()).matches ()) {
+                        bitmap = getBitmapFromURL (notification.getImage_url ());
+                    } else {
+                        bitmap = getBitmapFromURL ("http://bloodondemand.com/img/02.jpg");
+                    }
+                    NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle ();
+                    bigPictureStyle.setBigContentTitle (notification.getTitle ());
+                    bigPictureStyle.setSummaryText (notification.getMessage ());
+                    bigPictureStyle.bigPicture (bitmap);
+        
+                    mBuilder
+                            .setSmallIcon (R.drawable.ic_logo)
+                            .setContentTitle (notification.getTitle ())
+                            .setContentText (notification.getMessage ())
+                            .setLargeIcon (largeIcon)
+                            .setPriority (jsonObject.getInt (AppConfigTags.NOTIFICATION_PRIORITY))
+                            .setStyle (bigPictureStyle)
+                            .setAutoCancel (true)
+                            .setContentIntent (pendingIntent);
+        
+                    if (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT).length () > 0) {
+//                        bigPictureStyle.setSummaryText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
+                        mBuilder.setSubText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
+                    }
+                    mBuilder.setStyle (bigPictureStyle);
+                } catch (JSONException e) {
+                    e.printStackTrace ();
+                }
                 break;
     
             case 996:
@@ -151,6 +199,8 @@ public class NotificationUtils {
                             .setContentTitle (notification.getTitle ())
                             .setPriority (notification.getNotification_priority ())
                             .setLargeIcon (largeIcon)
+                            .setAutoCancel (true)
+                            .setContentIntent (pendingIntent2)
                             .setContentText (notification.getMessage ());
             
                     if (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT).length () > 0) {
@@ -175,6 +225,8 @@ public class NotificationUtils {
                             .setSmallIcon (R.drawable.ic_logo)
                             .setPriority (notification.getNotification_priority ())
                             .setContentText (notification.getMessage ())
+                            .setAutoCancel (true)
+                            .setContentIntent (pendingIntent2)
                             .setLargeIcon (largeIcon);
             
                     if (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT).length () > 0) {
@@ -195,6 +247,8 @@ public class NotificationUtils {
                             .setContentText (notification.getMessage ())
                             .setLargeIcon (largeIcon)
                             .setPriority (notification.getNotification_priority ())
+                            .setAutoCancel (true)
+                            .setContentIntent (pendingIntent2)
                             .build ();
                     NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle ();
                     JSONArray jsonArray = jsonObject.getJSONArray (AppConfigTags.NOTIFICATION_LINES);
@@ -220,8 +274,8 @@ public class NotificationUtils {
                         bitmap = getBitmapFromURL ("http://bloodondemand.com/img/02.jpg");
                     }
                     NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle ();
-                    bigPictureStyle.setSummaryText (notification.getMessage ());
                     bigPictureStyle.setBigContentTitle (notification.getTitle ());
+                    bigPictureStyle.setSummaryText (notification.getMessage ());
                     bigPictureStyle.bigPicture (bitmap);
             
                     mBuilder
@@ -229,13 +283,17 @@ public class NotificationUtils {
                             .setContentTitle (notification.getTitle ())
                             .setContentText (notification.getMessage ())
                             .setLargeIcon (largeIcon)
-                            .setPriority (jsonObject.getInt (AppConfigTags.NOTIFICATION_PRIORITY))
-                            .setStyle (bigPictureStyle)
-                            .setAutoCancel (true);
+                            .setContentIntent (pendingIntent2)
+                            .setAutoCancel (true)
+                            .setPriority (jsonObject.getInt (AppConfigTags.NOTIFICATION_PRIORITY));
+                    ;
             
                     if (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT).length () > 0) {
+//                        bigPictureStyle.setSummaryText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
                         mBuilder.setSubText (jsonObject.getString (AppConfigTags.NOTIFICATION_SUB_TEXT));
                     }
+    
+                    mBuilder.setStyle (bigPictureStyle);
                 } catch (JSONException e) {
                     e.printStackTrace ();
                 }
