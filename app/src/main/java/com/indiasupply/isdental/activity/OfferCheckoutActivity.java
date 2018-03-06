@@ -309,7 +309,7 @@ public class OfferCheckoutActivity extends AppCompatActivity implements PaymentR
                                         tvOfferDescription.setText (jsonObj.getString (AppConfigTags.OFFER_PACKAGING));
                                         price = jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_PRICE);
                                         mrp = jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_MRP);
-                                        discount = ((jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_MRP)) - jsonObj.getInt (AppConfigTags.OFFER_PRICE));
+                                        discount = ((jsonObj.getInt (AppConfigTags.OFFER_QTY) * jsonObj.getInt (AppConfigTags.OFFER_MRP)) - (jsonObj.getInt (AppConfigTags.OFFER_PRICE) * jsonObj.getInt (AppConfigTags.OFFER_QTY)));
     
     
                                         tvPrice.setText ("Rs. " + price);

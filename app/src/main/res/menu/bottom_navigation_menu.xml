@@ -16,8 +16,8 @@
         android:id="@+id/action_item_contacts"
         android:icon="@drawable/ic_home_contacts"
         android:title="Contacts"/>
-    <item
-        android:id="@+id/action_item_account"
-        android:icon="@drawable/ic_home_account"
-        android:title="Account"/>
+    <!--  <item
+          android:id="@+id/action_item_account"
+          android:icon="@drawable/ic_home_account"
+          android:title="Account"/>-->
 </menu>

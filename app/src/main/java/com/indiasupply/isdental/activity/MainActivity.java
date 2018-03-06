@@ -34,7 +34,6 @@ import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.ContactsFragment;
 import com.indiasupply.isdental.fragment.EventFragment;
 import com.indiasupply.isdental.fragment.FeaturedFragment;
-import com.indiasupply.isdental.fragment.MyAccountFragment;
 import com.indiasupply.isdental.fragment.OffersFragment;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -237,9 +236,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.action_item_offers:
 //                        Utils.showToast (MainActivity.this, "In reselected item 4", false);
                         break;
-                    case R.id.action_item_account:
-//                        Utils.showToast (MainActivity.this, "In reselected item 5", false);
-                        break;
+//                    case R.id.action_item_account:
+////                        Utils.showToast (MainActivity.this, "In reselected item 5", false);
+//                        break;
                 }
             }
         });
@@ -252,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                         menu.findItem (R.id.action_item_featured).setIcon (R.drawable.ic_home_featured);
                         menu.findItem (R.id.action_item_events).setIcon (R.drawable.ic_home_events);
                         menu.findItem (R.id.action_item_contacts).setIcon (R.drawable.ic_home_contacts);
-                        menu.findItem (R.id.action_item_account).setIcon (R.drawable.ic_home_account);
+//                        menu.findItem (R.id.action_item_account).setIcon (R.drawable.ic_home_account);
     
                         Fragment selectedFragment = null;
                         switch (item.getItemId ()) {
@@ -310,15 +309,15 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 screenList.add (R.id.action_item_contacts);
                                 break;
-                            case R.id.action_item_account:
-                                item.setIcon (R.drawable.ic_home_account_filled);
-                                if (screenList.contains (R.id.action_item_account)) {
-                                    selectedFragment = MyAccountFragment.newInstance (false);
-                                } else {
-                                    selectedFragment = MyAccountFragment.newInstance (true);
-                                }
-                                screenList.add (R.id.action_item_account);
-                                break;
+//                            case R.id.action_item_account:
+//                                item.setIcon (R.drawable.ic_home_account_filled);
+//                                if (screenList.contains (R.id.action_item_account)) {
+//                                    selectedFragment = MyAccountFragment.newInstance (false);
+//                                } else {
+//                                    selectedFragment = MyAccountFragment.newInstance (true);
+//                                }
+//                                screenList.add (R.id.action_item_account);
+//                                break;
                         }
                         FragmentTransaction transaction = getSupportFragmentManager ().beginTransaction ();
                         transaction.replace (R.id.frame_layout, selectedFragment);
