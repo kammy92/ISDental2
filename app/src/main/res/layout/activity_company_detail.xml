@@ -259,8 +259,7 @@
                     android:gravity="left"
                     android:text="Buy new Dental chair for only Rs 12,000/-"
                     android:textColor="#8B594C"
-                    android:textSize="@dimen/text_size_small"
-                />
+                    android:textSize="@dimen/text_size_small"/>
 
             </RelativeLayout>
             <LinearLayout

@@ -132,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
                             for (int i = 0; i < parts.length; i++) {
 //                                Log.e ("karman", "in loop " + parts[i]);
                             }
-        
-        
+    
                             if (parts[1].equalsIgnoreCase ("event")) {
                                 Utils.showLog (Log.INFO, "Deep Link", "in if", true);
                                 Intent intent = new Intent (MainActivity.this, EventDetailActivity.class);
@@ -141,11 +140,8 @@ public class MainActivity extends AppCompatActivity {
                                 startActivity (intent);
                                 overridePendingTransition (R.anim.slide_in_right, R.anim.slide_out_left);
                             }
-        
                         } else {
-                        
                         }
-    
                     }
                 })
                 .addOnFailureListener (this, new OnFailureListener () {
