@@ -68,16 +68,14 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:animateLayoutChanges="true">
+                    android:animateLayoutChanges="true"
+                    android:paddingLeft="@dimen/activity_margin"
+                    android:paddingRight="@dimen/activity_margin">
                     <ImageView
                         android:id="@+id/ivMyAccount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/activity_margin_small"
-                        android:paddingLeft="@dimen/activity_margin"
-                        android:paddingRight="@dimen/activity_margin"
-                        android:paddingTop="@dimen/activity_margin_small"
-                        android:src="@drawable/ic_my_account"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:src="@drawable/ic_my_profile"
                         android:visibility="visible"/>
                 </LinearLayout>
             </RelativeLayout>

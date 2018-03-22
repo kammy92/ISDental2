@@ -39,6 +39,8 @@
             android:id="@+id/rvOrders"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/tvClaimOffers"
+            android:layout_alignParentTop="true"
             android:clipToPadding="false"
             android:fillViewport="true"
             android:overScrollMode="never"
