@@ -145,7 +145,6 @@
                 android:fillViewport="true"
                 android:overScrollMode="never"
                 android:scrollbarStyle="insideOverlay"/>
-
         </RelativeLayout>
     </android.support.v4.widget.NestedScrollView>
     <com.indiasupply.isdental.utils.ShimmerFrameLayout
