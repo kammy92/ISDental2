@@ -116,7 +116,8 @@
                 android:lines="1"
                 android:text="10 OFFERS"
                 android:textColor="@color/text_color_orange"
-                android:textSize="@dimen/text_size_extra_small"/>
+                android:textSize="@dimen/text_size_extra_small"
+                android:visibility="invisible"/>
 
             <TextView
                 android:id="@+id/tvContacts"

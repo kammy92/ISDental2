@@ -55,7 +55,8 @@
                 android:layout_height="25dp"
                 android:layout_marginLeft="@dimen/activity_margin_small"
                 android:layout_marginStart="@dimen/activity_margin_small"
-                android:src="@drawable/ic_delete"/>
+                android:src="@drawable/ic_delete"
+                android:visibility="gone"/>
         </LinearLayout>
     </RelativeLayout>
 </RelativeLayout>

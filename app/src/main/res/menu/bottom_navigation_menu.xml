@@ -5,6 +5,10 @@
         android:icon="@drawable/ic_home_offer_filled"
         android:title="Offers"/>
     <item
+        android:id="@+id/action_item_featured"
+        android:icon="@drawable/ic_home_featured"
+        android:title="Categories"/>
+    <item
         android:id="@+id/action_item_events"
         android:icon="@drawable/ic_home_events"
         android:title="Events"/>

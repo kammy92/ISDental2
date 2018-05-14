@@ -33,6 +33,7 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.indiasupply.isdental.R;
 import com.indiasupply.isdental.fragment.ContactsFragment;
 import com.indiasupply.isdental.fragment.EventFragment;
+import com.indiasupply.isdental.fragment.FeaturedFragment;
 import com.indiasupply.isdental.fragment.OffersFragment;
 import com.indiasupply.isdental.utils.AppConfigTags;
 import com.indiasupply.isdental.utils.AppConfigURL;
@@ -219,9 +220,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onNavigationItemReselected (@NonNull MenuItem item) {
                 switch (item.getItemId ()) {
-//                    case R.id.action_item_featured:
+                    case R.id.action_item_featured:
 //                        Utils.showToast (MainActivity.this, "In reselected item 1", false);
-//                        break;
+                        break;
                     case R.id.action_item_events:
 //                        Utils.showToast (MainActivity.this, "In reselected item 2", false);
                         break;
@@ -259,21 +260,21 @@ public class MainActivity extends AppCompatActivity {
                                 }
                                 screenList.add (R.id.action_item_offers);
                                 break;
-//                            case R.id.action_item_featured:
-//                                // [START custom_event]
-//                                Bundle params3 = new Bundle ();
-//                                params3.putBoolean ("clicked", true);
-//                                mFirebaseAnalytics.logEvent ("home_featured", params3);
-//                                // [END custom_event]
-//
-//                                item.setIcon (R.drawable.ic_home_featured_filled);
-//                                if (screenList.contains (R.id.action_item_featured)) {
-//                                    selectedFragment = FeaturedFragment.newInstance (false);
-//                                } else {
-//                                    selectedFragment = FeaturedFragment.newInstance (true);
-//                                }
-//                                screenList.add (R.id.action_item_featured);
-//                                break;
+                            case R.id.action_item_featured:
+                                // [START custom_event]
+                                Bundle params3 = new Bundle ();
+                                params3.putBoolean ("clicked", true);
+                                mFirebaseAnalytics.logEvent ("home_featured", params3);
+                                // [END custom_event]
+        
+                                item.setIcon (R.drawable.ic_home_featured_filled);
+                                if (screenList.contains (R.id.action_item_featured)) {
+                                    selectedFragment = FeaturedFragment.newInstance (false);
+                                } else {
+                                    selectedFragment = FeaturedFragment.newInstance (true);
+                                }
+                                screenList.add (R.id.action_item_featured);
+                                break;
                             case R.id.action_item_events:
                                 // [START custom_event]
                                 Bundle params = new Bundle ();

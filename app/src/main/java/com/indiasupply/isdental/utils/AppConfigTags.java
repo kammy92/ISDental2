@@ -127,6 +127,7 @@ public class AppConfigTags {
     public static final String CATEGORY_NAME = "category_name";
     public static final String CATEGORY_IMAGE = "category_image";
     public static final String CATEGORY_FILTERS = "filters";
+    public static final String CATEGORY_COMPANIES = "category_companies";
     
     
     public static final String DESCRIPTION = "description";

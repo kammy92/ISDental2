@@ -149,6 +149,136 @@ public class FeaturedFragment extends Fragment {
     
     private void setData () {
         if (NetworkConnection.isNetworkAvailable (getActivity ())) {
+            Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_HOME_CATEGORIES, true);
+            StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_HOME_CATEGORIES,
+                    new Response.Listener<String> () {
+                        @Override
+                        public void onResponse (String response) {
+                            Utils.showLog (Log.INFO, AppConfigTags.SERVER_RESPONSE, response, true);
+                            if (getActivity () != null && isAdded ()) {
+                                if (response != null) {
+                                    try {
+                                        JSONObject jsonObj = new JSONObject (response);
+                                        boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                                        String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                                        if (! is_error) {
+                                            appDataPref.putStringPref (getActivity (), AppDataPref.HOME_FEATURED, response);
+                                            JSONArray jsonArrayBanners = jsonObj.getJSONArray (AppConfigTags.BANNERS);
+                                            for (int i = 0; i < jsonArrayBanners.length (); i++) {
+                                                JSONObject jsonObjectBanners = jsonArrayBanners.getJSONObject (i);
+                                                if (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE).length () == 0) {
+                                                    ivBanner.setImageResource (R.drawable.default_event);
+                                                } else {
+                                                    Glide.with (getActivity ())
+                                                            .load (jsonObjectBanners.getString (AppConfigTags.BANNER_IMAGE))
+                                                            .listener (new RequestListener<String, GlideDrawable> () {
+                                                                @Override
+                                                                public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                                                                    return false;
+                                                                }
+    
+                                                                @Override
+                                                                public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                                                                    return false;
+                                                                }
+                                                            })
+                                                            .error (R.drawable.default_event)
+                                                            .into (ivBanner);
+                                                }
+                                            }
+                                            JSONArray jsonArrayCompanies = jsonObj.getJSONArray (AppConfigTags.CATEGORIES);
+                                            companyList.clear ();
+                                            for (int j = 0; j < jsonArrayCompanies.length (); j++) {
+                                                JSONObject jsonObjectCompanies = jsonArrayCompanies.getJSONObject (j);
+                                                companyList.add (new Company (false,
+                                                        jsonObjectCompanies.getInt (AppConfigTags.CATEGORY_ID),
+                                                        R.drawable.default_company,
+                                                        jsonObjectCompanies.getString (AppConfigTags.CATEGORY_NAME),
+                                                        "",
+                                                        "",
+                                                        "",
+                                                        jsonObjectCompanies.getString (AppConfigTags.CATEGORY_COMPANIES),
+                                                        jsonObjectCompanies.getString (AppConfigTags.CATEGORY_IMAGE),
+                                                        "",
+                                                        "",
+                                                        jsonObjectCompanies.getString (AppConfigTags.TOTAL_PRODUCTS)
+                                                ));
+                                            }
+                                            companyAdapter.notifyDataSetChanged ();
+                                            rlMain.setVisibility (View.VISIBLE);
+                                            shimmerFrameLayout.setVisibility (View.GONE);
+                                        } else {
+                                            if (! showOfflineData ()) {
+                                                Utils.showSnackBar (getActivity (), clMain, message, Snackbar.LENGTH_LONG, null, null);
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace ();
+                                        if (! showOfflineData ()) {
+                                            Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_exception_occurred), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                        }
+                                    }
+                                } else {
+                                    if (! showOfflineData ()) {
+                                        Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                    }
+                                    Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
+                                }
+                            }
+                        }
+                    },
+                    new Response.ErrorListener () {
+                        @Override
+                        public void onErrorResponse (VolleyError error) {
+                            Utils.showLog (Log.ERROR, AppConfigTags.VOLLEY_ERROR, error.toString (), true);
+                            if (getActivity () != null && isAdded ()) {
+                                NetworkResponse response = error.networkResponse;
+                                if (response != null && response.data != null) {
+                                    Utils.showLog (Log.ERROR, AppConfigTags.ERROR, new String (response.data), true);
+                                }
+                                if (! showOfflineData ()) {
+                                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_unstable_internet), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_dismiss), null);
+                                }
+                            }
+                        }
+                    }) {
+        
+                @Override
+                protected Map<String, String> getParams () throws AuthFailureError {
+                    Map<String, String> params = new Hashtable<String, String> ();
+                    Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
+                    return params;
+                }
+        
+                @Override
+                public Map<String, String> getHeaders () throws AuthFailureError {
+                    Map<String, String> params = new HashMap<> ();
+                    UserDetailsPref userDetailsPref = UserDetailsPref.getInstance ();
+                    params.put (AppConfigTags.HEADER_API_KEY, Constants.api_key);
+                    params.put (AppConfigTags.HEADER_USER_LOGIN_KEY, userDetailsPref.getStringPref (getActivity (), UserDetailsPref.USER_LOGIN_KEY));
+                    Utils.showLog (Log.INFO, AppConfigTags.HEADERS_SENT_TO_THE_SERVER, "" + params, false);
+                    return params;
+                }
+            };
+            Utils.sendRequest (strRequest, 30);
+        } else {
+            if (getActivity () != null && isAdded ()) {
+                if (! showOfflineData ()) {
+                    Utils.showSnackBar (getActivity (), clMain, getResources ().getString (R.string.snackbar_text_no_internet_connection_available), Snackbar.LENGTH_LONG, getResources ().getString (R.string.snackbar_action_go_to_settings), new View.OnClickListener () {
+                        @Override
+                        public void onClick (View v) {
+                            Intent dialogIntent = new Intent (Settings.ACTION_SETTINGS);
+                            dialogIntent.addFlags (Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity (dialogIntent);
+                        }
+                    });
+                }
+            }
+        }
+    }
+    
+    private void setDataBKP () {
+        if (NetworkConnection.isNetworkAvailable (getActivity ())) {
             Utils.showLog (Log.INFO, AppConfigTags.URL, AppConfigURL.URL_FEATURED_LIST, true);
             StringRequest strRequest = new StringRequest (Request.Method.GET, AppConfigURL.URL_FEATURED_LIST,
                     new Response.Listener<String> () {
@@ -176,7 +306,7 @@ public class FeaturedFragment extends Fragment {
                                                                 public boolean onException (Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                                                                     return false;
                                                                 }
-                    
+                                                                
                                                                 @Override
                                                                 public boolean onResourceReady (GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                                                                     return false;
@@ -242,14 +372,14 @@ public class FeaturedFragment extends Fragment {
                             }
                         }
                     }) {
-    
+                
                 @Override
                 protected Map<String, String> getParams () throws AuthFailureError {
                     Map<String, String> params = new Hashtable<String, String> ();
                     Utils.showLog (Log.INFO, AppConfigTags.PARAMETERS_SENT_TO_THE_SERVER, "" + params, true);
                     return params;
                 }
-    
+                
                 @Override
                 public Map<String, String> getHeaders () throws AuthFailureError {
                     Map<String, String> params = new HashMap<> ();
@@ -276,6 +406,7 @@ public class FeaturedFragment extends Fragment {
             }
         }
     }
+    
     
     @Override
     public void onStart () {

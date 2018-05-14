@@ -1,11 +1,11 @@
 package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
-    public static String version2 = "v2.1.2";
-    //    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+    public static String version2 = "v2.2";
+    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
 //    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
-    
-    public static String BASE_URL2 = "http://18.218.99.134/isdental/api/" + version2 + "/";
+
+//    public static String BASE_URL2 = "http://18.191.88.139/isdental/api/" + version2 + "/";
     
     public static String URL_HOME_EVENT = BASE_URL2 + "home/events";
     public static String URL_EVENT_DETAILS = BASE_URL2 + "event";
@@ -20,6 +20,8 @@ public class AppConfigURL {
     public static String URL_ADD_REQUEST = BASE_URL2 + "user/request";
     public static String URL_COMPANY_DETAILS = BASE_URL2 + "company";
     public static String URL_FEATURED_LIST = BASE_URL2 + "home/featured";
+    public static String URL_HOME_CATEGORIES = BASE_URL2 + "home/categories";
+    public static String URL_CATEGORY_DETAILS = BASE_URL2 + "category";
     
     public static String URL_USER_EXIST = BASE_URL2 + "user/exist";
     public static String URL_GETOTP = BASE_URL2 + "user/otp";
