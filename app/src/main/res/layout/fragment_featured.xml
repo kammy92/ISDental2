@@ -77,7 +77,7 @@
             android:id="@+id/rlMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible">
+            android:visibility="gone">
             <TextView
                 android:id="@+id/tv1"
                 android:layout_width="wrap_content"
@@ -135,7 +135,7 @@
         android:id="@+id/shimmer_view_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
         <RelativeLayout
             android:id="@+id/rlLoading"

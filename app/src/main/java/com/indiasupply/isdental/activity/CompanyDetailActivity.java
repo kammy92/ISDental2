@@ -197,6 +197,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             window.setStatusBarColor (ContextCompat.getColor (this, R.color.text_color_white));
         }
         Utils.setTypefaceToAllViews (CompanyDetailActivity.this, tvTitleBrandCategory);
+    
     }
     
     @Override
@@ -230,8 +231,8 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                         tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.CATEGORY_NAME));
                                         tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.CATEGORY_COMPANIES));
     
-                                        //tvContacts.setText (jsonObj.getString (AppConfigTags.COMPANY_TOTAL_CONTACTS));
-                                        //company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
+                                        tvContacts.setText ("" + jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).length ());
+                                        company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
                                         
                                         JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.COMPANY_PRODUCT_GROUPS);
                                         for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
@@ -312,6 +313,18 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                 }
                                 Utils.showLog (Log.WARN, AppConfigTags.SERVER_RESPONSE, AppConfigTags.DIDNT_RECEIVE_ANY_DATA_FROM_SERVER, true);
                             }
+//                            int totalHeight = nestedScrollView.getChildAt (0).getHeight ();
+//                            Log.e ("karman", "total height : " + totalHeight);
+//                            for (int k = 0; k< totalHeight; k++) {
+//                                final int l = k;
+//                                new Handler ().postDelayed (new Runnable () {
+//                                    @Override
+//                                    public void run () {
+//                                        nestedScrollView.smoothScrollTo (0, l);
+//                                        Log.e ("karman", "value of l : " + l);
+//                                    }
+//                                }, 500);
+//                            }
                         }
                     },
                     new Response.ErrorListener () {
@@ -539,26 +552,20 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
                 String message = jsonObj.getString (AppConfigTags.MESSAGE);
                 if (! is_error) {
-                    tvBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
-                    company_name = jsonObj.getString (AppConfigTags.COMPANY_NAME);
-                    tvBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
-                    tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
-                    tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
-                    tvRating.setText (jsonObj.getString (AppConfigTags.COMPANY_RATING));
-                    if (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) > 0) {
-                        tvTotalRating.setText (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) + " Ratings");
+                    if (db.isCompanyExist (company_id)) {
+                        db.updateCompanyDetails (company_id, response);
                     } else {
-                        tvTotalRating.setText ("0 Ratings");
+                        db.insertCompany (company_id, response);
                     }
-                    tvContacts.setText (jsonObj.getString (AppConfigTags.COMPANY_TOTAL_CONTACTS));
-                    if (jsonObj.getString (AppConfigTags.COMPANY_OFFERS).length () > 0) {
-                        tvOffer.setText (jsonObj.getString (AppConfigTags.COMPANY_OFFERS));
-                        rlOffer.setVisibility (View.VISIBLE);
-                    } else {
-                        rlOffer.setVisibility (View.GONE);
-                    }
+                    tvBrandName.setText (jsonObj.getString (AppConfigTags.CATEGORY_NAME));
+                    company_name = jsonObj.getString (AppConfigTags.CATEGORY_NAME);
+                    tvBrandCategory.setText (jsonObj.getString (AppConfigTags.CATEGORY_COMPANIES));
+                    tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.CATEGORY_NAME));
+                    tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.CATEGORY_COMPANIES));
+                    
+                    tvContacts.setText ("" + jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).length ());
                     company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
-    
+                    
                     JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.COMPANY_PRODUCT_GROUPS);
                     for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
                         ArrayList<Product> productList = new ArrayList<> ();
@@ -593,7 +600,108 @@ public class CompanyDetailActivity extends AppCompatActivity {
                                     jsonObjectProduct.getString (AppConfigTags.PRODUCT_IMAGE)
                             ));
                         }
+                        
+                        if (jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE) == 1) {
+                            RecyclerView rv = new RecyclerView (CompanyDetailActivity.this);
+                            recommendedProductAdapter = new RecommendedProductAdapter (CompanyDetailActivity.this, productList);
+                            rv.setAdapter (recommendedProductAdapter);
+                            rv.setHasFixedSize (true);
+                            rv.setNestedScrollingEnabled (false);
+                            rv.setFocusable (false);
+                            rv.setLayoutManager (new GridLayoutManager (CompanyDetailActivity.this, 2, GridLayoutManager.VERTICAL, false));
+                            rv.setItemAnimator (new DefaultItemAnimator ());
+                            rv.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), 2, 0, RecyclerViewMargin.LAYOUT_MANAGER_GRID, RecyclerViewMargin.ORIENTATION_VERTICAL));
+                            llDynamic.addView (rv);
+                        } else {
+                            RecyclerView rv = new RecyclerView (CompanyDetailActivity.this);
+                            productAdapter = new ProductAdapter (CompanyDetailActivity.this, productList);
+                            rv.setAdapter (productAdapter);
+                            rv.setNestedScrollingEnabled (false);
+                            rv.setFocusable (false);
+                            rv.setHasFixedSize (true);
+                            rv.setLayoutManager (new LinearLayoutManager (CompanyDetailActivity.this, LinearLayoutManager.VERTICAL, false));
+                            rv.setItemAnimator (new DefaultItemAnimator ());
+                            rv.addItemDecoration (new RecyclerViewMargin ((int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), 1, 0, RecyclerViewMargin.LAYOUT_MANAGER_LINEAR, RecyclerViewMargin.ORIENTATION_VERTICAL));
+                            llDynamic.addView (rv);
+                        }
+                        
+                    }
+                    rlMain.setVisibility (View.VISIBLE);
+                    shimmerFrameLayout.setVisibility (View.GONE);
+                } else {
+                }
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
     
+    private boolean showOfflineDataBKP (int company_id) {
+        if (db.isCompanyExist (company_id)) {
+            String response = db.getCompanyDetails (company_id);
+            try {
+                JSONObject jsonObj = new JSONObject (response);
+                boolean is_error = jsonObj.getBoolean (AppConfigTags.ERROR);
+                String message = jsonObj.getString (AppConfigTags.MESSAGE);
+                if (! is_error) {
+                    tvBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                    company_name = jsonObj.getString (AppConfigTags.COMPANY_NAME);
+                    tvBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                    tvTitleBrandName.setText (jsonObj.getString (AppConfigTags.COMPANY_NAME));
+                    tvTitleBrandCategory.setText (jsonObj.getString (AppConfigTags.COMPANY_CATEGORIES));
+                    tvRating.setText (jsonObj.getString (AppConfigTags.COMPANY_RATING));
+                    if (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) > 0) {
+                        tvTotalRating.setText (jsonObj.getInt (AppConfigTags.COMPANY_TOTAL_RATINGS) + " Ratings");
+                    } else {
+                        tvTotalRating.setText ("0 Ratings");
+                    }
+                    tvContacts.setText (jsonObj.getString (AppConfigTags.COMPANY_TOTAL_CONTACTS));
+                    if (jsonObj.getString (AppConfigTags.COMPANY_OFFERS).length () > 0) {
+                        tvOffer.setText (jsonObj.getString (AppConfigTags.COMPANY_OFFERS));
+                        rlOffer.setVisibility (View.VISIBLE);
+                    } else {
+                        rlOffer.setVisibility (View.GONE);
+                    }
+                    company_contacts = jsonObj.getJSONArray (AppConfigTags.COMPANY_CONTACTS).toString ();
+                    
+                    JSONArray jsonArrayProductGroup = jsonObj.getJSONArray (AppConfigTags.COMPANY_PRODUCT_GROUPS);
+                    for (int i = 0; i < jsonArrayProductGroup.length (); i++) {
+                        ArrayList<Product> productList = new ArrayList<> ();
+                        productList.clear ();
+                        JSONObject jsonObjectProductGroup = jsonArrayProductGroup.getJSONObject (i);
+                        View view = new View (CompanyDetailActivity.this);
+                        view.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.MATCH_PARENT, (int) Utils.pxFromDp (CompanyDetailActivity.this, 16)));
+                        view.setBackgroundColor (getResources ().getColor (R.color.view_color));
+                        llDynamic.addView (view);
+                        TextView tv = new TextView (CompanyDetailActivity.this);
+                        tv.setText (jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE));
+                        tv.setLayoutParams (new LinearLayout.LayoutParams (ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        tv.setTextSize (TypedValue.COMPLEX_UNIT_SP, 18);
+                        tv.setTypeface (SetTypeFace.getTypeface (CompanyDetailActivity.this, "AvenirNextLTPro-Demi.otf"), Typeface.BOLD);
+                        tv.setTextColor (getResources ().getColor (R.color.primary_text2));
+                        tv.setPadding ((int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), (int) Utils.pxFromDp (CompanyDetailActivity.this, 16), 0);
+                        llDynamic.addView (tv);
+                        JSONArray jsonArrayProduct = jsonObjectProductGroup.getJSONArray (AppConfigTags.PRODUCTS);
+                        for (int j = 0; j < jsonArrayProduct.length (); j++) {
+                            JSONObject jsonObjectProduct = jsonArrayProduct.getJSONObject (j);
+                            productList.add (new Product (
+                                    jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ID),
+                                    R.drawable.default_event,
+                                    jsonObjectProduct.getInt (AppConfigTags.PRODUCT_ENQUIRY),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_NAME),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_DESCRIPTION),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_PACKAGING),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_CATEGORY),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_PRICE),
+                                    jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE),
+                                    jsonObjectProductGroup.getString (AppConfigTags.GROUP_TITLE),
+                                    jsonObjectProduct.getString (AppConfigTags.PRODUCT_IMAGE)
+                            ));
+                        }
+                        
                         if (jsonObjectProductGroup.getInt (AppConfigTags.GROUP_TYPE) == 1) {
                             RecyclerView rv = new RecyclerView (CompanyDetailActivity.this);
                             recommendedProductAdapter = new RecommendedProductAdapter (CompanyDetailActivity.this, productList);

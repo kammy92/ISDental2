@@ -2,10 +2,10 @@ package com.indiasupply.isdental.utils;
 
 public class AppConfigURL {
     public static String version2 = "v2.2";
-    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
+//    public static String BASE_URL2 = "https://project-isdental-cammy92.c9users.io/api/" + version2 + "/";
 //    public static String BASE_URL2 = "http://34.210.142.70/isdental/api/" + version2 + "/";
-
-//    public static String BASE_URL2 = "http://18.191.88.139/isdental/api/" + version2 + "/";
+    
+    public static String BASE_URL2 = "http://18.191.88.139/isdental/api/" + version2 + "/";
     
     public static String URL_HOME_EVENT = BASE_URL2 + "home/events";
     public static String URL_EVENT_DETAILS = BASE_URL2 + "event";
